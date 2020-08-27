@@ -1,10 +1,60 @@
 import React, { useState } from 'react';
+
 import createEnturService, { Departure, TransportMode, StopPlace, QueryMode, StopPlaceDetails } from '@entur/sdk'
+
+import { TravelHeader } from '@entur/travel';
+import { WalkingIcon, PlaneIcon, BusIcon, TramIcon, TrainIcon, FerryIcon, SubwayIcon } from '@entur/icons';
+import { Heading1, Heading2, Paragraph } from '@entur/typography';
+import { ChoiceChip,ChoiceChipGroup} from '@entur/chip';
+import { PrimaryButton } from '@entur/button';
+
 import './App.css';
 
 const entur = createEnturService({
   clientName: 'mats-byrkjeland-tester-ting'
 })
+
+function getModeIcon(mode: QueryMode) {
+  switch (mode) {
+    case 'foot':
+      return <WalkingIcon />
+    case 'bus':
+      return <BusIcon />
+    case 'tram':
+      return <TramIcon />
+    case 'rail':
+      return <TrainIcon />
+    case 'air':
+      return <PlaneIcon />
+    case 'metro':
+      return <SubwayIcon />
+    case 'water':
+      return <FerryIcon />
+    default:
+      return null
+  }
+}
+
+function getModeTranslation(mode: QueryMode): string {
+  switch (mode) {
+    case 'foot':
+      return 'Gange (maks 500 m)'
+    case 'bus':
+      return 'Buss'
+    case 'tram':
+      return 'Trikk'
+    case 'rail':
+      return 'Tog'
+    case 'air':
+      return 'Fly'
+    case 'metro':
+      return 'T-bane'
+    case 'water':
+      return 'Ferje'
+    default:
+      return 'Ukjent'
+  }
+}
 
 const START: StopPlace = {
   id: 'NSR:StopPlace:58366',
@@ -66,22 +116,29 @@ async function getWalkableStopPlaces(currentStopPlace: StopPlace): Promise<StopP
 }
 
 function App() {
+  const [dead, setDead] = useState<boolean>(false)
   const [numLegs, setNumLegs] = useState<number>(0)
   const [stopPlace, setStopPlace] = useState<StopPlace>(START)
   const [mode, setMode] = useState<QueryMode | null>(null)
   const [departures, setDepartures] = useState<Departure[]>([])
   const [stopsOnLine, setStopsOnLine] = useState<(StopPlace | StopPlaceDetails)[]>([])
 
-  const selectMode = (mode: QueryMode) => {
-    setMode(mode)
-    if (mode === 'foot') {
-      getWalkableStopPlaces(stopPlace).then(stops => {
-        console.log('stops', stops);
-
+  const selectMode = (newMode: QueryMode) => {
+    setMode(newMode)
+    if (newMode === 'foot') {
+      getWalkableStopPlaces(stopPlace).then((stops) => {
         setStopsOnLine(stops)
+        if (!stops.length) {
+          setDead(true)
+        }
       })
     } else {
-      getDepartures(stopPlace.id, mode).then(setDepartures)
+      getDepartures(stopPlace.id, newMode).then((deps) => {
+        setDepartures(deps)
+        if (!deps.length) {
+          setDead(true)
+        }
+      })
     }
   }
 
@@ -101,69 +158,89 @@ function App() {
 
   if (stopPlace.id === TARGET.id) {
     return (
-      <div>
-        <h1>Du klarte det! <span role="img" aria-label="Konfetti">🎉</span></h1>
-        <p>{`Du kom deg fra ${START.name} til ${TARGET.name} på ${numLegs} etapper.`}</p>
+      <div className="app">
+        <Heading1>Du klarte det! <span role="img" aria-label="Konfetti">🎉</span></Heading1>
+        <Paragraph>{`Du kom deg fra ${START.name} til ${TARGET.name} på ${numLegs} ${numLegs === 1 ? 'etappe' : 'etapper'}.`}</Paragraph>
+        <PrimaryButton onClick={() => window.location.reload()}>Spill på nytt</PrimaryButton>
       </div>
     )
   }
 
   return (
-    <div>
+    <div className="app">
       <header>
-        <p>
-          Du er på {stopPlace.name}. Kom deg til {TARGET.name}!
-        </p>
-        <p>
+        <TravelHeader from={START.name} to={TARGET.name} style={{marginBottom: '2rem'}} />
+        <Paragraph>
+          Du er på {stopPlace.name}. Kom deg til {TARGET.name} så fort som mulig!
+        </Paragraph>
+        <Paragraph>
           Du har reist {numLegs} etapper.
-        </p>
+        </Paragraph>
       </header>
         {
           !mode ? (
             <div>
-                <h2>Velg transportmåte:</h2>
-            <ul>
-              { ALL_MODES.map(mode => (
-                <li key={mode}><button onClick={() => selectMode(mode)}>{mode}</button></li>
-              ))}
-            </ul>
+                <Heading2>Velg transportmåte fra {stopPlace.name}</Heading2>
+                <ChoiceChipGroup value={mode || 'none'} onChange={console.log} name="Transport mode">
+                  { ALL_MODES.map(mode => (
+                        <ChoiceChip key={mode} value={mode} onClick={() => selectMode(mode)}>
+                          {getModeIcon(mode)}
+                          {getModeTranslation(mode)}
+                        </ChoiceChip>
+                  ))}
+                </ChoiceChipGroup>
           </div>
           ) : null
         }
       <div>
         { departures.length ? (
           <div>
-            <h2>Velg avgang</h2>
-            <ul>
-
-            { departures.map(departure => (
-              <li key={departure.destinationDisplay.frontText + departure.serviceJourney.id}>
-                <button onClick={() => selectDeparture(departure)}>
-                  {departure.serviceJourney.journeyPattern?.line.publicCode} {departure.destinationDisplay.frontText}
-                </button>
-              </li>
-              ))}
-              </ul>
+            <Heading2>Velg avgang</Heading2>
+            <ChoiceChipGroup value="none" onChange={console.log} name="Departure">
+              { departures.map(departure => (
+                <ChoiceChip
+                  key={departure.destinationDisplay.frontText + departure.serviceJourney.id}
+                  value={departure.destinationDisplay.frontText + departure.serviceJourney.id}
+                  onClick={() =>  selectDeparture(departure)}
+                >
+                    {mode ? getModeIcon(mode) : null }
+                    {departure.serviceJourney.journeyPattern?.line.publicCode} {departure.destinationDisplay.frontText}
+                </ChoiceChip>
+                ))}
+              </ChoiceChipGroup>
           </div>
         ) : null}
       </div>
       <div>
         { stopsOnLine.length ? (
           <div>
-            <h2>Hvor vil du gå av?</h2>
-            <ul>
+            <Heading2>Hvor vil du gå {mode === 'foot' ? 'til' : 'av'}?</Heading2>
 
-            { stopsOnLine.map(stop => (
-              <li key={stop.id}>
-                <button onClick={() => selectStopOnLine(stop)}>
-                  {stop.name}
-                </button>
-              </li>
-              ))}
-              </ul>
+            <ChoiceChipGroup value="none" onChange={console.log} name="Stop on line">
+              { stopsOnLine.map(stop => (
+                <ChoiceChip
+                  key={stop.id}
+                  value={stop.id}
+                  onClick={() => selectStopOnLine(stop)}
+                >
+                    {stop.name}
+                </ChoiceChip>
+                ))}
+              </ChoiceChipGroup>
+
           </div>
         ) : null}
       </div>
+
+      { dead && mode ? (
+        <div>
+          <Heading2>Du døde!</Heading2>
+          <Paragraph>
+            {`Det går ingen avganger med ${getModeTranslation(mode).toLowerCase()} fra ${stopPlace.name} i nær fremtid.`}
+            </Paragraph>
+            <PrimaryButton onClick={() => window.location.reload()}>Prøv igjen</PrimaryButton>
+        </div>
+      ) : null }
     </div>
   );
 }

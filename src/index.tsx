@@ -1,8 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import * as serviceWorker from './serviceWorker';
+
+import '@entur/tokens/dist/styles.css';
+import '@entur/typography/dist/styles.css';
+import '@entur/travel/dist/styles.css';
+import '@entur/icons/dist/styles.css';
+import '@entur/chip/dist/styles.css';
+import '@entur/button/dist/styles.css';
+
 import './index.css';
 import App from './App';
-import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
   <React.StrictMode>
