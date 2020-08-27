@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { format, addMinutes, parseISO } from 'date-fns'
+import { nb } from 'date-fns/locale'
 
 import createEnturService, { Departure, TransportMode, StopPlace, QueryMode, StopPlaceDetails } from '@entur/sdk'
 
@@ -9,10 +11,28 @@ import { ChoiceChip,ChoiceChipGroup} from '@entur/chip';
 import { PrimaryButton } from '@entur/button';
 
 import './App.css';
+import { differenceInMinutes } from 'date-fns/esm';
 
 const entur = createEnturService({
   clientName: 'mats-byrkjeland-tester-ting'
 })
+
+function formatInterval(currentTime: Date, startTime: Date): string {
+  let minutes = differenceInMinutes(currentTime, startTime)
+  if (minutes < 60) {
+    return `${minutes} minutter`
+  }
+  const hours = Math.floor(minutes / 60)
+  const remainingMinutes = minutes - (hours * 60)
+  if (hours < 24) {
+    return `${hours} timer, ${remainingMinutes} minutter`
+  }
+
+  const days = Math.floor(hours / 24)
+  const remainingHours = hours - (days * 24)
+  const nowRemainingMinutes = minutes - (days * 60 * 24) - (remainingHours * 60)
+  return `${days} døgn, ${remainingHours} timer, ${nowRemainingMinutes} minutter`
+}
 
 function getModeIcon(mode: QueryMode) {
   switch (mode) {
@@ -78,28 +98,37 @@ const ALL_MODES: QueryMode[] = [
   TransportMode.WATER,
 ]
 
-function isTruthy<T>(thing: T | undefined): thing is T {
+interface StopAndTime {
+  stopPlace: StopPlace | StopPlaceDetails
+  time: Date
+}
+
+function isTruthy<T>(thing: T | undefined | null): thing is T {
   return !!thing
 }
 
-function getDepartures(stopPlaceId: string, mode: QueryMode): Promise<Departure[]> {
+function formatTime(value: Date | string): string {
+  const date = typeof value === 'string' ? parseISO(value) : value
+  return format(date, 'HH:mm', { locale: nb })
+}
+
+function getDepartures(stopPlaceId: string, mode: QueryMode, date: Date): Promise<Departure[]> {
   return entur.getDeparturesFromStopPlace(stopPlaceId, {
     limitPerLine: 1,
     whiteListedModes: [mode],
+    start: date
   })
 }
 
-async function getStopsOnLine(serviceJourneyId: string, date: string): Promise<StopPlace[]> {
+async function getStopsOnLine(serviceJourneyId: string, date: string): Promise<Departure[]> {
   const departures = await entur.getDeparturesForServiceJourney(serviceJourneyId, date.slice(0, 10))
   return departures
-    .map(departure => departure.quay?.stopPlace)
-    .filter(isTruthy)
+    .filter(departure => departure.quay?.stopPlace)
+    .filter(departure => departure.expectedDepartureTime > date)
 }
 
 async function getWalkableStopPlaces(currentStopPlace: StopPlace): Promise<StopPlaceDetails[]> {
   if (!currentStopPlace.latitude || !currentStopPlace.longitude) {
-    console.log('currentStopPlace');
-
     return []
   }
   const nearby = await entur.getNearestPlaces({
@@ -115,25 +144,29 @@ async function getWalkableStopPlaces(currentStopPlace: StopPlace): Promise<StopP
   return stopPlaces.filter(isTruthy)
 }
 
+const startTime = new Date()
+
 function App() {
   const [dead, setDead] = useState<boolean>(false)
   const [numLegs, setNumLegs] = useState<number>(0)
   const [stopPlace, setStopPlace] = useState<StopPlace>(START)
   const [mode, setMode] = useState<QueryMode | null>(null)
   const [departures, setDepartures] = useState<Departure[]>([])
-  const [stopsOnLine, setStopsOnLine] = useState<(StopPlace | StopPlaceDetails)[]>([])
+  const [stopsOnLine, setStopsOnLine] = useState<StopAndTime[]>([])
+
+  const [currentTime, setCurrentTime] = useState<Date>(new Date())
 
   const selectMode = (newMode: QueryMode) => {
     setMode(newMode)
     if (newMode === 'foot') {
       getWalkableStopPlaces(stopPlace).then((stops) => {
-        setStopsOnLine(stops)
+        setStopsOnLine(stops.map(stop => ({ stopPlace: stop, time: addMinutes(currentTime, 2) })))
         if (!stops.length) {
           setDead(true)
         }
       })
     } else {
-      getDepartures(stopPlace.id, newMode).then((deps) => {
+      getDepartures(stopPlace.id, newMode, currentTime).then((deps) => {
         setDepartures(deps)
         if (!deps.length) {
           setDead(true)
@@ -144,14 +177,26 @@ function App() {
 
   const selectDeparture = (departure: Departure) => {
     setDepartures([])
-    getStopsOnLine(departure.serviceJourney.id, departure.expectedDepartureTime).then(setStopsOnLine)
+    setCurrentTime(new Date(departure.expectedDepartureTime))
+    getStopsOnLine(departure.serviceJourney.id, departure.date).then(departures => {
+      setStopsOnLine(departures.map((d, index) => {
+        const stop = d.quay?.stopPlace
+        if (!stop || d.expectedDepartureTime <= departure.expectedDepartureTime) return undefined
+        const nextDep = departures[index + 1]
+        return {
+          stopPlace: stop,
+          time: new Date((nextDep || d).expectedArrivalTime),
+        }
+      }).filter(isTruthy))
+    })
   }
 
-  const selectStopOnLine = (stop: StopPlace | undefined) => {
+  const selectStopOnLine = (stopAndTime: StopAndTime) => {
     setStopsOnLine([])
+    setCurrentTime(stopAndTime.time)
     setMode(null)
-    if (stop) {
-      setStopPlace(stop)
+    if (stopAndTime) {
+      setStopPlace(stopAndTime.stopPlace)
       setNumLegs(prev => prev + 1)
     }
   }
@@ -160,7 +205,7 @@ function App() {
     return (
       <div className="app">
         <Heading1>Du klarte det! <span role="img" aria-label="Konfetti">🎉</span></Heading1>
-        <Paragraph>{`Du kom deg fra ${START.name} til ${TARGET.name} på ${numLegs} ${numLegs === 1 ? 'etappe' : 'etapper'}.`}</Paragraph>
+        <Paragraph>{`Du kom deg fra ${START.name} til ${TARGET.name} på ${numLegs} ${numLegs === 1 ? 'etappe' : 'etapper'} og ${formatInterval(currentTime, startTime)}.`}</Paragraph>
         <PrimaryButton onClick={() => window.location.reload()}>Spill på nytt</PrimaryButton>
       </div>
     )
@@ -171,10 +216,10 @@ function App() {
       <header>
         <TravelHeader from={START.name} to={TARGET.name} style={{marginBottom: '2rem'}} />
         <Paragraph>
-          Du er på {stopPlace.name}. Kom deg til {TARGET.name} så fort som mulig!
+          Du er på {stopPlace.name} og klokka er {formatTime(currentTime)}. Kom deg til {TARGET.name} så fort som mulig!
         </Paragraph>
         <Paragraph>
-          Du har reist {numLegs} etapper.
+          Du har reist {numLegs} etapper og brukt {formatInterval(currentTime, startTime)}.
         </Paragraph>
       </header>
         {
@@ -204,7 +249,7 @@ function App() {
                   onClick={() =>  selectDeparture(departure)}
                 >
                     {mode ? getModeIcon(mode) : null }
-                    {departure.serviceJourney.journeyPattern?.line.publicCode} {departure.destinationDisplay.frontText}
+                    {departure.serviceJourney.journeyPattern?.line.publicCode} {departure.destinationDisplay.frontText} kl. {formatTime(departure.expectedDepartureTime)}
                 </ChoiceChip>
                 ))}
               </ChoiceChipGroup>
@@ -217,13 +262,13 @@ function App() {
             <Heading2>Hvor vil du gå {mode === 'foot' ? 'til' : 'av'}?</Heading2>
 
             <ChoiceChipGroup value="none" onChange={console.log} name="Stop on line">
-              { stopsOnLine.map(stop => (
+              { stopsOnLine.map((stop) => (
                 <ChoiceChip
-                  key={stop.id}
-                  value={stop.id}
+                  key={stop.stopPlace.id}
+                  value={stop.stopPlace.id}
                   onClick={() => selectStopOnLine(stop)}
                 >
-                    {stop.name}
+                    {stop.stopPlace.name}
                 </ChoiceChip>
                 ))}
               </ChoiceChipGroup>
