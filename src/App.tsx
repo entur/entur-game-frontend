@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { format, addMinutes, parseISO } from 'date-fns'
+import { format, addMinutes, parseISO, formatDuration } from 'date-fns'
 import { nb } from 'date-fns/locale'
 
 import createEnturService, {
@@ -25,27 +25,19 @@ import { ChoiceChip, ChoiceChipGroup } from '@entur/chip'
 import { PrimaryButton } from '@entur/button'
 
 import './App.css'
-import { differenceInMinutes } from 'date-fns/esm'
+import { intervalToDuration } from 'date-fns/esm'
 
 const entur = createEnturService({
     clientName: 'mats-byrkjeland-tester-ting',
 })
 
 function formatInterval(currentTime: Date, startTime: Date): string {
-    const minutes = differenceInMinutes(currentTime, startTime)
-    if (minutes < 60) {
-        return `${minutes} minutter`
-    }
-    const hours = Math.floor(minutes / 60)
-    const remainingMinutes = minutes - hours * 60
-    if (hours < 24) {
-        return `${hours} timer, ${remainingMinutes} minutter`
-    }
-
-    const days = Math.floor(hours / 24)
-    const remainingHours = hours - days * 24
-    const nowRemainingMinutes = minutes - days * 60 * 24 - remainingHours * 60
-    return `${days} døgn, ${remainingHours} timer, ${nowRemainingMinutes} minutter`
+    return (
+        formatDuration(
+            intervalToDuration({ end: currentTime, start: startTime }),
+            { locale: nb, delimiter: ', ' },
+        ) || '0 minutter'
+    )
 }
 
 function getModeIcon(mode: QueryMode) {
