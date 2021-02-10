@@ -28,7 +28,7 @@ import './App.css'
 import { intervalToDuration } from 'date-fns/esm'
 
 const entur = createEnturService({
-    clientName: 'mats-byrkjeland-tester-ting',
+    clientName: 'entur-game',
 })
 
 function formatInterval(currentTime: Date, startTime: Date): string {
