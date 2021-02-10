@@ -4,10 +4,10 @@ import { nb } from 'date-fns/locale'
 
 import createEnturService, {
     Departure,
-    TransportMode,
     StopPlace,
     QueryMode,
     StopPlaceDetails,
+    TypeName,
 } from '@entur/sdk'
 
 import { TravelHeader } from '@entur/travel'
@@ -95,13 +95,13 @@ const TARGET: StopPlace = {
 }
 
 const ALL_MODES: QueryMode[] = [
-    'foot',
-    TransportMode.BUS,
-    TransportMode.TRAM,
-    TransportMode.RAIL,
-    TransportMode.AIR,
-    TransportMode.METRO,
-    TransportMode.WATER,
+    QueryMode.FOOT,
+    QueryMode.BUS,
+    QueryMode.TRAM,
+    QueryMode.RAIL,
+    QueryMode.AIR,
+    QueryMode.METRO,
+    QueryMode.WATER,
 ]
 
 interface StopAndTime {
@@ -155,7 +155,7 @@ async function getWalkableStopPlaces(
             longitude: currentStopPlace.longitude,
         },
         {
-            filterByPlaceTypes: ['StopPlace'],
+            filterByPlaceTypes: [TypeName.STOP_PLACE],
             maximumDistance: 500,
         },
     )
