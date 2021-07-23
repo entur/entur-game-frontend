@@ -83,16 +83,18 @@ function getModeTranslation(mode: QueryMode): string {
 }
 
 const START: StopPlace = {
-    id: 'NSR:StopPlace:58366',
-    name: 'Jernbanetorget, Oslo',
-    latitude: 59.911898,
-    longitude: 10.75038,
+    id: 'NSR:StopPlace:23604',
+    name: 'Lindesnes fyr',
+    latitude: 57.984808,
+    longitude: 7.048051,
 }
 
-const TARGET: StopPlace = {
-    id: 'NSR:StopPlace:59977',
-    name: 'Trondheim S, Trondheim',
-}
+const TARGETS: StopPlace[] = [
+    {
+        id: 'NSR:StopPlace:59977',
+        name: 'Trondheim S, Trondheim',
+    },
+]
 
 const ALL_MODES: QueryMode[] = [
     QueryMode.FOOT,
@@ -176,6 +178,7 @@ function App(): JSX.Element {
     const [mode, setMode] = useState<QueryMode | null>(null)
     const [departures, setDepartures] = useState<Departure[]>([])
     const [stopsOnLine, setStopsOnLine] = useState<StopAndTime[]>([])
+    const [target, setTarget] = useState<StopPlace>(TARGETS[0])
 
     const [currentTime, setCurrentTime] = useState<Date>(new Date())
 
@@ -242,7 +245,7 @@ function App(): JSX.Element {
         }
     }
 
-    if (stopPlace.id === TARGET.id) {
+    if (stopPlace.id === target.id) {
         return (
             <div className="app">
                 <Heading1>
@@ -252,13 +255,23 @@ function App(): JSX.Element {
                     </span>
                 </Heading1>
                 <Paragraph>{`Du kom deg fra ${START.name} til ${
-                    TARGET.name
+                    target.name
                 } på ${numLegs} ${
                     numLegs === 1 ? 'etappe' : 'etapper'
                 } og ${formatInterval(currentTime, startTime)}.`}</Paragraph>
-                <PrimaryButton onClick={() => window.location.reload()}>
-                    Spill på nytt
-                </PrimaryButton>
+                {target === TARGETS[TARGETS.length - 1] ? (
+                    <PrimaryButton onClick={() => window.location.reload()}>
+                        Spill på nytt
+                    </PrimaryButton>
+                ) : (
+                    <PrimaryButton
+                        onClick={() =>
+                            setTarget(TARGETS[TARGETS.indexOf(target) + 1])
+                        }
+                    >
+                        Dra videre
+                    </PrimaryButton>
+                )}
             </div>
         )
     }
@@ -267,13 +280,15 @@ function App(): JSX.Element {
         <div className="app">
             <header>
                 <TravelHeader
-                    from={START.name}
-                    to={TARGET.name}
+                    from={
+                        TARGETS[TARGETS.indexOf(target) - 1]?.name || START.name
+                    }
+                    to={target.name}
                     style={{ marginBottom: '2rem' }}
                 />
                 <Paragraph>
                     Du er på {stopPlace.name} og klokka er{' '}
-                    {formatTime(currentTime)}. Kom deg til {TARGET.name} så fort
+                    {formatTime(currentTime)}. Kom deg til {target.name} så fort
                     som mulig!
                 </Paragraph>
                 <Paragraph>
