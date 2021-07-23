@@ -20,9 +20,10 @@ import {
     FerryIcon,
     SubwayIcon,
 } from '@entur/icons'
+import { NavigationCard } from '@entur/layout'
 import { Heading1, Heading2, Paragraph } from '@entur/typography'
 import { ChoiceChip, ChoiceChipGroup } from '@entur/chip'
-import { Button, PrimaryButton } from '@entur/button'
+import { PrimaryButton } from '@entur/button'
 
 import './App.css'
 import { intervalToDuration } from 'date-fns/esm'
@@ -84,6 +85,7 @@ function getModeTranslation(mode: QueryMode): string {
 
 type Level = {
     name: string
+    description: string
     start: StopPlace
     targets: StopPlace[]
 }
@@ -91,6 +93,7 @@ type Level = {
 const LEVELS: Level[] = [
     {
         name: 'Oslo – Trondheim',
+        description: 'En reise mellom to av Norges største byer.',
         start: {
             id: 'NSR:StopPlace:58366',
             name: 'Jernbanetorget, Oslo',
@@ -105,7 +108,8 @@ const LEVELS: Level[] = [
         ],
     },
     {
-        name: '71 grader nord',
+        name: 'Norge på langs',
+        description: 'Fra Lindesnes i sør til Nordkapp i nord.',
         start: {
             id: 'NSR:StopPlace:23604',
             name: 'Lindesnes fyr',
@@ -328,8 +332,8 @@ function App(): JSX.Element {
                 </Paragraph>
                 <Heading2>Velg en reise</Heading2>
                 {LEVELS.map((level) => (
-                    <Button
-                        variant="secondary"
+                    <NavigationCard
+                        title={level.name}
                         key={level.name}
                         onClick={() => {
                             setLevel(level)
@@ -337,8 +341,8 @@ function App(): JSX.Element {
                         }}
                         style={{ marginTop: 8, marginRight: 8 }}
                     >
-                        {level.name}
-                    </Button>
+                        {level.description}
+                    </NavigationCard>
                 ))}
             </div>
         )

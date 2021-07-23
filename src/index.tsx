@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import * as serviceWorker from './serviceWorker'
 
+import '@entur/layout/dist/styles.css'
 import '@entur/tokens/dist/styles.css'
 import '@entur/typography/dist/styles.css'
 import '@entur/travel/dist/styles.css'
