@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { format, addMinutes, parseISO, formatDuration } from 'date-fns'
 import { nb } from 'date-fns/locale'
 
@@ -22,7 +22,7 @@ import {
 } from '@entur/icons'
 import { Heading1, Heading2, Paragraph } from '@entur/typography'
 import { ChoiceChip, ChoiceChipGroup } from '@entur/chip'
-import { PrimaryButton } from '@entur/button'
+import { Button, PrimaryButton } from '@entur/button'
 
 import './App.css'
 import { intervalToDuration } from 'date-fns/esm'
@@ -82,17 +82,42 @@ function getModeTranslation(mode: QueryMode): string {
     }
 }
 
-const START: StopPlace = {
-    id: 'NSR:StopPlace:23604',
-    name: 'Lindesnes fyr',
-    latitude: 57.984808,
-    longitude: 7.048051,
+type Level = {
+    name: string
+    start: StopPlace
+    targets: StopPlace[]
 }
 
-const TARGETS: StopPlace[] = [
+const LEVELS: Level[] = [
     {
-        id: 'NSR:StopPlace:59977',
-        name: 'Trondheim S, Trondheim',
+        name: 'Oslo – Trondheim',
+        start: {
+            id: 'NSR:StopPlace:58366',
+            name: 'Jernbanetorget, Oslo',
+            latitude: 59.911898,
+            longitude: 10.75038,
+        },
+        targets: [
+            {
+                id: 'NSR:StopPlace:59977',
+                name: 'Trondheim S, Trondheim',
+            },
+        ],
+    },
+    {
+        name: '71 grader nord',
+        start: {
+            id: 'NSR:StopPlace:23604',
+            name: 'Lindesnes fyr',
+            latitude: 57.984808,
+            longitude: 7.048051,
+        },
+        targets: [
+            {
+                id: 'NSR:StopPlace:57400',
+                name: 'Nordkapp',
+            },
+        ],
     },
 ]
 
@@ -172,15 +197,22 @@ async function getWalkableStopPlaces(
 const startTime = new Date()
 
 function App(): JSX.Element {
+    const [introShown, setIntroShown] = useState<boolean>(false)
+    const [level, setLevel] = useState<Level>(LEVELS[0])
     const [dead, setDead] = useState<boolean>(false)
     const [numLegs, setNumLegs] = useState<number>(0)
-    const [stopPlace, setStopPlace] = useState<StopPlace>(START)
+    const [stopPlace, setStopPlace] = useState<StopPlace>(level.start)
     const [mode, setMode] = useState<QueryMode | null>(null)
     const [departures, setDepartures] = useState<Departure[]>([])
     const [stopsOnLine, setStopsOnLine] = useState<StopAndTime[]>([])
-    const [target, setTarget] = useState<StopPlace>(TARGETS[0])
+    const [target, setTarget] = useState<StopPlace>(level.targets[0])
 
     const [currentTime, setCurrentTime] = useState<Date>(new Date())
+
+    useEffect(() => {
+        setStopPlace(level.start)
+        setTarget(level.targets[0])
+    }, [level])
 
     const selectMode = (newMode: QueryMode) => {
         setMode(newMode)
@@ -254,19 +286,23 @@ function App(): JSX.Element {
                         🎉
                     </span>
                 </Heading1>
-                <Paragraph>{`Du kom deg fra ${START.name} til ${
+                <Paragraph>{`Du kom deg fra ${level.start.name} til ${
                     target.name
                 } på ${numLegs} ${
                     numLegs === 1 ? 'etappe' : 'etapper'
                 } og ${formatInterval(currentTime, startTime)}.`}</Paragraph>
-                {target === TARGETS[TARGETS.length - 1] ? (
+                {target === level.targets[level.targets.length - 1] ? (
                     <PrimaryButton onClick={() => window.location.reload()}>
                         Spill på nytt
                     </PrimaryButton>
                 ) : (
                     <PrimaryButton
                         onClick={() =>
-                            setTarget(TARGETS[TARGETS.indexOf(target) + 1])
+                            setTarget(
+                                level.targets[
+                                    level.targets.indexOf(target) + 1
+                                ],
+                            )
                         }
                     >
                         Dra videre
@@ -276,12 +312,45 @@ function App(): JSX.Element {
         )
     }
 
+    if (!introShown) {
+        return (
+            <div className="app">
+                <Heading1>Norgesferie</Heading1>
+                <Paragraph>
+                    Du har bestemt deg for å reise på norgesferie med
+                    kollektivtransport i år. For å gjøre ting ekstra spennende
+                    ønsker du ikke å bruke digitale hjelpemidler for å finne ut
+                    hvilke transportetapper du skal ta.
+                </Paragraph>
+                <Paragraph>
+                    Klarer du å fullføre reisene uten hjelp av reisesøk? Test
+                    hvor godt du kjenner til kollektiv-Norge her!
+                </Paragraph>
+                <Heading2>Velg en reise</Heading2>
+                {LEVELS.map((level) => (
+                    <Button
+                        variant="secondary"
+                        key={level.name}
+                        onClick={() => {
+                            setLevel(level)
+                            setIntroShown(true)
+                        }}
+                        style={{ marginTop: 8, marginRight: 8 }}
+                    >
+                        {level.name}
+                    </Button>
+                ))}
+            </div>
+        )
+    }
+
     return (
         <div className="app">
             <header>
                 <TravelHeader
                     from={
-                        TARGETS[TARGETS.indexOf(target) - 1]?.name || START.name
+                        level.targets[level.targets.indexOf(target) - 1]
+                            ?.name || level.start.name
                     }
                     to={target.name}
                     style={{ marginBottom: '2rem' }}
