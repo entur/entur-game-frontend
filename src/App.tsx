@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { format, addMinutes, parseISO, formatDuration } from 'date-fns'
+import {
+    format,
+    addMinutes,
+    parseISO,
+    formatDuration,
+    addHours,
+} from 'date-fns'
 import { nb } from 'date-fns/locale'
 
 import createEnturService, {
@@ -19,6 +25,7 @@ import {
     TrainIcon,
     FerryIcon,
     SubwayIcon,
+    SleepIcon,
 } from '@entur/icons'
 import { NavigationCard } from '@entur/layout'
 import { Heading1, Heading2, Paragraph } from '@entur/typography'
@@ -149,6 +156,11 @@ function formatTime(value: Date | string): string {
     return format(date, 'HH:mm', { locale: nb })
 }
 
+function formatDateAndTime(value: Date | string): string {
+    const date = typeof value === 'string' ? parseISO(value) : value
+    return format(date, "cccc eo MMMM 'kl.' HH:mm", { locale: nb })
+}
+
 function getDepartures(
     stopPlaceId: string,
     mode: QueryMode,
@@ -240,6 +252,10 @@ function App(): JSX.Element {
                 }
             })
         }
+    }
+
+    const wait = () => {
+        setCurrentTime((prev) => addHours(prev, 6))
     }
 
     const selectDeparture = (departure: Departure) => {
@@ -360,9 +376,9 @@ function App(): JSX.Element {
                     style={{ marginBottom: '2rem' }}
                 />
                 <Paragraph>
-                    Du er på {stopPlace.name} og klokka er{' '}
-                    {formatTime(currentTime)}. Kom deg til {target.name} så fort
-                    som mulig!
+                    Du er på {stopPlace.name} og det er{' '}
+                    {formatDateAndTime(currentTime)}. Kom deg til {target.name}{' '}
+                    så fort som mulig!
                 </Paragraph>
                 <Paragraph>
                     Du har reist {numLegs} etapper og brukt{' '}
@@ -377,16 +393,26 @@ function App(): JSX.Element {
                         onChange={console.log}
                         name="Transport mode"
                     >
-                        {ALL_MODES.map((mode) => (
+                        <>
+                            {ALL_MODES.map((mode) => (
+                                <ChoiceChip
+                                    key={mode}
+                                    value={mode}
+                                    onClick={() => selectMode(mode)}
+                                >
+                                    {getModeIcon(mode)}
+                                    {getModeTranslation(mode)}
+                                </ChoiceChip>
+                            ))}
                             <ChoiceChip
-                                key={mode}
-                                value={mode}
-                                onClick={() => selectMode(mode)}
+                                key="wait"
+                                value="wait"
+                                onClick={() => wait()}
                             >
-                                {getModeIcon(mode)}
-                                {getModeTranslation(mode)}
+                                <SleepIcon />
+                                Vent 6 timer
                             </ChoiceChip>
-                        ))}
+                        </>
                     </ChoiceChipGroup>
                 </div>
             ) : null}
