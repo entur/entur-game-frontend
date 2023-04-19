@@ -28,12 +28,14 @@ import {
     SleepIcon,
 } from '@entur/icons'
 import { NavigationCard } from '@entur/layout'
-import { Heading1, Heading2, Paragraph } from '@entur/typography'
+import { Heading1, Heading2, Heading3, Paragraph } from '@entur/typography'
 import { ChoiceChip, ChoiceChipGroup } from '@entur/chip'
 import { PrimaryButton } from '@entur/button'
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@entur/tab'
 
 import './App.css'
 import { intervalToDuration } from 'date-fns/esm'
+import { Leaderboard, players } from './components/scoreBoard/LeaderBoard'
 
 const entur = createEnturService({
     clientName: 'entur-game',
@@ -97,7 +99,7 @@ type Level = {
     targets: StopPlace[]
 }
 
-const LEVELS: Level[] = [
+const EASY: Level[] = [
     {
         name: 'Oslo – Trondheim',
         description: 'En reise mellom to av Norges største byer.',
@@ -114,6 +116,9 @@ const LEVELS: Level[] = [
             },
         ],
     },
+]
+
+const MEDIUM: Level[] = [
     {
         name: 'Norge på langs',
         description: 'Fra Lindesnes i sør til Nordkapp i nord.',
@@ -127,6 +132,25 @@ const LEVELS: Level[] = [
             {
                 id: 'NSR:StopPlace:57400',
                 name: 'Nordkapp',
+            },
+        ],
+    },
+]
+
+const HARD: Level[] = [
+    {
+        name: 'Oslo – Trondheim',
+        description: 'En reise mellom to av Norges største byer.',
+        start: {
+            id: 'NSR:StopPlace:58366',
+            name: 'Jernbanetorget, Oslo',
+            latitude: 59.911898,
+            longitude: 10.75038,
+        },
+        targets: [
+            {
+                id: 'NSR:StopPlace:59977',
+                name: 'Trondheim S, Trondheim',
             },
         ],
     },
@@ -214,7 +238,7 @@ const startTime = new Date()
 
 function App(): JSX.Element {
     const [introShown, setIntroShown] = useState<boolean>(false)
-    const [level, setLevel] = useState<Level>(LEVELS[0])
+    const [level, setLevel] = useState<Level>(EASY[0])
     const [dead, setDead] = useState<boolean>(false)
     const [numLegs, setNumLegs] = useState<number>(0)
     const [stopPlace, setStopPlace] = useState<StopPlace>(level.start)
@@ -347,19 +371,61 @@ function App(): JSX.Element {
                     hvor godt du kjenner til kollektiv-Norge her!
                 </Paragraph>
                 <Heading2>Velg en reise</Heading2>
-                {LEVELS.map((level) => (
-                    <NavigationCard
-                        title={level.name}
-                        key={level.name}
-                        onClick={() => {
-                            setLevel(level)
-                            setIntroShown(true)
-                        }}
-                        style={{ marginTop: 8, marginRight: 8 }}
-                    >
-                        {level.description}
-                    </NavigationCard>
-                ))}
+                <Tabs style={{ marginRight: 'auto' }}>
+                    <TabList>
+                        <Tab>Easy</Tab>
+                        <Tab>Medium</Tab>
+                        <Tab>Hard</Tab>
+                    </TabList>
+                    <TabPanels>
+                        <TabPanel>
+                            {EASY.map((level) => (
+                                <NavigationCard
+                                    title={level.name}
+                                    key={level.name}
+                                    onClick={() => {
+                                        setLevel(level)
+                                        setIntroShown(true)
+                                    }}
+                                    style={{ marginTop: 8, marginRight: 8 }}
+                                >
+                                    {level.description}
+                                </NavigationCard>
+                            ))}
+                        </TabPanel>
+                        <TabPanel>
+                            {MEDIUM.map((level) => (
+                                <NavigationCard
+                                    title={level.name}
+                                    key={level.name}
+                                    onClick={() => {
+                                        setLevel(level)
+                                        setIntroShown(true)
+                                    }}
+                                    style={{ marginTop: 8, marginRight: 8 }}
+                                >
+                                    {level.description}
+                                </NavigationCard>
+                            ))}
+                        </TabPanel>
+                        <TabPanel>
+                            {HARD.map((level) => (
+                                <NavigationCard
+                                    title={level.name}
+                                    key={level.name}
+                                    onClick={() => {
+                                        setLevel(level)
+                                        setIntroShown(true)
+                                    }}
+                                    style={{ marginTop: 8, marginRight: 8 }}
+                                >
+                                    {level.description}
+                                </NavigationCard>
+                            ))}
+                        </TabPanel>
+                    </TabPanels>
+                </Tabs>
+                <Leaderboard players={players} />
             </div>
         )
     }
@@ -414,6 +480,9 @@ function App(): JSX.Element {
                             </ChoiceChip>
                         </>
                     </ChoiceChipGroup>
+                    <PrimaryButton onClick={() => window.location.reload()}>
+                        Send meg tilbake
+                    </PrimaryButton>
                 </div>
             ) : null}
             <div>
@@ -449,6 +518,9 @@ function App(): JSX.Element {
                                 </ChoiceChip>
                             ))}
                         </ChoiceChipGroup>
+                        <PrimaryButton onClick={() => window.location.reload()}>
+                            Send meg tilbake
+                        </PrimaryButton>
                     </div>
                 ) : null}
             </div>
@@ -474,6 +546,9 @@ function App(): JSX.Element {
                                 </ChoiceChip>
                             ))}
                         </ChoiceChipGroup>
+                        <PrimaryButton onClick={() => window.location.reload()}>
+                            Send meg tilbake
+                        </PrimaryButton>
                     </div>
                 ) : null}
             </div>
