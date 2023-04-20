@@ -1,8 +1,8 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import './App.css'
-import Game from './Game'
-import Multiplayer from './Multiplayer'
+import Game from './components/Game'
+import Multiplayer from './components/Multiplayer'
 
 function App(): JSX.Element {
     return (

@@ -34,9 +34,9 @@ import { ChoiceChip, ChoiceChipGroup } from '@entur/chip'
 import { PrimaryButton } from '@entur/button'
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@entur/tab'
 
-import './App.css'
+import '../App.css'
 import { intervalToDuration } from 'date-fns/esm'
-import { Leaderboard } from './components/scoreBoard/LeaderBoard'
+import { Leaderboard } from './scoreBoard/LeaderBoard'
 import { Link } from 'react-router-dom'
 
 const entur = createEnturService({
