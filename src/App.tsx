@@ -18,17 +18,18 @@ import createEnturService, {
 
 import { TravelHeader } from '@entur/travel'
 import {
-    WalkingIcon,
+    WalkIcon,
     PlaneIcon,
     BusIcon,
     TramIcon,
     TrainIcon,
     FerryIcon,
-    SubwayIcon,
+    MetroIcon,
     SleepIcon,
 } from '@entur/icons'
+import { TextField } from '@entur/form'
 import { NavigationCard } from '@entur/layout'
-import { Heading1, Heading2, Heading3, Paragraph } from '@entur/typography'
+import { Heading1, Heading2, Paragraph } from '@entur/typography'
 import { ChoiceChip, ChoiceChipGroup } from '@entur/chip'
 import { PrimaryButton } from '@entur/button'
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@entur/tab'
@@ -53,7 +54,7 @@ function formatInterval(currentTime: Date, startTime: Date): string {
 function getModeIcon(mode: QueryMode) {
     switch (mode) {
         case 'foot':
-            return <WalkingIcon />
+            return <WalkIcon />
         case 'bus':
             return <BusIcon />
         case 'tram':
@@ -63,7 +64,7 @@ function getModeIcon(mode: QueryMode) {
         case 'air':
             return <PlaneIcon />
         case 'metro':
-            return <SubwayIcon />
+            return <MetroIcon />
         case 'water':
             return <FerryIcon />
         default:
@@ -237,6 +238,8 @@ async function getWalkableStopPlaces(
 const startTime = new Date()
 
 function App(): JSX.Element {
+    const [name, setName] = useState('')
+    const [savedName, setSavedName] = useState('')
     const [introShown, setIntroShown] = useState<boolean>(false)
     const [level, setLevel] = useState<Level>(EASY[0])
     const [dead, setDead] = useState<boolean>(false)
@@ -248,6 +251,11 @@ function App(): JSX.Element {
     const [target, setTarget] = useState<StopPlace>(level.targets[0])
 
     const [currentTime, setCurrentTime] = useState<Date>(new Date())
+
+    const handleSaveName = () => {
+        setSavedName(name)
+        setName('')
+    }
 
     useEffect(() => {
         setStopPlace(level.start)
@@ -336,9 +344,19 @@ function App(): JSX.Element {
                     numLegs === 1 ? 'etappe' : 'etapper'
                 } og ${formatInterval(currentTime, startTime)}.`}</Paragraph>
                 {target === level.targets[level.targets.length - 1] ? (
-                    <PrimaryButton onClick={() => window.location.reload()}>
-                        Spill på nytt
-                    </PrimaryButton>
+                    <>
+                        <TextField
+                            label="nickname"
+                            onChange={(e) => setName(e.target.value)}
+                        ></TextField>
+                        <PrimaryButton onClick={handleSaveName}>
+                            Save my nickname
+                        </PrimaryButton>
+                        <p>Your nickname is: {savedName}</p>
+                        <PrimaryButton onClick={() => window.location.reload()}>
+                            Spill på nytt
+                        </PrimaryButton>
+                    </>
                 ) : (
                     <PrimaryButton
                         onClick={() =>

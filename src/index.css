@@ -1,5 +1,11 @@
 @import '@entur/table/dist/styles.css';
 @import '@entur/tab/dist/styles.css';
+@import '@entur/form/dist/styles.css';
+@import '@entur/icons/dist/styles.css';
+@import '@entur/loader/dist/styles.css';
+@import '@entur/tooltip/dist/styles.css';
+@import '@entur/a11y/dist/styles.css';
+@import '@entur/expand/dist/styles.css';
 body {
   margin: 0;
   font-family: Nationale, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
