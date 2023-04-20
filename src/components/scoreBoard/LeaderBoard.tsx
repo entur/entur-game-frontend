@@ -54,7 +54,8 @@ export const Leaderboard = () => {
                         <HeaderCell>Nickname</HeaderCell>
                         <HeaderCell>Score</HeaderCell>
                         <HeaderCell>Total Options</HeaderCell>
-                        <HeaderCell>Total Time Spent</HeaderCell>
+                        <HeaderCell>Total Travel Time</HeaderCell>
+                        <HeaderCell>Total Time Played</HeaderCell>
                         <HeaderCell>From Destination</HeaderCell>
                         <HeaderCell>To Destination</HeaderCell>
                     </TableRow>
@@ -67,6 +68,7 @@ export const Leaderboard = () => {
                             <DataCell>{player.score}</DataCell>
                             <DataCell>{player.totalOptions}</DataCell>
                             <DataCell>{player.totalTravelTime}</DataCell>
+                            <DataCell>{player.totalPlaytime}</DataCell>
                             <DataCell>
                                 {player.fromDestination.destination}
                             </DataCell>
