@@ -103,14 +103,14 @@ function getModeTranslation(mode: QueryMode): string {
     }
 }
 
-type Level = {
+export type Level = {
     name: string
     description: string
     start: StopPlace
     targets: StopPlace[]
 }
 
-const EASY: Level[] = [
+export const EASY: Level[] = [
     {
         name: 'Oslo – Trondheim',
         description: 'En reise mellom to av Norges største byer.',
@@ -129,7 +129,7 @@ const EASY: Level[] = [
     },
 ]
 
-const MEDIUM: Level[] = [
+export const MEDIUM: Level[] = [
     {
         name: 'Norge på langs',
         description: 'Fra Lindesnes i sør til Nordkapp i nord.',
@@ -148,7 +148,7 @@ const MEDIUM: Level[] = [
     },
 ]
 
-const HARD: Level[] = [
+export const HARD: Level[] = [
     {
         name: 'Oslo – Trondheim',
         description: 'En reise mellom to av Norges største byer.',
@@ -261,10 +261,18 @@ interface Destination {
     destination: string
 }
 
-function Game(): JSX.Element {
+function Game({
+    multiLevel = EASY[0],
+    multiIntroShown = false,
+    multiStartTimer = 0,
+}: {
+    multiLevel?: Level
+    multiIntroShown?: boolean
+    multiStartTimer?: number
+}): JSX.Element {
     const [name, setName] = useState('')
-    const [introShown, setIntroShown] = useState<boolean>(false)
-    const [level, setLevel] = useState<Level>(EASY[0])
+    const [introShown, setIntroShown] = useState<boolean>(multiIntroShown)
+    const [level, setLevel] = useState<Level>(multiLevel)
     const [dead, setDead] = useState<boolean>(false)
     const [numLegs, setNumLegs] = useState<number>(0)
     const [stopPlace, setStopPlace] = useState<StopPlace>(level.start)
@@ -272,7 +280,7 @@ function Game(): JSX.Element {
     const [mode, setMode] = useState<QueryMode | null>(null)
     const [departures, setDepartures] = useState<Departure[]>([])
     const [stopsOnLine, setStopsOnLine] = useState<StopAndTime[]>([])
-    const [startTimer, setStartTimer] = useState<number>(0)
+    const [startTimer, setStartTimer] = useState<number>(multiStartTimer)
     const [currentTime, setCurrentTime] = useState<Date>(new Date())
 
     async function handleSavePlayerScore(playerInfo: PlayerResponse) {

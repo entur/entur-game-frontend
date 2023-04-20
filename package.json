@@ -15,6 +15,7 @@
         "@entur/travel": "^4.2.0",
         "@entur/typography": "^1.6.3",
         "@entur/utils": "^0.9.0",
+        "@stomp/stompjs": "^7.0.0",
         "@testing-library/jest-dom": "^5.14.1",
         "@testing-library/react": "^12.0.0",
         "@testing-library/user-event": "^13.2.0",
@@ -26,7 +27,8 @@
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
         "react-router-dom": "^6.10.0",
-        "react-scripts": "^4.0.3"
+        "react-scripts": "^4.0.3",
+        "react-use-websocket": "^3.0.0"
     },
     "scripts": {
         "start": "react-scripts start",
