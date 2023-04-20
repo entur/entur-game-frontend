@@ -36,7 +36,7 @@ import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@entur/tab'
 
 import './App.css'
 import { intervalToDuration } from 'date-fns/esm'
-import { Leaderboard, players } from './components/scoreBoard/LeaderBoard'
+import { Leaderboard } from './components/scoreBoard/LeaderBoard'
 
 const entur = createEnturService({
     clientName: 'entur-game',
@@ -48,6 +48,15 @@ function formatInterval(currentTime: Date, startTime: Date): string {
             intervalToDuration({ end: currentTime, start: startTime }),
             { locale: nb, delimiter: ', ' },
         ) || '0 minutter'
+    )
+}
+
+function formatIntervalToSeconds(currentTime: Date, startTime: Date): number {
+    const duration = intervalToDuration({ end: currentTime, start: startTime })
+    return (
+        (duration.seconds ?? 0) +
+        (duration.minutes ?? 0) * 60 +
+        (duration.hours ?? 0) * 3600
     )
 }
 
@@ -237,24 +246,45 @@ async function getWalkableStopPlaces(
 
 const startTime = new Date()
 
+interface PlayerResponse {
+    nickname: string
+    totalOptions: number
+    totalPlaytime: number
+    totalTravelTime: number
+    fromDestination: Destination
+    toDestination: Destination
+}
+
+interface Destination {
+    id: string
+    destination: string
+}
+
 function App(): JSX.Element {
     const [name, setName] = useState('')
-    const [savedName, setSavedName] = useState('')
     const [introShown, setIntroShown] = useState<boolean>(false)
     const [level, setLevel] = useState<Level>(EASY[0])
     const [dead, setDead] = useState<boolean>(false)
     const [numLegs, setNumLegs] = useState<number>(0)
     const [stopPlace, setStopPlace] = useState<StopPlace>(level.start)
+    const [target, setTarget] = useState<StopPlace>(level.targets[0])
     const [mode, setMode] = useState<QueryMode | null>(null)
     const [departures, setDepartures] = useState<Departure[]>([])
     const [stopsOnLine, setStopsOnLine] = useState<StopAndTime[]>([])
-    const [target, setTarget] = useState<StopPlace>(level.targets[0])
-
+    const [startTimer, setStartTimer] = useState<number>(0)
     const [currentTime, setCurrentTime] = useState<Date>(new Date())
 
-    const handleSaveName = () => {
-        setSavedName(name)
-        setName('')
+    async function handleSavePlayerScore(playerInfo: PlayerResponse) {
+        await fetch(
+            'https://norgestur-production.up.railway.app/player-score',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(playerInfo),
+            },
+        )
     }
 
     useEffect(() => {
@@ -349,10 +379,31 @@ function App(): JSX.Element {
                             label="nickname"
                             onChange={(e) => setName(e.target.value)}
                         ></TextField>
-                        <PrimaryButton onClick={handleSaveName}>
-                            Save my nickname
+                        <PrimaryButton
+                            onClick={() =>
+                                handleSavePlayerScore({
+                                    nickname: name,
+                                    fromDestination: {
+                                        destination: level.start.name,
+                                        id: level.start.id,
+                                    },
+                                    toDestination: {
+                                        destination: target.name,
+                                        id: target.id,
+                                    },
+                                    totalOptions: numLegs,
+                                    totalPlaytime: Math.trunc(
+                                        (Date.now() - startTimer) / 1000,
+                                    ),
+                                    totalTravelTime: formatIntervalToSeconds(
+                                        currentTime,
+                                        startTime,
+                                    ),
+                                })
+                            }
+                        >
+                            Save my score
                         </PrimaryButton>
-                        <p>Your nickname is: {savedName}</p>
                         <PrimaryButton onClick={() => window.location.reload()}>
                             Spill på nytt
                         </PrimaryButton>
@@ -404,6 +455,7 @@ function App(): JSX.Element {
                                     onClick={() => {
                                         setLevel(level)
                                         setIntroShown(true)
+                                        setStartTimer(Date.now())
                                     }}
                                     style={{ marginTop: 8, marginRight: 8 }}
                                 >
@@ -443,7 +495,7 @@ function App(): JSX.Element {
                         </TabPanel>
                     </TabPanels>
                 </Tabs>
-                <Leaderboard players={players} />
+                <Leaderboard />
             </div>
         )
     }

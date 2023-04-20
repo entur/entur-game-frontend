@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Heading2 } from '@entur/typography'
 import {
     Table,
@@ -9,60 +9,41 @@ import {
     HeaderCell,
 } from '@entur/table'
 import '@entur/table/dist/styles.css'
-import { format, parseISO } from 'date-fns'
-import { nb } from 'date-fns/locale'
 
 interface Player {
-    id: string
-    name: string
+    nickname: string
     score: number
     totalOptions: number
-    totaltimeSpent: Date
-    formDestination: string
-    toDestination: string
-}
-export const players: Player[] = [
-    {
-        id: '1',
-        name: 'Daniel',
-        score: 100,
-        totalOptions: 5,
-        totaltimeSpent: new Date(),
-        formDestination: 'Jernabanetorget',
-        toDestination: 'Trondheim',
-    },
-    {
-        id: '2',
-        name: 'Kenneth',
-        score: 90,
-        totalOptions: 5,
-        totaltimeSpent: new Date(),
-        formDestination: 'Jernabanetorget',
-        toDestination: 'Trondheim',
-    },
-    {
-        id: '3',
-        name: 'Artur',
-        score: 80,
-        totalOptions: 5,
-        totaltimeSpent: new Date(),
-        formDestination: 'Jernabanetorget',
-        toDestination: 'Trondheim',
-    },
-]
-
-type LeaderboardProps = {
-    players: Player[]
+    totalPlaytime: string
+    totalTravelTime: string
+    fromDestination: Destination
+    toDestination: Destination
 }
 
-function formatTime(value: Date | string): string {
-    const date = typeof value === 'string' ? parseISO(value) : value
-    return format(date, 'HH:mm', { locale: nb })
+interface Destination {
+    id: string
+    destination: string
 }
 
-export const Leaderboard = ({ players }: LeaderboardProps) => {
-    const sortedPlayers = players.sort((a, b) => b.score - a.score).slice(0, 10)
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const Leaderboard = () => {
+    const [players, setPlayers] = useState<Player[]>()
 
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await fetch(
+                'https://norgestur-production.up.railway.app/player-score',
+            )
+            const data = await response.json()
+            setPlayers(data)
+        }
+
+        fetchData()
+    }, [])
+    if (players === undefined) {
+        return <p>Loading...</p>
+    }
+    console.log(players)
     return (
         <>
             <Heading2>Leaderboard</Heading2>
@@ -79,17 +60,19 @@ export const Leaderboard = ({ players }: LeaderboardProps) => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {sortedPlayers.map((player, index) => (
-                        <TableRow key={player.id}>
+                    {players.map((player, index) => (
+                        <TableRow key={index}>
                             <DataCell>{index + 1}</DataCell>
-                            <DataCell>{player.name}</DataCell>
+                            <DataCell>{player.nickname}</DataCell>
                             <DataCell>{player.score}</DataCell>
                             <DataCell>{player.totalOptions}</DataCell>
+                            <DataCell>{player.totalTravelTime}</DataCell>
                             <DataCell>
-                                {formatTime(player.totaltimeSpent)}
+                                {player.fromDestination.destination}
                             </DataCell>
-                            <DataCell>{player.formDestination}</DataCell>
-                            <DataCell>{player.toDestination}</DataCell>
+                            <DataCell>
+                                {player.toDestination.destination}
+                            </DataCell>
                         </TableRow>
                     ))}
                 </TableBody>
