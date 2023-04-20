@@ -1,3 +1,4 @@
+import { Heading3, ListItem, NumberedList } from '@entur/typography'
 import React from 'react'
 
 type props = {
@@ -5,12 +6,16 @@ type props = {
 }
 
 function PlayerList({ players }: props): JSX.Element {
-    console.log(players)
     return (
         <>
-            {players.map((player) => (
-                <p key={player}>{player}</p>
-            ))}
+            <Heading3>Spillere</Heading3>
+            <NumberedList>
+                {players.map((player) => (
+                    <ListItem key={player}>
+                        {player.replaceAll('"', '')}
+                    </ListItem>
+                ))}
+            </NumberedList>
         </>
     )
 }

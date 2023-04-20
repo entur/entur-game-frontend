@@ -8,17 +8,25 @@ import Lobby from './Lobby'
 import Game, { EASY, HARD, Level, MEDIUM } from './Game'
 import { NavigationCard } from '@entur/layout'
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@entur/tab'
+import { Client } from '@stomp/stompjs'
+
+const client = new Client()
 
 function Multiplayer(): JSX.Element {
     const [ready, setReady] = useState<boolean>(false)
     const [level, setLevel] = useState<Level>(EASY[0])
     const [startTimer, setStartTimer] = useState<number>(0)
     const [isOwner, setOwner] = useState(false)
+    const [sessionId, setSessionId] = useState<string | null>(null)
+    const [winner, setWinner] = useState<string>('')
+    const [finished, setFinished] = useState<boolean>(false)
+    const [nickname, setNickname] = useState<string>('')
+
     return (
         <div className="multiplayer">
             {!ready && (
                 <>
-                    <Heading1>MULTIPLAYER</Heading1>
+                    <Heading1>Flerspiller modus</Heading1>
                     <Lobby
                         setReady={(value) => {
                             setReady(value)
@@ -26,22 +34,41 @@ function Multiplayer(): JSX.Element {
                         }}
                         isOwner={isOwner}
                         setOwner={setOwner}
+                        sessionId={sessionId}
+                        setSessionId={setSessionId}
+                        level={level}
+                        setLevel={setLevel}
+                        winner={winner}
+                        nickname={nickname}
+                        setNickname={setNickname}
+                        setWinner={setWinner}
+                        finished={finished}
+                        client={client}
                     />
                     {isOwner && (
                         <Tabs style={{ marginRight: 'auto' }}>
                             <TabList>
-                                <Tab>Easy</Tab>
-                                <Tab>Medium</Tab>
-                                <Tab>Hard</Tab>
+                                <Tab>Lett</Tab>
+                                <Tab>Middels</Tab>
+                                <Tab>Vanskelig</Tab>
                             </TabList>
                             <TabPanels>
                                 <TabPanel>
-                                    {EASY.map((level) => (
+                                    {EASY.map((level, index) => (
                                         <NavigationCard
                                             title={level.name}
                                             key={level.name}
                                             onClick={() => {
                                                 setLevel(level)
+                                                client.publish({
+                                                    destination:
+                                                        '/topic/' +
+                                                        sessionId +
+                                                        '/game-level',
+                                                    body: JSON.stringify(
+                                                        'EASY:' + index,
+                                                    ),
+                                                })
                                             }}
                                             style={{
                                                 marginTop: 8,
@@ -53,12 +80,21 @@ function Multiplayer(): JSX.Element {
                                     ))}
                                 </TabPanel>
                                 <TabPanel>
-                                    {MEDIUM.map((level) => (
+                                    {MEDIUM.map((level, index) => (
                                         <NavigationCard
                                             title={level.name}
                                             key={level.name}
                                             onClick={() => {
                                                 setLevel(level)
+                                                client.publish({
+                                                    destination:
+                                                        '/topic/' +
+                                                        sessionId +
+                                                        '/game-level',
+                                                    body: JSON.stringify(
+                                                        'MEDIUM:' + index,
+                                                    ),
+                                                })
                                             }}
                                             style={{
                                                 marginTop: 8,
@@ -70,12 +106,21 @@ function Multiplayer(): JSX.Element {
                                     ))}
                                 </TabPanel>
                                 <TabPanel>
-                                    {HARD.map((level) => (
+                                    {HARD.map((level, index) => (
                                         <NavigationCard
                                             title={level.name}
                                             key={level.name}
                                             onClick={() => {
                                                 setLevel(level)
+                                                client.publish({
+                                                    destination:
+                                                        '/topic/' +
+                                                        sessionId +
+                                                        '/game-level',
+                                                    body: JSON.stringify(
+                                                        'HARD:' + index,
+                                                    ),
+                                                })
                                             }}
                                             style={{
                                                 marginTop: 8,
@@ -100,6 +145,13 @@ function Multiplayer(): JSX.Element {
                     multiIntroShown
                     multiLevel={level}
                     multiStartTimer={startTimer}
+                    handleWinner={() => {
+                        setFinished(true)
+                        client.publish({
+                            destination: '/topic/' + sessionId + '/finished',
+                            body: JSON.stringify(nickname),
+                        })
+                    }}
                 />
             )}
         </div>

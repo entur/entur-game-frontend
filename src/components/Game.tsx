@@ -15,6 +15,7 @@ import createEnturService, {
     StopPlaceDetails,
     TypeName,
 } from '@entur/sdk'
+import { sprinkleEmojis } from 'emoji-sprinkle'
 
 import { TravelHeader } from '@entur/travel'
 import {
@@ -265,13 +266,17 @@ function Game({
     multiLevel = EASY[0],
     multiIntroShown = false,
     multiStartTimer = 0,
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    handleWinner = () => {},
 }: {
     multiLevel?: Level
     multiIntroShown?: boolean
     multiStartTimer?: number
+    handleWinner?: () => void
 }): JSX.Element {
     const [name, setName] = useState('')
     const [introShown, setIntroShown] = useState<boolean>(multiIntroShown)
+    const [hasBeenSprinkled, setSprinkled] = useState<boolean>(false)
     const [level, setLevel] = useState<Level>(multiLevel)
     const [dead, setDead] = useState<boolean>(false)
     const [numLegs, setNumLegs] = useState<number>(0)
@@ -369,6 +374,16 @@ function Game({
     }
 
     if (stopPlace.id === target.id) {
+        handleWinner()
+        if (!hasBeenSprinkled) {
+            sprinkleEmojis({
+                emoji: '🎉',
+                count: 50,
+                fade: 10,
+                fontSize: 30,
+            })
+            setSprinkled(true)
+        }
         return (
             <div className="app">
                 <Heading1>
@@ -411,7 +426,7 @@ function Game({
                                 })
                             }
                         >
-                            Save my score
+                            Lagre min poengsum!
                         </PrimaryButton>
                         <PrimaryButton onClick={() => window.location.reload()}>
                             Spill på nytt
@@ -437,7 +452,7 @@ function Game({
     if (!introShown) {
         return (
             <div className="app">
-                <Heading1>Norgestur</Heading1>
+                <Heading1>Er du smartere enn vår reiseplanlegger?</Heading1>
                 <Paragraph>
                     Du har bestemt deg for å reise på norgesferie med
                     kollektivtransport i år. For å gjøre ting ekstra spennende
@@ -449,15 +464,11 @@ function Game({
                     hvor godt du kjenner til kollektiv-Norge her!
                 </Paragraph>
                 <Heading2>Velg en reise</Heading2>
-                <Paragraph>Hvis du vil spille mot en annen person </Paragraph>
-                <Link to="/multiplayer">
-                    <PrimaryButton>Trykk her</PrimaryButton>
-                </Link>
                 <Tabs style={{ marginRight: 'auto', marginTop: '40px' }}>
                     <TabList>
-                        <Tab>Easy</Tab>
-                        <Tab>Medium</Tab>
-                        <Tab>Hard</Tab>
+                        <Tab>Lett</Tab>
+                        <Tab>Middels</Tab>
+                        <Tab>Vanskelig</Tab>
                     </TabList>
                     <TabPanels>
                         <TabPanel>
@@ -509,6 +520,14 @@ function Game({
                     </TabPanels>
                 </Tabs>
                 <Leaderboard />
+                <div style={{ marginTop: '300px' }}>
+                    <Paragraph>
+                        Hvis du vil spille mot en annen person{' '}
+                    </Paragraph>
+                    <Link to="/multiplayer">
+                        <PrimaryButton>Trykk her</PrimaryButton>
+                    </Link>
+                </div>
             </div>
         )
     }

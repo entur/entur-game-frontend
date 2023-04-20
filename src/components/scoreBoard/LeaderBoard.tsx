@@ -41,12 +41,11 @@ export const Leaderboard = () => {
         fetchData()
     }, [])
     if (players === undefined) {
-        return <p>Loading...</p>
+        return <p>Laster inn...</p>
     }
-    console.log(players)
     return (
         <>
-            <Heading2>Leaderboard</Heading2>
+            <Heading2>Poengtavle</Heading2>
             <div className="leaderboard">
                 <Table>
                     <TableHead>

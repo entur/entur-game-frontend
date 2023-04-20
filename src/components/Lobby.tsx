@@ -2,7 +2,10 @@ import { PrimaryButton } from '@entur/button'
 import { TextField } from '@entur/form'
 import React, { useEffect, useState } from 'react'
 import { Client } from '@stomp/stompjs'
+import { CopyableText } from '@entur/alert'
+import { sprinkleEmojis } from 'emoji-sprinkle'
 import PlayerList from './PlayerList'
+import { EASY, HARD, Level, MEDIUM } from './Game'
 
 function genRandomString(length: number) {
     const chars =
@@ -15,20 +18,39 @@ function genRandomString(length: number) {
     return result
 }
 
-const client = new Client()
+const levels = {
+    EASY: EASY,
+    MEDIUM: MEDIUM,
+    HARD: HARD,
+}
 
 function Lobby({
     setReady,
     isOwner,
     setOwner,
+    sessionId,
+    setSessionId,
+    level,
+    setLevel,
+    nickname,
+    setNickname,
+    client,
 }: {
     setReady: React.Dispatch<React.SetStateAction<boolean>>
     isOwner: boolean
     setOwner: React.Dispatch<React.SetStateAction<boolean>>
+    sessionId: string | null
+    setSessionId: React.Dispatch<React.SetStateAction<string | null>>
+    level: Level
+    setLevel: React.Dispatch<React.SetStateAction<Level>>
+    winner: string
+    setWinner: React.Dispatch<React.SetStateAction<string>>
+    nickname: string
+    setNickname: React.Dispatch<React.SetStateAction<string>>
+    finished: boolean
+    client: Client
 }): JSX.Element {
     const [isJoined, setJoined] = useState<boolean>(false)
-    const [nickname, setNickname] = useState<string>('')
-    const [sessionId, setSessionId] = useState<string | null>(null)
     const [players, setPlayers] = useState<string[]>([])
 
     useEffect(() => {
@@ -53,8 +75,14 @@ function Lobby({
                     maxWidth: '1000px',
                 }}
             >
-                <TextField readOnly label="Spill-ID" value={sessionId ?? ''} />
-                <PlayerList players={players} />
+                <CopyableText
+                    successHeading="Kommando kopiert!"
+                    successMessage="Lim den inn i terminalen."
+                >
+                    {sessionId ?? ''}
+                </CopyableText>
+
+                {isOwner && <PlayerList players={players} />}
                 {isOwner && (
                     <PrimaryButton
                         onClick={() => {
@@ -121,14 +149,60 @@ function Lobby({
                                     )
                                 },
                             )
+
+                            client.subscribe(
+                                '/topic/' + sessionId + '/game-level',
+                                (message) => {
+                                    const newLevel = new TextDecoder()
+                                        .decode(message.binaryBody)
+                                        .replaceAll('"', '')
+                                        .split(':')
+                                    const difficulty = newLevel[0]
+                                    const levelNumber = newLevel[1]
+
+                                    const keyValues = Object.entries(levels)
+                                    const newLevelToChange = keyValues.find(
+                                        (level) => level[0] === difficulty,
+                                    )
+
+                                    if (
+                                        newLevelToChange &&
+                                        newLevelToChange[1][
+                                            Number(levelNumber)
+                                        ] !== level
+                                    ) {
+                                        setLevel(
+                                            newLevelToChange[1][
+                                                Number(levelNumber)
+                                            ],
+                                        )
+                                    }
+                                },
+                            )
                         }
+                        client.subscribe(
+                            '/topic/' + sessionId + '/finished',
+                            (message) => {
+                                const winner = new TextDecoder()
+                                    .decode(message.binaryBody)
+                                    .replaceAll('"', '')
+                                if (nickname !== winner) {
+                                    sprinkleEmojis({
+                                        emoji: '😭',
+                                        count: 50,
+                                        fade: 10,
+                                        fontSize: 30,
+                                    })
+                                }
+                            },
+                        )
                         setJoined(true)
                     }}
                 >
                     Bli med
                 </PrimaryButton>
             )}
-            {nickname && (
+            {nickname && !sessionId && (
                 <PrimaryButton
                     onClick={() => {
                         const randomId = genRandomString(6)

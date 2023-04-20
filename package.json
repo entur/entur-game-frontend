@@ -3,6 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
+        "@entur/alert": "^0.14.0",
         "@entur/button": "^2.5.0",
         "@entur/chip": "^0.4.12",
         "@entur/form": "^7.0.6",
@@ -24,6 +25,7 @@
         "@types/react": "^17.0.14",
         "@types/react-dom": "^17.0.9",
         "date-fns": "^2.17.0",
+        "emoji-sprinkle": "^1.3.0",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
         "react-router-dom": "^6.10.0",
