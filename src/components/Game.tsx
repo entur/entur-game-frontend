@@ -131,18 +131,18 @@ export const EASY: Level[] = [
 
 export const MEDIUM: Level[] = [
     {
-        name: 'Norge på langs',
-        description: 'Fra Lindesnes i sør til Nordkapp i nord.',
+        name: 'Mandal - Sjusjøen',
+        description: 'Fra Mandal Sentrum i til Sjusjøen Sentrum.',
         start: {
-            id: 'NSR:StopPlace:23604',
-            name: 'Lindesnes fyr',
-            latitude: 57.984808,
-            longitude: 7.048051,
+            id: 'NSR:StopPlace:22329',
+            name: 'Mandal Sentrum',
+            latitude: 58.028973,
+            longitude: 7.460195,
         },
         targets: [
             {
-                id: 'NSR:StopPlace:57400',
-                name: 'Nordkapp',
+                id: 'NSR:StopPlace:9625',
+                name: 'Sjusjøen Sentrum',
             },
         ],
     },
@@ -150,18 +150,18 @@ export const MEDIUM: Level[] = [
 
 export const HARD: Level[] = [
     {
-        name: 'Oslo – Trondheim',
-        description: 'En reise mellom to av Norges største byer.',
+        name: 'Florø - Halden',
+        description: 'Fra Florø Terminalen til Halden Stasjon',
         start: {
-            id: 'NSR:StopPlace:58366',
-            name: 'Jernbanetorget, Oslo',
-            latitude: 59.911898,
-            longitude: 10.75038,
+            id: 'NSR:StopPlace:58182',
+            name: 'Florø terminal',
+            latitude: 61.601616,
+            longitude: 5.02853,
         },
         targets: [
             {
-                id: 'NSR:StopPlace:59977',
-                name: 'Trondheim S, Trondheim',
+                id: 'NSR:StopPlace:60053',
+                name: 'Halden Stasjon',
             },
         ],
     },
@@ -437,7 +437,7 @@ function Game({
     if (!introShown) {
         return (
             <div className="app">
-                <Heading1>Norgesferie</Heading1>
+                <Heading1>Norgestur</Heading1>
                 <Paragraph>
                     Du har bestemt deg for å reise på norgesferie med
                     kollektivtransport i år. For å gjøre ting ekstra spennende
@@ -453,7 +453,7 @@ function Game({
                 <Link to="/multiplayer">
                     <PrimaryButton>Trykk her</PrimaryButton>
                 </Link>
-                <Tabs style={{ marginRight: 'auto' }}>
+                <Tabs style={{ marginRight: 'auto', marginTop: '40px' }}>
                     <TabList>
                         <Tab>Easy</Tab>
                         <Tab>Medium</Tab>

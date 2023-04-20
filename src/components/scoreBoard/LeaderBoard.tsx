@@ -47,38 +47,40 @@ export const Leaderboard = () => {
     return (
         <>
             <Heading2>Leaderboard</Heading2>
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <HeaderCell>Rank</HeaderCell>
-                        <HeaderCell>Nickname</HeaderCell>
-                        <HeaderCell>Score</HeaderCell>
-                        <HeaderCell>Total Options</HeaderCell>
-                        <HeaderCell>Total Travel Time</HeaderCell>
-                        <HeaderCell>Total Time Played</HeaderCell>
-                        <HeaderCell>From Destination</HeaderCell>
-                        <HeaderCell>To Destination</HeaderCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {players.map((player, index) => (
-                        <TableRow key={index}>
-                            <DataCell>{index + 1}</DataCell>
-                            <DataCell>{player.nickname}</DataCell>
-                            <DataCell>{player.score}</DataCell>
-                            <DataCell>{player.totalOptions}</DataCell>
-                            <DataCell>{player.totalTravelTime}</DataCell>
-                            <DataCell>{player.totalPlaytime}</DataCell>
-                            <DataCell>
-                                {player.fromDestination.destination}
-                            </DataCell>
-                            <DataCell>
-                                {player.toDestination.destination}
-                            </DataCell>
+            <div className="leaderboard">
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <HeaderCell>Rank</HeaderCell>
+                            <HeaderCell>Nickname</HeaderCell>
+                            <HeaderCell>Score</HeaderCell>
+                            <HeaderCell>Total Options</HeaderCell>
+                            <HeaderCell>Total Travel Time</HeaderCell>
+                            <HeaderCell>Total Time Played</HeaderCell>
+                            <HeaderCell>From Destination</HeaderCell>
+                            <HeaderCell>To Destination</HeaderCell>
                         </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+                    </TableHead>
+                    <TableBody>
+                        {players.map((player, index) => (
+                            <TableRow key={index}>
+                                <DataCell>{index + 1}</DataCell>
+                                <DataCell>{player.nickname}</DataCell>
+                                <DataCell>{player.score}</DataCell>
+                                <DataCell>{player.totalOptions}</DataCell>
+                                <DataCell>{player.totalTravelTime}</DataCell>
+                                <DataCell>{player.totalPlaytime}</DataCell>
+                                <DataCell>
+                                    {player.fromDestination.destination}
+                                </DataCell>
+                                <DataCell>
+                                    {player.toDestination.destination}
+                                </DataCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </div>
         </>
     )
 }
