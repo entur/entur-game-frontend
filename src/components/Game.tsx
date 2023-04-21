@@ -657,6 +657,12 @@ function Game({
 
             {dead && mode ? (
                 <div>
+                    {sprinkleEmojis({
+                        emoji: '👻',
+                        count: 50,
+                        fade: 10,
+                        fontSize: 60,
+                    })}
                     <Heading2>Du døde!</Heading2>
                     <Paragraph>
                         {`Det går ingen avganger med ${getModeTranslation(
