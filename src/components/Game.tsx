@@ -289,16 +289,13 @@ function Game({
     const [currentTime, setCurrentTime] = useState<Date>(new Date())
 
     async function handleSavePlayerScore(playerInfo: PlayerResponse) {
-        await fetch(
-            'https://norgestur-production.up.railway.app/player-score',
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(playerInfo),
+        await fetch('http://localhost:8080/player-score', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
             },
-        )
+            body: JSON.stringify(playerInfo),
+        })
     }
 
     useEffect(() => {

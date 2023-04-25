@@ -31,9 +31,7 @@ export const Leaderboard = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await fetch(
-                'https://norgestur-production.up.railway.app/player-score',
-            )
+            const response = await fetch('http://localhost:8080/player-score')
             const data = await response.json()
             setPlayers(data)
         }
