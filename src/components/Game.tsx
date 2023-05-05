@@ -1,33 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import {
-    format,
-    addMinutes,
-    parseISO,
-    formatDuration,
-    addHours,
-} from 'date-fns'
-import { nb } from 'date-fns/locale'
+import { Link } from 'react-router-dom'
+import { addMinutes, addHours } from 'date-fns'
 
-import createEnturService, {
-    Departure,
-    StopPlace,
-    QueryMode,
-    StopPlaceDetails,
-    TypeName,
-} from '@entur/sdk'
+import { Departure, StopPlace, QueryMode, StopPlaceDetails } from '@entur/sdk'
 import { sprinkleEmojis } from 'emoji-sprinkle'
 
 import { TravelHeader } from '@entur/travel'
-import {
-    WalkIcon,
-    PlaneIcon,
-    BusIcon,
-    TramIcon,
-    TrainIcon,
-    FerryIcon,
-    MetroIcon,
-    SleepIcon,
-} from '@entur/icons'
+import { SleepIcon } from '@entur/icons'
 import { TextField } from '@entur/form'
 import { NavigationCard } from '@entur/layout'
 import { Heading1, Heading2, Paragraph } from '@entur/typography'
@@ -36,214 +15,22 @@ import { PrimaryButton } from '@entur/button'
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@entur/tab'
 
 import '../App.css'
-import { intervalToDuration } from 'date-fns/esm'
 import { Leaderboard } from './scoreBoard/LeaderBoard'
-import { Link } from 'react-router-dom'
-
-const entur = createEnturService({
-    clientName: 'entur-game',
-})
-
-function formatInterval(currentTime: Date, startTime: Date): string {
-    return (
-        formatDuration(
-            intervalToDuration({ end: currentTime, start: startTime }),
-            { locale: nb, delimiter: ', ' },
-        ) || '0 minutter'
-    )
-}
-
-function formatIntervalToSeconds(currentTime: Date, startTime: Date): number {
-    const duration = intervalToDuration({ end: currentTime, start: startTime })
-    return (
-        (duration.seconds ?? 0) +
-        (duration.minutes ?? 0) * 60 +
-        (duration.hours ?? 0) * 3600
-    )
-}
-
-function getModeIcon(mode: QueryMode) {
-    switch (mode) {
-        case 'foot':
-            return <WalkIcon />
-        case 'bus':
-            return <BusIcon />
-        case 'tram':
-            return <TramIcon />
-        case 'rail':
-            return <TrainIcon />
-        case 'air':
-            return <PlaneIcon />
-        case 'metro':
-            return <MetroIcon />
-        case 'water':
-            return <FerryIcon />
-        default:
-            return null
-    }
-}
-
-function getModeTranslation(mode: QueryMode): string {
-    switch (mode) {
-        case 'foot':
-            return 'Gange (maks 500 m)'
-        case 'bus':
-            return 'Buss'
-        case 'tram':
-            return 'Trikk'
-        case 'rail':
-            return 'Tog'
-        case 'air':
-            return 'Fly'
-        case 'metro':
-            return 'T-bane'
-        case 'water':
-            return 'Ferje'
-        default:
-            return 'Ukjent'
-    }
-}
-
-export type Level = {
-    name: string
-    description: string
-    start: StopPlace
-    targets: StopPlace[]
-}
-
-export const EASY: Level[] = [
-    {
-        name: 'Oslo – Trondheim',
-        description: 'En reise mellom to av Norges største byer.',
-        start: {
-            id: 'NSR:StopPlace:58366',
-            name: 'Jernbanetorget, Oslo',
-            latitude: 59.911898,
-            longitude: 10.75038,
-        },
-        targets: [
-            {
-                id: 'NSR:StopPlace:59977',
-                name: 'Trondheim S, Trondheim',
-            },
-        ],
-    },
-]
-
-export const MEDIUM: Level[] = [
-    {
-        name: 'Mandal - Sjusjøen',
-        description: 'Fra Mandal Sentrum i til Sjusjøen Sentrum.',
-        start: {
-            id: 'NSR:StopPlace:22329',
-            name: 'Mandal Sentrum',
-            latitude: 58.028973,
-            longitude: 7.460195,
-        },
-        targets: [
-            {
-                id: 'NSR:StopPlace:9625',
-                name: 'Sjusjøen Sentrum',
-            },
-        ],
-    },
-]
-
-export const HARD: Level[] = [
-    {
-        name: 'Florø - Halden',
-        description: 'Fra Florø Terminalen til Halden Stasjon',
-        start: {
-            id: 'NSR:StopPlace:58182',
-            name: 'Florø terminal',
-            latitude: 61.601616,
-            longitude: 5.02853,
-        },
-        targets: [
-            {
-                id: 'NSR:StopPlace:60053',
-                name: 'Halden Stasjon',
-            },
-        ],
-    },
-]
-
-const ALL_MODES: QueryMode[] = [
-    QueryMode.FOOT,
-    QueryMode.BUS,
-    QueryMode.TRAM,
-    QueryMode.RAIL,
-    QueryMode.AIR,
-    QueryMode.METRO,
-    QueryMode.WATER,
-]
+import { getModeIcon, getModeTranslation } from '../utils/transportMapper'
+import {
+    formatDateAndTime,
+    formatInterval,
+    formatIntervalToSeconds,
+    formatTime,
+} from '../utils/dateFnsUtils'
+import { ALL_MODES } from '../constant'
+import { EASY, HARD, Level, MEDIUM } from '../pages/game/Level'
+import { isTruthy } from '../utils/isTruthy'
+import { useEnturService } from '../pages/game/useEnturService'
 
 interface StopAndTime {
     stopPlace: StopPlace | StopPlaceDetails
     time: Date
-}
-
-function isTruthy<T>(thing: T | undefined | null): thing is T {
-    return !!thing
-}
-
-function formatTime(value: Date | string): string {
-    const date = typeof value === 'string' ? parseISO(value) : value
-    return format(date, 'HH:mm', { locale: nb })
-}
-
-function formatDateAndTime(value: Date | string): string {
-    const date = typeof value === 'string' ? parseISO(value) : value
-    return format(date, "cccc eo MMMM 'kl.' HH:mm", { locale: nb })
-}
-
-function getDepartures(
-    stopPlaceId: string,
-    mode: QueryMode,
-    date: Date,
-): Promise<Departure[]> {
-    return entur.getDeparturesFromStopPlace(stopPlaceId, {
-        limitPerLine: 1,
-        whiteListedModes: [mode],
-        start: date,
-    })
-}
-
-async function getStopsOnLine(
-    serviceJourneyId: string,
-    date: string,
-): Promise<Departure[]> {
-    const departures = await entur.getDeparturesForServiceJourney(
-        serviceJourneyId,
-        date.slice(0, 10),
-    )
-    return departures
-        .filter((departure) => departure.quay?.stopPlace)
-        .filter((departure) => departure.expectedDepartureTime > date)
-}
-
-async function getWalkableStopPlaces(
-    currentStopPlace: StopPlace,
-): Promise<StopPlaceDetails[]> {
-    if (!currentStopPlace.latitude || !currentStopPlace.longitude) {
-        return []
-    }
-    const nearby = await entur.getNearestPlaces(
-        {
-            latitude: currentStopPlace.latitude,
-            longitude: currentStopPlace.longitude,
-        },
-        {
-            filterByPlaceTypes: [TypeName.STOP_PLACE],
-            maximumDistance: 500,
-        },
-    )
-
-    const stopPlaceIds = nearby
-        .filter((place) => place.type === 'StopPlace')
-        .map(({ id }) => id)
-    const stopPlaces = await entur.getStopPlaces(stopPlaceIds)
-    return stopPlaces.filter(isTruthy)
 }
 
 const startTime = new Date()
@@ -287,6 +74,9 @@ function Game({
     const [stopsOnLine, setStopsOnLine] = useState<StopAndTime[]>([])
     const [startTimer, setStartTimer] = useState<number>(multiStartTimer)
     const [currentTime, setCurrentTime] = useState<Date>(new Date())
+
+    const { getWalkableStopPlaces, getDepartures, getStopsOnLine } =
+        useEnturService()
 
     async function handleSavePlayerScore(playerInfo: PlayerResponse) {
         await fetch('http://localhost:8080/player-score', {
