@@ -5,7 +5,7 @@ import { Client } from '@stomp/stompjs'
 import { CopyableText } from '@entur/alert'
 import { sprinkleEmojis } from 'emoji-sprinkle'
 import PlayerList from './PlayerList'
-import { EASY, HARD, Level, MEDIUM } from './Game'
+import { EASY, HARD, Level, MEDIUM } from '../Level'
 
 function genRandomString(length: number) {
     const chars =
