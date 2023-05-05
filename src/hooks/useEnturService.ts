@@ -5,7 +5,7 @@ import createEnturService, {
     StopPlaceDetails,
     TypeName,
 } from '@entur/sdk'
-import { isTruthy } from '../../utils/isTruthy'
+import { isTruthy } from '../utils/isTruthy'
 
 const entur = createEnturService({
     clientName: 'entur-game',

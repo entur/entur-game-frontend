@@ -24,9 +24,9 @@ import {
     formatTime,
 } from '../utils/dateFnsUtils'
 import { ALL_MODES } from '../constant'
-import { EASY, HARD, Level, MEDIUM } from '../pages/game/Level'
+import { EASY, HARD, Level, MEDIUM } from '../Level'
 import { isTruthy } from '../utils/isTruthy'
-import { useEnturService } from '../pages/game/useEnturService'
+import { useEnturService } from '../hooks/useEnturService'
 
 interface StopAndTime {
     stopPlace: StopPlace | StopPlaceDetails

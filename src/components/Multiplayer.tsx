@@ -9,7 +9,7 @@ import { NavigationCard } from '@entur/layout'
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@entur/tab'
 import { Client } from '@stomp/stompjs'
 
-import { EASY, HARD, Level, MEDIUM } from '../pages/game/Level'
+import { EASY, HARD, Level, MEDIUM } from '../Level'
 import Game from './Game'
 
 const client = new Client()
