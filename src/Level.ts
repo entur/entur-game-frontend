@@ -5,6 +5,7 @@ export type Level = {
     description: string
     start: StopPlace
     targets: StopPlace[]
+    difficulty: 'Lett' | 'Middels' | 'Vanskelig'
 }
 
 export const EASY: Level[] = [
@@ -23,6 +24,7 @@ export const EASY: Level[] = [
                 name: 'Trondheim S, Trondheim',
             },
         ],
+        difficulty: 'Lett',
     },
 ]
 
@@ -42,6 +44,7 @@ export const MEDIUM: Level[] = [
                 name: 'Sjusjøen Sentrum',
             },
         ],
+        difficulty: 'Middels',
     },
 ]
 
@@ -61,5 +64,6 @@ export const HARD: Level[] = [
                 name: 'Halden Stasjon',
             },
         ],
+        difficulty: 'Vanskelig',
     },
 ]

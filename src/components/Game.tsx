@@ -37,6 +37,7 @@ const startTime = new Date()
 
 interface PlayerResponse {
     nickname: string
+    difficulty: string
     totalOptions: number
     totalPlaytime: number
     totalTravelTime: number
@@ -194,6 +195,7 @@ function Game({
                             onClick={() =>
                                 handleSavePlayerScore({
                                     nickname: name,
+                                    difficulty: level.difficulty,
                                     fromDestination: {
                                         destination: level.start.name,
                                         id: level.start.id,
