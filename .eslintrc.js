@@ -13,11 +13,11 @@ module.exports = {
         'plugin:react/recommended',
     ],
     rules: {
-        'prettier/prettier': 'error',
+        'prettier/prettier': 'warn',
     },
     settings: {
         react: {
             version: 'detect',
         },
-    },
+    }
 }
