@@ -1,21 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { addMinutes, addHours } from 'date-fns'
-
-import { Departure, StopPlace, QueryMode, StopPlaceDetails } from '@entur/sdk'
 import { sprinkleEmojis } from 'emoji-sprinkle'
 
+import { Departure, StopPlace, QueryMode, StopPlaceDetails } from '@entur/sdk'
 import { TravelHeader } from '@entur/travel'
 import { SleepIcon } from '@entur/icons'
 import { TextField } from '@entur/form'
-import { NavigationCard } from '@entur/layout'
 import { Heading1, Heading2, Paragraph } from '@entur/typography'
 import { ChoiceChip, ChoiceChipGroup } from '@entur/chip'
 import { PrimaryButton } from '@entur/button'
-import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@entur/tab'
 
 import '../App.css'
-import { Leaderboard } from './scoreBoard/LeaderBoard'
 import { getModeIcon, getModeTranslation } from '../utils/transportMapper'
 import {
     formatDateAndTime,
@@ -24,7 +19,7 @@ import {
     formatTime,
 } from '../utils/dateFnsUtils'
 import { ALL_MODES } from '../constant'
-import { EASY, HARD, Level, MEDIUM } from '../Level'
+import { Level } from '../Level'
 import { isTruthy } from '../utils/isTruthy'
 import { useEnturService } from '../hooks/useEnturService'
 
@@ -50,22 +45,15 @@ interface Destination {
     destination: string
 }
 
-function Game({
-    multiLevel = EASY[0],
-    multiIntroShown = false,
-    multiStartTimer = 0,
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    handleWinner = () => {},
-}: {
-    multiLevel?: Level
-    multiIntroShown?: boolean
-    multiStartTimer?: number
-    handleWinner?: () => void
-}): JSX.Element {
+type Props = {
+    level: Level
+    startTimer: number
+    handleWinner: () => void
+}
+
+function Game({ level, startTimer, handleWinner }: Props): JSX.Element {
     const [name, setName] = useState('')
-    const [introShown, setIntroShown] = useState<boolean>(multiIntroShown)
     const [hasBeenSprinkled, setSprinkled] = useState<boolean>(false)
-    const [level, setLevel] = useState<Level>(multiLevel)
     const [dead, setDead] = useState<boolean>(false)
     const [numLegs, setNumLegs] = useState<number>(0)
     const [stopPlace, setStopPlace] = useState<StopPlace>(level.start)
@@ -73,7 +61,6 @@ function Game({
     const [mode, setMode] = useState<QueryMode | null>(null)
     const [departures, setDepartures] = useState<Departure[]>([])
     const [stopsOnLine, setStopsOnLine] = useState<StopAndTime[]>([])
-    const [startTimer, setStartTimer] = useState<number>(multiStartTimer)
     const [currentTime, setCurrentTime] = useState<Date>(new Date())
 
     const { getWalkableStopPlaces, getDepartures, getStopsOnLine } =
@@ -234,89 +221,6 @@ function Game({
                         Dra videre
                     </PrimaryButton>
                 )}
-            </div>
-        )
-    }
-
-    if (!introShown) {
-        return (
-            <div className="app">
-                <Heading1>Er du smartere enn vår reiseplanlegger?</Heading1>
-                <Paragraph>
-                    Du har bestemt deg for å reise på norgesferie med
-                    kollektivtransport i år. For å gjøre ting ekstra spennende
-                    ønsker du ikke å bruke digitale hjelpemidler for å finne ut
-                    hvilke transportetapper du skal ta.
-                </Paragraph>
-                <Paragraph>
-                    Klarer du å fullføre reisene uten hjelp av reisesøk? Test
-                    hvor godt du kjenner til kollektiv-Norge her!
-                </Paragraph>
-                <Heading2>Velg en reise</Heading2>
-                <Tabs style={{ marginRight: 'auto', marginTop: '40px' }}>
-                    <TabList>
-                        <Tab>Lett</Tab>
-                        <Tab>Middels</Tab>
-                        <Tab>Vanskelig</Tab>
-                    </TabList>
-                    <TabPanels>
-                        <TabPanel>
-                            {EASY.map((level) => (
-                                <NavigationCard
-                                    title={level.name}
-                                    key={level.name}
-                                    onClick={() => {
-                                        setLevel(level)
-                                        setIntroShown(true)
-                                        setStartTimer(Date.now())
-                                    }}
-                                    style={{ marginTop: 8, marginRight: 8 }}
-                                >
-                                    {level.description}
-                                </NavigationCard>
-                            ))}
-                        </TabPanel>
-                        <TabPanel>
-                            {MEDIUM.map((level) => (
-                                <NavigationCard
-                                    title={level.name}
-                                    key={level.name}
-                                    onClick={() => {
-                                        setLevel(level)
-                                        setIntroShown(true)
-                                    }}
-                                    style={{ marginTop: 8, marginRight: 8 }}
-                                >
-                                    {level.description}
-                                </NavigationCard>
-                            ))}
-                        </TabPanel>
-                        <TabPanel>
-                            {HARD.map((level) => (
-                                <NavigationCard
-                                    title={level.name}
-                                    key={level.name}
-                                    onClick={() => {
-                                        setLevel(level)
-                                        setIntroShown(true)
-                                    }}
-                                    style={{ marginTop: 8, marginRight: 8 }}
-                                >
-                                    {level.description}
-                                </NavigationCard>
-                            ))}
-                        </TabPanel>
-                    </TabPanels>
-                </Tabs>
-                <Leaderboard />
-                <div style={{ marginTop: '300px' }}>
-                    <Paragraph>
-                        Hvis du vil spille mot en annen person{' '}
-                    </Paragraph>
-                    <Link to="/multiplayer">
-                        <PrimaryButton>Trykk her</PrimaryButton>
-                    </Link>
-                </div>
             </div>
         )
     }

@@ -144,9 +144,8 @@ function Multiplayer(): JSX.Element {
 
             {ready && (
                 <Game
-                    multiIntroShown
-                    multiLevel={level}
-                    multiStartTimer={startTimer}
+                    level={level}
+                    startTimer={startTimer}
                     handleWinner={() => {
                         setFinished(true)
                         client.publish({
