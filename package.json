@@ -2,6 +2,13 @@
     "name": "entur-game",
     "version": "0.1.0",
     "private": true,
+    "scripts": {
+        "start": "vite",
+        "build": "tsc && vite build",
+        "serve": "vite preview",
+        "lint": "eslint src/",
+        "deploy": "npm run build && firebase deploy"
+    },
     "dependencies": {
         "@entur/alert": "^0.14.0",
         "@entur/button": "^2.5.0",
@@ -31,25 +38,6 @@
         "react-router-dom": "^6.10.0",
         "react-use-websocket": "^3.0.0"
     },
-    "scripts": {
-        "start": "vite",
-        "build": "tsc && vite build",
-        "serve": "vite preview",
-        "lint": "eslint src/",
-        "deploy": "npm run build && firebase deploy"
-    },
-    "browserslist": {
-        "production": [
-            ">0.2%",
-            "not dead",
-            "not op_mini all"
-        ],
-        "development": [
-            "last 1 chrome version",
-            "last 1 firefox version",
-            "last 1 safari version"
-        ]
-    },
     "devDependencies": {
         "@typescript-eslint/eslint-plugin": "^4.28.4",
         "@typescript-eslint/parser": "^4.28.4",
@@ -63,5 +51,17 @@
         "vite": "^4.3.5",
         "vite-plugin-svgr": "^3.2.0",
         "vite-tsconfig-paths": "^4.2.0"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
     }
 }
