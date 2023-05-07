@@ -10,7 +10,7 @@ import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@entur/tab'
 import { Client } from '@stomp/stompjs'
 
 import { EASY, HARD, Level, MEDIUM } from '../Level'
-import Game from './Game'
+import Game from './game'
 
 const client = new Client()
 

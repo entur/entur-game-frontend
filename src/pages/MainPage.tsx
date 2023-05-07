@@ -3,7 +3,7 @@ import { Heading1, Heading2, Paragraph } from '@entur/typography'
 
 import SelectLevel from '../components/SelectLevel'
 import { EASY, Level } from '../Level'
-import Game from '../components/Game'
+import Game from '../components/game'
 import { Leaderboard } from '../components/scoreBoard/LeaderBoard'
 import { Link } from 'react-router-dom'
 import { PrimaryButton } from '@entur/button'

@@ -4,7 +4,7 @@ import { ToastProvider } from '@entur/alert'
 
 import './App.css'
 import Multiplayer from './components/Multiplayer'
-import MainPage from './pages/MainMenu'
+import MainPage from './pages/MainPage'
 
 function App(): JSX.Element {
     return (

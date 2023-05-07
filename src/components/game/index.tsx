@@ -5,23 +5,23 @@ import { sprinkleEmojis } from 'emoji-sprinkle'
 import { Departure, StopPlace, QueryMode, StopPlaceDetails } from '@entur/sdk'
 import { TravelHeader } from '@entur/travel'
 import { SleepIcon } from '@entur/icons'
-import { TextField } from '@entur/form'
-import { Heading1, Heading2, Paragraph } from '@entur/typography'
+import { Heading2, Paragraph } from '@entur/typography'
 import { ChoiceChip, ChoiceChipGroup } from '@entur/chip'
 import { PrimaryButton } from '@entur/button'
 
-import '../App.css'
-import { getModeIcon, getModeTranslation } from '../utils/transportMapper'
+import '../../App.css'
+import { getModeIcon, getModeTranslation } from '../../utils/transportMapper'
 import {
     formatDateAndTime,
     formatInterval,
-    formatIntervalToSeconds,
     formatTime,
-} from '../utils/dateFnsUtils'
-import { ALL_MODES } from '../constant'
-import { Level } from '../Level'
-import { isTruthy } from '../utils/isTruthy'
-import { useEnturService } from '../hooks/useEnturService'
+} from '../../utils/dateFnsUtils'
+import { ALL_MODES } from '../../constant'
+import { Level } from '../../Level'
+import { isTruthy } from '../../utils/isTruthy'
+import { useEnturService } from '../../hooks/useEnturService'
+import VictoryScreen from './VictoryScreen'
+import DeadScreen from './DeadScreen'
 
 interface StopAndTime {
     stopPlace: StopPlace | StopPlaceDetails
@@ -30,21 +30,6 @@ interface StopAndTime {
 
 const startTime = new Date()
 
-interface PlayerResponse {
-    nickname: string
-    difficulty: string
-    totalOptions: number
-    totalPlaytime: number
-    totalTravelTime: number
-    fromDestination: Destination
-    toDestination: Destination
-}
-
-interface Destination {
-    id: string
-    destination: string
-}
-
 type Props = {
     level: Level
     startTimer: number
@@ -52,7 +37,6 @@ type Props = {
 }
 
 function Game({ level, startTimer, handleWinner }: Props): JSX.Element {
-    const [name, setName] = useState('')
     const [hasBeenSprinkled, setSprinkled] = useState<boolean>(false)
     const [dead, setDead] = useState<boolean>(false)
     const [numLegs, setNumLegs] = useState<number>(0)
@@ -65,16 +49,6 @@ function Game({ level, startTimer, handleWinner }: Props): JSX.Element {
 
     const { getWalkableStopPlaces, getDepartures, getStopsOnLine } =
         useEnturService()
-
-    async function handleSavePlayerScore(playerInfo: PlayerResponse) {
-        await fetch('http://localhost:8080/player-score', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(playerInfo),
-        })
-    }
 
     useEffect(() => {
         setStopPlace(level.start)
@@ -160,69 +134,20 @@ function Game({ level, startTimer, handleWinner }: Props): JSX.Element {
             setSprinkled(true)
         }
         return (
-            <div className="app">
-                <Heading1>
-                    Du klarte det!{' '}
-                    <span role="img" aria-label="Konfetti">
-                        🎉
-                    </span>
-                </Heading1>
-                <Paragraph>{`Du kom deg fra ${level.start.name} til ${
-                    target.name
-                } på ${numLegs} ${
-                    numLegs === 1 ? 'etappe' : 'etapper'
-                } og ${formatInterval(currentTime, startTime)}.`}</Paragraph>
-                {target === level.targets[level.targets.length - 1] ? (
-                    <>
-                        <TextField
-                            label="nickname"
-                            onChange={(e) => setName(e.target.value)}
-                        ></TextField>
-                        <PrimaryButton
-                            onClick={() =>
-                                handleSavePlayerScore({
-                                    nickname: name,
-                                    difficulty: level.difficulty,
-                                    fromDestination: {
-                                        destination: level.start.name,
-                                        id: level.start.id,
-                                    },
-                                    toDestination: {
-                                        destination: target.name,
-                                        id: target.id,
-                                    },
-                                    totalOptions: numLegs,
-                                    totalPlaytime: Math.trunc(
-                                        (Date.now() - startTimer) / 1000,
-                                    ),
-                                    totalTravelTime: formatIntervalToSeconds(
-                                        currentTime,
-                                        startTime,
-                                    ),
-                                })
-                            }
-                        >
-                            Lagre min poengsum!
-                        </PrimaryButton>
-                        <PrimaryButton onClick={() => window.location.reload()}>
-                            Spill på nytt
-                        </PrimaryButton>
-                    </>
-                ) : (
-                    <PrimaryButton
-                        onClick={() =>
-                            setTarget(
-                                level.targets[
-                                    level.targets.indexOf(target) + 1
-                                ],
-                            )
-                        }
-                    >
-                        Dra videre
-                    </PrimaryButton>
-                )}
-            </div>
+            <VictoryScreen
+                level={level}
+                target={target}
+                setTarget={setTarget}
+                numLegs={numLegs}
+                currentTime={currentTime}
+                startTime={startTime}
+                startTimer={startTimer}
+            />
         )
+    }
+
+    if (dead && mode) {
+        return <DeadScreen mode={mode} stopPlace={stopPlace} />
     }
 
     return (
@@ -347,26 +272,6 @@ function Game({ level, startTimer, handleWinner }: Props): JSX.Element {
                     </div>
                 ) : null}
             </div>
-
-            {dead && mode ? (
-                <div>
-                    {sprinkleEmojis({
-                        emoji: '👻',
-                        count: 50,
-                        fade: 10,
-                        fontSize: 60,
-                    })}
-                    <Heading2>Du døde!</Heading2>
-                    <Paragraph>
-                        {`Det går ingen avganger med ${getModeTranslation(
-                            mode,
-                        ).toLowerCase()} fra ${stopPlace.name} i nær fremtid.`}
-                    </Paragraph>
-                    <PrimaryButton onClick={() => window.location.reload()}>
-                        Prøv igjen
-                    </PrimaryButton>
-                </div>
-            ) : null}
         </div>
     )
 }
