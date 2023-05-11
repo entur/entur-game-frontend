@@ -8,7 +8,7 @@ import {
     formatInterval,
     formatIntervalToSeconds,
 } from '../../utils/dateFnsUtils'
-import { Level } from '../../Level'
+import { Level } from '../../constant/levels'
 import { savePlayerScore } from '../../api/playerScoreApi'
 
 type Props = {

@@ -3,14 +3,16 @@ import { Route, Routes } from 'react-router-dom'
 import { ToastProvider } from '@entur/alert'
 
 import './App.css'
-import Multiplayer from './components/Multiplayer'
+import Multiplayer from './components/Multiplayer/Multiplayer'
 import MainPage from './pages/MainPage'
+import GamePage from './pages/game/[level-id]'
 
 function App(): JSX.Element {
     return (
         <ToastProvider>
             <Routes>
                 <Route path="/" element={<MainPage />} />
+                <Route path="/game/:levelId" element={<GamePage />} />
                 <Route path="/multiplayer" element={<Multiplayer />} />
             </Routes>
         </ToastProvider>

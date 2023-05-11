@@ -1,13 +1,12 @@
-import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@entur/tab'
-import { EASY, HARD, Level, MEDIUM } from '../Level'
-import { NavigationCard } from '@entur/layout'
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@entur/tab'
+import { NavigationCard } from '@entur/layout'
 
-type Props = {
-    handleStartGame: (newLevel: Level) => void
-}
+import { EASY, HARD, MEDIUM } from '../constant/levels'
 
-function SelectLevel({ handleStartGame }: Props): JSX.Element {
+function SelectLevel(): JSX.Element {
+    const navigate = useNavigate()
     return (
         <Tabs style={{ marginRight: 'auto', marginTop: '40px' }}>
             <TabList>
@@ -21,7 +20,7 @@ function SelectLevel({ handleStartGame }: Props): JSX.Element {
                         <NavigationCard
                             title={level.name}
                             key={level.name}
-                            onClick={() => handleStartGame(level)}
+                            onClick={() => navigate(`/game/${level.id}`)}
                             style={{
                                 marginTop: 8,
                                 marginRight: 8,
@@ -37,7 +36,7 @@ function SelectLevel({ handleStartGame }: Props): JSX.Element {
                         <NavigationCard
                             title={level.name}
                             key={level.name}
-                            onClick={() => handleStartGame(level)}
+                            onClick={() => navigate(`/game/${level.id}`)}
                             style={{
                                 marginTop: 8,
                                 marginRight: 8,
@@ -53,7 +52,7 @@ function SelectLevel({ handleStartGame }: Props): JSX.Element {
                         <NavigationCard
                             title={level.name}
                             key={level.name}
-                            onClick={() => handleStartGame(level)}
+                            onClick={() => navigate(`/game/${level.id}`)}
                             style={{
                                 marginTop: 8,
                                 marginRight: 8,

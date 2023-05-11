@@ -6,8 +6,8 @@ import { CopyableText } from '@entur/alert'
 import { sprinkleEmojis } from 'emoji-sprinkle'
 
 import PlayerList from './PlayerList'
-import { EASY, HARD, Level, MEDIUM } from '../Level'
-import { getRandomString } from '../utils/getRandomString'
+import { EASY, HARD, Level, MEDIUM } from '../../constant/levels'
+import { getRandomString } from '../../utils/getRandomString'
 
 const levels = {
     EASY: EASY,

@@ -8,6 +8,7 @@ import { SleepIcon } from '@entur/icons'
 import { Heading2, Paragraph } from '@entur/typography'
 import { ChoiceChip, ChoiceChipGroup } from '@entur/chip'
 import { PrimaryButton } from '@entur/button'
+import { useNavigate } from 'react-router-dom'
 
 import '../../App.css'
 import { getModeIcon, getModeTranslation } from '../../utils/transportMapper'
@@ -16,8 +17,8 @@ import {
     formatInterval,
     formatTime,
 } from '../../utils/dateFnsUtils'
-import { ALL_MODES } from '../../constant'
-import { Level } from '../../Level'
+import { ALL_MODES } from '../../constant/queryMode'
+import { Level } from '../../constant/levels'
 import { isTruthy } from '../../utils/isTruthy'
 import { useEnturService } from '../../hooks/useEnturService'
 import VictoryScreen from './VictoryScreen'
@@ -37,6 +38,7 @@ type Props = {
 }
 
 function Game({ level, startTimer, handleWinner }: Props): JSX.Element {
+    const navigate = useNavigate()
     const [hasBeenSprinkled, setSprinkled] = useState<boolean>(false)
     const [dead, setDead] = useState<boolean>(false)
     const [numLegs, setNumLegs] = useState<number>(0)
@@ -200,7 +202,7 @@ function Game({ level, startTimer, handleWinner }: Props): JSX.Element {
                             </ChoiceChip>
                         </>
                     </ChoiceChipGroup>
-                    <PrimaryButton onClick={() => window.location.reload()}>
+                    <PrimaryButton onClick={() => navigate(-1)}>
                         Send meg tilbake
                     </PrimaryButton>
                 </div>
@@ -238,7 +240,7 @@ function Game({ level, startTimer, handleWinner }: Props): JSX.Element {
                                 </ChoiceChip>
                             ))}
                         </ChoiceChipGroup>
-                        <PrimaryButton onClick={() => window.location.reload()}>
+                        <PrimaryButton onClick={() => navigate(-1)}>
                             Send meg tilbake
                         </PrimaryButton>
                     </div>
@@ -266,7 +268,7 @@ function Game({ level, startTimer, handleWinner }: Props): JSX.Element {
                                 </ChoiceChip>
                             ))}
                         </ChoiceChipGroup>
-                        <PrimaryButton onClick={() => window.location.reload()}>
+                        <PrimaryButton onClick={() => navigate(-1)}>
                             Send meg tilbake
                         </PrimaryButton>
                     </div>

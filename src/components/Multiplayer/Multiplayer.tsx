@@ -4,17 +4,16 @@ import React, { useState } from 'react'
 import { Heading1 } from '@entur/typography'
 import { Link } from 'react-router-dom'
 import { PrimaryButton } from '@entur/button'
-import Lobby from './Lobby'
 import { NavigationCard } from '@entur/layout'
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@entur/tab'
-import { Client } from '@stomp/stompjs'
 
-import { EASY, HARD, Level, MEDIUM } from '../Level'
-import Game from './game'
-
-const client = new Client()
+import Lobby from './Lobby'
+import { EASY, HARD, Level, MEDIUM } from '../../constant/levels'
+import Game from '../Game/Game'
+import { useStompJs } from '../../hooks/useStompJs'
 
 function Multiplayer(): JSX.Element {
+    const { client } = useStompJs()
     const [ready, setReady] = useState<boolean>(false)
     const [level, setLevel] = useState<Level>(EASY[0])
     const [startTimer, setStartTimer] = useState<number>(0)

@@ -14,7 +14,7 @@ import {
     PlayerResponse,
 } from '../../api/playerScoreApi'
 
-export const Leaderboard = (): JSX.Element => {
+export const LeaderBoard = (): JSX.Element => {
     const [players, setPlayers] = useState<PlayerResponse[]>([])
 
     useEffect(() => {
@@ -47,7 +47,7 @@ export const Leaderboard = (): JSX.Element => {
                     </TableHead>
                     <TableBody>
                         {players.map((player, index) => (
-                            <TableRow key={index}>
+                            <TableRow key={player.score + player.nickname}>
                                 <DataCell>{index + 1}</DataCell>
                                 <DataCell>{player.nickname}</DataCell>
                                 <DataCell>{player.score}</DataCell>
