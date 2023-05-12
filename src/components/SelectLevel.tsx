@@ -1,12 +1,11 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@entur/tab'
-// import { NavigationCard } from '@entur/layout'
 import { MediaCard } from '@entur/layout'
-import easy from './images/easy.png'
-import medium from './images/medium.png'
-import hard from './images/hard.png'
 
+import easy from '../assets/images/easy.png'
+import medium from '../assets/images/medium.png'
+import hard from '../assets/images/hard.png'
 import { EASY, HARD, MEDIUM } from '../constant/levels'
 
 function SelectLevel(): JSX.Element {
