@@ -4,7 +4,7 @@ import { sprinkleEmojis } from 'emoji-sprinkle'
 
 import { Departure, StopPlace, QueryMode, StopPlaceDetails } from '@entur/sdk'
 import { TravelHeader } from '@entur/travel'
-import { SleepIcon } from '@entur/icons'
+import { RSSIcon, SleepIcon } from '@entur/icons'
 import { Heading2, Paragraph } from '@entur/typography'
 import { ChoiceChip, ChoiceChipGroup } from '@entur/chip'
 import { PrimaryButton } from '@entur/button'
@@ -43,7 +43,7 @@ function Game({ level, startTimer, handleWinner }: Props): JSX.Element {
     const [dead, setDead] = useState<boolean>(false)
     const [numLegs, setNumLegs] = useState<number>(0)
     const [stopPlace, setStopPlace] = useState<StopPlace>(level.start)
-    const [target, setTarget] = useState<StopPlace>(level.targets[0])
+    const [targets, setTargets] = useState<StopPlace[]>(level.targets)
     const [mode, setMode] = useState<QueryMode | null>(null)
     const [departures, setDepartures] = useState<Departure[]>([])
     const [stopsOnLine, setStopsOnLine] = useState<StopAndTime[]>([])
@@ -54,7 +54,7 @@ function Game({ level, startTimer, handleWinner }: Props): JSX.Element {
 
     useEffect(() => {
         setStopPlace(level.start)
-        setTarget(level.targets[0])
+        setTargets(level.targets)
     }, [level])
 
     const selectMode = (newMode: QueryMode) => {
@@ -123,8 +123,8 @@ function Game({ level, startTimer, handleWinner }: Props): JSX.Element {
             setNumLegs((prev) => prev + 1)
         }
     }
-
-    if (stopPlace.id === target.id) {
+    
+    if (targets.some((sp)=>sp.id === stopPlace.id)) {
         handleWinner()
         if (!hasBeenSprinkled) {
             sprinkleEmojis({
@@ -138,8 +138,8 @@ function Game({ level, startTimer, handleWinner }: Props): JSX.Element {
         return (
             <VictoryScreen
                 level={level}
-                target={target}
-                setTarget={setTarget}
+                target={targets[0]}
+                setTarget={(target)=>{setTargets([target])}}
                 numLegs={numLegs}
                 currentTime={currentTime}
                 startTime={startTime}
@@ -157,15 +157,15 @@ function Game({ level, startTimer, handleWinner }: Props): JSX.Element {
             <header>
                 <TravelHeader
                     from={
-                        level.targets[level.targets.indexOf(target) - 1]
+                        level.targets[level.targets.indexOf(targets[0]) - 1]
                             ?.name || level.start.name
                     }
-                    to={target.name}
+                    to={targets[0].name}
                     style={{ marginBottom: '2rem' }}
                 />
                 <Paragraph>
                     Du er på {stopPlace.name} og det er{' '}
-                    {formatDateAndTime(currentTime)}. Kom deg til {target.name}{' '}
+                    {formatDateAndTime(currentTime)}. Kom deg til {targets[0].name}{' '}
                     så fort som mulig!
                 </Paragraph>
                 <Paragraph>

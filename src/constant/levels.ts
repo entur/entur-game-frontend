@@ -27,6 +27,19 @@ export const EASY: Level[] = [
                 id: 'NSR:StopPlace:59977',
                 name: 'Trondheim S, Trondheim',
             },
+            {
+                id: 'NSR:StopPlace:661',
+                name: 'Trondheim S, Trondheim',
+            },
+            {
+                id: 'NSR:StopPlace:659',
+                name: 'Trondheim S, Trondheim',
+            },
+            {
+                id: 'NSR:StopPlace:41742',
+                name: 'Trondheim S, Trondheim',
+            },
+            
         ],
         difficulty: 'Lett',
         optimalRoute: 2,
@@ -71,6 +84,14 @@ export const HARD: Level[] = [
         targets: [
             {
                 id: 'NSR:StopPlace:60053',
+                name: 'Halden Stasjon',
+            },
+            {
+                id: 'NSR:StopPlace:198',
+                name: 'Halden Stasjon',
+            },
+            {
+                id: 'NSR:StopPlace:192',
                 name: 'Halden Stasjon',
             },
         ],
