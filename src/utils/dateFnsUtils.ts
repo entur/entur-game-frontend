@@ -11,6 +11,14 @@ export function formatInterval(currentTime: Date, startTime: Date): string {
     )
 }
 
+export function formatTimeForEndOfGame(currentTime: Date, startTime: Date): string{
+    const timePlayed = intervalToDuration({ end: currentTime, start: startTime })
+    const hours = (timePlayed.hours ?? 0 * 3600).toString()
+    const minutes = (timePlayed.minutes ?? 0 * 60).toString()
+    const seconds = (timePlayed.seconds ?? 0).toString()
+    return  hours + ' timer ' + minutes + ' minutter ' + seconds + ' sekunder'
+}
+
 export function formatIntervalToSeconds(
     currentTime: Date,
     startTime: Date,

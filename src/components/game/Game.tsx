@@ -16,6 +16,7 @@ import {
     formatDateAndTime,
     formatInterval,
     formatTime,
+    formatTimeForEndOfGame,
 } from '../../utils/dateFnsUtils'
 import { ALL_MODES } from '../../constant/queryMode'
 import { Level } from '../../constant/levels'
@@ -170,7 +171,7 @@ function Game({ level, startTimer, handleWinner }: Props): JSX.Element {
                 </Paragraph>
                 <Paragraph>
                     Du har reist {numLegs} etapper og brukt{' '}
-                    {formatInterval(currentTime, startTime)}.
+                    {formatTimeForEndOfGame(currentTime, startTime)}.
                 </Paragraph>
             </header>
             {!mode ? (

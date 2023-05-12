@@ -7,6 +7,8 @@ export type Level = {
     start: StopPlace
     targets: StopPlace[]
     difficulty: 'Lett' | 'Middels' | 'Vanskelig'
+    optimalRoute: number
+    optimalTraveltime: string
 }
 
 export const EASY: Level[] = [
@@ -27,6 +29,8 @@ export const EASY: Level[] = [
             },
         ],
         difficulty: 'Lett',
+        optimalRoute: 2,
+        optimalTraveltime: '7 timer, 42 minutter',
     },
 ]
 
@@ -48,6 +52,8 @@ export const MEDIUM: Level[] = [
             },
         ],
         difficulty: 'Middels',
+        optimalRoute: 6,
+        optimalTraveltime: '16 timer, 3 minutter',
     },
 ]
 
@@ -69,6 +75,8 @@ export const HARD: Level[] = [
             },
         ],
         difficulty: 'Vanskelig',
+        optimalRoute: 7,
+        optimalTraveltime: '34 timer, 10 minutter',
     },
 ]
 
