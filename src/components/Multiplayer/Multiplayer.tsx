@@ -4,13 +4,16 @@ import React, { useState } from 'react'
 import { Heading1 } from '@entur/typography'
 import { Link } from 'react-router-dom'
 import { PrimaryButton } from '@entur/button'
-import { NavigationCard } from '@entur/layout'
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@entur/tab'
+import { MediaCard } from '@entur/layout'
 
 import Lobby from './Lobby'
 import { EASY, HARD, Level, MEDIUM } from '../../constant/levels'
 import Game from '../Game/Game'
 import { useStompJs } from '../../hooks/useStompJs'
+import easy from '../images/easy.png'
+import medium from '../images/medium.png'
+import hard from '../images/hard.png'
 
 function Multiplayer(): JSX.Element {
     const { client } = useStompJs()
@@ -56,9 +59,10 @@ function Multiplayer(): JSX.Element {
                             <TabPanels>
                                 <TabPanel>
                                     {EASY.map((level, index) => (
-                                        <NavigationCard
+                                        <MediaCard
                                             title={level.name}
                                             key={level.name}
+                                            description={level.description}
                                             onClick={() => {
                                                 setLevel(level)
                                                 client.publish({
@@ -71,20 +75,22 @@ function Multiplayer(): JSX.Element {
                                                     ),
                                                 })
                                             }}
-                                            style={{
-                                                marginTop: 8,
-                                                marginRight: 8,
-                                            }}
+                                            className="media-card-images"
                                         >
-                                            {level.description}
-                                        </NavigationCard>
+                                            <img
+                                                className="images"
+                                                src={easy}
+                                                alt="OSLO-TRONDHEIM"
+                                            />
+                                        </MediaCard>
                                     ))}
                                 </TabPanel>
                                 <TabPanel>
                                     {MEDIUM.map((level, index) => (
-                                        <NavigationCard
+                                        <MediaCard
                                             title={level.name}
                                             key={level.name}
+                                            description={level.description}
                                             onClick={() => {
                                                 setLevel(level)
                                                 client.publish({
@@ -97,20 +103,22 @@ function Multiplayer(): JSX.Element {
                                                     ),
                                                 })
                                             }}
-                                            style={{
-                                                marginTop: 8,
-                                                marginRight: 8,
-                                            }}
+                                            className="media-card-images"
                                         >
-                                            {level.description}
-                                        </NavigationCard>
+                                            <img
+                                                className="images"
+                                                src={medium}
+                                                alt="MANDAL-SJUSJØEN"
+                                            />
+                                        </MediaCard>
                                     ))}
                                 </TabPanel>
                                 <TabPanel>
                                     {HARD.map((level, index) => (
-                                        <NavigationCard
+                                        <MediaCard
                                             title={level.name}
                                             key={level.name}
+                                            description={level.description}
                                             onClick={() => {
                                                 setLevel(level)
                                                 client.publish({
@@ -123,13 +131,14 @@ function Multiplayer(): JSX.Element {
                                                     ),
                                                 })
                                             }}
-                                            style={{
-                                                marginTop: 8,
-                                                marginRight: 8,
-                                            }}
+                                            className="media-card-images"
                                         >
-                                            {level.description}
-                                        </NavigationCard>
+                                            <img
+                                                className="images"
+                                                src={hard}
+                                                alt="HALDEN-HARSTAD"
+                                            />
+                                        </MediaCard>
                                     ))}
                                 </TabPanel>
                             </TabPanels>
