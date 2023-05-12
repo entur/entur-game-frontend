@@ -5,7 +5,6 @@ import { StopPlace } from '@entur/sdk'
 import { PrimaryButton } from '@entur/button'
 
 import {
-    formatInterval,
     formatIntervalToSeconds,
     formatTimeForEndOfGame,
 } from '../../utils/dateFnsUtils'
@@ -44,7 +43,10 @@ function VictoryScreen({
                 target.name
             } på ${numLegs} ${
                 numLegs === 1 ? 'etappe' : 'etapper'
-            } og ${formatTimeForEndOfGame(currentTime, startTime)}.`}</Paragraph>
+            } og ${formatTimeForEndOfGame(
+                currentTime,
+                startTime,
+            )}.`}</Paragraph>
             <Paragraph>{`Vår reiseplanlegger har beregnet en optimal rute der etapper er ${level.optimalRoute}, og reisetid er ${level.optimalTraveltime}.`}</Paragraph>
             {target === level.targets[level.targets.length - 1] ? (
                 <>
