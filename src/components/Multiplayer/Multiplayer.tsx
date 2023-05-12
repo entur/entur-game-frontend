@@ -11,9 +11,9 @@ import Lobby from './Lobby'
 import { EASY, HARD, Level, MEDIUM } from '../../constant/levels'
 import Game from '../Game/Game'
 import { useStompJs } from '../../hooks/useStompJs'
-import easy from '../../assets/images/easy.png'
-import medium from '../../assets/images/medium.png'
-import hard from '../../assets/images/hard.png'
+import easy from '@assets/images/easy.png'
+import medium from '@assets/images/medium.png'
+import hard from '@assets/images/hard.png'
 
 function Multiplayer(): JSX.Element {
     const { client } = useStompJs()
