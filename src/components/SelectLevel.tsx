@@ -1,8 +1,11 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@entur/tab'
-import { NavigationCard } from '@entur/layout'
+import { MediaCard } from '@entur/layout'
 
+import easy from '../assets/images/easy.png'
+import medium from '../assets/images/medium.png'
+import hard from '../assets/images/hard.png'
 import { EASY, HARD, MEDIUM } from '../constant/levels'
 
 function SelectLevel(): JSX.Element {
@@ -17,50 +20,53 @@ function SelectLevel(): JSX.Element {
             <TabPanels>
                 <TabPanel>
                     {EASY.map((level) => (
-                        <NavigationCard
+                        <MediaCard
                             title={level.name}
                             key={level.name}
+                            description={level.description}
                             onClick={() => navigate(`/game/${level.id}`)}
-                            style={{
-                                marginTop: 8,
-                                marginRight: 8,
-                                cursor: 'pointer',
-                            }}
+                            className="media-card-images"
                         >
-                            {level.description}
-                        </NavigationCard>
+                            <img
+                                className="images"
+                                src={easy}
+                                alt="OSLO-TRONDHEIM"
+                            />
+                        </MediaCard>
                     ))}
                 </TabPanel>
                 <TabPanel>
                     {MEDIUM.map((level) => (
-                        <NavigationCard
+                        <MediaCard
                             title={level.name}
                             key={level.name}
+                            description={level.description}
                             onClick={() => navigate(`/game/${level.id}`)}
-                            style={{
-                                marginTop: 8,
-                                marginRight: 8,
-                                cursor: 'pointer',
-                            }}
+                            className="media-card-images"
                         >
-                            {level.description}
-                        </NavigationCard>
+                            <img
+                                className="images"
+                                src={medium}
+                                alt="MANDAL-SJUSJØEN"
+                            />
+                        </MediaCard>
                     ))}
                 </TabPanel>
                 <TabPanel>
                     {HARD.map((level) => (
-                        <NavigationCard
+                        <MediaCard
                             title={level.name}
                             key={level.name}
+                            description={level.description}
                             onClick={() => navigate(`/game/${level.id}`)}
-                            style={{
-                                marginTop: 8,
-                                marginRight: 8,
-                                cursor: 'pointer',
-                            }}
+                            className="media-card-images"
                         >
-                            {level.description}
-                        </NavigationCard>
+                            <img
+                                className="images"
+                                src={hard}
+                                alt="HALDEN-HARSTAD"
+                            />
+                        </MediaCard>
                     ))}
                 </TabPanel>
             </TabPanels>

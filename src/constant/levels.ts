@@ -60,18 +60,18 @@ export const MEDIUM: Level[] = [
 export const HARD: Level[] = [
     {
         id: 'x8iaz',
-        name: 'Florø - Halden',
-        description: 'Fra Florø Terminalen til Halden Stasjon',
+        name: 'Halden - Harstad',
+        description: 'Fra Halden til Harstad',
         start: {
-            id: 'NSR:StopPlace:58182',
-            name: 'Florø terminal',
-            latitude: 61.601616,
-            longitude: 5.02853,
+            id: 'NSR:StopPlace:60053',
+            name: 'Halden',
+            latitude: 59.120252,
+            longitude: 11.384361,
         },
         targets: [
             {
-                id: 'NSR:StopPlace:60053',
-                name: 'Halden Stasjon',
+                id: 'NSR:StopPlace:52142',
+                name: 'Harstad Byterminal',
             },
         ],
         difficulty: 'Vanskelig',
