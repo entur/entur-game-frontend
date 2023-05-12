@@ -14,7 +14,6 @@ import '../../App.css'
 import { getModeIcon, getModeTranslation } from '../../utils/transportMapper'
 import {
     formatDateAndTime,
-    formatInterval,
     formatTime,
     formatTimeForEndOfGame,
 } from '../../utils/dateFnsUtils'
@@ -22,8 +21,8 @@ import { ALL_MODES } from '../../constant/queryMode'
 import { Level } from '../../constant/levels'
 import { isTruthy } from '../../utils/isTruthy'
 import { useEnturService } from '../../hooks/useEnturService'
-import VictoryScreen from './VictoryScreen'
-import DeadScreen from './DeadScreen'
+import VictoryScreen from '../game/VictoryScreen' //TODO: Fix path
+import DeadScreen from '../game/DeadScreen' //TODO: Fix path
 
 interface StopAndTime {
     stopPlace: StopPlace | StopPlaceDetails
