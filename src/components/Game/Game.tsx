@@ -4,7 +4,7 @@ import { sprinkleEmojis } from 'emoji-sprinkle'
 
 import { Departure, StopPlace, QueryMode, StopPlaceDetails } from '@entur/sdk'
 import { TravelHeader } from '@entur/travel'
-import { RSSIcon, SleepIcon } from '@entur/icons'
+import { SleepIcon } from '@entur/icons'
 import { Heading2, Paragraph } from '@entur/typography'
 import { ChoiceChip, ChoiceChipGroup } from '@entur/chip'
 import { PrimaryButton } from '@entur/button'
