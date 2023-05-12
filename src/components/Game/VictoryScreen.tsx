@@ -14,7 +14,7 @@ import { savePlayerScore } from '../../api/playerScoreApi'
 type Props = {
     level: Level
     target: StopPlace
-    setTarget: Dispatch<SetStateAction<StopPlace>>
+    setTarget: (target:StopPlace)=>void
     numLegs: number
     currentTime: Date
     startTime: Date
@@ -48,7 +48,7 @@ function VictoryScreen({
                 startTime,
             )}.`}</Paragraph>
             <Paragraph>{`Vår reiseplanlegger har beregnet en optimal rute der etapper er ${level.optimalRoute}, og reisetid er ${level.optimalTraveltime}.`}</Paragraph>
-            {target === level.targets[level.targets.length - 1] ? (
+            
                 <>
                     <TextField
                         label="nickname"
@@ -84,17 +84,7 @@ function VictoryScreen({
                         Spill på nytt
                     </PrimaryButton>
                 </>
-            ) : (
-                <PrimaryButton
-                    onClick={() =>
-                        setTarget(
-                            level.targets[level.targets.indexOf(target) + 1],
-                        )
-                    }
-                >
-                    Dra videre
-                </PrimaryButton>
-            )}
+            
         </div>
     )
 }
