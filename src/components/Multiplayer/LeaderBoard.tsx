@@ -9,30 +9,17 @@ import {
     HeaderCell,
 } from '@entur/table'
 import '@entur/table/dist/styles.css'
+import {
+    getPlayerScoreTopTenOverall,
+    PlayerResponse,
+} from '../../api/playerScoreApi'
 
-interface Player {
-    nickname: string
-    score: number
-    totalOptions: number
-    totalPlaytime: string
-    totalTravelTime: string
-    fromDestination: Destination
-    toDestination: Destination
-}
-
-interface Destination {
-    id: string
-    destination: string
-}
-
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const Leaderboard = () => {
-    const [players, setPlayers] = useState<Player[]>()
+export const LeaderBoard = (): JSX.Element => {
+    const [players, setPlayers] = useState<PlayerResponse[]>([])
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await fetch('http://localhost:8080/player-score/top-ten-overall')
-            const data = await response.json()
+            const data = await getPlayerScoreTopTenOverall()
             setPlayers(data)
         }
 
@@ -60,7 +47,7 @@ export const Leaderboard = () => {
                     </TableHead>
                     <TableBody>
                         {players.map((player, index) => (
-                            <TableRow key={index}>
+                            <TableRow key={player.score + player.nickname}>
                                 <DataCell>{index + 1}</DataCell>
                                 <DataCell>{player.nickname}</DataCell>
                                 <DataCell>{player.score}</DataCell>

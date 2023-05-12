@@ -1,1 +1,1 @@
-declare module '*' //TODO: REMOVE this
+declare module 'emoji-sprinkle' //TODO: REMOVE this

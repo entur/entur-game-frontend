@@ -4,19 +4,10 @@ import React, { useEffect, useState } from 'react'
 import { Client } from '@stomp/stompjs'
 import { CopyableText } from '@entur/alert'
 import { sprinkleEmojis } from 'emoji-sprinkle'
-import PlayerList from './PlayerList'
-import { EASY, HARD, Level, MEDIUM } from '../Level'
 
-function genRandomString(length: number) {
-    const chars =
-        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-    const charLength = chars.length
-    let result = ''
-    for (let i = 0; i < length; i++) {
-        result += chars.charAt(Math.floor(Math.random() * charLength))
-    }
-    return result
-}
+import PlayerList from './PlayerList'
+import { EASY, HARD, Level, MEDIUM } from '../../constant/levels'
+import { getRandomString } from '../../utils/getRandomString'
 
 const levels = {
     EASY: EASY,
@@ -24,18 +15,7 @@ const levels = {
     HARD: HARD,
 }
 
-function Lobby({
-    setReady,
-    isOwner,
-    setOwner,
-    sessionId,
-    setSessionId,
-    level,
-    setLevel,
-    nickname,
-    setNickname,
-    client,
-}: {
+type Props = {
     setReady: React.Dispatch<React.SetStateAction<boolean>>
     isOwner: boolean
     setOwner: React.Dispatch<React.SetStateAction<boolean>>
@@ -49,7 +29,20 @@ function Lobby({
     setNickname: React.Dispatch<React.SetStateAction<string>>
     finished: boolean
     client: Client
-}): JSX.Element {
+}
+
+function Lobby({
+    setReady,
+    isOwner,
+    setOwner,
+    sessionId,
+    setSessionId,
+    level,
+    setLevel,
+    nickname,
+    setNickname,
+    client,
+}: Props): JSX.Element {
     const [isJoined, setJoined] = useState<boolean>(false)
     const [players, setPlayers] = useState<string[]>([])
 
@@ -205,7 +198,7 @@ function Lobby({
             {nickname && !sessionId && (
                 <PrimaryButton
                     onClick={() => {
-                        const randomId = genRandomString(6)
+                        const randomId = getRandomString(6)
                         setSessionId(randomId)
 
                         client.subscribe('/topic/' + randomId, (message) => {

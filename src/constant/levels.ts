@@ -1,6 +1,7 @@
 import { StopPlace } from '@entur/sdk'
 
 export type Level = {
+    id: string
     name: string
     description: string
     start: StopPlace
@@ -10,6 +11,7 @@ export type Level = {
 
 export const EASY: Level[] = [
     {
+        id: 'DnVuK',
         name: 'Oslo – Trondheim',
         description: 'En reise mellom to av Norges største byer.',
         start: {
@@ -30,6 +32,7 @@ export const EASY: Level[] = [
 
 export const MEDIUM: Level[] = [
     {
+        id: 'SrKkB',
         name: 'Mandal - Sjusjøen',
         description: 'Fra Mandal Sentrum i til Sjusjøen Sentrum.',
         start: {
@@ -50,6 +53,7 @@ export const MEDIUM: Level[] = [
 
 export const HARD: Level[] = [
     {
+        id: 'x8iaz',
         name: 'Florø - Halden',
         description: 'Fra Florø Terminalen til Halden Stasjon',
         start: {
@@ -67,3 +71,5 @@ export const HARD: Level[] = [
         difficulty: 'Vanskelig',
     },
 ]
+
+export const ALL_LEVELS = [...EASY, ...MEDIUM, ...HARD]
