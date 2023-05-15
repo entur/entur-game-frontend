@@ -5,7 +5,7 @@
     "scripts": {
         "start": "vite",
         "build": "tsc && vite build",
-        "serve": "vite preview",
+        "preview": "vite preview",
         "lint": "eslint src/",
         "deploy": "npm run build && firebase deploy"
     },
@@ -16,6 +16,7 @@
         "@entur/form": "^7.0.6",
         "@entur/icons": "6.2.0",
         "@entur/layout": "^2.1.0",
+        "@entur/loader": "^0.4.31",
         "@entur/sdk": "^4.0.0",
         "@entur/tab": "^0.4.47",
         "@entur/table": "^4.6.6",
