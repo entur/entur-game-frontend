@@ -3,7 +3,8 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "start": "vite",
+        "start": "npx http-server -P http://127.0.0.1:${PORT} ./dist",
+        "dev": "vite",
         "build": "tsc && vite build",
         "preview": "vite preview",
         "lint": "eslint src/",
