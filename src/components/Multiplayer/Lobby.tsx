@@ -8,6 +8,7 @@ import { sprinkleEmojis } from 'emoji-sprinkle'
 import PlayerList from './PlayerList'
 import { EASY, HARD, Level, MEDIUM } from '../../constant/levels'
 import { getRandomString } from '../../utils/getRandomString'
+import { useStompJs } from '../../hooks/useStompJs'
 
 const levels = {
     EASY: EASY,
@@ -41,24 +42,13 @@ function Lobby({
     setLevel,
     nickname,
     setNickname,
-    client,
 }: Props): JSX.Element {
+    const { client, configureWebSocket } = useStompJs()
     const [isJoined, setJoined] = useState<boolean>(false)
     const [players, setPlayers] = useState<string[]>([])
 
     useEffect(() => {
-        client.configure({
-            brokerURL: 'ws://localhost:8080/game-ws',
-            // brokerURL: 'ws://localhost:8080/game-ws',
-            onConnect: () => {
-                console.log('onConnect')
-            },
-            // Helps during debugging, remove in production
-            debug: (str) => {
-                console.log(new Date(), str)
-            },
-        })
-        client.activate()
+        configureWebSocket()
     }, [])
 
     if (isJoined) {
