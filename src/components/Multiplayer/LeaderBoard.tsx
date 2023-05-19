@@ -37,12 +37,13 @@ export const LeaderBoard = (): JSX.Element => {
                         <TableRow>
                             <HeaderCell>Rank</HeaderCell>
                             <HeaderCell>Nickname</HeaderCell>
-                            <HeaderCell>Score</HeaderCell>
-                            <HeaderCell>Total Options</HeaderCell>
-                            <HeaderCell>Total Travel Time</HeaderCell>
-                            <HeaderCell>Total Time Played</HeaderCell>
-                            <HeaderCell>From Destination</HeaderCell>
-                            <HeaderCell>To Destination</HeaderCell>
+                            <HeaderCell>Poengsum</HeaderCell>
+                            <HeaderCell>Vanskelighetsgrad</HeaderCell>
+                            <HeaderCell>Spillertrekk</HeaderCell>
+                            <HeaderCell>Total reisetid</HeaderCell>
+                            <HeaderCell>Total spilletid</HeaderCell>
+                            <HeaderCell>Fra</HeaderCell>
+                            <HeaderCell>Til</HeaderCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -51,6 +52,7 @@ export const LeaderBoard = (): JSX.Element => {
                                 <DataCell>{index + 1}</DataCell>
                                 <DataCell>{player.nickname}</DataCell>
                                 <DataCell>{player.score}</DataCell>
+                                <DataCell>{player.difficulty}</DataCell>
                                 <DataCell>{player.totalOptions}</DataCell>
                                 <DataCell>{player.totalTravelTime}</DataCell>
                                 <DataCell>{player.totalPlaytime}</DataCell>
