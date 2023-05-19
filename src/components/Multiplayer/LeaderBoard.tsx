@@ -10,16 +10,20 @@ import {
 } from '@entur/table'
 import '@entur/table/dist/styles.css'
 import {
-    getPlayerScoreTopTenOverall,
+    getTopTenByDifficulty,
     PlayerResponse,
 } from '../../api/playerScoreApi'
 
-export const LeaderBoard = (): JSX.Element => {
+type Props = {
+    difficulty: string
+}
+
+export const LeaderBoard = ({difficulty}:Props): JSX.Element => {
     const [players, setPlayers] = useState<PlayerResponse[]>([])
 
     useEffect(() => {
         const fetchData = async () => {
-            const data = await getPlayerScoreTopTenOverall()
+            const data = await getTopTenByDifficulty(difficulty)
             setPlayers(data)
         }
 
@@ -30,7 +34,7 @@ export const LeaderBoard = (): JSX.Element => {
     }
     return (
         <>
-            <Heading2>Poengtavle</Heading2>
+            <Heading2>Poengtavle - {difficulty}</Heading2>
             <div className="leaderboard">
                 <Table>
                     <TableHead>
