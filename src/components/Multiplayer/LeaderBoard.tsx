@@ -36,7 +36,7 @@ export const LeaderBoard = (): JSX.Element => {
                     <TableHead>
                         <TableRow>
                             <HeaderCell>Rank</HeaderCell>
-                            <HeaderCell>Nickname</HeaderCell>
+                            <HeaderCell>Navn</HeaderCell>
                             <HeaderCell>Poengsum</HeaderCell>
                             <HeaderCell>Vanskelighetsgrad</HeaderCell>
                             <HeaderCell>Spillertrekk</HeaderCell>
