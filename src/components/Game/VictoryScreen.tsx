@@ -10,6 +10,7 @@ import {
 } from '../../utils/dateFnsUtils'
 import { Level } from '../../constant/levels'
 import { savePlayerScore } from '../../api/playerScoreApi'
+import { useNavigate } from 'react-router-dom'
 
 type Props = {
     level: Level
@@ -31,6 +32,7 @@ function VictoryScreen({
     startTimer,
 }: Props): JSX.Element {
     const [name, setName] = useState('')
+    const navigate = useNavigate()
     return (
         <div className="app">
             <Heading1>
@@ -54,9 +56,10 @@ function VictoryScreen({
                         label="nickname"
                         onChange={(e) => setName(e.target.value)}
                     ></TextField>
+
                     <PrimaryButton
-                        onClick={() =>
-                            savePlayerScore({
+                        onClick={async () => {
+                            await savePlayerScore({
                                 nickname: name,
                                 difficulty: level.difficulty,
                                 fromDestination: {
@@ -76,10 +79,12 @@ function VictoryScreen({
                                     startTime,
                                 ),
                             })
-                        }
+                            navigate(-1)
+                        }}
                     >
                         Lagre min poengsum!
                     </PrimaryButton>
+
                     <PrimaryButton onClick={() => window.location.reload()}>
                         Spill på nytt
                     </PrimaryButton>
