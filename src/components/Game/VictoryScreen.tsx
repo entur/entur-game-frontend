@@ -50,46 +50,47 @@ function VictoryScreen({
                 startTime,
             )}.`}</Paragraph>
             <Paragraph>{`Vår reiseplanlegger har beregnet en optimal rute der etapper er ${level.optimalRoute}, og reisetid er ${level.optimalTraveltime}.`}</Paragraph>
-            
-                <>
-                    <TextField
-                        label="nickname"
-                        onChange={(e) => setName(e.target.value)}
-                    ></TextField>
 
-                    <PrimaryButton
-                        onClick={async () => {
-                            await savePlayerScore({
-                                nickname: name,
-                                difficulty: level.difficulty,
-                                fromDestination: {
-                                    destination: level.start.name,
-                                    id: level.start.id,
-                                },
-                                toDestination: {
-                                    destination: target.name,
-                                    id: target.id,
-                                },
-                                totalOptions: numLegs,
-                                totalPlaytime: Math.trunc(
-                                    (Date.now() - startTimer) / 1000,
-                                ),
-                                totalTravelTime: formatIntervalToSeconds(
-                                    currentTime,
-                                    startTime,
-                                ),
-                            })
-                            navigate(-1)
-                        }}
-                    >
-                        Lagre min poengsum!
-                    </PrimaryButton>
+            <>
+                <TextField
+                    label="nickname"
+                    onChange={(e) => setName(e.target.value)}
+                    style={{ marginBottom: '20px' }}
+                ></TextField>
 
-                    <PrimaryButton onClick={() => window.location.reload()}>
-                        Spill på nytt
-                    </PrimaryButton>
-                </>
-            
+                <PrimaryButton
+                    style={{ marginRight: '20px' }}
+                    onClick={async () => {
+                        await savePlayerScore({
+                            nickname: name,
+                            difficulty: level.difficulty,
+                            fromDestination: {
+                                destination: level.start.name,
+                                id: level.start.id,
+                            },
+                            toDestination: {
+                                destination: target.name,
+                                id: target.id,
+                            },
+                            totalOptions: numLegs,
+                            totalPlaytime: Math.trunc(
+                                (Date.now() - startTimer) / 1000,
+                            ),
+                            totalTravelTime: formatIntervalToSeconds(
+                                currentTime,
+                                startTime,
+                            ),
+                        })
+                        navigate(-1)
+                    }}
+                >
+                    Lagre min poengsum!
+                </PrimaryButton>
+
+                <PrimaryButton onClick={() => window.location.reload()}>
+                    Spill på nytt
+                </PrimaryButton>
+            </>
         </div>
     )
 }
