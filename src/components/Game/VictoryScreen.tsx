@@ -3,6 +3,7 @@ import { Heading1, Paragraph } from '@entur/typography'
 import { TextField } from '@entur/form'
 import { StopPlace } from '@entur/sdk'
 import { PrimaryButton } from '@entur/button'
+import { useNavigate } from 'react-router-dom'
 
 import {
     formatIntervalToSeconds,
@@ -31,6 +32,7 @@ function VictoryScreen({
     startTimer,
 }: Props): JSX.Element {
     const [name, setName] = useState('')
+    const navigate = useNavigate()
     return (
         <div className="app">
             <Heading1>
@@ -51,12 +53,14 @@ function VictoryScreen({
 
             <>
                 <TextField
+                    style={{ marginBottom: '20px' }}
                     label="nickname"
                     onChange={(e) => setName(e.target.value)}
                 ></TextField>
                 <PrimaryButton
-                    onClick={() =>
-                        savePlayerScore({
+                    style={{ marginRight: '20px' }}
+                    onClick={async () => {
+                        await savePlayerScore({
                             nickname: name,
                             difficulty: level.difficulty,
                             fromDestination: {
@@ -76,7 +80,8 @@ function VictoryScreen({
                                 startTime,
                             ),
                         })
-                    }
+                        navigate(-1)
+                    }}
                 >
                     Lagre min poengsum!
                 </PrimaryButton>

@@ -50,6 +50,8 @@ function Lobby({
     const [isJoined, setJoined] = useState<boolean>(false)
     //TODO: Use isFinished
     const [isFinished, setFinished] = useState<boolean>(false)
+    const [isPlayButtonDisabled, setIsPlayButtonDisabled] = useState(true)
+    const [isJoinButtonDisabled, setIsJoinButtonDisabled] = useState(true)
 
     useEffect(() => {
         configureWebSocket()
@@ -76,7 +78,10 @@ function Lobby({
                 />
 
                 {isOwner && (
-                    <PrimaryButton onClick={() => startGame(sessionId, level.id)}>
+                    <PrimaryButton
+                        style={{ marginBottom: '20px' }}
+                        onClick={() => startGame(sessionId, level.id)}
+                    >
                         Start spillet
                     </PrimaryButton>
                 )}
@@ -95,17 +100,25 @@ function Lobby({
                 value={nickname ?? ''}
                 onChange={(event) => {
                     setNickname(event.target.value)
+                    setIsPlayButtonDisabled(false)
+                    setIsJoinButtonDisabled(true)
                 }}
+                style={{ marginBottom: '20px' }}
             />
             <TextField
                 label="Spill-ID"
                 value={sessionId ?? ''}
                 onChange={(event) => {
                     setSessionId(event.target.value)
+                    setIsJoinButtonDisabled(false)
+                    setIsPlayButtonDisabled(true)
                 }}
+                style={{ marginBottom: '20px' }}
             />
             {sessionId && nickname && (
                 <PrimaryButton
+                    style={{ marginBottom: '20px', marginRight: '20px' }}
+                    disabled={isJoinButtonDisabled}
                     onClick={async () => {
                         if (sessionId !== null) {
                             await joinGame(sessionId, nickname)

@@ -202,7 +202,7 @@ function Game({ level, startTimer, handleWinner }: Props): JSX.Element {
                             </ChoiceChip>
                         </>
                     </ChoiceChipGroup>
-                    <PrimaryButton onClick={() => navigate(-1)}>
+                    <PrimaryButton onClick={() => navigate(-1)} style={{ marginTop: '10px' }}>
                         Send meg tilbake
                     </PrimaryButton>
                 </div>
@@ -240,7 +240,7 @@ function Game({ level, startTimer, handleWinner }: Props): JSX.Element {
                                 </ChoiceChip>
                             ))}
                         </ChoiceChipGroup>
-                        <PrimaryButton onClick={() => navigate(-1)}>
+                        <PrimaryButton onClick={() => navigate(-1)} style={{ marginTop: '10px' }}>
                             Send meg tilbake
                         </PrimaryButton>
                     </div>
@@ -268,7 +268,7 @@ function Game({ level, startTimer, handleWinner }: Props): JSX.Element {
                                 </ChoiceChip>
                             ))}
                         </ChoiceChipGroup>
-                        <PrimaryButton onClick={() => navigate(-1)}>
+                        <PrimaryButton onClick={() => navigate(-1)} style={{ marginTop: '10px' }}>
                             Send meg tilbake
                         </PrimaryButton>
                     </div>
