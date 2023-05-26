@@ -20,8 +20,6 @@ export function getModeIcon(mode: QueryMode): JSX.Element | null {
             return <TramIcon />
         case 'rail':
             return <TrainIcon />
-        case 'air':
-            return <PlaneIcon />
         case 'metro':
             return <MetroIcon />
         case 'water':
@@ -41,8 +39,6 @@ export function getModeTranslation(mode: QueryMode): string {
             return 'Trikk'
         case 'rail':
             return 'Tog'
-        case 'air':
-            return 'Fly'
         case 'metro':
             return 'T-bane'
         case 'water':
