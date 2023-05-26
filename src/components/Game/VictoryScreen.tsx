@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react'
+import React, { useState } from 'react'
 import { Heading1, Paragraph } from '@entur/typography'
 import { TextField } from '@entur/form'
 import { StopPlace } from '@entur/sdk'
@@ -25,7 +25,6 @@ type Props = {
 function VictoryScreen({
     level,
     target,
-    setTarget,
     numLegs,
     currentTime,
     startTime,

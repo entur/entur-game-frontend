@@ -6,16 +6,10 @@ import { CopyableText } from '@entur/alert'
 import { sprinkleEmojis } from 'emoji-sprinkle'
 
 import PlayerList from './PlayerList'
-import { EASY, HARD, Level, MEDIUM } from '../../constant/levels'
+import { Level } from '../../constant/levels'
 import { useGameSocket } from '../../hooks/useGameSocket'
 import { createGame, joinGame, startGame } from '../../api/gameApi'
 import invariant from 'tiny-invariant'
-
-const levels = {
-    EASY: EASY,
-    MEDIUM: MEDIUM,
-    HARD: HARD,
-}
 
 //TOOD: Cleanup
 type Props = {
@@ -80,6 +74,7 @@ function Lobby({
                 {isOwner && (
                     <PrimaryButton
                         style={{ marginBottom: '20px' }}
+                        disabled={isPlayButtonDisabled}
                         onClick={() => startGame(sessionId, level.id)}
                     >
                         Start spillet

@@ -33,10 +33,9 @@ function SelectLevel(): JSX.Element {
                                 src={easy}
                                 alt="OSLO-TRONDHEIM"
                             />
-                            
                         </MediaCard>
                     ))}
-                    <LeaderBoard  difficulty='Lett' />
+                    <LeaderBoard difficulty="Lett" />
                 </TabPanel>
                 <TabPanel>
                     {MEDIUM.map((level) => (
@@ -54,7 +53,7 @@ function SelectLevel(): JSX.Element {
                             />
                         </MediaCard>
                     ))}
-                    <LeaderBoard difficulty='Middels' />
+                    <LeaderBoard difficulty="Middels" />
                 </TabPanel>
                 <TabPanel>
                     {HARD.map((level) => (
@@ -72,7 +71,7 @@ function SelectLevel(): JSX.Element {
                             />
                         </MediaCard>
                     ))}
-                    <LeaderBoard difficulty='Vanskelig' />
+                    <LeaderBoard difficulty="Vanskelig" />
                 </TabPanel>
             </TabPanels>
         </Tabs>

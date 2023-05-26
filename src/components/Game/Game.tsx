@@ -123,8 +123,8 @@ function Game({ level, startTimer, handleWinner }: Props): JSX.Element {
             setNumLegs((prev) => prev + 1)
         }
     }
-    
-    if (targets.some((sp)=>sp.id === stopPlace.id)) {
+
+    if (targets.some((sp) => sp.id === stopPlace.id)) {
         handleWinner()
         if (!hasBeenSprinkled) {
             sprinkleEmojis({
@@ -139,7 +139,9 @@ function Game({ level, startTimer, handleWinner }: Props): JSX.Element {
             <VictoryScreen
                 level={level}
                 target={targets[0]}
-                setTarget={(target)=>{setTargets([target])}}
+                setTarget={(target) => {
+                    setTargets([target])
+                }}
                 numLegs={numLegs}
                 currentTime={currentTime}
                 startTime={startTime}
@@ -165,8 +167,8 @@ function Game({ level, startTimer, handleWinner }: Props): JSX.Element {
                 />
                 <Paragraph>
                     Du er på {stopPlace.name} og det er{' '}
-                    {formatDateAndTime(currentTime)}. Kom deg til {targets[0].name}{' '}
-                    så fort som mulig!
+                    {formatDateAndTime(currentTime)}. Kom deg til{' '}
+                    {targets[0].name} så fort som mulig!
                 </Paragraph>
                 <Paragraph>
                     Du har reist {numLegs} etapper og brukt{' '}
@@ -202,7 +204,10 @@ function Game({ level, startTimer, handleWinner }: Props): JSX.Element {
                             </ChoiceChip>
                         </>
                     </ChoiceChipGroup>
-                    <PrimaryButton onClick={() => navigate(-1)} style={{ marginTop: '10px' }}>
+                    <PrimaryButton
+                        onClick={() => navigate(-1)}
+                        style={{ marginTop: '10px' }}
+                    >
                         Send meg tilbake
                     </PrimaryButton>
                 </div>
@@ -240,7 +245,10 @@ function Game({ level, startTimer, handleWinner }: Props): JSX.Element {
                                 </ChoiceChip>
                             ))}
                         </ChoiceChipGroup>
-                        <PrimaryButton onClick={() => navigate(-1)} style={{ marginTop: '10px' }}>
+                        <PrimaryButton
+                            onClick={() => navigate(-1)}
+                            style={{ marginTop: '10px' }}
+                        >
                             Send meg tilbake
                         </PrimaryButton>
                     </div>
@@ -268,7 +276,10 @@ function Game({ level, startTimer, handleWinner }: Props): JSX.Element {
                                 </ChoiceChip>
                             ))}
                         </ChoiceChipGroup>
-                        <PrimaryButton onClick={() => navigate(-1)} style={{ marginTop: '10px' }}>
+                        <PrimaryButton
+                            onClick={() => navigate(-1)}
+                            style={{ marginTop: '10px' }}
+                        >
                             Send meg tilbake
                         </PrimaryButton>
                     </div>

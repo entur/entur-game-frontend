@@ -4,7 +4,6 @@ import {
     BusIcon,
     FerryIcon,
     MetroIcon,
-    PlaneIcon,
     TrainIcon,
     TramIcon,
     WalkIcon,

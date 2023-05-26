@@ -9,16 +9,13 @@ import {
     HeaderCell,
 } from '@entur/table'
 import '@entur/table/dist/styles.css'
-import {
-    getTopTenByDifficulty,
-    PlayerResponse,
-} from '../../api/playerScoreApi'
+import { getTopTenByDifficulty, PlayerResponse } from '../../api/playerScoreApi'
 
 type Props = {
     difficulty: string
 }
 
-export const LeaderBoard = ({difficulty}:Props): JSX.Element => {
+export const LeaderBoard = ({ difficulty }: Props): JSX.Element => {
     const [players, setPlayers] = useState<PlayerResponse[]>([])
 
     useEffect(() => {
