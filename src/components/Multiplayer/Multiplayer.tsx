@@ -126,7 +126,7 @@ function Multiplayer(): JSX.Element {
                 <Game
                     level={level}
                     startTimer={startTimer}
-                    handleWinner={async () => {
+                    handleWinner={() => {
                         setFinished(true)
                         client.publish({
                             destination: '/topic/' + sessionId + '/finished',
