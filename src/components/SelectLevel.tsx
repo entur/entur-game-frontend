@@ -7,6 +7,7 @@ import easy from '@assets/images/easy.png'
 import medium from '@assets/images/medium.png'
 import hard from '@assets/images/hard.png'
 import { EASY, HARD, MEDIUM } from '../constant/levels'
+import { LeaderBoard } from './Multiplayer/LeaderBoard'
 
 function SelectLevel(): JSX.Element {
     const navigate = useNavigate()
@@ -32,8 +33,10 @@ function SelectLevel(): JSX.Element {
                                 src={easy}
                                 alt="OSLO-TRONDHEIM"
                             />
+                            
                         </MediaCard>
                     ))}
+                    <LeaderBoard  difficulty='Lett' />
                 </TabPanel>
                 <TabPanel>
                     {MEDIUM.map((level) => (
@@ -51,6 +54,7 @@ function SelectLevel(): JSX.Element {
                             />
                         </MediaCard>
                     ))}
+                    <LeaderBoard difficulty='Middels' />
                 </TabPanel>
                 <TabPanel>
                     {HARD.map((level) => (
@@ -68,6 +72,7 @@ function SelectLevel(): JSX.Element {
                             />
                         </MediaCard>
                     ))}
+                    <LeaderBoard difficulty='Vanskelig' />
                 </TabPanel>
             </TabPanels>
         </Tabs>

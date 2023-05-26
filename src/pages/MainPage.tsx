@@ -5,7 +5,6 @@ import SelectLevel from '../components/SelectLevel'
 
 import { Link } from 'react-router-dom'
 import { PrimaryButton } from '@entur/button'
-import { LeaderBoard } from '../components/Multiplayer/LeaderBoard'
 
 export function MainPage(): JSX.Element {
     return (
@@ -23,7 +22,6 @@ export function MainPage(): JSX.Element {
             </Paragraph>
             <Heading2>Velg en reise</Heading2>
             <SelectLevel />
-            <LeaderBoard />
             <div style={{ marginTop: '300px' }}>
                 <Paragraph>Hvis du vil spille mot en annen person </Paragraph>
                 <Link to="/multiplayer">
