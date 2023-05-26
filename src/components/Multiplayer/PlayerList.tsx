@@ -1,11 +1,29 @@
 import { Heading3, ListItem, NumberedList } from '@entur/typography'
-import React from 'react'
+import React, { useEffect } from 'react'
+
+import { getGame } from '../../api/gameApi'
 
 type props = {
-    players: string[]
+    refreshCounter: number
+    sessionId: string | null
 }
 
-function PlayerList({ players }: props): JSX.Element {
+function PlayerList({ refreshCounter, sessionId }: props): JSX.Element {
+    const [players, setPlayers] = React.useState<string[]>([])
+
+    useEffect(() => {
+        async function fetchData() {
+            if (sessionId) {
+                const response = await getGame(sessionId)
+                const playerNicknames = response.playerList.map(
+                    (player) => player.nickname,
+                )
+                setPlayers(playerNicknames)
+            }
+        }
+        fetchData()
+    }, [refreshCounter])
+
     return (
         <>
             <Heading3>Spillere</Heading3>

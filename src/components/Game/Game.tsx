@@ -34,7 +34,7 @@ const startTime = new Date()
 type Props = {
     level: Level
     startTimer: number
-    handleWinner: () => void
+    handleWinner: () => Promise<void>
 }
 
 function Game({ level, startTimer, handleWinner }: Props): JSX.Element {

@@ -7,8 +7,9 @@ import { sprinkleEmojis } from 'emoji-sprinkle'
 
 import PlayerList from './PlayerList'
 import { EASY, HARD, Level, MEDIUM } from '../../constant/levels'
-import { getRandomString } from '../../utils/getRandomString'
-import { useStompJs } from '../../hooks/useStompJs'
+import { useGameSocket } from '../../hooks/useGameSocket'
+import { createGame, joinGame, startGame } from '../../api/gameApi'
+import invariant from 'tiny-invariant'
 
 const levels = {
     EASY: EASY,
@@ -16,6 +17,7 @@ const levels = {
     HARD: HARD,
 }
 
+//TOOD: Cleanup
 type Props = {
     setReady: React.Dispatch<React.SetStateAction<boolean>>
     isOwner: boolean
@@ -43,15 +45,18 @@ function Lobby({
     nickname,
     setNickname,
 }: Props): JSX.Element {
-    const { client, configureWebSocket } = useStompJs()
+    const { client, configureWebSocket, subscribeToGame } = useGameSocket()
+    const [refreshCounter, setRefreshCounter] = useState<number>(0)
     const [isJoined, setJoined] = useState<boolean>(false)
-    const [players, setPlayers] = useState<string[]>([])
+    //TODO: Use isFinished
+    const [isFinished, setFinished] = useState<boolean>(false)
 
     useEffect(() => {
         configureWebSocket()
     }, [])
 
     if (isJoined) {
+        invariant(sessionId !== null, 'sessionId is null')
         return (
             <div
                 style={{
@@ -62,19 +67,16 @@ function Lobby({
                     successHeading="Kommando kopiert!"
                     successMessage="Lim den inn i terminalen."
                 >
-                    {sessionId ?? ''}
+                    {sessionId}
                 </CopyableText>
 
-                {isOwner && <PlayerList players={players} />}
+                <PlayerList
+                    refreshCounter={refreshCounter}
+                    sessionId={sessionId}
+                />
+
                 {isOwner && (
-                    <PrimaryButton
-                        onClick={() => {
-                            client.publish({
-                                destination: '/topic/' + sessionId + '/ready',
-                                body: 'ready',
-                            })
-                        }}
-                    >
+                    <PrimaryButton onClick={() => startGame(sessionId, level.id)}>
                         Start spillet
                     </PrimaryButton>
                 )}
@@ -104,64 +106,16 @@ function Lobby({
             />
             {sessionId && nickname && (
                 <PrimaryButton
-                    onClick={() => {
+                    onClick={async () => {
                         if (sessionId !== null) {
-                            client.subscribe(
-                                '/topic/' + sessionId,
-                                (message) => {
-                                    console.log(
-                                        new TextDecoder().decode(
-                                            message.binaryBody,
-                                        ),
-                                    )
-                                },
-                            )
-
-                            client.publish({
-                                destination: '/topic/' + sessionId + '/players',
-                                body: JSON.stringify(nickname),
+                            await joinGame(sessionId, nickname)
+                            subscribeToGame({
+                                gameId: sessionId,
+                                setLevel,
+                                setFinished,
+                                setReady,
+                                setRefreshCounter,
                             })
-
-                            client.subscribe(
-                                '/topic/' + sessionId + '/ready',
-                                (message) => {
-                                    setReady(
-                                        new TextDecoder().decode(
-                                            message.binaryBody,
-                                        ) === 'ready',
-                                    )
-                                },
-                            )
-
-                            client.subscribe(
-                                '/topic/' + sessionId + '/game-level',
-                                (message) => {
-                                    const newLevel = new TextDecoder()
-                                        .decode(message.binaryBody)
-                                        .replaceAll('"', '')
-                                        .split(':')
-                                    const difficulty = newLevel[0]
-                                    const levelNumber = newLevel[1]
-
-                                    const keyValues = Object.entries(levels)
-                                    const newLevelToChange = keyValues.find(
-                                        (level) => level[0] === difficulty,
-                                    )
-
-                                    if (
-                                        newLevelToChange &&
-                                        newLevelToChange[1][
-                                            Number(levelNumber)
-                                        ] !== level
-                                    ) {
-                                        setLevel(
-                                            newLevelToChange[1][
-                                                Number(levelNumber)
-                                            ],
-                                        )
-                                    }
-                                },
-                            )
                         }
                         client.subscribe(
                             '/topic/' + sessionId + '/finished',
@@ -187,42 +141,18 @@ function Lobby({
             )}
             {nickname && !sessionId && (
                 <PrimaryButton
-                    onClick={() => {
-                        const randomId = getRandomString(6)
-                        setSessionId(randomId)
-
-                        client.subscribe('/topic/' + randomId, (message) => {
-                            console.log(
-                                new TextDecoder().decode(message.binaryBody),
-                            )
-                        })
-                        client.subscribe(
-                            '/topic/' + randomId + '/players',
-                            (message) => {
-                                setPlayers((prev) => [
-                                    ...prev,
-                                    new TextDecoder().decode(
-                                        message.binaryBody,
-                                    ),
-                                ])
-                            },
-                        )
-                        client.subscribe(
-                            '/topic/' + randomId + '/ready',
-                            (message) => {
-                                setReady(
-                                    new TextDecoder().decode(
-                                        message.binaryBody,
-                                    ) === 'ready',
-                                )
-                            },
-                        )
-                        client.publish({
-                            destination: '/topic/' + randomId + '/players',
-                            body: JSON.stringify(nickname),
-                        })
+                    onClick={async () => {
+                        const game = await createGame(nickname)
+                        setSessionId(game.id)
                         setOwner(true)
                         setJoined(true)
+                        subscribeToGame({
+                            gameId: game.id,
+                            setLevel,
+                            setFinished,
+                            setReady,
+                            setRefreshCounter,
+                        })
                     }}
                 >
                     Lag nytt spill
