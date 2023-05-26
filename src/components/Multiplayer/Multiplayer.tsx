@@ -10,13 +10,13 @@ import { MediaCard } from '@entur/layout'
 import Lobby from './Lobby'
 import { EASY, HARD, Level, MEDIUM } from '../../constant/levels'
 import Game from '../Game/Game'
-import { useStompJs } from '../../hooks/useStompJs'
+import { useGameSocket } from '../../hooks/useGameSocket'
 import easy from '@assets/images/easy.png'
 import medium from '@assets/images/medium.png'
 import hard from '@assets/images/hard.png'
 
 function Multiplayer(): JSX.Element {
-    const { client } = useStompJs()
+    const { client } = useGameSocket()
     const [ready, setReady] = useState<boolean>(false)
     const [level, setLevel] = useState<Level>(EASY[0])
     const [startTimer, setStartTimer] = useState<number>(0)
@@ -58,22 +58,13 @@ function Multiplayer(): JSX.Element {
                             </TabList>
                             <TabPanels>
                                 <TabPanel>
-                                    {EASY.map((level, index) => (
+                                    {EASY.map((level) => (
                                         <MediaCard
                                             title={level.name}
                                             key={level.name}
                                             description={level.description}
                                             onClick={() => {
                                                 setLevel(level)
-                                                client.publish({
-                                                    destination:
-                                                        '/topic/' +
-                                                        sessionId +
-                                                        '/game-level',
-                                                    body: JSON.stringify(
-                                                        'EASY:' + index,
-                                                    ),
-                                                })
                                             }}
                                             className="media-card-images"
                                         >
@@ -86,22 +77,13 @@ function Multiplayer(): JSX.Element {
                                     ))}
                                 </TabPanel>
                                 <TabPanel>
-                                    {MEDIUM.map((level, index) => (
+                                    {MEDIUM.map((level) => (
                                         <MediaCard
                                             title={level.name}
                                             key={level.name}
                                             description={level.description}
                                             onClick={() => {
                                                 setLevel(level)
-                                                client.publish({
-                                                    destination:
-                                                        '/topic/' +
-                                                        sessionId +
-                                                        '/game-level',
-                                                    body: JSON.stringify(
-                                                        'MEDIUM:' + index,
-                                                    ),
-                                                })
                                             }}
                                             className="media-card-images"
                                         >
@@ -114,22 +96,13 @@ function Multiplayer(): JSX.Element {
                                     ))}
                                 </TabPanel>
                                 <TabPanel>
-                                    {HARD.map((level, index) => (
+                                    {HARD.map((level) => (
                                         <MediaCard
                                             title={level.name}
                                             key={level.name}
                                             description={level.description}
                                             onClick={() => {
                                                 setLevel(level)
-                                                client.publish({
-                                                    destination:
-                                                        '/topic/' +
-                                                        sessionId +
-                                                        '/game-level',
-                                                    body: JSON.stringify(
-                                                        'HARD:' + index,
-                                                    ),
-                                                })
                                             }}
                                             className="media-card-images"
                                         >
@@ -149,16 +122,20 @@ function Multiplayer(): JSX.Element {
                     </Link>
                 </>
             )}
-
             {ready && (
                 <Game
                     level={level}
                     startTimer={startTimer}
-                    handleWinner={() => {
+                    handleWinner={async () => {
                         setFinished(true)
                         client.publish({
                             destination: '/topic/' + sessionId + '/finished',
                             body: JSON.stringify(nickname),
+                        })
+                        client.publish({
+                            destination:
+                                '/app/topic/' + sessionId + '/finished',
+                            body: nickname,
                         })
                     }}
                 />

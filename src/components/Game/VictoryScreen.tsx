@@ -1,8 +1,9 @@
-import React, { Dispatch, SetStateAction, useState } from 'react'
+import React, { useState } from 'react'
 import { Heading1, Paragraph } from '@entur/typography'
 import { TextField } from '@entur/form'
 import { StopPlace } from '@entur/sdk'
 import { PrimaryButton } from '@entur/button'
+import { useNavigate } from 'react-router-dom'
 
 import {
     formatIntervalToSeconds,
@@ -10,12 +11,11 @@ import {
 } from '../../utils/dateFnsUtils'
 import { Level } from '../../constant/levels'
 import { savePlayerScore } from '../../api/playerScoreApi'
-import { useNavigate } from 'react-router-dom'
 
 type Props = {
     level: Level
     target: StopPlace
-    setTarget: (target:StopPlace)=>void
+    setTarget: (target: StopPlace) => void
     numLegs: number
     currentTime: Date
     startTime: Date
@@ -25,7 +25,6 @@ type Props = {
 function VictoryScreen({
     level,
     target,
-    setTarget,
     numLegs,
     currentTime,
     startTime,
@@ -53,11 +52,10 @@ function VictoryScreen({
 
             <>
                 <TextField
+                    style={{ marginBottom: '20px' }}
                     label="nickname"
                     onChange={(e) => setName(e.target.value)}
-                    style={{ marginBottom: '20px' }}
                 ></TextField>
-
                 <PrimaryButton
                     style={{ marginRight: '20px' }}
                     onClick={async () => {
@@ -86,7 +84,6 @@ function VictoryScreen({
                 >
                     Lagre min poengsum!
                 </PrimaryButton>
-
                 <PrimaryButton onClick={() => window.location.reload()}>
                     Spill på nytt
                 </PrimaryButton>

@@ -6,16 +6,12 @@ import { CopyableText } from '@entur/alert'
 import { sprinkleEmojis } from 'emoji-sprinkle'
 
 import PlayerList from './PlayerList'
-import { EASY, HARD, Level, MEDIUM } from '../../constant/levels'
-import { getRandomString } from '../../utils/getRandomString'
-import { useStompJs } from '../../hooks/useStompJs'
+import { Level } from '../../constant/levels'
+import { useGameSocket } from '../../hooks/useGameSocket'
+import { createGame, joinGame, startGame } from '../../api/gameApi'
+import invariant from 'tiny-invariant'
 
-const levels = {
-    EASY: EASY,
-    MEDIUM: MEDIUM,
-    HARD: HARD,
-}
-
+//TOOD: Cleanup
 type Props = {
     setReady: React.Dispatch<React.SetStateAction<boolean>>
     isOwner: boolean
@@ -43,9 +39,11 @@ function Lobby({
     nickname,
     setNickname,
 }: Props): JSX.Element {
-    const { client, configureWebSocket } = useStompJs()
+    const { client, configureWebSocket, subscribeToGame } = useGameSocket()
+    const [refreshCounter, setRefreshCounter] = useState<number>(0)
     const [isJoined, setJoined] = useState<boolean>(false)
-    const [players, setPlayers] = useState<string[]>([])
+    //TODO: Use isFinished
+    const [isFinished, setFinished] = useState<boolean>(false)
     const [isPlayButtonDisabled, setIsPlayButtonDisabled] = useState(true)
     const [isJoinButtonDisabled, setIsJoinButtonDisabled] = useState(true)
 
@@ -54,6 +52,7 @@ function Lobby({
     }, [])
 
     if (isJoined) {
+        invariant(sessionId !== null, 'sessionId is null')
         return (
             <div
                 style={{
@@ -64,19 +63,19 @@ function Lobby({
                     successHeading="Kommando kopiert!"
                     successMessage="Lim den inn i terminalen."
                 >
-                    {sessionId ?? ''}
+                    {sessionId}
                 </CopyableText>
 
-                {isOwner && <PlayerList players={players} />}
+                <PlayerList
+                    refreshCounter={refreshCounter}
+                    sessionId={sessionId}
+                />
+
                 {isOwner && (
                     <PrimaryButton
                         style={{ marginBottom: '20px' }}
-                        onClick={() => {
-                            client.publish({
-                                destination: '/topic/' + sessionId + '/ready',
-                                body: 'ready',
-                            })
-                        }}
+                        disabled={isPlayButtonDisabled}
+                        onClick={() => startGame(sessionId, level.id)}
                     >
                         Start spillet
                     </PrimaryButton>
@@ -111,124 +110,62 @@ function Lobby({
                 }}
                 style={{ marginBottom: '20px' }}
             />
-            <PrimaryButton
-                style={{ marginBottom: '20px', marginRight: '20px' }}
-                disabled={isJoinButtonDisabled}
-                onClick={() => {
-                    if (sessionId !== null) {
-                        client.subscribe('/topic/' + sessionId, (message) => {
-                            console.log(
-                                new TextDecoder().decode(message.binaryBody),
-                            )
-                        })
-
-                        client.publish({
-                            destination: '/topic/' + sessionId + '/players',
-                            body: JSON.stringify(nickname),
-                        })
-
+            {sessionId && nickname && (
+                <PrimaryButton
+                    style={{ marginBottom: '20px', marginRight: '20px' }}
+                    disabled={isJoinButtonDisabled}
+                    onClick={async () => {
+                        if (sessionId !== null) {
+                            await joinGame(sessionId, nickname)
+                            subscribeToGame({
+                                gameId: sessionId,
+                                setLevel,
+                                setFinished,
+                                setReady,
+                                setRefreshCounter,
+                            })
+                        }
                         client.subscribe(
-                            '/topic/' + sessionId + '/ready',
+                            '/topic/' + sessionId + '/finished',
                             (message) => {
-                                setReady(
-                                    new TextDecoder().decode(
-                                        message.binaryBody,
-                                    ) === 'ready',
-                                )
-                            },
-                        )
-
-                        client.subscribe(
-                            '/topic/' + sessionId + '/game-level',
-                            (message) => {
-                                const newLevel = new TextDecoder()
+                                const winner = new TextDecoder()
                                     .decode(message.binaryBody)
                                     .replaceAll('"', '')
-                                    .split(':')
-                                const difficulty = newLevel[0]
-                                const levelNumber = newLevel[1]
-
-                                const keyValues = Object.entries(levels)
-                                const newLevelToChange = keyValues.find(
-                                    (level) => level[0] === difficulty,
-                                )
-
-                                if (
-                                    newLevelToChange &&
-                                    newLevelToChange[1][Number(levelNumber)] !==
-                                        level
-                                ) {
-                                    setLevel(
-                                        newLevelToChange[1][
-                                            Number(levelNumber)
-                                        ],
-                                    )
+                                if (nickname !== winner) {
+                                    sprinkleEmojis({
+                                        emoji: '😭',
+                                        count: 50,
+                                        fade: 10,
+                                        fontSize: 30,
+                                    })
                                 }
                             },
                         )
-                    }
-                    client.subscribe(
-                        '/topic/' + sessionId + '/finished',
-                        (message) => {
-                            const winner = new TextDecoder()
-                                .decode(message.binaryBody)
-                                .replaceAll('"', '')
-                            if (nickname !== winner) {
-                                sprinkleEmojis({
-                                    emoji: '😭',
-                                    count: 50,
-                                    fade: 10,
-                                    fontSize: 30,
-                                })
-                            }
-                        },
-                    )
-                    setJoined(true)
-                }}
-            >
-                Bli med
-            </PrimaryButton>
-            <PrimaryButton
-                disabled={isPlayButtonDisabled}
-                style={{ marginBottom: '20px' }}
-                onClick={() => {
-                    const randomId = getRandomString(6)
-                    setSessionId(randomId)
-
-                    client.subscribe('/topic/' + randomId, (message) => {
-                        console.log(
-                            new TextDecoder().decode(message.binaryBody),
-                        )
-                    })
-                    client.subscribe(
-                        '/topic/' + randomId + '/players',
-                        (message) => {
-                            setPlayers((prev) => [
-                                ...prev,
-                                new TextDecoder().decode(message.binaryBody),
-                            ])
-                        },
-                    )
-                    client.subscribe(
-                        '/topic/' + randomId + '/ready',
-                        (message) => {
-                            setReady(
-                                new TextDecoder().decode(message.binaryBody) ===
-                                    'ready',
-                            )
-                        },
-                    )
-                    client.publish({
-                        destination: '/topic/' + randomId + '/players',
-                        body: JSON.stringify(nickname),
-                    })
-                    setOwner(true)
-                    setJoined(true)
-                }}
-            >
-                Lag nytt spill
-            </PrimaryButton>
-
+                        setJoined(true)
+                    }}
+                >
+                    Bli med
+                </PrimaryButton>
+            )}
+            {nickname && !sessionId && (
+                <PrimaryButton
+                    onClick={async () => {
+                        const game = await createGame(nickname)
+                        setSessionId(game.id)
+                        setOwner(true)
+                        setJoined(true)
+                        subscribeToGame({
+                            gameId: game.id,
+                            setLevel,
+                            setFinished,
+                            setReady,
+                            setRefreshCounter,
+                        })
+                    }}
+                >
+                    Lag nytt spill
+                </PrimaryButton>
+            )}
         </div>
     )
 }
