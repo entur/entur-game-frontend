@@ -149,6 +149,7 @@ function Lobby({
             )}
             {nickname && !sessionId && (
                 <PrimaryButton
+                    style={{ marginBottom: '20px', marginRight: '20px' }}
                     onClick={async () => {
                         const game = await createGame(nickname)
                         setSessionId(game.id)
