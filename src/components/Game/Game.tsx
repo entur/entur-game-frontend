@@ -32,12 +32,18 @@ interface StopAndTime {
 const startTime = new Date()
 
 type Props = {
+    nickname: string
     level: Level
     startTimer: number
     handleWinner: () => void
 }
 
-function Game({ level, startTimer, handleWinner }: Props): JSX.Element {
+function Game({
+    nickname,
+    level,
+    startTimer,
+    handleWinner,
+}: Props): JSX.Element {
     const navigate = useNavigate()
     const [hasBeenSprinkled, setSprinkled] = useState<boolean>(false)
     const [dead, setDead] = useState<boolean>(false)
@@ -137,6 +143,7 @@ function Game({ level, startTimer, handleWinner }: Props): JSX.Element {
         }
         return (
             <VictoryScreen
+                nickname={nickname}
                 level={level}
                 target={targets[0]}
                 setTarget={(target) => {
@@ -208,11 +215,11 @@ function Game({ level, startTimer, handleWinner }: Props): JSX.Element {
                         onClick={() => navigate(-1)}
                         style={{ marginTop: '10px' }}
                     >
-                        Send meg tilbake
+                        Hovedmeny
                     </PrimaryButton>
                 </div>
             ) : null}
-            <div>
+            <>
                 {departures.length ? (
                     <div>
                         <Heading2>Velg avgang</Heading2>
@@ -253,38 +260,36 @@ function Game({ level, startTimer, handleWinner }: Props): JSX.Element {
                         </PrimaryButton>
                     </div>
                 ) : null}
-            </div>
-            <div>
-                {stopsOnLine.length ? (
-                    <div>
-                        <Heading2>
-                            Hvor vil du gå {mode === 'foot' ? 'til' : 'av'}?
-                        </Heading2>
+            </>
+            {stopsOnLine.length ? (
+                <div>
+                    <Heading2>
+                        Hvor vil du gå {mode === 'foot' ? 'til' : 'av'}?
+                    </Heading2>
 
-                        <ChoiceChipGroup
-                            value="none"
-                            onChange={console.log}
-                            name="Stop on line"
-                        >
-                            {stopsOnLine.map((stop) => (
-                                <ChoiceChip
-                                    key={stop.stopPlace.id}
-                                    value={stop.stopPlace.id}
-                                    onClick={() => selectStopOnLine(stop)}
-                                >
-                                    {stop.stopPlace.name}
-                                </ChoiceChip>
-                            ))}
-                        </ChoiceChipGroup>
-                        <PrimaryButton
-                            onClick={() => navigate(-1)}
-                            style={{ marginTop: '10px' }}
-                        >
-                            Send meg tilbake
-                        </PrimaryButton>
-                    </div>
-                ) : null}
-            </div>
+                    <ChoiceChipGroup
+                        value="none"
+                        onChange={console.log}
+                        name="Stop on line"
+                    >
+                        {stopsOnLine.map((stop) => (
+                            <ChoiceChip
+                                key={stop.stopPlace.id}
+                                value={stop.stopPlace.id}
+                                onClick={() => selectStopOnLine(stop)}
+                            >
+                                {stop.stopPlace.name}
+                            </ChoiceChip>
+                        ))}
+                    </ChoiceChipGroup>
+                    <PrimaryButton
+                        onClick={() => navigate(-1)}
+                        style={{ marginTop: '10px' }}
+                    >
+                        Hovedmeny
+                    </PrimaryButton>
+                </div>
+            ) : null}
         </div>
     )
 }

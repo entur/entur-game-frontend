@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Heading1, Paragraph } from '@entur/typography'
 import { TextField } from '@entur/form'
 import { StopPlace } from '@entur/sdk'
-import { PrimaryButton } from '@entur/button'
+import { PrimaryButton, SuccessButton } from '@entur/button'
 import { useNavigate } from 'react-router-dom'
 
 import {
@@ -13,6 +13,7 @@ import { Level } from '../../constant/levels'
 import { savePlayerScore } from '../../api/playerScoreApi'
 
 type Props = {
+    nickname: string
     level: Level
     target: StopPlace
     setTarget: (target: StopPlace) => void
@@ -23,6 +24,7 @@ type Props = {
 }
 
 function VictoryScreen({
+    nickname,
     level,
     target,
     numLegs,
@@ -30,7 +32,7 @@ function VictoryScreen({
     startTime,
     startTimer,
 }: Props): JSX.Element {
-    const [name, setName] = useState('')
+    const [name, setName] = useState(nickname)
     const navigate = useNavigate()
     return (
         <div className="app">
@@ -52,6 +54,7 @@ function VictoryScreen({
 
             <>
                 <TextField
+                    defaultValue={nickname}
                     style={{ marginBottom: '20px' }}
                     label="nickname"
                     onChange={(e) => setName(e.target.value)}
@@ -84,9 +87,9 @@ function VictoryScreen({
                 >
                     Lagre min poengsum!
                 </PrimaryButton>
-                <PrimaryButton onClick={() => window.location.reload()}>
+                <SuccessButton onClick={() => window.location.reload()}>
                     Spill på nytt
-                </PrimaryButton>
+                </SuccessButton>
             </>
         </div>
     )

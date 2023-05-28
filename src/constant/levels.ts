@@ -14,7 +14,7 @@ export type Level = {
 export const EASY: Level[] = [
     {
         id: 'DnVuK',
-        name: 'Oslo – Trondheim',
+        name: 'Oslo – Trondheim',
         description: 'En reise mellom to av Norges største byer.',
         start: {
             id: 'NSR:StopPlace:58366',
@@ -39,7 +39,6 @@ export const EASY: Level[] = [
                 id: 'NSR:StopPlace:41742',
                 name: 'Trondheim S, Trondheim',
             },
-            
         ],
         difficulty: 'Lett',
         optimalRoute: 2,

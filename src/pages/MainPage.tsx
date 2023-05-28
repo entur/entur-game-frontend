@@ -23,9 +23,8 @@ export function MainPage(): JSX.Element {
             <Heading2>Velg en reise</Heading2>
             <SelectLevel />
             <div style={{ marginTop: '40px' }}>
-                <Paragraph>Hvis du vil spille mot en annen person </Paragraph>
                 <Link to="/multiplayer">
-                    <PrimaryButton>Trykk her</PrimaryButton>
+                    <PrimaryButton>Flerspiller</PrimaryButton>
                 </Link>
             </div>
         </div>

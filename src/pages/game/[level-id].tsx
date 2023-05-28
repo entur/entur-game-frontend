@@ -27,6 +27,7 @@ function GamePage(): JSX.Element {
     return (
         <div className="app">
             <Game
+                nickname={''}
                 level={level}
                 startTimer={startTimer}
                 // eslint-disable-next-line @typescript-eslint/no-empty-function

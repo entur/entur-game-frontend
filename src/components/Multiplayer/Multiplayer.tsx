@@ -1,7 +1,7 @@
 import './Multiplayer.css'
 
 import React, { useState } from 'react'
-import { Heading1 } from '@entur/typography'
+import { Heading1, Heading3, Paragraph } from '@entur/typography'
 import { Link } from 'react-router-dom'
 import { PrimaryButton } from '@entur/button'
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@entur/tab'
@@ -50,80 +50,94 @@ function Multiplayer(): JSX.Element {
                         client={client}
                     />
                     {isOwner && (
-                        <Tabs style={{ marginRight: 'auto' }}>
-                            <TabList>
-                                <Tab>Lett</Tab>
-                                <Tab>Middels</Tab>
-                                <Tab>Vanskelig</Tab>
-                            </TabList>
-                            <TabPanels>
-                                <TabPanel>
-                                    {EASY.map((level) => (
-                                        <MediaCard
-                                            title={level.name}
-                                            key={level.name}
-                                            description={level.description}
-                                            onClick={() => {
-                                                setLevel(level)
-                                            }}
-                                            className="media-card-images"
-                                        >
-                                            <img
-                                                className="images"
-                                                src={easy}
-                                                alt="OSLO-TRONDHEIM"
-                                            />
-                                        </MediaCard>
-                                    ))}
-                                </TabPanel>
-                                <TabPanel>
-                                    {MEDIUM.map((level) => (
-                                        <MediaCard
-                                            title={level.name}
-                                            key={level.name}
-                                            description={level.description}
-                                            onClick={() => {
-                                                setLevel(level)
-                                            }}
-                                            className="media-card-images"
-                                        >
-                                            <img
-                                                className="images"
-                                                src={medium}
-                                                alt="MANDAL-SJUSJØEN"
-                                            />
-                                        </MediaCard>
-                                    ))}
-                                </TabPanel>
-                                <TabPanel>
-                                    {HARD.map((level) => (
-                                        <MediaCard
-                                            title={level.name}
-                                            key={level.name}
-                                            description={level.description}
-                                            onClick={() => {
-                                                setLevel(level)
-                                            }}
-                                            className="media-card-images"
-                                        >
-                                            <img
-                                                className="images"
-                                                src={hard}
-                                                alt="HALDEN-HARSTAD"
-                                            />
-                                        </MediaCard>
-                                    ))}
-                                </TabPanel>
-                            </TabPanels>
-                        </Tabs>
+                        <>
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'baseline',
+                                }}
+                            >
+                                <Heading3 style={{ marginRight: '20px' }}>
+                                    Reise:
+                                </Heading3>
+                                <Paragraph>{level.name}</Paragraph>
+                            </div>
+                            <Tabs style={{ marginRight: 'auto' }}>
+                                <TabList>
+                                    <Tab>Lett</Tab>
+                                    <Tab>Middels</Tab>
+                                    <Tab>Vanskelig</Tab>
+                                </TabList>
+                                <TabPanels>
+                                    <TabPanel>
+                                        {EASY.map((level) => (
+                                            <MediaCard
+                                                title={level.name}
+                                                key={level.name}
+                                                description={level.description}
+                                                onClick={() => {
+                                                    setLevel(level)
+                                                }}
+                                                className="media-card-images"
+                                            >
+                                                <img
+                                                    className="images"
+                                                    src={easy}
+                                                    alt="OSLO-TRONDHEIM"
+                                                />
+                                            </MediaCard>
+                                        ))}
+                                    </TabPanel>
+                                    <TabPanel>
+                                        {MEDIUM.map((level) => (
+                                            <MediaCard
+                                                title={level.name}
+                                                key={level.name}
+                                                description={level.description}
+                                                onClick={() => {
+                                                    setLevel(level)
+                                                }}
+                                                className="media-card-images"
+                                            >
+                                                <img
+                                                    className="images"
+                                                    src={medium}
+                                                    alt="MANDAL-SJUSJØEN"
+                                                />
+                                            </MediaCard>
+                                        ))}
+                                    </TabPanel>
+                                    <TabPanel>
+                                        {HARD.map((level) => (
+                                            <MediaCard
+                                                title={level.name}
+                                                key={level.name}
+                                                description={level.description}
+                                                onClick={() => {
+                                                    setLevel(level)
+                                                }}
+                                                className="media-card-images"
+                                            >
+                                                <img
+                                                    className="images"
+                                                    src={hard}
+                                                    alt="HALDEN-HARSTAD"
+                                                />
+                                            </MediaCard>
+                                        ))}
+                                    </TabPanel>
+                                </TabPanels>
+                            </Tabs>
+                        </>
                     )}
                     <Link to="/">
-                        <PrimaryButton>Tilbake til hovedmeny</PrimaryButton>
+                        <PrimaryButton>Hovedmeny</PrimaryButton>
                     </Link>
                 </>
             )}
             {ready && (
                 <Game
+                    nickname={nickname}
                     level={level}
                     startTimer={startTimer}
                     handleWinner={() => {
