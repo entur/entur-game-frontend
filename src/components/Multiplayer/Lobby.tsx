@@ -140,6 +140,9 @@ function Lobby({
                                         fade: 10,
                                         fontSize: 30,
                                     })
+                                    setTimeout(() => {
+                                        navigate(0)
+                                    }, 8000)
                                 }
                             },
                         )
@@ -177,10 +180,10 @@ function Lobby({
                                         fade: 10,
                                         fontSize: 30,
                                     })
+                                    setTimeout(() => {
+                                        navigate(0)
+                                    }, 8000)
                                 }
-                                setTimeout(() => {
-                                    navigate(0)
-                                }, 5000)
                             },
                         )
                     }}
