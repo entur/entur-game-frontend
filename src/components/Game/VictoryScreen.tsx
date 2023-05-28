@@ -56,7 +56,7 @@ function VictoryScreen({
                 <TextField
                     defaultValue={nickname}
                     style={{ marginBottom: '20px' }}
-                    label="nickname"
+                    label="Nickname"
                     onChange={(e) => setName(e.target.value)}
                 ></TextField>
                 <PrimaryButton
