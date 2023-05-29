@@ -206,7 +206,7 @@ function Lobby({
                         setIsJoinButtonDisabled(false)
                     }}
                 >
-                    {`Legg til "${possibleGameId}" som Spill-ID?`}
+                    {`Et nytt spill ble oppdaget. Legg til "${possibleGameId}" som Spill-ID?`}
                 </SecondaryButton>
             )}
         </div>
