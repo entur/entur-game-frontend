@@ -12,8 +12,6 @@ export function TravelTimeline({
     travelLegs,
     travelLegsMode,
 }: Props): JSX.Element {
-  console.log(travelLegs)
-  console.log(travelLegsMode)
     return (
         <div>
             <Heading3>Din reiserute</Heading3>
