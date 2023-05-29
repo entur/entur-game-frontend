@@ -146,29 +146,35 @@ function Game({
             setSprinkled(true)
         }
         return (
-            <VictoryScreen
-                nickname={nickname}
-                level={level}
-                target={targets[0]}
-                setTarget={(target) => {
-                    setTargets([target])
-                }}
-                numLegs={numLegs}
-                currentTime={currentTime}
-                startTime={startTime}
-                startTimer={startTimer}
-                travelLegs={travelLegs}
-                travelLegsMode={travelLegsMode}
-            />
+            <div className="app" style={{ maxWidth: '800px' }}>
+                <VictoryScreen
+                    nickname={nickname}
+                    level={level}
+                    target={targets[0]}
+                    setTarget={(target) => {
+                        setTargets([target])
+                    }}
+                    numLegs={numLegs}
+                    currentTime={currentTime}
+                    startTime={startTime}
+                    startTimer={startTimer}
+                    travelLegs={travelLegs}
+                    travelLegsMode={travelLegsMode}
+                />
+            </div>
         )
     }
 
     if (dead && mode) {
-        return <DeadScreen mode={mode} stopPlace={stopPlace} />
+        return (
+            <div className="app" style={{ maxWidth: '800px' }}>
+                <DeadScreen mode={mode} stopPlace={stopPlace} />
+            </div>
+        )
     }
 
     return (
-        <div className="app">
+        <div className="app" style={{ maxWidth: '800px' }}>
             <header>
                 <TravelHeader
                     from={
