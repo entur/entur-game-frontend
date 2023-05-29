@@ -86,12 +86,12 @@ function VictoryScreen({
                                 startTime,
                             ),
                         })
-                        navigate(-1)
+                        navigate('/')
                     }}
                 >
                     Lagre min poengsum!
                 </PrimaryButton>
-                <SuccessButton onClick={() => window.location.reload()}>
+                <SuccessButton onClick={() => navigate('/')}>
                     Spill på nytt
                 </SuccessButton>
             </>
