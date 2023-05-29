@@ -51,11 +51,22 @@ const subscribeToGame = ({
     })
 }
 
-const configureWebSocket = () => {
+const configureWebSocket = ({
+    setPossibleGameId,
+}: {
+    setPossibleGameId: React.Dispatch<React.SetStateAction<string | null>>
+}) => {
     client.configure({
         brokerURL: `${baseUrl}/game-ws`,
         onConnect: () => {
             console.log('onConnect')
+            client.subscribe('/topic/waiting-for-game', (message) => {
+                const textCoderResponse = new TextDecoder().decode(
+                    message.binaryBody,
+                )
+                console.log(textCoderResponse)
+                setPossibleGameId(textCoderResponse)
+            })
         },
         // Helps during debugging, remove in production
         debug: (str) => {
@@ -72,9 +83,13 @@ const publishMessage = (destination: string, message: string) => {
     })
 }
 
-type Props = {
+type GameSocket = {
     client: Client
-    configureWebSocket: () => void
+    configureWebSocket: ({
+        setPossibleGameId,
+    }: {
+        setPossibleGameId: React.Dispatch<React.SetStateAction<string | null>>
+    }) => void
     publishMessage: (destination: string, message: string) => void
     subscribeToGame: ({
         gameId,
@@ -85,6 +100,11 @@ type Props = {
     }: subscribeToGameProps) => void
 }
 
-export function useGameSocket(): Props {
-    return { client, configureWebSocket, publishMessage, subscribeToGame }
+export function useGameSocket(): GameSocket {
+    return {
+        client,
+        configureWebSocket,
+        publishMessage,
+        subscribeToGame,
+    }
 }

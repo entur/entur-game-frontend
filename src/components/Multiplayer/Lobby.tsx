@@ -1,4 +1,4 @@
-import { PrimaryButton } from '@entur/button'
+import { PrimaryButton, SecondaryButton } from '@entur/button'
 import { TextField } from '@entur/form'
 import React, { useEffect, useState } from 'react'
 import { Client } from '@stomp/stompjs'
@@ -41,20 +41,57 @@ function Lobby({
     setNickname,
 }: Props): JSX.Element {
     const navigate = useNavigate()
-    const { client, configureWebSocket, subscribeToGame } = useGameSocket()
+    const {
+        client,
+        configureWebSocket,
+        subscribeToGame,
+        publishMessage,
+    } = useGameSocket()
     const [refreshCounter, setRefreshCounter] = useState<number>(0)
     const [isJoined, setJoined] = useState<boolean>(false)
+    const [possibleGameId, setPossibleGameId] = useState<string | null>(null)
     //TODO: Use isFinished
     const [isFinished, setFinished] = useState<boolean>(false)
     const [isPlayButtonDisabled, setIsPlayButtonDisabled] = useState(true)
     const [isJoinButtonDisabled, setIsJoinButtonDisabled] = useState(true)
 
     useEffect(() => {
-        configureWebSocket()
+        configureWebSocket({ setPossibleGameId: setPossibleGameId })
     }, [])
+
+    const handleJoinGame = async () => {
+        if (sessionId !== null) {
+            await joinGame(sessionId, nickname)
+            subscribeToGame({
+                gameId: sessionId,
+                setLevel,
+                setFinished,
+                setReady,
+                setRefreshCounter,
+            })
+        }
+        client.subscribe('/topic/' + sessionId + '/finished', (message) => {
+            const winner = new TextDecoder()
+                .decode(message.binaryBody)
+                .replaceAll('"', '')
+            if (nickname !== winner) {
+                sprinkleEmojis({
+                    emoji: '😭',
+                    count: 50,
+                    fade: 10,
+                    fontSize: 30,
+                })
+                setTimeout(() => {
+                    navigate(0)
+                }, 8000)
+            }
+        })
+        setJoined(true)
+    }
 
     if (isJoined) {
         invariant(sessionId !== null, 'sessionId is null')
+        publishMessage('/topic/waiting-for-game', sessionId)
         return (
             <div
                 style={{
@@ -116,38 +153,7 @@ function Lobby({
                 <PrimaryButton
                     style={{ marginBottom: '20px', marginRight: '20px' }}
                     disabled={isJoinButtonDisabled}
-                    onClick={async () => {
-                        if (sessionId !== null) {
-                            await joinGame(sessionId, nickname)
-                            subscribeToGame({
-                                gameId: sessionId,
-                                setLevel,
-                                setFinished,
-                                setReady,
-                                setRefreshCounter,
-                            })
-                        }
-                        client.subscribe(
-                            '/topic/' + sessionId + '/finished',
-                            (message) => {
-                                const winner = new TextDecoder()
-                                    .decode(message.binaryBody)
-                                    .replaceAll('"', '')
-                                if (nickname !== winner) {
-                                    sprinkleEmojis({
-                                        emoji: '😭',
-                                        count: 50,
-                                        fade: 10,
-                                        fontSize: 30,
-                                    })
-                                    setTimeout(() => {
-                                        navigate(0)
-                                    }, 8000)
-                                }
-                            },
-                        )
-                        setJoined(true)
-                    }}
+                    onClick={handleJoinGame}
                 >
                     Bli med
                 </PrimaryButton>
@@ -190,6 +196,18 @@ function Lobby({
                 >
                     Lag nytt spill
                 </PrimaryButton>
+            )}
+            {nickname && possibleGameId && (
+                <SecondaryButton
+                    style={{ marginBottom: '20px', marginRight: '20px' }}
+                    onClick={() => {
+                        setSessionId(possibleGameId)
+                        setPossibleGameId(null)
+                        setIsJoinButtonDisabled(false)
+                    }}
+                >
+                    {`Legg til "${possibleGameId}" som Spill-ID?`}
+                </SecondaryButton>
             )}
         </div>
     )
