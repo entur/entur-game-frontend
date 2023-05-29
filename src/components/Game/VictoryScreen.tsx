@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Heading1, Paragraph } from '@entur/typography'
 import { TextField } from '@entur/form'
-import { StopPlace } from '@entur/sdk'
+import { QueryMode, StopPlace } from '@entur/sdk'
 import { PrimaryButton, SuccessButton } from '@entur/button'
 import { useNavigate } from 'react-router-dom'
 
@@ -11,6 +11,7 @@ import {
 } from '../../utils/dateFnsUtils'
 import { Level } from '../../constant/levels'
 import { savePlayerScore } from '../../api/playerScoreApi'
+import { TravelTimeline } from '../TravelTimeline'
 
 type Props = {
     nickname: string
@@ -21,6 +22,8 @@ type Props = {
     currentTime: Date
     startTime: Date
     startTimer: number
+    travelLegs: StopPlace[]
+    travelLegsMode: QueryMode[]
 }
 
 function VictoryScreen({
@@ -31,6 +34,8 @@ function VictoryScreen({
     currentTime,
     startTime,
     startTimer,
+    travelLegs,
+    travelLegsMode,
 }: Props): JSX.Element {
     const [name, setName] = useState(nickname)
     const navigate = useNavigate()
@@ -51,14 +56,13 @@ function VictoryScreen({
                 startTime,
             )}.`}</Paragraph>
             <Paragraph>{`Vår reiseplanlegger har beregnet en optimal rute der etapper er ${level.optimalRoute}, og reisetid er ${level.optimalTraveltime}.`}</Paragraph>
-
             <>
                 <TextField
                     defaultValue={nickname}
-                    style={{ marginBottom: '20px' }}
-                    label="nickname"
+                    style={{ marginBottom: '20px', marginTop: '20px' }}
+                    label="Nickname"
                     onChange={(e) => setName(e.target.value)}
-                ></TextField>
+                />
                 <PrimaryButton
                     style={{ marginRight: '20px' }}
                     onClick={async () => {
@@ -82,15 +86,19 @@ function VictoryScreen({
                                 startTime,
                             ),
                         })
-                        navigate(-1)
+                        navigate('/')
                     }}
                 >
                     Lagre min poengsum!
                 </PrimaryButton>
-                <SuccessButton onClick={() => window.location.reload()}>
+                <SuccessButton onClick={() => navigate('/')}>
                     Spill på nytt
                 </SuccessButton>
             </>
+            <TravelTimeline
+                travelLegs={travelLegs}
+                travelLegsMode={travelLegsMode}
+            />
         </div>
     )
 }

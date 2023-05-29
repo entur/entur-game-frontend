@@ -1,12 +1,13 @@
 .app {
     margin: 2rem auto;
-    max-width: 800px;
+    max-width: 1200px;
     padding: 1rem;
 }
 
 .leaderboard {
-    margin-left: -70px;
-    max-width: 1000px;
+    margin-left: 10px;
+    max-width: 1200px;
+    overflow-x: scroll;
 }
 
 .media-card-images {

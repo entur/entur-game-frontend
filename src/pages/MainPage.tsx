@@ -20,13 +20,13 @@ export function MainPage(): JSX.Element {
                 Klarer du å fullføre reisene uten hjelp av reisesøk? Test hvor
                 godt du kjenner til kollektiv-Norge her!
             </Paragraph>
-            <Heading2>Velg en reise</Heading2>
-            <SelectLevel />
             <div style={{ marginTop: '40px' }}>
                 <Link to="/multiplayer">
                     <PrimaryButton>Flerspiller</PrimaryButton>
                 </Link>
             </div>
+            <Heading2>Velg en reise</Heading2>
+            <SelectLevel />
         </div>
     )
 }

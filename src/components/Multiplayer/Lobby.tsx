@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { Client } from '@stomp/stompjs'
 import { CopyableText } from '@entur/alert'
 import { sprinkleEmojis } from 'emoji-sprinkle'
+import { useNavigate } from 'react-router-dom'
 
 import PlayerList from './PlayerList'
 import { Level } from '../../constant/levels'
@@ -39,6 +40,7 @@ function Lobby({
     nickname,
     setNickname,
 }: Props): JSX.Element {
+    const navigate = useNavigate()
     const { client, configureWebSocket, subscribeToGame } = useGameSocket()
     const [refreshCounter, setRefreshCounter] = useState<number>(0)
     const [isJoined, setJoined] = useState<boolean>(false)
@@ -138,6 +140,9 @@ function Lobby({
                                         fade: 10,
                                         fontSize: 30,
                                     })
+                                    setTimeout(() => {
+                                        navigate(0)
+                                    }, 8000)
                                 }
                             },
                         )
@@ -162,6 +167,25 @@ function Lobby({
                             setReady,
                             setRefreshCounter,
                         })
+                        client.subscribe(
+                            '/topic/' + game.id + '/finished',
+                            (message) => {
+                                const winner = new TextDecoder()
+                                    .decode(message.binaryBody)
+                                    .replaceAll('"', '')
+                                if (nickname !== winner) {
+                                    sprinkleEmojis({
+                                        emoji: '😭',
+                                        count: 50,
+                                        fade: 10,
+                                        fontSize: 30,
+                                    })
+                                    setTimeout(() => {
+                                        navigate(0)
+                                    }, 8000)
+                                }
+                            },
+                        )
                     }}
                 >
                     Lag nytt spill

@@ -48,23 +48,26 @@ function Game({
     const [hasBeenSprinkled, setSprinkled] = useState<boolean>(false)
     const [dead, setDead] = useState<boolean>(false)
     const [numLegs, setNumLegs] = useState<number>(0)
+    const [travelLegsMode, setTravelLegsMode] = useState<QueryMode[]>([])
     const [stopPlace, setStopPlace] = useState<StopPlace>(level.start)
+    const [travelLegs, setTravelLegs] = useState<StopPlace[]>([level.start])
     const [targets, setTargets] = useState<StopPlace[]>(level.targets)
     const [mode, setMode] = useState<QueryMode | null>(null)
     const [departures, setDepartures] = useState<Departure[]>([])
     const [stopsOnLine, setStopsOnLine] = useState<StopAndTime[]>([])
     const [currentTime, setCurrentTime] = useState<Date>(new Date())
-
     const { getWalkableStopPlaces, getDepartures, getStopsOnLine } =
         useEnturService()
 
     useEffect(() => {
         setStopPlace(level.start)
+        setTravelLegs([level.start])
         setTargets(level.targets)
     }, [level])
 
     const selectMode = (newMode: QueryMode) => {
         setMode(newMode)
+        setTravelLegsMode((prev) => [...prev, newMode])
         if (newMode === 'foot') {
             getWalkableStopPlaces(stopPlace).then((stops) => {
                 setStopsOnLine(
@@ -126,6 +129,7 @@ function Game({
         setMode(null)
         if (stopAndTime) {
             setStopPlace(stopAndTime.stopPlace)
+            setTravelLegs((prev) => [...prev, stopAndTime.stopPlace])
             setNumLegs((prev) => prev + 1)
         }
     }
@@ -153,6 +157,8 @@ function Game({
                 currentTime={currentTime}
                 startTime={startTime}
                 startTimer={startTimer}
+                travelLegs={travelLegs}
+                travelLegsMode={travelLegsMode}
             />
         )
     }
@@ -256,7 +262,7 @@ function Game({
                             onClick={() => navigate(-1)}
                             style={{ marginTop: '10px' }}
                         >
-                            Send meg tilbake
+                            Hovedmeny
                         </PrimaryButton>
                     </div>
                 ) : null}
