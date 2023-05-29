@@ -23,6 +23,7 @@ import { isTruthy } from '../../utils/isTruthy'
 import { useEnturService } from '../../hooks/useEnturService'
 import VictoryScreen from './VictoryScreen'
 import DeadScreen from './DeadScreen'
+import { HpBar } from './HpBar'
 
 interface StopAndTime {
     stopPlace: StopPlace | StopPlaceDetails
@@ -45,6 +46,7 @@ function Game({
     handleWinner,
 }: Props): JSX.Element {
     const navigate = useNavigate()
+    const [totalHp, setTotalHp] = useState<number>(2)
     const [hasBeenSprinkled, setSprinkled] = useState<boolean>(false)
     const [dead, setDead] = useState<boolean>(false)
     const [numLegs, setNumLegs] = useState<number>(0)
@@ -77,14 +79,22 @@ function Game({
                     })),
                 )
                 if (!stops.length) {
-                    setDead(true)
+                    setTotalHp((prev) => prev - 1)
+                    if (totalHp - 1 < 1) {
+                        setDead(true)
+                    }
+                    setMode(null)
                 }
             })
         } else {
             getDepartures(stopPlace.id, newMode, currentTime).then((deps) => {
                 setDepartures(deps)
                 if (!deps.length) {
-                    setDead(true)
+                    setTotalHp((prev) => prev - 1)
+                    if (totalHp - 1 < 1) {
+                        setDead(true)
+                    }
+                    setMode(null)
                 }
             })
         }
@@ -193,6 +203,7 @@ function Game({
                     Du har reist {numLegs} etapper og brukt{' '}
                     {formatTimeForEndOfGame(currentTime, startTime)}.
                 </Paragraph>
+                <HpBar totalHp={totalHp + 1} />
             </header>
             {!mode ? (
                 <div>
