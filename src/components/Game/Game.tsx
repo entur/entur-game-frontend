@@ -80,8 +80,9 @@ function Game({
                 )
                 if (!stops.length) {
                     setTotalHp((prev) => prev - 1)
-                    if (totalHp - 1 < 1) {
+                    if (totalHp < 1) {
                         setDead(true)
+                        return
                     }
                     setMode(null)
                 }
@@ -91,8 +92,9 @@ function Game({
                 setDepartures(deps)
                 if (!deps.length) {
                     setTotalHp((prev) => prev - 1)
-                    if (totalHp - 1 < 1) {
+                    if (totalHp < 1) {
                         setDead(true)
+                        return
                     }
                     setMode(null)
                 }
