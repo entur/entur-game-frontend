@@ -50,18 +50,18 @@ function Game({
     const [numLegs, setNumLegs] = useState<number>(0)
     const [travelLegsMode, setTravelLegsMode] = useState<QueryMode[]>([])
     const [stopPlace, setStopPlace] = useState<StopPlace>(level.start)
-    const [travelLegs, setTravelLegs] = useState<StopPlace[]>([stopPlace])
+    const [travelLegs, setTravelLegs] = useState<StopPlace[]>([level.start])
     const [targets, setTargets] = useState<StopPlace[]>(level.targets)
     const [mode, setMode] = useState<QueryMode | null>(null)
     const [departures, setDepartures] = useState<Departure[]>([])
     const [stopsOnLine, setStopsOnLine] = useState<StopAndTime[]>([])
     const [currentTime, setCurrentTime] = useState<Date>(new Date())
-
     const { getWalkableStopPlaces, getDepartures, getStopsOnLine } =
         useEnturService()
 
     useEffect(() => {
         setStopPlace(level.start)
+        setTravelLegs([level.start])
         setTargets(level.targets)
     }, [level])
 

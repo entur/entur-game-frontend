@@ -17,7 +17,7 @@ export function TravelTimeline({
             <Heading3>Din reiserute</Heading3>
             <div
                 style={{
-                    height: '1000px',
+                    maxHeight: '1000px',
                     display: 'flex',
                     flexDirection: 'column',
                 }}
