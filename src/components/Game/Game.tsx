@@ -69,7 +69,6 @@ function Game({
 
     const selectMode = (newMode: QueryMode) => {
         setMode(newMode)
-        setTravelLegsMode((prev) => [...prev, newMode])
         if (newMode === 'foot') {
             getWalkableStopPlaces(stopPlace).then((stops) => {
                 setStopsOnLine(
@@ -85,6 +84,8 @@ function Game({
                         return
                     }
                     setMode(null)
+                } else {
+                    setTravelLegsMode((prev) => [...prev, newMode])
                 }
             })
         } else {
@@ -97,9 +98,14 @@ function Game({
                         return
                     }
                     setMode(null)
+                } else {
+                    setTravelLegsMode((prev) => [...prev, newMode])
                 }
             })
         }
+        console.log(travelLegsMode)
+        console.log(travelLegs)
+        console.log(mode)
     }
 
     const wait = () => {

@@ -202,7 +202,7 @@ function Lobby({
                 Lag nytt spill
             </PrimaryButton>
 
-            {!sessionId && possibleGameId && (
+            {!(sessionId === possibleGameId) && possibleGameId && (
                 <SecondaryButton
                     style={{ marginBottom: '20px', marginRight: '20px' }}
                     onClick={() => {
