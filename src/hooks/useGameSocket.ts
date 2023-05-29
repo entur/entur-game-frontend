@@ -83,6 +83,18 @@ const publishMessage = (destination: string, message: string) => {
     })
 }
 
+const waitingForGame = ({
+    setPossibleGameId,
+}: {
+    setPossibleGameId: React.Dispatch<React.SetStateAction<string | null>>
+}) => {
+    client.subscribe('/topic/waiting-for-game', (message) => {
+        const textCoderResponse = new TextDecoder().decode(message.binaryBody)
+        console.log(textCoderResponse)
+        setPossibleGameId(textCoderResponse)
+    })
+}
+
 type GameSocket = {
     client: Client
     configureWebSocket: ({
@@ -98,6 +110,11 @@ type GameSocket = {
         setFinished,
         setRefreshCounter,
     }: subscribeToGameProps) => void
+    waitingForGame: ({
+        setPossibleGameId,
+    }: {
+        setPossibleGameId: React.Dispatch<React.SetStateAction<string | null>>
+    }) => void
 }
 
 export function useGameSocket(): GameSocket {
@@ -106,5 +123,6 @@ export function useGameSocket(): GameSocket {
         configureWebSocket,
         publishMessage,
         subscribeToGame,
+        waitingForGame,
     }
 }

@@ -11,6 +11,7 @@ import { Level } from '../../constant/levels'
 import { useGameSocket } from '../../hooks/useGameSocket'
 import { createGame, joinGame, startGame } from '../../api/gameApi'
 import invariant from 'tiny-invariant'
+import { Loader } from '@entur/loader'
 
 //TOOD: Cleanup
 type Props = {
@@ -46,18 +47,23 @@ function Lobby({
         configureWebSocket,
         subscribeToGame,
         publishMessage,
+        waitingForGame,
     } = useGameSocket()
     const [refreshCounter, setRefreshCounter] = useState<number>(0)
     const [isJoined, setJoined] = useState<boolean>(false)
     const [possibleGameId, setPossibleGameId] = useState<string | null>(null)
     //TODO: Use isFinished
     const [isFinished, setFinished] = useState<boolean>(false)
-    const [isPlayButtonDisabled, setIsPlayButtonDisabled] = useState(true)
-    const [isJoinButtonDisabled, setIsJoinButtonDisabled] = useState(true)
 
     useEffect(() => {
-        configureWebSocket({ setPossibleGameId: setPossibleGameId })
+        configureWebSocket({ setPossibleGameId })
     }, [])
+
+    useEffect(() => {
+        if (client.connected) {
+            waitingForGame({ setPossibleGameId })
+        }
+    }, [client.connected, navigate])
 
     const handleJoinGame = async () => {
         if (sessionId !== null) {
@@ -113,11 +119,15 @@ function Lobby({
                 {isOwner && (
                     <PrimaryButton
                         style={{ marginBottom: '20px' }}
-                        disabled={isPlayButtonDisabled}
                         onClick={() => startGame(sessionId, level.id)}
                     >
                         Start spillet
                     </PrimaryButton>
+                )}
+                {!isOwner && (
+                    <Loader style={{ marginBottom: '30px' }}>
+                        Venter på start signal
+                    </Loader>
                 )}
             </div>
         )
@@ -134,8 +144,6 @@ function Lobby({
                 value={nickname ?? ''}
                 onChange={(event) => {
                     setNickname(event.target.value)
-                    setIsPlayButtonDisabled(false)
-                    setIsJoinButtonDisabled(true)
                 }}
                 style={{ marginBottom: '20px' }}
             />
@@ -144,66 +152,61 @@ function Lobby({
                 value={sessionId ?? ''}
                 onChange={(event) => {
                     setSessionId(event.target.value)
-                    setIsJoinButtonDisabled(false)
-                    setIsPlayButtonDisabled(true)
                 }}
                 style={{ marginBottom: '20px' }}
             />
-            {sessionId && nickname && (
-                <PrimaryButton
-                    style={{ marginBottom: '20px', marginRight: '20px' }}
-                    disabled={isJoinButtonDisabled}
-                    onClick={handleJoinGame}
-                >
-                    Bli med
-                </PrimaryButton>
-            )}
-            {nickname && !sessionId && (
-                <PrimaryButton
-                    style={{ marginBottom: '20px', marginRight: '20px' }}
-                    onClick={async () => {
-                        const game = await createGame(nickname)
-                        setSessionId(game.id)
-                        setOwner(true)
-                        setJoined(true)
-                        subscribeToGame({
-                            gameId: game.id,
-                            setLevel,
-                            setFinished,
-                            setReady,
-                            setRefreshCounter,
-                        })
-                        client.subscribe(
-                            '/topic/' + game.id + '/finished',
-                            (message) => {
-                                const winner = new TextDecoder()
-                                    .decode(message.binaryBody)
-                                    .replaceAll('"', '')
-                                if (nickname !== winner) {
-                                    sprinkleEmojis({
-                                        emoji: '😭',
-                                        count: 50,
-                                        fade: 10,
-                                        fontSize: 30,
-                                    })
-                                    setTimeout(() => {
-                                        navigate(0)
-                                    }, 8000)
-                                }
-                            },
-                        )
-                    }}
-                >
-                    Lag nytt spill
-                </PrimaryButton>
-            )}
-            {nickname && possibleGameId && (
+
+            <PrimaryButton
+                disabled={!(sessionId && nickname)}
+                style={{ marginBottom: '20px', marginRight: '20px' }}
+                onClick={handleJoinGame}
+            >
+                Bli med
+            </PrimaryButton>
+            <PrimaryButton
+                disabled={!(nickname && !sessionId)}
+                style={{ marginBottom: '20px', marginRight: '20px' }}
+                onClick={async () => {
+                    const game = await createGame(nickname)
+                    setSessionId(game.id)
+                    setOwner(true)
+                    setJoined(true)
+                    subscribeToGame({
+                        gameId: game.id,
+                        setLevel,
+                        setFinished,
+                        setReady,
+                        setRefreshCounter,
+                    })
+                    client.subscribe(
+                        '/topic/' + game.id + '/finished',
+                        (message) => {
+                            const winner = new TextDecoder()
+                                .decode(message.binaryBody)
+                                .replaceAll('"', '')
+                            if (nickname !== winner) {
+                                sprinkleEmojis({
+                                    emoji: '😭',
+                                    count: 50,
+                                    fade: 10,
+                                    fontSize: 30,
+                                })
+                                setTimeout(() => {
+                                    navigate(0)
+                                }, 8000)
+                            }
+                        },
+                    )
+                }}
+            >
+                Lag nytt spill
+            </PrimaryButton>
+
+            {!sessionId && possibleGameId && (
                 <SecondaryButton
                     style={{ marginBottom: '20px', marginRight: '20px' }}
                     onClick={() => {
                         setSessionId(possibleGameId)
-                        setPossibleGameId(null)
-                        setIsJoinButtonDisabled(false)
                     }}
                 >
                     {`Et nytt spill ble oppdaget. Legg til "${possibleGameId}" som Spill-ID?`}
