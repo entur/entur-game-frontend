@@ -11,70 +11,91 @@ import { LeaderBoard } from './Multiplayer/LeaderBoard'
 
 function SelectLevel(): JSX.Element {
     const navigate = useNavigate()
+    const [difficulty, setDifficulty] = React.useState<
+        'Lett' | 'Middels' | 'Vanskelig'
+    >('Lett')
     return (
-        <Tabs style={{ marginRight: 'auto', marginTop: '40px' }}>
-            <TabList>
-                <Tab>Lett</Tab>
-                <Tab>Middels</Tab>
-                <Tab>Vanskelig</Tab>
-            </TabList>
-            <TabPanels>
-                <TabPanel>
-                    {EASY.map((level) => (
-                        <MediaCard
-                            title={level.name}
-                            key={level.name}
-                            description={level.description}
-                            onClick={() => navigate(`/game/${level.id}`)}
-                            className="media-card-images"
-                        >
-                            <img
-                                className="images"
-                                src={easy}
-                                alt="OSLO-TRONDHEIM"
-                            />
-                        </MediaCard>
-                    ))}
-                    <LeaderBoard difficulty="Lett" />
-                </TabPanel>
-                <TabPanel>
-                    {MEDIUM.map((level) => (
-                        <MediaCard
-                            title={level.name}
-                            key={level.name}
-                            description={level.description}
-                            onClick={() => navigate(`/game/${level.id}`)}
-                            className="media-card-images"
-                        >
-                            <img
-                                className="images"
-                                src={medium}
-                                alt="MANDAL-SJUSJØEN"
-                            />
-                        </MediaCard>
-                    ))}
-                    <LeaderBoard difficulty="Middels" />
-                </TabPanel>
-                <TabPanel>
-                    {HARD.map((level) => (
-                        <MediaCard
-                            title={level.name}
-                            key={level.name}
-                            description={level.description}
-                            onClick={() => navigate(`/game/${level.id}`)}
-                            className="media-card-images"
-                        >
-                            <img
-                                className="images"
-                                src={hard}
-                                alt="HALDEN-HARSTAD"
-                            />
-                        </MediaCard>
-                    ))}
-                    <LeaderBoard difficulty="Vanskelig" />
-                </TabPanel>
-            </TabPanels>
-        </Tabs>
+        <>
+            <div style={{ maxWidth: '700px' }}>
+                <Tabs
+                    onChange={(index: number) => {
+                        if (index === 0) setDifficulty('Lett')
+                        else if (index === 1) setDifficulty('Middels')
+                        else if (index === 2) setDifficulty('Vanskelig')
+                    }}
+                    style={{ marginRight: 'auto', marginTop: '40px' }}
+                >
+                    <TabList>
+                        <Tab>Lett</Tab>
+                        <Tab>Middels</Tab>
+                        <Tab>Vanskelig</Tab>
+                    </TabList>
+                    <TabPanels>
+                        <TabPanel>
+                            {EASY.map((level) => (
+                                <MediaCard
+                                    style={{ overflowX: 'scroll' }}
+                                    title={level.name}
+                                    key={level.name}
+                                    description={level.description}
+                                    onClick={() =>
+                                        navigate(`/game/${level.id}`)
+                                    }
+                                    className="media-card-images"
+                                >
+                                    <img
+                                        className="images"
+                                        src={easy}
+                                        alt="OSLO-TRONDHEIM"
+                                    />
+                                </MediaCard>
+                            ))}
+                        </TabPanel>
+                        <TabPanel>
+                            {MEDIUM.map((level) => (
+                                <MediaCard
+                                    style={{ overflowX: 'scroll' }}
+                                    title={level.name}
+                                    key={level.name}
+                                    description={level.description}
+                                    onClick={() =>
+                                        navigate(`/game/${level.id}`)
+                                    }
+                                    className="media-card-images"
+                                >
+                                    <img
+                                        className="images"
+                                        src={medium}
+                                        alt="MANDAL-SJUSJØEN"
+                                    />
+                                </MediaCard>
+                            ))}
+                        </TabPanel>
+                        <TabPanel>
+                            {HARD.map((level) => (
+                                <MediaCard
+                                    style={{ overflowX: 'scroll' }}
+                                    title={level.name}
+                                    key={level.name}
+                                    description={level.description}
+                                    onClick={() =>
+                                        navigate(`/game/${level.id}`)
+                                    }
+                                    className="media-card-images"
+                                >
+                                    <img
+                                        className="images"
+                                        src={hard}
+                                        alt="HALDEN-HARSTAD"
+                                    />
+                                </MediaCard>
+                            ))}
+                        </TabPanel>
+                    </TabPanels>
+                </Tabs>
+            </div>
+            <LeaderBoard difficulty={difficulty} />
+        </>
     )
 }
 

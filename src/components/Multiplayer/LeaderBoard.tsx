@@ -25,7 +25,7 @@ export const LeaderBoard = ({ difficulty }: Props): JSX.Element => {
         }
 
         fetchData()
-    }, [])
+    }, [difficulty])
     if (players === undefined) {
         return <p>Laster inn...</p>
     }
