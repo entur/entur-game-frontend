@@ -58,6 +58,7 @@ function Game({
     const [departures, setDepartures] = useState<Departure[]>([])
     const [stopsOnLine, setStopsOnLine] = useState<StopAndTime[]>([])
     const [currentTime, setCurrentTime] = useState<Date>(new Date())
+    const [usedMode, setUsedMode] = useState<QueryMode[]>([])
     const { getWalkableStopPlaces, getDepartures, getStopsOnLine } =
         useEnturService()
 
@@ -83,8 +84,10 @@ function Game({
                         setDead(true)
                         return
                     }
+                    setUsedMode((prev) => [...prev, newMode])
                     setMode(null)
                 } else {
+                    setUsedMode([])
                     setTravelLegsMode((prev) => [...prev, newMode])
                 }
             })
@@ -97,15 +100,14 @@ function Game({
                         setDead(true)
                         return
                     }
+                    setUsedMode((prev) => [...prev, newMode])
                     setMode(null)
                 } else {
+                    setUsedMode([])
                     setTravelLegsMode((prev) => [...prev, newMode])
                 }
             })
         }
-        console.log(travelLegsMode)
-        console.log(travelLegs)
-        console.log(mode)
     }
 
     const wait = () => {
@@ -222,16 +224,20 @@ function Game({
                         name="Transport mode"
                     >
                         <>
-                            {ALL_MODES.map((mode) => (
-                                <ChoiceChip
-                                    key={mode}
-                                    value={mode}
-                                    onClick={() => selectMode(mode)}
-                                >
-                                    {getModeIcon(mode)}
-                                    {getModeTranslation(mode)}
-                                </ChoiceChip>
-                            ))}
+                            {ALL_MODES.map((mode) => {
+                                const disabled = usedMode.includes(mode)
+                                return (
+                                    <ChoiceChip
+                                        key={mode}
+                                        value={mode}
+                                        onClick={() => selectMode(mode)}
+                                        disabled={disabled}
+                                    >
+                                        {getModeIcon(mode)}
+                                        {getModeTranslation(mode)}
+                                    </ChoiceChip>
+                                )
+                            })}
                             <ChoiceChip
                                 key="wait"
                                 value="wait"
