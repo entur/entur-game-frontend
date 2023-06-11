@@ -54,6 +54,8 @@ function VictoryScreen({
             } og ${formatTimeForEndOfGame(
                 currentTime,
                 startTime,
+                level.difficulty,
+                numLegs
             )}.`}</Paragraph>
             <Paragraph>{`Vår reiseplanlegger har beregnet en optimal rute der etapper er ${level.optimalRoute}, og reisetid er ${level.optimalTraveltime}.`}</Paragraph>
             <>

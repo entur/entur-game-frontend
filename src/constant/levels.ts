@@ -6,7 +6,7 @@ export type Level = {
     description: string
     start: StopPlace
     targets: StopPlace[]
-    difficulty: 'Lett' | 'Middels' | 'Vanskelig'
+    difficulty: 'Lett' | 'Middels' | 'Vanskelig' | 'Event'
     optimalRoute: number
     optimalTraveltime: string
 }
@@ -100,4 +100,27 @@ export const HARD: Level[] = [
     },
 ]
 
-export const ALL_LEVELS = [...EASY, ...MEDIUM, ...HARD]
+export const EVENT: Level[] = [
+    {
+        id: 'j54ls',
+        name: 'Mandal sentrum - Alta sentrum',
+        description: 'Fra Mandal sentrum til Alta sentrum',
+        start: {
+            id: 'NSR:StopPlace:22329',
+            name: 'Mandal sentrum',
+            latitude: 58.0287,
+            longitude: 7.4597,
+        },
+        targets: [
+            {
+                id: 'NSR:StopPlace:56826',
+                name: 'Alta sentrum'
+            },
+        ],
+        difficulty: 'Event',
+        optimalRoute: 12,
+        optimalTraveltime: '123 timer, 12 minutter',
+    },
+]
+
+export const ALL_LEVELS = [...EASY, ...MEDIUM, ...HARD, ...EVENT]

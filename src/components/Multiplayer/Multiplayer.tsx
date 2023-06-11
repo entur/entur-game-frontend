@@ -8,7 +8,7 @@ import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@entur/tab'
 import { MediaCard } from '@entur/layout'
 
 import Lobby from './Lobby'
-import { EASY, HARD, Level, MEDIUM } from '../../constant/levels'
+import { EASY, HARD, Level, MEDIUM, EVENT } from '../../constant/levels'
 import Game from '../Game/Game'
 import { useGameSocket } from '../../hooks/useGameSocket'
 import easy from '@assets/images/easy.png'
@@ -67,6 +67,7 @@ function Multiplayer(): JSX.Element {
                                     <Tab>Lett</Tab>
                                     <Tab>Middels</Tab>
                                     <Tab>Vanskelig</Tab>
+                                    <Tab>Event</Tab>
                                 </TabList>
                                 <TabPanels>
                                     <TabPanel>
@@ -122,6 +123,25 @@ function Multiplayer(): JSX.Element {
                                                     className="images"
                                                     src={hard}
                                                     alt="HALDEN-HARSTAD"
+                                                />
+                                            </MediaCard>
+                                        ))}
+                                    </TabPanel>
+                                    <TabPanel>
+                                        {EVENT.map((level) => (
+                                            <MediaCard
+                                                title={level.name}
+                                                key={level.name}
+                                                description={level.description}
+                                                onClick={() => {
+                                                    setLevel(level)
+                                                }}
+                                                className="media-card-images"
+                                            >
+                                                <img
+                                                    className="images"
+                                                    src={hard}
+                                                    alt="MANDAL-ALTA"
                                                 />
                                             </MediaCard>
                                         ))}

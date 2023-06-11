@@ -7,7 +7,7 @@ export interface Destination {
 
 export interface PlayerResponse {
     nickname: string
-    difficulty: 'Lett' | 'Middels' | 'Vanskelig'
+    difficulty: 'Lett' | 'Middels' | 'Vanskelig' | 'Event'
     score: number
     totalOptions: number
     totalPlaytime: number
