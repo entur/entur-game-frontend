@@ -6,13 +6,13 @@ import { MediaCard } from '@entur/layout'
 import easy from '@assets/images/easy.png'
 import medium from '@assets/images/medium.png'
 import hard from '@assets/images/hard.png'
-import { EASY, HARD, MEDIUM } from '../constant/levels'
+import { EASY, EVENT, HARD, MEDIUM } from '../constant/levels'
 import { LeaderBoard } from './Multiplayer/LeaderBoard'
 
 function SelectLevel(): JSX.Element {
     const navigate = useNavigate()
     const [difficulty, setDifficulty] = React.useState<
-        'Lett' | 'Middels' | 'Vanskelig'
+        'Lett' | 'Middels' | 'Vanskelig' | 'Event'
     >('Lett')
     return (
         <>
@@ -22,6 +22,7 @@ function SelectLevel(): JSX.Element {
                         if (index === 0) setDifficulty('Lett')
                         else if (index === 1) setDifficulty('Middels')
                         else if (index === 2) setDifficulty('Vanskelig')
+                        else if (index === 3) setDifficulty('Event')
                     }}
                     style={{ marginRight: 'auto', marginTop: '40px' }}
                 >
@@ -29,6 +30,7 @@ function SelectLevel(): JSX.Element {
                         <Tab>Lett</Tab>
                         <Tab>Middels</Tab>
                         <Tab>Vanskelig</Tab>
+                        <Tab>Event</Tab>
                     </TabList>
                     <TabPanels>
                         <TabPanel>
@@ -87,6 +89,26 @@ function SelectLevel(): JSX.Element {
                                         className="images"
                                         src={hard}
                                         alt="HALDEN-HARSTAD"
+                                    />
+                                </MediaCard>
+                            ))}
+                        </TabPanel>
+                        <TabPanel>
+                            {EVENT.map((level) => (
+                                <MediaCard
+                                    style={{ overflowX: 'scroll' }}
+                                    title={level.name}
+                                    key={level.name}
+                                    description={level.description}
+                                    onClick={() =>
+                                        navigate(`/game/${level.id}`)
+                                    }
+                                    className="media-card-images"
+                                >
+                                    <img
+                                        className="images"
+                                        src={hard}
+                                        alt="MANDAL-ALTA"
                                     />
                                 </MediaCard>
                             ))}

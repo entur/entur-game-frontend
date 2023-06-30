@@ -67,7 +67,7 @@ function Game({
         setTravelLegs([level.start])
         setTargets(level.targets)
     }, [level])
-
+    
     const selectMode = (newMode: QueryMode) => {
         setMode(newMode)
         if (newMode === 'foot') {
@@ -211,7 +211,7 @@ function Game({
                 </Paragraph>
                 <Paragraph>
                     Du har reist {numLegs} etapper og brukt{' '}
-                    {formatTimeForEndOfGame(currentTime, startTime)}.
+                    {formatTimeForEndOfGame(currentTime, startTime, level.difficulty, numLegs)}.
                 </Paragraph>
                 <HpBar totalHp={totalHp + 1} />
             </header>
