@@ -1,0 +1,123 @@
+/* set the background color to 181c56 and make sure it fills the screen*/
+body {
+    background: #181C56;
+    width: 1366px;
+    height: 1024px;
+}
+
+
+/* select a div with id illustration1 */
+#illustration1 {
+    width: 307px;
+    height: 289px;
+    flex-shrink: 0;
+    background: url('../assets/images/Artboard 9@3x.png');
+    position: absolute;
+    top: 75px;
+    left: 466px;
+}
+
+#illustration2 {
+    width: 307px;
+    height: 289px;
+    flex-shrink: 0;
+    background: url('../assets/images/Artboard 10@3x.png');
+    position: absolute;
+    top: 338px;
+    left: 206px;
+}
+
+#illustration3 {
+    width: 307px;
+    height: 289px;
+    flex-shrink: 0;
+    background: url('../assets/images/Artboard 11@3x.png');
+    position: absolute;
+    top: 268px;
+    left: 848px;
+}
+
+#en {
+    color: #FFF;
+    font-size: 48px;
+    font-family: Nationale;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+#middels {
+    color: #FF5959;
+    font-size: 64px;
+    font-family: Nationale;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+#tur {
+    color: #FFF;
+    font-size: 48px;
+    font-family: Nationale;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+#centertext {
+    display: inline-flex;
+    align-items: center;
+    gap: 24px;
+    position: absolute;
+    top: 373px;
+    left: 434px;
+}
+
+#welcometext {
+    display: flex;
+    width: 304px;
+    flex-direction: column;
+    color: #FFF;
+    text-align: center;
+    font-size: 24px;
+    font-family: Nationale;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+#questiontext {
+    display: flex;
+    width: 512px;
+    flex-direction: column;
+    color: #FFF;
+    text-align: center;
+    font-size: 18px;
+    font-family: Nationale;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%;
+}
+
+#infotext {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    position: absolute;
+    top: 605px;
+    left: 451px;
+}
+
+Button {
+    display: flex;
+    width: 288px;
+    height: 56px;
+    padding: 17.733px 0px 16.267px 0px;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    position: absolute;
+    top: 736px;
+    left: 563px;
+}
