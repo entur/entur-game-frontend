@@ -21,7 +21,7 @@ return (
     <Modal
         open={showModal}
         onDismiss={() => setShowModal(false)}
-        title="Oops! En bomtur"
+        title="Oops, dette var en bomtur!"
         size="medium"
     >
         <div className='flex flex-row'>
