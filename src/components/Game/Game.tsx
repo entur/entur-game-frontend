@@ -126,7 +126,7 @@ function Game({
                             if (
                                 !stop ||
                                 d.expectedDepartureTime <=
-                                    departure.expectedDepartureTime
+                                departure.expectedDepartureTime
                             )
                                 return undefined
                             const nextDep = departures[index + 1]
@@ -265,7 +265,7 @@ function Game({
                             onChange={console.log}
                             name="Departure"
                         >
-                            {departures.map((departure) => (
+                            {departures.filter((d, index, arr) => arr.findIndex(e => e.destinationDisplay.frontText === d.destinationDisplay.frontText) === index).map((departure) => (
                                 <ChoiceChip
                                     key={
                                         departure.destinationDisplay.frontText +
