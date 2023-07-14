@@ -1,6 +1,6 @@
 import { QueryMode } from '@entur/sdk'
 import { getModeTranslation } from '../../utils/transportMapper'
-import { Modal } from '@entur/modal'
+import { Modal, ModalOverlay } from '@entur/modal'
 import React, { useEffect, useState } from 'react'
 import { Paragraph } from '@entur/typography'
 import liv from '@assets/images/Liv.svg'
@@ -24,9 +24,9 @@ return (
         title="Oops! En bomtur"
         size="medium"
     >
-        <div>
+        <div className='flex flex-row'>
         <img src={liv}></img>
-        <Paragraph>
+        <Paragraph className='self-center'>
             {`Det er ikke mulig å ta ${getModeTranslation(usedMode[usedMode.length-1]).toLowerCase()} fra ${stopPlace}.`}
         </Paragraph>
         </div>
