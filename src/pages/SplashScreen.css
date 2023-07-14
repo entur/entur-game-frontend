@@ -1,13 +1,12 @@
 /* set the background color to 181c56 and make sure it fills the screen*/
-body {
+.splashScreen {
     background: #181C56;
     width: 1366px;
     height: 1024px;
 }
 
-
 /* select a div with id illustration1 */
-#illustration1 {
+.illustration1 {
     width: 307px;
     height: 289px;
     flex-shrink: 0;
@@ -17,7 +16,7 @@ body {
     left: 466px;
 }
 
-#illustration2 {
+.illustration2 {
     width: 307px;
     height: 289px;
     flex-shrink: 0;
@@ -27,7 +26,7 @@ body {
     left: 206px;
 }
 
-#illustration3 {
+.illustration3 {
     width: 307px;
     height: 289px;
     flex-shrink: 0;
@@ -37,34 +36,34 @@ body {
     left: 848px;
 }
 
-#en {
+.en {
     color: #FFF;
     font-size: 48px;
-    font-family: Nationale;
+    font-family: Nationale, serif;
     font-style: normal;
     font-weight: 600;
     line-height: normal;
 }
 
-#middels {
+.middels {
     color: #FF5959;
     font-size: 64px;
-    font-family: Nationale;
+    font-family: Nationale, serif;
     font-style: normal;
     font-weight: 600;
     line-height: normal;
 }
 
-#tur {
+.tur {
     color: #FFF;
     font-size: 48px;
-    font-family: Nationale;
+    font-family: Nationale, serif;
     font-style: normal;
     font-weight: 600;
     line-height: normal;
 }
 
-#centertext {
+.centertext {
     display: inline-flex;
     align-items: center;
     gap: 24px;
@@ -73,33 +72,33 @@ body {
     left: 434px;
 }
 
-#welcometext {
+.welcometext {
     display: flex;
     width: 304px;
     flex-direction: column;
     color: #FFF;
     text-align: center;
     font-size: 24px;
-    font-family: Nationale;
+    font-family: Nationale, serif;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
 }
 
-#questiontext {
+.questiontext {
     display: flex;
     width: 512px;
     flex-direction: column;
     color: #FFF;
     text-align: center;
     font-size: 18px;
-    font-family: Nationale;
+    font-family: Nationale, serif;
     font-style: normal;
     font-weight: 400;
     line-height: 140%;
 }
 
-#infotext {
+.infotext {
     display: inline-flex;
     flex-direction: column;
     align-items: center;
@@ -109,11 +108,11 @@ body {
     left: 451px;
 }
 
-Button {
+.button {
     display: flex;
     width: 288px;
     height: 56px;
-    padding: 17.733px 0px 16.267px 0px;
+    padding: 17.733px 0 16.267px 0;
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
