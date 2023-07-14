@@ -24,6 +24,9 @@ import { useEnturService } from '../../hooks/useEnturService'
 import VictoryScreen from './VictoryScreen'
 import DeadScreen from './DeadScreen'
 import { HpBar } from './HpBar'
+import { Modal } from '@entur/modal'
+import { title } from 'process'
+import { InvalidTravel } from './InvalidTravel'
 
 interface StopAndTime {
     stopPlace: StopPlace | StopPlaceDetails
@@ -58,6 +61,7 @@ function Game({
     const [departures, setDepartures] = useState<Departure[]>([])
     const [stopsOnLine, setStopsOnLine] = useState<StopAndTime[]>([])
     const [currentTime, setCurrentTime] = useState<Date>(new Date())
+    const [showModal, setShowModal] = useState<boolean>(false)
     const [usedMode, setUsedMode] = useState<QueryMode[]>([])
     const { getWalkableStopPlaces, getDepartures, getStopsOnLine } =
         useEnturService()
@@ -79,13 +83,20 @@ function Game({
                     })),
                 )
                 if (!stops.length) {
-                    setTotalHp((prev) => prev - 1)
+                    if (totalHp > 0){
+                        setTotalHp((prev) => prev - 1)
+                        setShowModal(true)
+                    }
+                    console.log('test')
+                    
                     if (totalHp < 1) {
                         setDead(true)
                         return
                     }
+                    
                     setUsedMode((prev) => [...prev, newMode])
                     setMode(null)
+                    
                 } else {
                     setUsedMode([])
                     setTravelLegsMode((prev) => [...prev, newMode])
@@ -95,7 +106,11 @@ function Game({
             getDepartures(stopPlace.id, newMode, currentTime).then((deps) => {
                 setDepartures(deps)
                 if (!deps.length) {
-                    setTotalHp((prev) => prev - 1)
+                    console.log('test')
+                    if (totalHp > 0){
+                        setTotalHp((prev) => prev - 1)
+                        setShowModal(true)
+                    }
                     if (totalHp < 1) {
                         setDead(true)
                         return
@@ -217,7 +232,7 @@ function Game({
             </header>
             {!mode ? (
                 <div>
-                    <Heading2>Velg transportmåte fra {stopPlace.name}</Heading2>
+                    <Heading2>Velg transportmåte fra {stopPlace.name}</Heading2>                              
                     <ChoiceChipGroup
                         value={mode || 'none'}
                         onChange={console.log}
@@ -227,15 +242,17 @@ function Game({
                             {ALL_MODES.map((mode) => {
                                 const disabled = usedMode.includes(mode)
                                 return (
+                                    <>
                                     <ChoiceChip
                                         key={mode}
                                         value={mode}
                                         onClick={() => selectMode(mode)}
                                         disabled={disabled}
-                                    >
+                                    >  
                                         {getModeIcon(mode)}
                                         {getModeTranslation(mode)}
                                     </ChoiceChip>
+                                    </>
                                 )
                             })}
                             <ChoiceChip
@@ -246,6 +263,12 @@ function Game({
                                 <SleepIcon />
                                 Vent 6 timer
                             </ChoiceChip>
+                            <InvalidTravel 
+                                usedMode={usedMode}
+                                showModal={showModal}
+                                setShowModal={setShowModal}
+                                stopPlace={stopPlace.name}
+                            />
                         </>
                     </ChoiceChipGroup>
                     <PrimaryButton
