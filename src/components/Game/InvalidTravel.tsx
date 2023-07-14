@@ -1,9 +1,9 @@
 import { QueryMode } from '@entur/sdk'
 import { getModeTranslation } from '../../utils/transportMapper'
-import { Modal, ModalOverlay } from '@entur/modal'
-import React, { useEffect, useState } from 'react'
+import { Modal } from '@entur/modal'
+import React from 'react'
 import { Paragraph } from '@entur/typography'
-import liv from '@assets/images/Liv.svg'
+import brokenHeart from '@assets/images/broken-heart.svg'
 
 type Props = {
     usedMode: QueryMode[]
@@ -25,7 +25,7 @@ return (
         size="medium"
     >
         <div className='flex flex-row'>
-        <img src={liv}></img>
+        <img src={brokenHeart}></img>
         <Paragraph className='self-center'>
             {`Det er ikke mulig å ta ${getModeTranslation(usedMode[usedMode.length-1]).toLowerCase()} fra ${stopPlace}.`}
         </Paragraph>

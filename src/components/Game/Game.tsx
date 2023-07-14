@@ -24,8 +24,6 @@ import { useEnturService } from '../../hooks/useEnturService'
 import VictoryScreen from './VictoryScreen'
 import DeadScreen from './DeadScreen'
 import { HpBar } from './HpBar'
-import { Modal } from '@entur/modal'
-import { title } from 'process'
 import { InvalidTravel } from './InvalidTravel'
 
 interface StopAndTime {
@@ -87,7 +85,6 @@ function Game({
                         setTotalHp((prev) => prev - 1)
                         setShowModal(true)
                     }
-                    console.log('test')
                     
                     if (totalHp < 1) {
                         setDead(true)
@@ -106,7 +103,6 @@ function Game({
             getDepartures(stopPlace.id, newMode, currentTime).then((deps) => {
                 setDepartures(deps)
                 if (!deps.length) {
-                    console.log('test')
                     if (totalHp > 0){
                         setTotalHp((prev) => prev - 1)
                         setShowModal(true)
