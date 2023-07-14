@@ -11,45 +11,88 @@ export function formatInterval(currentTime: Date, startTime: Date): string {
     )
 }
 
-export function formatTimeForEndOfGame(currentTime: Date, startTime: Date, level: String, attempts: Number): string{
-    if(level === 'Event' && attempts === 0){
+export function formatTimeForEndOfGame(
+    currentTime: Date,
+    startTime: Date,
+    level: string,
+    attempts: number,
+): string {
+    if (level === 'Event' && attempts === 0) {
         startTime.setDate(26)
-        startTime.setHours(7,0)
+        startTime.setHours(7, 0)
         startTime.setSeconds(0)
         startTime.setFullYear(2023)
         currentTime.setDate(26)
         currentTime.setHours(7, 0, 1)
         currentTime.setSeconds(0)
-        currentTime.setFullYear(2023) 
+        currentTime.setFullYear(2023)
     }
-    
-    const totalSecondsPlayed =  (currentTime.getTime() - startTime.getTime()) / 1000
-    const totalSeconds = Math.floor((totalSecondsPlayed +1 ) % 60)
+
+    const totalSecondsPlayed =
+        (currentTime.getTime() - startTime.getTime()) / 1000
+    const totalSeconds = Math.floor((totalSecondsPlayed + 1) % 60)
     const totalMinutesPlayed = Math.floor((totalSecondsPlayed + 1) / 60)
     const totalHoursPlayed = Math.floor((totalMinutesPlayed + 1) / 60)
-   
-    return totalHoursPlayed.toString() + ' timer ' + (totalMinutesPlayed % 60).toString() + ' minutter ' + totalSeconds.toString() + ' sekunder'
+
+    return (
+        totalHoursPlayed.toString() +
+        ' timer ' +
+        (totalMinutesPlayed % 60).toString() +
+        ' minutter ' +
+        totalSeconds.toString() +
+        ' sekunder'
+    )
 }
 
 export function formatIntervalToSeconds(
     currentTime: Date,
     startTime: Date,
 ): number {
-    const totalSecondsPlayed =  Math.round((currentTime.getTime() - startTime.getTime()) / 1000)
-    return totalSecondsPlayed
+    return Math.round((currentTime.getTime() - startTime.getTime()) / 1000)
 }
 
 export function formatTime(value: Date | string): string {
     const date = typeof value === 'string' ? parseISO(value) : value
-    return format(date, 'HH:mm', { locale: nb })    
+    return format(date, 'HH:mm', { locale: nb })
 }
 
 export function formatDateAndTime(value: Date | string): string {
     const date = typeof value === 'string' ? parseISO(value) : value
-    var custom_days = [ "Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag"]
-    var custom_months = ["Januar", "Februar", "Mars", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Desember"]
+    const custom_days = [
+        'Søndag',
+        'Mandag',
+        'Tirsdag',
+        'Onsdag',
+        'Torsdag',
+        'Fredag',
+        'Lørdag',
+    ]
+    const custom_months = [
+        'Januar',
+        'Februar',
+        'Mars',
+        'April',
+        'Mai',
+        'Juni',
+        'Juli',
+        'August',
+        'September',
+        'Oktober',
+        'November',
+        'Desember',
+    ]
 
-    return custom_days[date.getDay()] + ' ' + date.getDate() + ' ' + custom_months[date.getMonth()] + ' ' + date.getFullYear()  + ' kl. ' + date.toLocaleTimeString()
+    return (
+        custom_days[date.getDay()] +
+        ' ' +
+        date.getDate() +
+        ' ' +
+        custom_months[date.getMonth()] +
+        ' ' +
+        date.getFullYear() +
+        ' kl. ' +
+        date.toLocaleTimeString()
+    )
 
     //return format(date, "cccc eo MMMM 'kl.' HH:mm", { locale: nb }) Removed to get all days in a month to be displayed
 }

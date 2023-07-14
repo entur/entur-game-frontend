@@ -12,24 +12,27 @@ type Props = {
     stopPlace: string
 }
 
-
-export function InvalidTravel({ usedMode, showModal, setShowModal, stopPlace }: Props):JSX.Element {
-
-
-
-return (
-    <Modal
-        open={showModal}
-        onDismiss={() => setShowModal(false)}
-        title="Oops, dette var en bomtur!"
-        size="medium"
-    >
-        <div className='flex flex-row'>
-        <img src={brokenHeart}></img>
-        <Paragraph className='self-center'>
-            {`Det er ikke mulig å ta ${getModeTranslation(usedMode[usedMode.length-1]).toLowerCase()} fra ${stopPlace}.`}
-        </Paragraph>
-        </div>
-    </Modal>
-)
+export function InvalidTravel({
+    usedMode,
+    showModal,
+    setShowModal,
+    stopPlace,
+}: Props): JSX.Element {
+    return (
+        <Modal
+            open={showModal}
+            onDismiss={() => setShowModal(false)}
+            title="Oops, dette var en bomtur!"
+            size="medium"
+        >
+            <div className="flex flex-row">
+                <img src={brokenHeart} alt="broken heart"></img>
+                <Paragraph className="self-center">
+                    {`Det er ikke mulig å ta ${getModeTranslation(
+                        usedMode[usedMode.length - 1],
+                    ).toLowerCase()} fra ${stopPlace}.`}
+                </Paragraph>
+            </div>
+        </Modal>
+    )
 }

@@ -19,7 +19,7 @@ import '@entur/tooltip/dist/styles.css'
 import '@entur/a11y/dist/styles.css'
 import '@entur/expand/dist/styles.css'
 import '@entur/alert/dist/styles.css'
-import '@entur/modal/dist/styles.css';
+import '@entur/modal/dist/styles.css'
 
 import './index.css'
 import App from './App'

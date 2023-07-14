@@ -114,7 +114,7 @@ export const EVENT: Level[] = [
         targets: [
             {
                 id: 'NSR:StopPlace:56826',
-                name: 'Alta sentrum'
+                name: 'Alta sentrum',
             },
         ],
         difficulty: 'Event',

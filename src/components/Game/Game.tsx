@@ -69,7 +69,7 @@ function Game({
         setTravelLegs([level.start])
         setTargets(level.targets)
     }, [level])
-    
+
     const selectMode = (newMode: QueryMode) => {
         setMode(newMode)
         if (newMode === 'foot') {
@@ -81,19 +81,18 @@ function Game({
                     })),
                 )
                 if (!stops.length) {
-                    if (totalHp > 0){
+                    if (totalHp > 0) {
                         setTotalHp((prev) => prev - 1)
                         setShowModal(true)
                     }
-                    
+
                     if (totalHp < 1) {
                         setDead(true)
                         return
                     }
-                    
+
                     setUsedMode((prev) => [...prev, newMode])
                     setMode(null)
-                    
                 } else {
                     setUsedMode([])
                     setTravelLegsMode((prev) => [...prev, newMode])
@@ -103,7 +102,7 @@ function Game({
             getDepartures(stopPlace.id, newMode, currentTime).then((deps) => {
                 setDepartures(deps)
                 if (!deps.length) {
-                    if (totalHp > 0){
+                    if (totalHp > 0) {
                         setTotalHp((prev) => prev - 1)
                         setShowModal(true)
                     }
@@ -137,7 +136,7 @@ function Game({
                             if (
                                 !stop ||
                                 d.expectedDepartureTime <=
-                                departure.expectedDepartureTime
+                                    departure.expectedDepartureTime
                             )
                                 return undefined
                             const nextDep = departures[index + 1]
@@ -222,13 +221,19 @@ function Game({
                 </Paragraph>
                 <Paragraph>
                     Du har reist {numLegs} etapper og brukt{' '}
-                    {formatTimeForEndOfGame(currentTime, startTime, level.difficulty, numLegs)}.
+                    {formatTimeForEndOfGame(
+                        currentTime,
+                        startTime,
+                        level.difficulty,
+                        numLegs,
+                    )}
+                    .
                 </Paragraph>
                 <HpBar totalHp={totalHp + 1} />
             </header>
             {!mode ? (
                 <div>
-                    <Heading2>Velg transportmåte fra {stopPlace.name}</Heading2>                              
+                    <Heading2>Velg transportmåte fra {stopPlace.name}</Heading2>
                     <ChoiceChipGroup
                         value={mode || 'none'}
                         onChange={console.log}
@@ -239,15 +244,15 @@ function Game({
                                 const disabled = usedMode.includes(mode)
                                 return (
                                     <>
-                                    <ChoiceChip
-                                        key={mode}
-                                        value={mode}
-                                        onClick={() => selectMode(mode)}
-                                        disabled={disabled}
-                                    >  
-                                        {getModeIcon(mode)}
-                                        {getModeTranslation(mode)}
-                                    </ChoiceChip>
+                                        <ChoiceChip
+                                            key={mode}
+                                            value={mode}
+                                            onClick={() => selectMode(mode)}
+                                            disabled={disabled}
+                                        >
+                                            {getModeIcon(mode)}
+                                            {getModeTranslation(mode)}
+                                        </ChoiceChip>
                                     </>
                                 )
                             })}
@@ -259,7 +264,7 @@ function Game({
                                 <SleepIcon />
                                 Vent 6 timer
                             </ChoiceChip>
-                            <InvalidTravel 
+                            <InvalidTravel
                                 usedMode={usedMode}
                                 showModal={showModal}
                                 setShowModal={setShowModal}
@@ -284,29 +289,44 @@ function Game({
                             onChange={console.log}
                             name="Departure"
                         >
-                            {departures.filter((d, index, arr) => arr.findIndex(e => e.destinationDisplay.frontText === d.destinationDisplay.frontText) === index).map((departure) => (
-                                <ChoiceChip
-                                    key={
-                                        departure.destinationDisplay.frontText +
-                                        departure.serviceJourney.id
-                                    }
-                                    value={
-                                        departure.destinationDisplay.frontText +
-                                        departure.serviceJourney.id
-                                    }
-                                    onClick={() => selectDeparture(departure)}
-                                >
-                                    {mode ? getModeIcon(mode) : null}
-                                    {
-                                        departure.serviceJourney.journeyPattern
-                                            ?.line.publicCode
-                                    }{' '}
-                                    {departure.destinationDisplay.frontText} kl.{' '}
-                                    {formatTime(
-                                        departure.expectedDepartureTime,
-                                    )}
-                                </ChoiceChip>
-                            ))}
+                            {departures
+                                .filter(
+                                    (d, index, arr) =>
+                                        arr.findIndex(
+                                            (e) =>
+                                                e.destinationDisplay
+                                                    .frontText ===
+                                                d.destinationDisplay.frontText,
+                                        ) === index,
+                                )
+                                .map((departure) => (
+                                    <ChoiceChip
+                                        key={
+                                            departure.destinationDisplay
+                                                .frontText +
+                                            departure.serviceJourney.id
+                                        }
+                                        value={
+                                            departure.destinationDisplay
+                                                .frontText +
+                                            departure.serviceJourney.id
+                                        }
+                                        onClick={() =>
+                                            selectDeparture(departure)
+                                        }
+                                    >
+                                        {mode ? getModeIcon(mode) : null}
+                                        {
+                                            departure.serviceJourney
+                                                .journeyPattern?.line.publicCode
+                                        }{' '}
+                                        {departure.destinationDisplay.frontText}{' '}
+                                        kl.{' '}
+                                        {formatTime(
+                                            departure.expectedDepartureTime,
+                                        )}
+                                    </ChoiceChip>
+                                ))}
                         </ChoiceChipGroup>
                         <PrimaryButton
                             onClick={() => navigate(-1)}
