@@ -59,7 +59,7 @@ function Game({
     const [departures, setDepartures] = useState<Departure[]>([])
     const [stopsOnLine, setStopsOnLine] = useState<StopAndTime[]>([])
     const [currentTime, setCurrentTime] = useState<Date>(new Date())
-    const [showModal, setShowModal] = useState<boolean>(false)
+    const [noTransport, setNoTransport] = useState<boolean>(false)
     const [usedMode, setUsedMode] = useState<QueryMode[]>([])
     const { getWalkableStopPlaces, getDepartures, getStopsOnLine } =
         useEnturService()
@@ -83,7 +83,7 @@ function Game({
                 if (!stops.length) {
                     if (totalHp > 0) {
                         setTotalHp((prev) => prev - 1)
-                        setShowModal(true)
+                        setNoTransport(true)
                     }
 
                     if (totalHp < 1) {
@@ -104,7 +104,7 @@ function Game({
                 if (!deps.length) {
                     if (totalHp > 0) {
                         setTotalHp((prev) => prev - 1)
-                        setShowModal(true)
+                        setNoTransport(true)
                     }
                     if (totalHp < 1) {
                         setDead(true)
@@ -232,8 +232,8 @@ function Game({
                 <HpBar totalHp={totalHp + 1} />
             </header>
             {!mode ? (
-                <div>
-                    <Heading2>Velg transportmåte fra {stopPlace.name}</Heading2>
+                <div className='border-2 rounded-md shadow pl-10 pb-8'>
+                    <Heading2>Velg transportmåte fra <span className='text-coral'>{stopPlace.name}</span></Heading2>
                     <ChoiceChipGroup
                         value={mode || 'none'}
                         onChange={console.log}
@@ -245,6 +245,7 @@ function Game({
                                 return (
                                     <>
                                         <ChoiceChip
+                                            className='border-2 ml-1 mr-2 mt-3 text-lg w-38 h-10 rounded-3xl'
                                             key={mode}
                                             value={mode}
                                             onClick={() => selectMode(mode)}
@@ -257,6 +258,7 @@ function Game({
                                 )
                             })}
                             <ChoiceChip
+                                className='border-2 ml-1 mr-2 mt-3 text-lg w-38 h-10 rounded-3xl'
                                 key="wait"
                                 value="wait"
                                 onClick={() => wait()}
@@ -266,18 +268,13 @@ function Game({
                             </ChoiceChip>
                             <InvalidTravel
                                 usedMode={usedMode}
-                                showModal={showModal}
-                                setShowModal={setShowModal}
+                                noTransport={noTransport}
+                                setNoTransport={setNoTransport}
                                 stopPlace={stopPlace.name}
                             />
                         </>
                     </ChoiceChipGroup>
-                    <PrimaryButton
-                        onClick={() => navigate(-1)}
-                        style={{ marginTop: '10px' }}
-                    >
-                        Hovedmeny
-                    </PrimaryButton>
+                    
                 </div>
             ) : null}
             <>
@@ -328,12 +325,6 @@ function Game({
                                     </ChoiceChip>
                                 ))}
                         </ChoiceChipGroup>
-                        <PrimaryButton
-                            onClick={() => navigate(-1)}
-                            style={{ marginTop: '10px' }}
-                        >
-                            Hovedmeny
-                        </PrimaryButton>
                     </div>
                 ) : null}
             </>
@@ -358,14 +349,14 @@ function Game({
                             </ChoiceChip>
                         ))}
                     </ChoiceChipGroup>
-                    <PrimaryButton
+                </div>
+            ) : null}
+            <PrimaryButton
                         onClick={() => navigate(-1)}
                         style={{ marginTop: '10px' }}
                     >
                         Hovedmeny
                     </PrimaryButton>
-                </div>
-            ) : null}
         </div>
     )
 }
