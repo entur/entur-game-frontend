@@ -7,21 +7,21 @@ import brokenHeart from '@assets/images/broken-heart.svg'
 
 type Props = {
     usedMode: QueryMode[]
-    showModal: boolean
-    setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+    noTransport: boolean
+    setNoTransport: React.Dispatch<React.SetStateAction<boolean>>
     stopPlace: string
 }
 
 export function InvalidTravel({
     usedMode,
-    showModal,
-    setShowModal,
+    noTransport,
+    setNoTransport,
     stopPlace,
 }: Props): JSX.Element {
     return (
         <Modal
-            open={showModal}
-            onDismiss={() => setShowModal(false)}
+            open={noTransport}
+            onDismiss={() => setNoTransport(false)}
             title="Oops, dette var en bomtur!"
             size="medium"
         >
