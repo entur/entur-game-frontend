@@ -3,11 +3,16 @@ import EnturPartnerIcon from '../../assets/icons/EnturPartner.svg'
 import GameStatus from '../GameStatus'
 
 type Props = {
-  description: string
-  healthLeft: number
+    healthLeft: number
+    numLegs: number
+    timeDescription: string
 }
 
-function GameNavBar({ description, healthLeft}: Props): ReactElement {
+function GameNavBar({
+    healthLeft,
+    numLegs,
+    timeDescription,
+}: Props): ReactElement {
     return (
         <div className="flex flex-row pt-4 justify-between item-center">
             <div className="self-center ml-5 mr-5">
@@ -15,7 +20,7 @@ function GameNavBar({ description, healthLeft}: Props): ReactElement {
             </div>
             <GameStatus
                 className="mr-4"
-                description={description}
+                description={`Du har reist ${numLegs} etappe og ${timeDescription}`}
                 healthLeft={healthLeft}
             />
         </div>

@@ -23,8 +23,8 @@ import { useEnturService } from '../../hooks/useEnturService'
 import VictoryScreen from './VictoryScreen'
 import DeadScreen from './DeadScreen'
 import { HpBar } from './HpBar'
-import { InvalidTravel } from './InvalidTravel'
 import { ModalTransport } from './ModalTransport'
+import { InvalidTravelModal } from './NewGame/InvalidTravelModal'
 
 export interface StopAndTime {
     stopPlace: StopPlace | StopPlaceDetails
@@ -273,7 +273,7 @@ function Game({
                                 <SleepIcon />
                                 Vent 6 timer
                             </ChoiceChip>
-                            <InvalidTravel
+                            <InvalidTravelModal
                                 usedMode={usedMode}
                                 noTransport={noTransport}
                                 setNoTransport={setNoTransport}

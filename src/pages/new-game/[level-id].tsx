@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
-import Game from '../../components/Game/NewGame'
+import Game from '../../components/Game/NewGame/NewGame'
 import { Level, EASY, ALL_LEVELS } from '../../constant/levels'
 
 function GamePage(): JSX.Element {

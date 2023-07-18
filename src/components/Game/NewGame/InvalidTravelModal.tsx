@@ -1,5 +1,5 @@
 import { QueryMode } from '@entur/sdk'
-import { getModeTranslation } from '../../utils/transportMapper'
+import { getModeTranslation } from '../../../utils/transportMapper'
 import { Modal } from '@entur/modal'
 import React from 'react'
 import { Paragraph } from '@entur/typography'
@@ -12,7 +12,7 @@ type Props = {
     stopPlace: string
 }
 
-export function InvalidTravel({
+export function InvalidTravelModal({
     usedMode,
     noTransport,
     setNoTransport,
