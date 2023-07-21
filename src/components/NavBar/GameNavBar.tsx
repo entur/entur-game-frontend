@@ -15,7 +15,7 @@ function GameNavBar({
 }: Props): ReactElement {
     return (
         <div className="flex flex-row pt-4 justify-between item-center">
-            <div className="self-center ml-5 mr-5">
+            <div className="self-center ml-5 mr-20">
                 <img src={EnturPartnerIcon} alt="entur partner" />
             </div>
             <GameStatus

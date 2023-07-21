@@ -1,7 +1,6 @@
 import React, { ReactElement, useEffect, useState } from 'react'
 
 import { Level } from '../../../constant/levels'
-import GameNavBar from '../../NavBar/GameNavBar'
 import { Heading4 } from '@entur/typography'
 import { InvalidTravelModal } from './InvalidTravelModal'
 import { useNavigate } from 'react-router-dom'
@@ -24,14 +23,24 @@ type Props = {
     level: Level
     startTimer: number
     handleWinner: () => void
+    totalHp: number
+    setTotalHp: React.Dispatch<React.SetStateAction<number>>
+    numLegs: number
+    setNumLegs: React.Dispatch<React.SetStateAction<number>>
+    setTimeDescription: React.Dispatch<React.SetStateAction<string>>
 }
 
-function NewGame({ level }: Props): ReactElement {
+function NewGame({
+    level,
+    totalHp,
+    setTotalHp,
+    numLegs,
+    setNumLegs,
+    setTimeDescription,
+}: Props): ReactElement {
     const navigate = useNavigate()
-    const [totalHp, setTotalHp] = useState<number>(2)
     const [hasBeenSprinkled, setSprinkled] = useState<boolean>(false)
     const [dead, setDead] = useState<boolean>(false)
-    const [numLegs, setNumLegs] = useState<number>(0)
     const [travelLegsMode, setTravelLegsMode] = useState<QueryMode[]>([])
     const [stopPlace, setStopPlace] = useState<StopPlace>(level.start)
     const [travelLegs, setTravelLegs] = useState<StopPlace[]>([level.start])
@@ -50,6 +59,17 @@ function NewGame({ level }: Props): ReactElement {
         setTravelLegs([level.start])
         setTargets(level.targets)
     }, [level])
+
+    useEffect(() => {
+        setTimeDescription(
+            formatTimeForEndOfGame(
+                currentTime,
+                startTime,
+                level.difficulty,
+                numLegs,
+            ),
+        )
+    }, [currentTime])
 
     const selectMode = (newMode: QueryMode) => {
         setMode(newMode)
@@ -107,17 +127,7 @@ function NewGame({ level }: Props): ReactElement {
 
     return (
         <>
-            <GameNavBar
-                numLegs={numLegs}
-                timeDescription={formatTimeForEndOfGame(
-                    currentTime,
-                    startTime,
-                    level.difficulty,
-                    numLegs,
-                )}
-                healthLeft={totalHp + 1}
-            />
-            <div className="mt-28 ml-72 mr-40">
+            <div className="mt-28">
                 <FromAndToTitle level={level} />
                 <Heading4 margin="none">Hvordan vil du starte?</Heading4>
                 <div className="mt-14">TODO: Travelleg</div>
