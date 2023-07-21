@@ -1,22 +1,24 @@
 import React, { ReactElement } from 'react'
 
 import { Level } from '../../../constant/levels'
+import { Heading4 } from '@entur/typography'
 
 type Props = {
+    className?: string
     level: Level
 }
 
-function FromAndToTitle({ level }: Props): ReactElement {
+function FromAndToTitle({ className, level }: Props): ReactElement {
     return (
-        <div className="flex flex-row space-x-1">
-            <div className="text-xl font-semibold">Du skal reise fra</div>
-            <div className="text-xl font-semibold text-coral">
+        <div className={`flex xl:flex-row flex-wrap space-x-1 ${className}`}>
+            <Heading4 margin="none">Du skal reise fra</Heading4>
+            <Heading4 margin="none" className="text-coral">
                 {level.start.name}
-            </div>
-            <div className="text-xl font-semibold">til</div>
-            <div className="text-xl font-semibold text-coral">
+            </Heading4>
+            <Heading4 margin="none">til</Heading4>
+            <Heading4 margin="none" className="text-coral">
                 {level.targets[0].name}
-            </div>
+            </Heading4>
         </div>
     )
 }

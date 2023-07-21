@@ -23,7 +23,7 @@ function TransportTypePicker({
     stopPlace,
 }: Props): ReactElement {
     return (
-        <div className="bg-white border-2 rounded-md pl-10 pb-8 ml-5">
+        <div className="bg-white border-2 rounded-md pl-10 pb-8">
             <Heading2>
                 Velg transportmåte fra{' '}
                 <span className="text-coral">{stopPlace.name}</span>

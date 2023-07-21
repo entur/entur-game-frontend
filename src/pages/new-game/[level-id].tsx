@@ -30,13 +30,13 @@ function GamePage(): JSX.Element {
     }
 
     return (
-        <div className="bg-blue-90 w-screen h-screen">
+        <div className="bg-blue-90 sm:w-screen sm:h-screen">
             <GameNavBar
                 healthLeft={totalHp + 1}
                 numLegs={numLegs}
                 timeDescription={timeDescription}
             />
-            <div className="max-w-screen-xl xl:ml-72 xl:mr-40">
+            <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
                 <Game
                     nickname={''}
                     level={level}

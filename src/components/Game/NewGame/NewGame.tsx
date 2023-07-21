@@ -127,21 +127,19 @@ function NewGame({
 
     return (
         <>
-            <div className="mt-28">
-                <FromAndToTitle level={level} />
-                <Heading4 margin="none">Hvordan vil du starte?</Heading4>
-                <div className="mt-14">TODO: Travelleg</div>
-                <div className="mr-4">
-                    <TransportTypePicker
-                        mode={mode}
-                        usedMode={usedMode}
-                        selectMode={selectMode}
-                        wait={wait}
-                        stopPlace={stopPlace}
-                    />
-                </div>
-                <div>TODO: Travelleg</div>
+            <FromAndToTitle className="mt-10 xl:mt-28" level={level} />
+            <Heading4 margin="none">Hvordan vil du starte?</Heading4>
+            <div className="mt-5 xl:mt-14">TODO: Travelleg</div>
+            <div className="ml-2 xl:mr-4 xl:ml-5">
+                <TransportTypePicker
+                    mode={mode}
+                    usedMode={usedMode}
+                    selectMode={selectMode}
+                    wait={wait}
+                    stopPlace={stopPlace}
+                />
             </div>
+            <div>TODO: Travelleg</div>
             <InvalidTravelModal
                 usedMode={usedMode}
                 noTransport={noTransport}
