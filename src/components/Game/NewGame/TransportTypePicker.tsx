@@ -23,7 +23,7 @@ function TransportTypePicker({
     stopPlace,
 }: Props): ReactElement {
     return (
-        <div className="bg-white border-2 rounded-md pl-10 pb-8">
+        <div className="bg-white border-2 rounded-md pl-10 pb-8 pr-10">
             <Heading2>
                 Velg transportmåte fra{' '}
                 <span className="text-coral">{stopPlace.name}</span>
@@ -37,22 +37,20 @@ function TransportTypePicker({
                     {ALL_MODES.map((mode) => {
                         const disabled = usedMode.includes(mode)
                         return (
-                            <>
-                                <ChoiceChip
-                                    className="border-2 ml-1 mr-2 mt-3 text-lg w-38 h-10 rounded-3xl"
-                                    key={mode}
-                                    value={mode}
-                                    onClick={() => selectMode(mode)}
-                                    disabled={disabled}
-                                >
-                                    {getModeIcon(mode)}
-                                    {getModeTranslation(mode)}
-                                </ChoiceChip>
-                            </>
+                            <ChoiceChip
+                                className="border-2 ml-1 mr-2 mt-3 w-38 h-10 rounded-3xl sm:text-lg"
+                                key={mode}
+                                value={mode}
+                                onClick={() => selectMode(mode)}
+                                disabled={disabled}
+                            >
+                                {getModeIcon(mode)}
+                                {getModeTranslation(mode)}
+                            </ChoiceChip>
                         )
                     })}
                     <ChoiceChip
-                        className="border-2 ml-1 mr-2 mt-3 text-lg w-38 h-10 rounded-3xl"
+                        className="border-2 ml-1 mr-2 mt-3 w-38 h-10 rounded-3xl sm:text-lg"
                         key="wait"
                         value="wait"
                         onClick={() => wait()}
