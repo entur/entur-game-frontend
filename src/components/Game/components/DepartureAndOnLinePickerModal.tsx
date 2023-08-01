@@ -1,11 +1,11 @@
 import React from 'react'
 import { Heading2 } from '@entur/typography'
 import { ChoiceChip, ChoiceChipGroup } from '@entur/chip'
+import { Departure, QueryMode } from '@entur/sdk'
+import { Modal } from '@entur/modal'
 import { getModeIcon } from '../../../utils/transportMapper'
 import { formatTime } from '../../../utils/dateFnsUtils'
-import { Departure, QueryMode } from '@entur/sdk'
-import { StopAndTime } from '../Game'
-import { Modal } from '@entur/modal'
+import { StopAndTime } from '../GameScreen'
 
 type Props = {
     departures: Departure[]
