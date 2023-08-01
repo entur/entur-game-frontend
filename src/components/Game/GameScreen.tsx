@@ -1,30 +1,23 @@
-import React, { useEffect, useState } from 'react'
-import { addMinutes, addHours } from 'date-fns'
+import React, { ReactElement, useEffect, useState } from 'react'
+import { Heading4 } from '@entur/typography'
+import { Departure, QueryMode, StopPlace, StopPlaceDetails } from '@entur/sdk'
+import { addHours, addMinutes } from 'date-fns'
 import { sprinkleEmojis } from 'emoji-sprinkle'
-
-import { Departure, StopPlace, QueryMode, StopPlaceDetails } from '@entur/sdk'
-import { TravelHeader } from '@entur/travel'
-import { SleepIcon } from '@entur/icons'
-import { Heading2, Paragraph } from '@entur/typography'
-import { ChoiceChip, ChoiceChipGroup } from '@entur/chip'
-import { PrimaryButton } from '@entur/button'
 import { useNavigate } from 'react-router-dom'
+import { SecondaryButton } from '@entur/button'
 
-import '../../App.css'
-import { getModeIcon, getModeTranslation } from '../../utils/transportMapper'
-import {
-    formatDateAndTime,
-    formatTimeForEndOfGame,
-} from '../../utils/dateFnsUtils'
-import { ALL_MODES } from '../../constant/queryMode'
 import { Level } from '../../constant/levels'
-import { isTruthy } from '../../utils/isTruthy'
+import { InvalidTravelModal } from './components/InvalidTravelModal'
 import { useEnturService } from '../../hooks/useEnturService'
-import VictoryScreen from './VictoryScreen'
+import { formatTimeForEndOfGame } from '../../utils/dateFnsUtils'
+import FromAndToTitle from './components/FromAndToTitle'
+import TransportTypePicker from './components/TransportTypePicker'
+import TravelLegStart from './components/TravelLegStart'
+import { DepartureAndOnLinePickerModal } from './components/DepartureAndOnLinePickerModal'
+import { isTruthy } from '../../utils/isTruthy'
+import { TravelLegFinished } from './components/TravelLegFinished'
 import DeadScreen from './DeadScreen'
-import { HpBar } from './HpBar'
-import { InvalidTravel } from './InvalidTravel'
-import { ModalTransport } from './ModalTransport'
+import VictoryScreen from './VictoryScreen'
 
 export interface StopAndTime {
     stopPlace: StopPlace | StopPlaceDetails
@@ -38,19 +31,27 @@ type Props = {
     level: Level
     startTimer: number
     handleWinner: () => void
+    totalHp: number
+    setTotalHp: React.Dispatch<React.SetStateAction<number>>
+    numLegs: number
+    setNumLegs: React.Dispatch<React.SetStateAction<number>>
+    setTimeDescription: React.Dispatch<React.SetStateAction<string>>
 }
 
-function Game({
-    nickname,
+function GameScreen({
     level,
+    totalHp,
+    setTotalHp,
+    numLegs,
+    setNumLegs,
+    setTimeDescription,
     startTimer,
     handleWinner,
-}: Props): JSX.Element {
+    nickname,
+}: Props): ReactElement {
     const navigate = useNavigate()
-    const [totalHp, setTotalHp] = useState<number>(2)
     const [hasBeenSprinkled, setSprinkled] = useState<boolean>(false)
     const [dead, setDead] = useState<boolean>(false)
-    const [numLegs, setNumLegs] = useState<number>(0)
     const [travelLegsMode, setTravelLegsMode] = useState<QueryMode[]>([])
     const [stopPlace, setStopPlace] = useState<StopPlace>(level.start)
     const [travelLegs, setTravelLegs] = useState<StopPlace[]>([level.start])
@@ -70,6 +71,17 @@ function Game({
         setTravelLegs([level.start])
         setTargets(level.targets)
     }, [level])
+
+    useEffect(() => {
+        setTimeDescription(
+            formatTimeForEndOfGame(
+                currentTime,
+                startTime,
+                level.difficulty,
+                numLegs,
+            ),
+        )
+    }, [currentTime])
 
     const selectMode = (newMode: QueryMode) => {
         setMode(newMode)
@@ -104,7 +116,7 @@ function Game({
             getDepartures(stopPlace.id, newMode, currentTime).then((deps) => {
                 setDepartures(deps)
                 if (!deps.length) {
-                    if (totalHp > 0) {
+                    if (totalHp >= 0) {
                         setTotalHp((prev) => prev - 1)
                         setNoTransport(true)
                     }
@@ -121,10 +133,6 @@ function Game({
                 }
             })
         }
-    }
-
-    const wait = () => {
-        setCurrentTime((prev) => addHours(prev, 6))
     }
 
     const selectDeparture = (departure: Departure) => {
@@ -168,6 +176,10 @@ function Game({
         }
     }
 
+    const wait = () => {
+        setCurrentTime((prev) => addHours(prev, 6))
+    }
+
     if (targets.some((sp) => sp.id === stopPlace.id)) {
         handleWinner()
         if (!hasBeenSprinkled) {
@@ -208,82 +220,40 @@ function Game({
     }
 
     return (
-        <div className="app" style={{ maxWidth: '800px' }}>
-            <header>
-                <TravelHeader
-                    from={
-                        level.targets[level.targets.indexOf(targets[0]) - 1]
-                            ?.name || level.start.name
-                    }
-                    to={targets[0].name}
-                    style={{ marginBottom: '2rem' }}
+        <div className="flex flex-col">
+            <FromAndToTitle className="mt-10 xl:mt-28" level={level} />
+            <Heading4 margin="none">Hvordan vil du starte?</Heading4>
+            <div className="mt-5 xl:mt-14">
+                <TravelLegStart
+                    travelLegs={travelLegs}
+                    travelLegsMode={travelLegsMode}
                 />
-                <Paragraph>
-                    Du er på {stopPlace.name} og det er{' '}
-                    {formatDateAndTime(currentTime)}. Kom deg til{' '}
-                    {targets[0].name} så fort som mulig!
-                </Paragraph>
-                <Paragraph>
-                    Du har reist {numLegs} etapper og brukt{' '}
-                    {formatTimeForEndOfGame(
-                        currentTime,
-                        startTime,
-                        level.difficulty,
-                        numLegs,
-                    )}
-                    .
-                </Paragraph>
-                <HpBar totalHp={totalHp + 1} />
-            </header>
-            {!mode ? (
-                <div className="border-2 rounded-md shadow pl-10 pb-8">
-                    <Heading2>
-                        Velg transportmåte fra{' '}
-                        <span className="text-coral">{stopPlace.name}</span>
-                    </Heading2>
-                    <ChoiceChipGroup
-                        value={mode || 'none'}
-                        onChange={console.log}
-                        name="Transport mode"
-                    >
-                        <>
-                            {ALL_MODES.map((mode) => {
-                                const disabled = usedMode.includes(mode)
-                                return (
-                                    <>
-                                        <ChoiceChip
-                                            className="border-2 ml-1 mr-2 mt-3 text-lg w-38 h-10 rounded-3xl"
-                                            key={mode}
-                                            value={mode}
-                                            onClick={() => selectMode(mode)}
-                                            disabled={disabled}
-                                        >
-                                            {getModeIcon(mode)}
-                                            {getModeTranslation(mode)}
-                                        </ChoiceChip>
-                                    </>
-                                )
-                            })}
-                            <ChoiceChip
-                                className="border-2 ml-1 mr-2 mt-3 text-lg w-38 h-10 rounded-3xl"
-                                key="wait"
-                                value="wait"
-                                onClick={() => wait()}
-                            >
-                                <SleepIcon />
-                                Vent 6 timer
-                            </ChoiceChip>
-                            <InvalidTravel
-                                usedMode={usedMode}
-                                noTransport={noTransport}
-                                setNoTransport={setNoTransport}
-                                stopPlace={stopPlace.name}
-                            />
-                        </>
-                    </ChoiceChipGroup>
-                </div>
-            ) : null}
-            <ModalTransport
+            </div>
+            <div className="mt-5 ml-9 xl:mr-4 xl:ml-12">
+                <TransportTypePicker
+                    mode={mode}
+                    usedMode={usedMode}
+                    selectMode={selectMode}
+                    wait={wait}
+                    stopPlace={stopPlace}
+                />
+            </div>
+            <div className="mt-5 xl:mt-14">
+                <TravelLegFinished targets={targets} />
+            </div>
+            <SecondaryButton
+                className="bg-lavender hover:bg-blue-80 sm:mt-28 mt-10 sm:place-self-start place-self-center"
+                onClick={() => navigate('/')}
+            >
+                Avslutt reise
+            </SecondaryButton>
+            <InvalidTravelModal
+                usedMode={usedMode}
+                noTransport={noTransport}
+                setNoTransport={setNoTransport}
+                stopPlace={stopPlace.name}
+            />
+            <DepartureAndOnLinePickerModal
                 isOpenModal={isModalOpen}
                 departures={departures}
                 stopsOnLine={stopsOnLine}
@@ -292,14 +262,8 @@ function Game({
                 selectStopOnLine={selectStopOnLine}
                 setModalOpen={setModalOpen}
             />
-            <PrimaryButton
-                onClick={() => navigate(-1)}
-                style={{ marginTop: '10px' }}
-            >
-                Hovedmeny
-            </PrimaryButton>
         </div>
     )
 }
 
-export default Game
+export default GameScreen

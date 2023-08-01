@@ -9,13 +9,16 @@ import { MediaCard } from '@entur/layout'
 
 import Lobby from './Lobby'
 import { EASY, HARD, Level, MEDIUM, EVENT } from '../../constant/levels'
-import Game from '../Game/Game'
+import GameScreen from '../Game/GameScreen'
 import { useGameSocket } from '../../hooks/useGameSocket'
 import easy from '@assets/images/easy.png'
 import medium from '@assets/images/medium.png'
 import hard from '@assets/images/hard.png'
 
 function Multiplayer(): JSX.Element {
+    const [totalHp, setTotalHp] = useState<number>(2)
+    const [numLegs, setNumLegs] = useState<number>(0)
+    const [timeDescription, setTimeDescription] = useState<string>('')
     const { client } = useGameSocket()
     const [ready, setReady] = useState<boolean>(false)
     const [level, setLevel] = useState<Level>(EASY[0])
@@ -156,7 +159,12 @@ function Multiplayer(): JSX.Element {
                 </>
             )}
             {ready && (
-                <Game
+                <GameScreen
+                    totalHp={totalHp}
+                    setTotalHp={setTotalHp}
+                    numLegs={numLegs}
+                    setNumLegs={setNumLegs}
+                    setTimeDescription={setTimeDescription}
                     nickname={nickname}
                     level={level}
                     startTimer={startTimer}

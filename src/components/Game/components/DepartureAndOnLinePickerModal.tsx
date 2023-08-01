@@ -1,11 +1,11 @@
 import React from 'react'
 import { Heading2 } from '@entur/typography'
 import { ChoiceChip, ChoiceChipGroup } from '@entur/chip'
-import { getModeIcon } from '../../utils/transportMapper'
-import { formatTime } from '../../utils/dateFnsUtils'
 import { Departure, QueryMode } from '@entur/sdk'
-import { StopAndTime } from './Game'
 import { Modal } from '@entur/modal'
+import { getModeIcon } from '../../../utils/transportMapper'
+import { formatTime } from '../../../utils/dateFnsUtils'
+import { StopAndTime } from '../GameScreen'
 
 type Props = {
     departures: Departure[]
@@ -14,10 +14,10 @@ type Props = {
     mode: QueryMode | null
     selectStopOnLine: (stopAndTime: StopAndTime) => void
     isOpenModal: boolean
-    setModalOpen
+    setModalOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export const ModalTransport = ({
+export const DepartureAndOnLinePickerModal = ({
     departures,
     stopsOnLine,
     selectDeparture,
