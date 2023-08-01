@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react'
 import { QueryMode, StopPlace } from '@entur/sdk'
 import { TravelLeg, TravelLegProps } from '@entur/travel'
 import { Heading4 } from '@entur/typography'
+import { generateKey } from '../../../utils/generateUniqueKey'
 
 type Props = {
     travelLegs: StopPlace[]
@@ -28,12 +29,15 @@ function TravelLegStart({ travelLegs, travelLegsMode }: Props): ReactElement {
         <div className="grid grid-cols-1">
             {travelLegs.map((travelLeg, index): JSX.Element => {
                 return travelLegsLength !== index ? (
-                    <div className="flex flex-row">
+                    <div
+                        key={generateKey(travelLeg.id)}
+                        className="flex flex-row"
+                    >
                         <TravelLeg
                             className="mt-1 mr-6 sm:mr-8 h-24"
                             transport={
                                 travelLegsMode[
-                                    index + 1
+                                    index
                                 ] as TravelLegProps['transport']
                             }
                             direction="vertical"
@@ -44,12 +48,15 @@ function TravelLegStart({ travelLegs, travelLegsMode }: Props): ReactElement {
                         </Heading4>
                     </div>
                 ) : (
-                    <div className="flex flex-row">
+                    <div
+                        key={generateKey(travelLeg.id)}
+                        className="flex flex-row"
+                    >
                         <TravelLeg
                             className="mt-1 mr-6 sm:mr-8"
                             transport={
                                 travelLegsMode[
-                                    index + 1
+                                    index - 1
                                 ] as TravelLegProps['transport']
                             }
                             direction="vertical"

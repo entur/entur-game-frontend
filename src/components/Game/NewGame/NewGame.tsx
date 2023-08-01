@@ -3,7 +3,6 @@ import React, { ReactElement, useEffect, useState } from 'react'
 import { Level } from '../../../constant/levels'
 import { Heading4 } from '@entur/typography'
 import { InvalidTravelModal } from './InvalidTravelModal'
-import { useNavigate } from 'react-router-dom'
 import { Departure, QueryMode, StopPlace, StopPlaceDetails } from '@entur/sdk'
 import { useEnturService } from '../../../hooks/useEnturService'
 import { addHours, addMinutes } from 'date-fns'
@@ -14,6 +13,9 @@ import TravelLegStart from './TravelLegStart'
 import { DepartureAndOnLinePickerModal } from './DepartureAndOnLinePickerModal'
 import { isTruthy } from '../../../utils/isTruthy'
 import { TravelLegFinished } from './TravelLegFinished'
+import DeadScreen from '../DeadScreen'
+import { sprinkleEmojis } from 'emoji-sprinkle'
+import VictoryScreen from '../VictoryScreen'
 
 interface StopAndTime {
     stopPlace: StopPlace | StopPlaceDetails
@@ -41,8 +43,10 @@ function NewGame({
     numLegs,
     setNumLegs,
     setTimeDescription,
+    startTimer,
+    handleWinner,
+    nickname,
 }: Props): ReactElement {
-    const navigate = useNavigate()
     const [hasBeenSprinkled, setSprinkled] = useState<boolean>(false)
     const [dead, setDead] = useState<boolean>(false)
     const [travelLegsMode, setTravelLegsMode] = useState<QueryMode[]>([])
@@ -58,8 +62,7 @@ function NewGame({
     const [isModalOpen, setModalOpen] = useState<boolean>(false)
     const { getWalkableStopPlaces, getDepartures, getStopsOnLine } =
         useEnturService()
-    console.log(travelLegsMode)
-    console.log(travelLegs)
+
     useEffect(() => {
         setStopPlace(level.start)
         setTravelLegs([level.start])
@@ -110,7 +113,7 @@ function NewGame({
             getDepartures(stopPlace.id, newMode, currentTime).then((deps) => {
                 setDepartures(deps)
                 if (!deps.length) {
-                    if (totalHp > 0) {
+                    if (totalHp >= 0) {
                         setTotalHp((prev) => prev - 1)
                         setNoTransport(true)
                     }
@@ -172,6 +175,45 @@ function NewGame({
 
     const wait = () => {
         setCurrentTime((prev) => addHours(prev, 6))
+    }
+
+    if (targets.some((sp) => sp.id === stopPlace.id)) {
+        handleWinner()
+        if (!hasBeenSprinkled) {
+            sprinkleEmojis({
+                emoji: '🎉',
+                count: 50,
+                fade: 10,
+                fontSize: 30,
+            })
+            setSprinkled(true)
+        }
+        return (
+            <div className="app" style={{ maxWidth: '800px' }}>
+                <VictoryScreen
+                    nickname={nickname}
+                    level={level}
+                    target={targets[0]}
+                    setTarget={(target) => {
+                        setTargets([target])
+                    }}
+                    numLegs={numLegs}
+                    currentTime={currentTime}
+                    startTime={startTime}
+                    startTimer={startTimer}
+                    travelLegs={travelLegs}
+                    travelLegsMode={travelLegsMode}
+                />
+            </div>
+        )
+    }
+
+    if (dead && mode) {
+        return (
+            <div className="app" style={{ maxWidth: '800px' }}>
+                <DeadScreen mode={mode} stopPlace={stopPlace} />
+            </div>
+        )
     }
 
     return (

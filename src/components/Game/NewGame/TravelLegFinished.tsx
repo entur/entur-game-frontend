@@ -12,7 +12,7 @@ export function TravelLegFinished({ targets }: Props): ReactElement {
         <>
             <div className="flex flex-row">
                 <TravelLeg
-                    className="mt-1 mb-2 mr-6 sm:mr-8 h-24 [&>*]:bg-blue-40"
+                    className="mt-1 mb-2 mr-6 sm:mr-8 h-28 [&>*]:bg-blue-40"
                     transport="foot"
                     direction="vertical"
                     showStart={false}

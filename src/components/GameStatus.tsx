@@ -3,6 +3,7 @@ import { Label } from '@entur/typography'
 
 import Heart from '../assets/icons/Heart.svg'
 import DeadHeart from '../assets/icons/DeadHeart.svg'
+import { generateKey } from '../utils/generateUniqueKey'
 
 type Props = {
     className?: string
@@ -25,20 +26,24 @@ function GameStatus({
                     </span>
                     <div className="self-center ml-20 w-0.5 h-11 bg-blue-80"></div>
                     <div className="flex flex-col ml-8">
-                        <Label className="text-blue-50" margin="none">Liv</Label>
+                        <Label className="text-blue-50" margin="none">
+                            Liv
+                        </Label>
                         <div className="flex flex-row">
-                            {Array.from(Array(healthLeft), () => {
+                            {Array.from(Array(healthLeft), (_, k) => {
                                 return (
                                     <img
+                                        key={generateKey(k.toString())}
                                         src={Heart}
                                         alt="heart"
                                         className="w-6 h-6"
                                     />
                                 )
                             })}
-                            {Array.from(Array(3 - healthLeft), () => {
+                            {Array.from(Array(3 - healthLeft), (_, k) => {
                                 return (
                                     <img
+                                        key={generateKey(k.toString())}
                                         src={DeadHeart}
                                         alt="dead heart"
                                         className="w-6 h-6"
