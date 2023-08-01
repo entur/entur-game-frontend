@@ -1,15 +1,16 @@
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { ReactElement, useEffect, useState } from "react";
 
-import { Level } from '../../../constant/levels'
-import { Heading4 } from '@entur/typography'
-import { InvalidTravelModal } from './InvalidTravelModal'
-import { useNavigate } from 'react-router-dom'
-import { Departure, QueryMode, StopPlace, StopPlaceDetails } from '@entur/sdk'
-import { useEnturService } from '../../../hooks/useEnturService'
-import { addHours, addMinutes } from 'date-fns'
-import { formatTimeForEndOfGame } from '../../../utils/dateFnsUtils'
-import FromAndToTitle from './FromAndToTitle'
-import TransportTypePicker from './TransportTypePicker'
+import { Level } from "../../../constant/levels";
+import { Heading4 } from "@entur/typography";
+import { InvalidTravelModal } from "./InvalidTravelModal";
+import { useNavigate } from "react-router-dom";
+import { Departure, QueryMode, StopPlace, StopPlaceDetails } from "@entur/sdk";
+import { useEnturService } from "../../../hooks/useEnturService";
+import { addHours, addMinutes } from "date-fns";
+import { formatTimeForEndOfGame } from "../../../utils/dateFnsUtils";
+import FromAndToTitle from "./FromAndToTitle";
+import TransportTypePicker from "./TransportTypePicker";
+import TravelLegStart from "./TravelLegStart";
 
 interface StopAndTime {
     stopPlace: StopPlace | StopPlaceDetails
@@ -129,8 +130,13 @@ function NewGame({
         <>
             <FromAndToTitle className="mt-10 xl:mt-28" level={level} />
             <Heading4 margin="none">Hvordan vil du starte?</Heading4>
-            <div className="mt-5 xl:mt-14">TODO: Travelleg</div>
-            <div className="ml-2 xl:mr-4 xl:ml-5">
+            <div className="mt-5 xl:mt-14">
+                <TravelLegStart
+                    travelLegs={travelLegs}
+                    travelLegsMode={travelLegsMode}
+                />
+            </div>
+            <div className="mt-5 ml-9 xl:mr-4 xl:ml-12">
                 <TransportTypePicker
                     mode={mode}
                     usedMode={usedMode}
@@ -139,7 +145,7 @@ function NewGame({
                     stopPlace={stopPlace}
                 />
             </div>
-            <div>TODO: Travelleg</div>
+            <div>TODO: Travelleg finished</div>
             <InvalidTravelModal
                 usedMode={usedMode}
                 noTransport={noTransport}
