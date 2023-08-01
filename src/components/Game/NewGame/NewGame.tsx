@@ -3,6 +3,8 @@ import { Heading4 } from '@entur/typography'
 import { Departure, QueryMode, StopPlace, StopPlaceDetails } from '@entur/sdk'
 import { addHours, addMinutes } from 'date-fns'
 import { sprinkleEmojis } from 'emoji-sprinkle'
+import { useNavigate } from 'react-router-dom'
+import { SecondaryButton } from '@entur/button'
 
 import { Level } from '../../../constant/levels'
 import { InvalidTravelModal } from './InvalidTravelModal'
@@ -47,6 +49,7 @@ function NewGame({
     handleWinner,
     nickname,
 }: Props): ReactElement {
+    const navigate = useNavigate()
     const [hasBeenSprinkled, setSprinkled] = useState<boolean>(false)
     const [dead, setDead] = useState<boolean>(false)
     const [travelLegsMode, setTravelLegsMode] = useState<QueryMode[]>([])
@@ -217,7 +220,7 @@ function NewGame({
     }
 
     return (
-        <>
+        <div className="flex flex-col">
             <FromAndToTitle className="mt-10 xl:mt-28" level={level} />
             <Heading4 margin="none">Hvordan vil du starte?</Heading4>
             <div className="mt-5 xl:mt-14">
@@ -238,6 +241,12 @@ function NewGame({
             <div className="mt-5 xl:mt-14">
                 <TravelLegFinished targets={targets} />
             </div>
+            <SecondaryButton
+                className="bg-lavender hover:bg-blue-80 sm:mt-28 mt-10 sm:place-self-start place-self-center"
+                onClick={() => navigate('/')}
+            >
+                Avslutt reise
+            </SecondaryButton>
             <InvalidTravelModal
                 usedMode={usedMode}
                 noTransport={noTransport}
@@ -253,7 +262,7 @@ function NewGame({
                 selectStopOnLine={selectStopOnLine}
                 setModalOpen={setModalOpen}
             />
-        </>
+        </div>
     )
 }
 
