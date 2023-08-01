@@ -14,7 +14,6 @@ import '../../App.css'
 import { getModeIcon, getModeTranslation } from '../../utils/transportMapper'
 import {
     formatDateAndTime,
-    formatTime,
     formatTimeForEndOfGame,
 } from '../../utils/dateFnsUtils'
 import { ALL_MODES } from '../../constant/queryMode'
@@ -25,8 +24,9 @@ import VictoryScreen from './VictoryScreen'
 import DeadScreen from './DeadScreen'
 import { HpBar } from './HpBar'
 import { InvalidTravel } from './InvalidTravel'
+import { ModalTransport } from './ModalTransport'
 
-interface StopAndTime {
+export interface StopAndTime {
     stopPlace: StopPlace | StopPlaceDetails
     time: Date
 }
@@ -61,6 +61,7 @@ function Game({
     const [currentTime, setCurrentTime] = useState<Date>(new Date())
     const [noTransport, setNoTransport] = useState<boolean>(false)
     const [usedMode, setUsedMode] = useState<QueryMode[]>([])
+    const [isModalOpen, setModalOpen] = useState<boolean>(false)
     const { getWalkableStopPlaces, getDepartures, getStopsOnLine } =
         useEnturService()
 
@@ -94,6 +95,7 @@ function Game({
                     setUsedMode((prev) => [...prev, newMode])
                     setMode(null)
                 } else {
+                    setModalOpen(true)
                     setUsedMode([])
                     setTravelLegsMode((prev) => [...prev, newMode])
                 }
@@ -113,6 +115,7 @@ function Game({
                     setUsedMode((prev) => [...prev, newMode])
                     setMode(null)
                 } else {
+                    setModalOpen(true)
                     setUsedMode([])
                     setTravelLegsMode((prev) => [...prev, newMode])
                 }
@@ -157,6 +160,7 @@ function Game({
         setStopsOnLine([])
         setCurrentTime(stopAndTime.time)
         setMode(null)
+        setModalOpen(false)
         if (stopAndTime) {
             setStopPlace(stopAndTime.stopPlace)
             setTravelLegs((prev) => [...prev, stopAndTime.stopPlace])
@@ -232,8 +236,11 @@ function Game({
                 <HpBar totalHp={totalHp + 1} />
             </header>
             {!mode ? (
-                <div className='border-2 rounded-md shadow pl-10 pb-8'>
-                    <Heading2>Velg transportmåte fra <span className='text-coral'>{stopPlace.name}</span></Heading2>
+                <div className="border-2 rounded-md shadow pl-10 pb-8">
+                    <Heading2>
+                        Velg transportmåte fra{' '}
+                        <span className="text-coral">{stopPlace.name}</span>
+                    </Heading2>
                     <ChoiceChipGroup
                         value={mode || 'none'}
                         onChange={console.log}
@@ -245,7 +252,7 @@ function Game({
                                 return (
                                     <>
                                         <ChoiceChip
-                                            className='border-2 ml-1 mr-2 mt-3 text-lg w-38 h-10 rounded-3xl'
+                                            className="border-2 ml-1 mr-2 mt-3 text-lg w-38 h-10 rounded-3xl"
                                             key={mode}
                                             value={mode}
                                             onClick={() => selectMode(mode)}
@@ -258,7 +265,7 @@ function Game({
                                 )
                             })}
                             <ChoiceChip
-                                className='border-2 ml-1 mr-2 mt-3 text-lg w-38 h-10 rounded-3xl'
+                                className="border-2 ml-1 mr-2 mt-3 text-lg w-38 h-10 rounded-3xl"
                                 key="wait"
                                 value="wait"
                                 onClick={() => wait()}
@@ -274,89 +281,23 @@ function Game({
                             />
                         </>
                     </ChoiceChipGroup>
-                    
                 </div>
             ) : null}
-            <>
-                {departures.length ? (
-                    <div>
-                        <Heading2>Velg avgang</Heading2>
-                        <ChoiceChipGroup
-                            value="none"
-                            onChange={console.log}
-                            name="Departure"
-                        >
-                            {departures
-                                .filter(
-                                    (d, index, arr) =>
-                                        arr.findIndex(
-                                            (e) =>
-                                                e.destinationDisplay
-                                                    .frontText ===
-                                                d.destinationDisplay.frontText,
-                                        ) === index,
-                                )
-                                .map((departure) => (
-                                    <ChoiceChip
-                                        key={
-                                            departure.destinationDisplay
-                                                .frontText +
-                                            departure.serviceJourney.id
-                                        }
-                                        value={
-                                            departure.destinationDisplay
-                                                .frontText +
-                                            departure.serviceJourney.id
-                                        }
-                                        onClick={() =>
-                                            selectDeparture(departure)
-                                        }
-                                    >
-                                        {mode ? getModeIcon(mode) : null}
-                                        {
-                                            departure.serviceJourney
-                                                .journeyPattern?.line.publicCode
-                                        }{' '}
-                                        {departure.destinationDisplay.frontText}{' '}
-                                        kl.{' '}
-                                        {formatTime(
-                                            departure.expectedDepartureTime,
-                                        )}
-                                    </ChoiceChip>
-                                ))}
-                        </ChoiceChipGroup>
-                    </div>
-                ) : null}
-            </>
-            {stopsOnLine.length ? (
-                <div>
-                    <Heading2>
-                        Hvor vil du gå {mode === 'foot' ? 'til' : 'av'}?
-                    </Heading2>
-
-                    <ChoiceChipGroup
-                        value="none"
-                        onChange={console.log}
-                        name="Stop on line"
-                    >
-                        {stopsOnLine.map((stop) => (
-                            <ChoiceChip
-                                key={stop.stopPlace.id}
-                                value={stop.stopPlace.id}
-                                onClick={() => selectStopOnLine(stop)}
-                            >
-                                {stop.stopPlace.name}
-                            </ChoiceChip>
-                        ))}
-                    </ChoiceChipGroup>
-                </div>
-            ) : null}
+            <ModalTransport
+                isOpenModal={isModalOpen}
+                departures={departures}
+                stopsOnLine={stopsOnLine}
+                selectDeparture={selectDeparture}
+                mode={mode}
+                selectStopOnLine={selectStopOnLine}
+                setModalOpen={setModalOpen}
+            />
             <PrimaryButton
-                        onClick={() => navigate(-1)}
-                        style={{ marginTop: '10px' }}
-                    >
-                        Hovedmeny
-                    </PrimaryButton>
+                onClick={() => navigate(-1)}
+                style={{ marginTop: '10px' }}
+            >
+                Hovedmeny
+            </PrimaryButton>
         </div>
     )
 }
