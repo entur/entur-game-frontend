@@ -33,13 +33,15 @@ function TravelLegStart({ travelLegs, travelLegsMode }: Props): ReactElement {
                             className="mt-1 mr-6 sm:mr-8 h-24"
                             transport={
                                 travelLegsMode[
-                                    index
+                                    index + 1
                                 ] as TravelLegProps['transport']
                             }
                             direction="vertical"
                             showStop={false}
                         />
-                        <Heading4 margin="none">{travelLegs[0].name}</Heading4>
+                        <Heading4 margin="none">
+                            {travelLegs[index].name}
+                        </Heading4>
                     </div>
                 ) : (
                     <div className="flex flex-row">
@@ -47,14 +49,16 @@ function TravelLegStart({ travelLegs, travelLegsMode }: Props): ReactElement {
                             className="mt-1 mr-6 sm:mr-8"
                             transport={
                                 travelLegsMode[
-                                    index
+                                    index + 1
                                 ] as TravelLegProps['transport']
                             }
                             direction="vertical"
                             showStop={false}
                             showLine={false}
                         />
-                        <Heading4 margin="none">{travelLegs[1].name}</Heading4>
+                        <Heading4 margin="none">
+                            {travelLegs[index].name}
+                        </Heading4>
                     </div>
                 )
             })}

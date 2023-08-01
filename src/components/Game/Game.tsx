@@ -23,7 +23,7 @@ import { useEnturService } from '../../hooks/useEnturService'
 import VictoryScreen from './VictoryScreen'
 import DeadScreen from './DeadScreen'
 import { HpBar } from './HpBar'
-import { ModalTransport } from './ModalTransport'
+import { DepartureAndOnLinePickerModal } from './NewGame/DepartureAndOnLinePickerModal'
 import { InvalidTravelModal } from './NewGame/InvalidTravelModal'
 
 export interface StopAndTime {
@@ -283,7 +283,7 @@ function Game({
                     </ChoiceChipGroup>
                 </div>
             ) : null}
-            <ModalTransport
+            <DepartureAndOnLinePickerModal
                 isOpenModal={isModalOpen}
                 departures={departures}
                 stopsOnLine={stopsOnLine}

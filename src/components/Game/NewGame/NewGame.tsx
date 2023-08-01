@@ -1,16 +1,19 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useState } from 'react'
 
-import { Level } from "../../../constant/levels";
-import { Heading4 } from "@entur/typography";
-import { InvalidTravelModal } from "./InvalidTravelModal";
-import { useNavigate } from "react-router-dom";
-import { Departure, QueryMode, StopPlace, StopPlaceDetails } from "@entur/sdk";
-import { useEnturService } from "../../../hooks/useEnturService";
-import { addHours, addMinutes } from "date-fns";
-import { formatTimeForEndOfGame } from "../../../utils/dateFnsUtils";
-import FromAndToTitle from "./FromAndToTitle";
-import TransportTypePicker from "./TransportTypePicker";
-import TravelLegStart from "./TravelLegStart";
+import { Level } from '../../../constant/levels'
+import { Heading4 } from '@entur/typography'
+import { InvalidTravelModal } from './InvalidTravelModal'
+import { useNavigate } from 'react-router-dom'
+import { Departure, QueryMode, StopPlace, StopPlaceDetails } from '@entur/sdk'
+import { useEnturService } from '../../../hooks/useEnturService'
+import { addHours, addMinutes } from 'date-fns'
+import { formatTimeForEndOfGame } from '../../../utils/dateFnsUtils'
+import FromAndToTitle from './FromAndToTitle'
+import TransportTypePicker from './TransportTypePicker'
+import TravelLegStart from './TravelLegStart'
+import { DepartureAndOnLinePickerModal } from './DepartureAndOnLinePickerModal'
+import { isTruthy } from '../../../utils/isTruthy'
+import { TravelLegFinished } from './TravelLegFinished'
 
 interface StopAndTime {
     stopPlace: StopPlace | StopPlaceDetails
@@ -52,9 +55,11 @@ function NewGame({
     const [currentTime, setCurrentTime] = useState<Date>(new Date())
     const [noTransport, setNoTransport] = useState<boolean>(false)
     const [usedMode, setUsedMode] = useState<QueryMode[]>([])
+    const [isModalOpen, setModalOpen] = useState<boolean>(false)
     const { getWalkableStopPlaces, getDepartures, getStopsOnLine } =
         useEnturService()
-
+    console.log(travelLegsMode)
+    console.log(travelLegs)
     useEffect(() => {
         setStopPlace(level.start)
         setTravelLegs([level.start])
@@ -96,6 +101,7 @@ function NewGame({
                     setUsedMode((prev) => [...prev, newMode])
                     setMode(null)
                 } else {
+                    setModalOpen(true)
                     setUsedMode([])
                     setTravelLegsMode((prev) => [...prev, newMode])
                 }
@@ -115,10 +121,52 @@ function NewGame({
                     setUsedMode((prev) => [...prev, newMode])
                     setMode(null)
                 } else {
+                    setModalOpen(true)
                     setUsedMode([])
                     setTravelLegsMode((prev) => [...prev, newMode])
                 }
             })
+        }
+    }
+
+    const selectDeparture = (departure: Departure) => {
+        setDepartures([])
+        setCurrentTime(new Date(departure.expectedDepartureTime))
+        getStopsOnLine(departure.serviceJourney.id, departure.date).then(
+            (departures) => {
+                setStopsOnLine(
+                    departures
+                        .map((d, index) => {
+                            const stop = d.quay?.stopPlace
+                            if (
+                                !stop ||
+                                d.expectedDepartureTime <=
+                                    departure.expectedDepartureTime
+                            )
+                                return undefined
+                            const nextDep = departures[index + 1]
+                            return {
+                                stopPlace: stop,
+                                time: new Date(
+                                    (nextDep || d).expectedArrivalTime,
+                                ),
+                            }
+                        })
+                        .filter(isTruthy),
+                )
+            },
+        )
+    }
+
+    const selectStopOnLine = (stopAndTime: StopAndTime) => {
+        setStopsOnLine([])
+        setCurrentTime(stopAndTime.time)
+        setMode(null)
+        setModalOpen(false)
+        if (stopAndTime) {
+            setStopPlace(stopAndTime.stopPlace)
+            setTravelLegs((prev) => [...prev, stopAndTime.stopPlace])
+            setNumLegs((prev) => prev + 1)
         }
     }
 
@@ -145,12 +193,23 @@ function NewGame({
                     stopPlace={stopPlace}
                 />
             </div>
-            <div>TODO: Travelleg finished</div>
+            <div className="mt-5 xl:mt-14">
+                <TravelLegFinished targets={targets} />
+            </div>
             <InvalidTravelModal
                 usedMode={usedMode}
                 noTransport={noTransport}
                 setNoTransport={setNoTransport}
                 stopPlace={stopPlace.name}
+            />
+            <DepartureAndOnLinePickerModal
+                isOpenModal={isModalOpen}
+                departures={departures}
+                stopsOnLine={stopsOnLine}
+                selectDeparture={selectDeparture}
+                mode={mode}
+                selectStopOnLine={selectStopOnLine}
+                setModalOpen={setModalOpen}
             />
         </>
     )
