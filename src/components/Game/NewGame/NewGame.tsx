@@ -1,11 +1,12 @@
 import React, { ReactElement, useEffect, useState } from 'react'
+import { Heading4 } from '@entur/typography'
+import { Departure, QueryMode, StopPlace, StopPlaceDetails } from '@entur/sdk'
+import { addHours, addMinutes } from 'date-fns'
+import { sprinkleEmojis } from 'emoji-sprinkle'
 
 import { Level } from '../../../constant/levels'
-import { Heading4 } from '@entur/typography'
 import { InvalidTravelModal } from './InvalidTravelModal'
-import { Departure, QueryMode, StopPlace, StopPlaceDetails } from '@entur/sdk'
 import { useEnturService } from '../../../hooks/useEnturService'
-import { addHours, addMinutes } from 'date-fns'
 import { formatTimeForEndOfGame } from '../../../utils/dateFnsUtils'
 import FromAndToTitle from './FromAndToTitle'
 import TransportTypePicker from './TransportTypePicker'
@@ -14,7 +15,6 @@ import { DepartureAndOnLinePickerModal } from './DepartureAndOnLinePickerModal'
 import { isTruthy } from '../../../utils/isTruthy'
 import { TravelLegFinished } from './TravelLegFinished'
 import DeadScreen from '../DeadScreen'
-import { sprinkleEmojis } from 'emoji-sprinkle'
 import VictoryScreen from '../VictoryScreen'
 
 interface StopAndTime {
