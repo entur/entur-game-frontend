@@ -10,6 +10,7 @@ import {
 } from '@entur/table'
 import '@entur/table/dist/styles.css'
 import { getTopTenByDifficulty, PlayerResponse } from '../../api/playerScoreApi'
+import { generateKey } from '../../utils/generateUniqueKey'
 
 type Props = {
     difficulty: string
@@ -49,7 +50,11 @@ export const LeaderBoard = ({ difficulty }: Props): JSX.Element => {
                     </TableHead>
                     <TableBody>
                         {players.map((player, index) => (
-                            <TableRow key={player.score + player.nickname}>
+                            <TableRow
+                                key={generateKey(
+                                    player.score + player.nickname,
+                                )}
+                            >
                                 <DataCell>{index + 1}</DataCell>
                                 <DataCell>{player.nickname}</DataCell>
                                 <DataCell>{player.score}</DataCell>
