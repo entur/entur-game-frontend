@@ -133,7 +133,7 @@ export const EVENT: Level[] = [
         },
         targets: [
             {
-                id: 'NSR:StopPlace:56826',
+                id: 'NSR:StopPlace:6288',
                 name: 'Alexander Kiellands plass',
             },
         ],
