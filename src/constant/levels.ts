@@ -121,6 +121,26 @@ export const EVENT: Level[] = [
         optimalRoute: 12,
         optimalTraveltime: '123 timer, 12 minutter',
     },
+    {
+        id: 'k2s21',
+        name: 'Ski stasjon - Alexander Kiellands plass, Oslo',
+        description: 'Fra Ski stasjon til Alexander Kiellands plass, Oslo',
+        start: {
+            id: 'NSR:StopPlace:60944',
+            name: 'Ski stasjon',
+            latitude: 59.7191,
+            longitude: 10.8355,
+        },
+        targets: [
+            {
+                id: 'NSR:StopPlace:56826',
+                name: 'Alexander Kiellands plass',
+            },
+        ],
+        difficulty: 'Event',
+        optimalRoute: 12,
+        optimalTraveltime: '123 timer, 12 minutter',
+    },
 ]
 
 export const ALL_LEVELS = [...EASY, ...MEDIUM, ...HARD, ...EVENT]
