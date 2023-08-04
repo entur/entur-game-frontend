@@ -1,7 +1,7 @@
 import React from 'react'
 import { Heading1, Heading2, Paragraph } from '@entur/typography'
 
-import SelectLevel from '../components/SelectLevel'
+import SelectLevel from '../../components/SelectLevel'
 
 import { Link } from 'react-router-dom'
 import { PrimaryButton } from '@entur/button'
