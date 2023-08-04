@@ -11,7 +11,7 @@ import {
 export function SplashScreen(): JSX.Element {
     const navigate = useNavigate()
     return (
-        <div className="absolute fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
             <ArtBoardOvalImage className="absolute sm:-top-72 sm:left-10 -top-64" />
             <ArtBoardCookieImage className="absolute sm:right-[22rem] right-24 sm:bottom-12 bottom-20" />
             <ArtBoardCircleImage className="absolute bottom-32 right-[-19rem]" />
