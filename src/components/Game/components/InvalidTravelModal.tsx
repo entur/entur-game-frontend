@@ -3,7 +3,7 @@ import { getModeTranslation } from '../../../utils/transportMapper'
 import { Modal } from '@entur/modal'
 import React from 'react'
 import { Paragraph } from '@entur/typography'
-import brokenHeart from '@assets/images/broken-heart.svg'
+import brokenHeart from '@assets/icons/BrokenHeart.svg'
 
 type Props = {
     usedMode: QueryMode[]

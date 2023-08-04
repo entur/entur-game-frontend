@@ -6,7 +6,7 @@ import './App.css'
 import Multiplayer from './components/Multiplayer/Multiplayer'
 import MainPage from './pages/MainPage'
 import GamePage from './pages/game/[level-id]'
-import SplashScreen from './pages/SplashScreen'
+import SplashScreen from './components/SplashScreen/SplashScreen'
 
 function App(): JSX.Element {
     return (
