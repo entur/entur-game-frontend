@@ -56,6 +56,7 @@ export const DepartureAndOnLinePickerModal = ({
                                     )
                                     .map((departure) => (
                                         <ChoiceChip
+                                            className="select-none"
                                             key={
                                                 departure.destinationDisplay
                                                     .frontText +
@@ -103,6 +104,7 @@ export const DepartureAndOnLinePickerModal = ({
                         >
                             {stopsOnLine.map((stop) => (
                                 <ChoiceChip
+                                    className="select-none"
                                     key={stop.stopPlace.id}
                                     value={stop.stopPlace.id}
                                     onClick={() => selectStopOnLine(stop)}

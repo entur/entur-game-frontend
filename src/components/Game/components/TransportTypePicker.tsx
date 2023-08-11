@@ -23,7 +23,7 @@ function TransportTypePicker({
     stopPlace,
 }: Props): ReactElement {
     return (
-        <div className="bg-white border-2 rounded-md pl-10 pb-8 pr-10">
+        <div className="bg-white border-4 border-white shadow-sm rounded-sm pl-10 pb-8 pr-10">
             <Heading2>
                 Velg transportmåte fra{' '}
                 <span className="text-coral">{stopPlace.name}</span>
@@ -38,7 +38,7 @@ function TransportTypePicker({
                         const disabled = usedMode.includes(mode)
                         return (
                             <ChoiceChip
-                                className="border-2 ml-1 mr-2 mt-3 w-38 h-10 rounded-3xl sm:text-lg"
+                                className="border-2 ml-1 mr-2 mt-3 w-38 h-10 rounded-3xl sm:text-lg select-none"
                                 key={mode}
                                 value={mode}
                                 onClick={() => selectMode(mode)}
@@ -50,7 +50,7 @@ function TransportTypePicker({
                         )
                     })}
                     <ChoiceChip
-                        className="border-2 ml-1 mr-2 mt-3 w-38 h-10 rounded-3xl sm:text-lg"
+                        className="border-2 ml-1 mr-2 mt-3 w-38 h-10 rounded-3xl sm:text-lg select-none"
                         key="wait"
                         value="wait"
                         onClick={() => wait()}

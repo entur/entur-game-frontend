@@ -17,7 +17,7 @@ import { DepartureAndOnLinePickerModal } from './components/DepartureAndOnLinePi
 import { isTruthy } from '../../utils/isTruthy'
 import { TravelLegFinished } from './components/TravelLegFinished'
 import DeadScreen from './DeadScreen'
-import VictoryScreen from './VictoryScreen'
+import { VictoryScreen } from './VictoryScreen/VictoryScreen'
 
 export interface StopAndTime {
     stopPlace: StopPlace | StopPlaceDetails
@@ -204,8 +204,6 @@ function GameScreen({
                     currentTime={currentTime}
                     startTime={startTime}
                     startTimer={startTimer}
-                    travelLegs={travelLegs}
-                    travelLegsMode={travelLegsMode}
                 />
             </div>
         )

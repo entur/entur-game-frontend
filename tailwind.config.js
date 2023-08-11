@@ -33,6 +33,10 @@ export default {
             lavender: colors.brand.lavender,
             'mint-contrast': colors.validation.mintContrast,
         },
+        borderColor: {
+            'blue-60': colors.blues.blue60,
+             white: colors.brand.white,
+        },
         extend: {},
     },
     plugins: [],
