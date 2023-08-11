@@ -1,14 +1,23 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Heading1, Heading2, Paragraph } from '@entur/typography'
 
 import SelectLevel from '../../components/SelectLevel'
 
 import { Link } from 'react-router-dom'
 import { PrimaryButton } from '@entur/button'
+import { useBackground } from '../../backgroundContext'
 
 export function MainPage(): JSX.Element {
+    const { setBackgroundColor } = useBackground()
+
+    useEffect(() => {
+        setBackgroundColor('bg-blue-main')
+
+        return () => setBackgroundColor('bg-blue-90')
+    }, [setBackgroundColor])
+
     return (
-        <div className="app">
+        <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
             <Heading1>Er du smartere enn vår reiseplanlegger?</Heading1>
             <Paragraph>
                 Du har bestemt deg for å reise på norgesferie med

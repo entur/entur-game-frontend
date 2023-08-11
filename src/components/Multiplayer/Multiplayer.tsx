@@ -1,6 +1,6 @@
 import './Multiplayer.css'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Heading1, Heading3, Paragraph } from '@entur/typography'
 import { Link } from 'react-router-dom'
 import { PrimaryButton } from '@entur/button'
@@ -14,6 +14,7 @@ import { useGameSocket } from '../../hooks/useGameSocket'
 import easy from '@assets/images/easy.png'
 import medium from '@assets/images/medium.png'
 import hard from '@assets/images/hard.png'
+import { useBackground } from '../../backgroundContext'
 
 function Multiplayer(): JSX.Element {
     const [totalHp, setTotalHp] = useState<number>(2)
@@ -28,6 +29,12 @@ function Multiplayer(): JSX.Element {
     const [winner, setWinner] = useState<string>('')
     const [finished, setFinished] = useState<boolean>(false)
     const [name, setName] = useState<string>('')
+    const { setBackgroundColor } = useBackground()
+
+    useEffect(() => {
+        setBackgroundColor('bg-blue-90')
+        return () => setBackgroundColor('bg-main-blue')
+    }, [setBackgroundColor])
 
     return (
         <div className="multiplayer">
