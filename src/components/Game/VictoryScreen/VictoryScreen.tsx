@@ -13,6 +13,7 @@ import { StopPlace } from '@entur/sdk'
 import { useNavigate } from 'react-router-dom'
 import { savePlayerScore } from '../../../api/playerScoreApi'
 import { formatIntervalToSeconds } from '../../../utils/dateFnsUtils'
+import { Controller, useForm } from 'react-hook-form'
 
 type Props = {
     nickname: string
@@ -36,16 +37,26 @@ export function VictoryScreen({
     startTime,
     startTimer,
 }: Props): ReactElement {
+    const {
+        formState: { errors },
+        control,
+        register,
+        handleSubmit,
+        watch,
+        setValue,
+        getValues,
+    } = useForm({
+        defaultValues: { name: nickname, email: '', consent: false },
+    })
     const navigate = useNavigate()
     const [consent, setConsentStatus] = React.useState(false)
     const [name, setName] = React.useState(nickname)
-    const [email, setEmail] = React.useState('')
     const [pressed, setPressed] = React.useState(false)
 
     async function onSubmit() {
         await savePlayerScore({
             name: name,
-            email: email,
+            email: name, //TODO Change this
             difficulty: level.difficulty,
             fromDestination: {
                 destination: level.start.name,
@@ -72,7 +83,12 @@ export function VictoryScreen({
             <VictoryArtBoardCircleImage className="absolute bottom-60 -right-72 hidden xl:block" />
             <MenuNavBar />
             <div className="flex justify-center">
-                <div className="flex flex-col max-w-3xl mt-20 pr-4 pl-4 gap-6">
+                <form
+                    className="flex flex-col max-w-3xl mt-20 pr-4 pl-4 gap-6"
+                    onSubmit={handleSubmit((data) => {
+                        console.log(data)
+                    })}
+                >
                     <Heading3 className="font-semibold">Du er fremme!</Heading3>
                     <Paragraph>
                         Du kom deg fra Jernbanetorget, Oslo til Trondheim S,
@@ -83,22 +99,48 @@ export function VictoryScreen({
                         Vår reiseplanlegger har beregnet en optimal rute der
                         etapper er 2, og reisetid er 7 timer, 42 minutter.
                     </Paragraph>
-                    <TextField
-                        label="Navn"
-                        placeholder=""
-                        value={name}
-                        onChange={(event) => setName(event.target.value)}
+                    <Controller
+                        name="name"
+                        control={control}
+                        rules={{ required: 'Dette feltet er påkrevet.' }}
+                        render={({ field, fieldState }) => (
+                            <TextField
+                                label="Navn"
+                                placeholder=""
+                                value={name}
+                                onChange={(event) =>
+                                    setName(event.target.value)
+                                }
+                            />
+                        )}
                     />
-                    <TextField
-                        label="E-postadresse"
-                        placeholder=""
-                        value={email}
-                        onChange={(event) => setEmail(event.target.value)}
+                    <Controller
+                        name="email"
+                        control={control}
+                        rules={{
+                            required: 'Dette feltet er påkrevet.',
+                            pattern: {
+                                value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g,
+                                message: 'Ugyldig e-postadresse.',
+                            },
+                        }}
+                        render={({ field, fieldState }) => (
+                            <TextField
+                                label="E-postadresse"
+                                placeholder=""
+                                {...field}
+                                variant={fieldState.error ? 'error' : 'info'}
+                                feedback={fieldState.error?.message}
+                            />
+                        )}
                     />
                     <div
-                        className="border-2 border-blue-60 rounded border-solid w-full h-28 cursor-pointer"
+                        className={`border-2 ${
+                            errors.consent ? 'border-coral' : 'border-blue-60'
+                        } rounded border-solid w-full h-28 cursor-pointer`}
+                        {...register('consent', { required: true })}
                         onClick={() =>
-                            setConsentStatus((prevState) => !prevState)
+                            setValue('consent', !getValues('consent'))
                         }
                     >
                         <div className="grid grid-cols-8 grid-row-2 pt-4 pl-4 pb-4">
@@ -110,10 +152,10 @@ export function VictoryScreen({
                             </Heading5>
                             <Checkbox
                                 className="sm:place-self-end sm:row-span-1 m-0 mr-0 row-span-2 place-self-center"
-                                onChange={() =>
-                                    setConsentStatus((prevState) => !prevState)
+                                {...register('consent', { required: true })}
+                                onClick={() =>
+                                    setValue('consent', !getValues('consent'))
                                 }
-                                checked={consent}
                             />
                             <Label className=" col-span-5 cursor-pointer select-none">
                                 Jeg samtykker til at Entur kan kontakte meg på
@@ -121,17 +163,19 @@ export function VictoryScreen({
                             </Label>
                         </div>
                     </div>
+
                     <div className="flex flex-row mt-4 gap-4">
                         <PrimaryButton
                             className="select-none"
-                            loading={pressed}
-                            disabled={!consent}
-                            onClick={async () => {
-                                if(!pressed) {
-                                    setPressed(true)
-                                    await onSubmit()
-                                }
-                            }}
+                            // loading={pressed}
+                            // disabled={!consent}
+                            type="submit"
+                            // onClick={async () => {
+                            //     if (!pressed) {
+                            //         setPressed(true)
+                            //         await onSubmit()
+                            //     }
+                            // }}
                         >
                             Lagre poengsum
                         </PrimaryButton>
@@ -143,7 +187,7 @@ export function VictoryScreen({
                             Spill på nytt
                         </SecondaryButton>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     )
