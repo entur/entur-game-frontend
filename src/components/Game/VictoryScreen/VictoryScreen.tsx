@@ -25,9 +25,14 @@ type Props = {
     startTime: Date
     startTimer: number
 }
-//TODO: Add react-form-hook to this component
+
+type FormValues = {
+    name: string
+    email: string
+    consent: boolean
+}
+
 //TODO: Text description on this session. Currently static
-//TODO: Check if await savePlayerScore works
 export function VictoryScreen({
     nickname = '',
     level,
@@ -38,42 +43,44 @@ export function VictoryScreen({
     startTimer,
 }: Props): ReactElement {
     const {
-        formState: { errors },
+        formState: { errors, isLoading, isSubmitting, isValid },
         control,
         register,
         handleSubmit,
         watch,
         setValue,
         getValues,
-    } = useForm({
+    } = useForm<FormValues>({
         defaultValues: { name: nickname, email: '', consent: false },
     })
     const navigate = useNavigate()
-    const [consent, setConsentStatus] = React.useState(false)
-    const [name, setName] = React.useState(nickname)
-    const [pressed, setPressed] = React.useState(false)
 
-    async function onSubmit() {
-        await savePlayerScore({
-            name: name,
-            email: name, //TODO Change this
-            difficulty: level.difficulty,
-            fromDestination: {
-                destination: level.start.name,
-                id: level.start.id,
-            },
-            toDestination: {
-                destination: target.name,
-                id: target.id,
-            },
-            totalOptions: numLegs,
-            totalPlaytime: Math.trunc((Date.now() - startTimer) / 1000),
-            totalTravelTime: formatIntervalToSeconds(currentTime, startTime),
-        })
-        setTimeout(() => {
-            navigate('/')
-        }, 3000)
-        //If failed set pressed to false
+    async function onSubmit(data: FormValues) {
+        try {
+            await savePlayerScore({
+                ...data,
+                difficulty: level.difficulty,
+                fromDestination: {
+                    destination: level.start.name,
+                    id: level.start.id,
+                },
+                toDestination: {
+                    destination: target.name,
+                    id: target.id,
+                },
+                totalOptions: numLegs,
+                totalPlaytime: Math.trunc((Date.now() - startTimer) / 1000),
+                totalTravelTime: formatIntervalToSeconds(
+                    currentTime,
+                    startTime,
+                ),
+            })
+            setTimeout(() => {
+                navigate('/')
+            }, 3000)
+        } catch (e) {
+            console.warn(e)
+        }
     }
 
     return (
@@ -85,8 +92,8 @@ export function VictoryScreen({
             <div className="flex justify-center">
                 <form
                     className="flex flex-col max-w-3xl mt-20 pr-4 pl-4 gap-6"
-                    onSubmit={handleSubmit((data) => {
-                        console.log(data)
+                    onSubmit={handleSubmit(async (data) => {
+                        await onSubmit(data)
                     })}
                 >
                     <Heading3 className="font-semibold">Du er fremme!</Heading3>
@@ -107,10 +114,9 @@ export function VictoryScreen({
                             <TextField
                                 label="Navn"
                                 placeholder=""
-                                value={name}
-                                onChange={(event) =>
-                                    setName(event.target.value)
-                                }
+                                {...field}
+                                variant={fieldState.error ? 'error' : 'info'}
+                                feedback={fieldState.error?.message}
                             />
                         )}
                     />
@@ -166,22 +172,18 @@ export function VictoryScreen({
 
                     <div className="flex flex-row mt-4 gap-4">
                         <PrimaryButton
-                            className="select-none"
-                            // loading={pressed}
-                            // disabled={!consent}
+                            className={`select-none ${
+                                watch('consent') && 'bg-blue-main'
+                            }`}
+                            loading={isSubmitting || isLoading}
+                            disabled={!watch('consent') && !isValid}
                             type="submit"
-                            // onClick={async () => {
-                            //     if (!pressed) {
-                            //         setPressed(true)
-                            //         await onSubmit()
-                            //     }
-                            // }}
                         >
                             Lagre poengsum
                         </PrimaryButton>
                         <SecondaryButton
                             className="bg-lavender select-none"
-                            loading={pressed}
+                            loading={isSubmitting || isLoading}
                             onClick={() => navigate('/')}
                         >
                             Spill på nytt
