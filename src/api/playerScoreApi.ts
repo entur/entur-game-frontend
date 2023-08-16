@@ -29,12 +29,13 @@ export async function getTopTenByDifficulty(
 
 export async function savePlayerScore(
     playerInfo: PlayerRequest,
-): Promise<void> {
-    await fetch(`${baseUrl}/player-score`, {
+): Promise<Response> {
+    const response = await fetch(`${baseUrl}/player-score`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(playerInfo),
     })
+    return await response.json()
 }

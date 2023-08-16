@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useState } from 'react'
 import { Heading3, Heading5, Label, Paragraph } from '@entur/typography'
 import { Checkbox, TextField } from '@entur/form'
 import { MenuNavBar } from '../../NavBar/MenuNavBar'
@@ -54,33 +54,31 @@ export function VictoryScreen({
         defaultValues: { name: nickname, email: '', consent: false },
     })
     const navigate = useNavigate()
+    const [isError, setError] = useState<boolean>(false)
 
     async function onSubmit(data: FormValues) {
-        try {
-            await savePlayerScore({
-                ...data,
-                difficulty: level.difficulty,
-                fromDestination: {
-                    destination: level.start.name,
-                    id: level.start.id,
-                },
-                toDestination: {
-                    destination: target.name,
-                    id: target.id,
-                },
-                totalOptions: numLegs,
-                totalPlaytime: Math.trunc((Date.now() - startTimer) / 1000),
-                totalTravelTime: formatIntervalToSeconds(
-                    currentTime,
-                    startTime,
-                ),
-            })
+        const response = await savePlayerScore({
+            ...data,
+            difficulty: level.difficulty,
+            fromDestination: {
+                destination: level.start.name,
+                id: level.start.id,
+            },
+            toDestination: {
+                destination: target.name,
+                id: target.id,
+            },
+            totalOptions: numLegs,
+            totalPlaytime: Math.trunc((Date.now() - startTimer) / 1000),
+            totalTravelTime: formatIntervalToSeconds(currentTime, startTime),
+        })
+        if (response.status > 199 && response.status < 299) {
             setTimeout(() => {
                 navigate('/')
             }, 3000)
-        } catch (e) {
-            console.warn(e)
+            return
         }
+        setError(true)
     }
 
     return (
@@ -90,6 +88,9 @@ export function VictoryScreen({
             <VictoryArtBoardCircleImage className="absolute bottom-60 -right-72 hidden xl:block" />
             <MenuNavBar />
             <div className="flex justify-center">
+                {isError && (
+                    <Paragraph className="bg-coral">Noe gikk galt.</Paragraph>
+                )}
                 <form
                     className="flex flex-col max-w-3xl mt-20 pr-4 pl-4 gap-6"
                     onSubmit={handleSubmit(async (data) => {
