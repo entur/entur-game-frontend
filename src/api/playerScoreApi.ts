@@ -7,6 +7,8 @@ export interface Destination {
 
 export interface PlayerResponse {
     name: string
+    email: string
+    phoneNumber: number
     difficulty: 'Lett' | 'Middels' | 'Vanskelig' | 'Event'
     score: number
     totalOptions: number
@@ -16,7 +18,7 @@ export interface PlayerResponse {
     toDestination: Destination
 }
 
-export type PlayerRequest = Omit<PlayerResponse, 'score'> | { email: string }
+export type PlayerRequest = Omit<PlayerResponse, 'score'>
 
 export async function getTopTenByDifficulty(
     difficulty: string,
