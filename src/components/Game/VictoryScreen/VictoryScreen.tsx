@@ -29,6 +29,7 @@ type Props = {
 type FormValues = {
     name: string
     email: string
+    phoneNumber: number
     consent: boolean
 }
 
@@ -136,6 +137,28 @@ export function VictoryScreen({
                                 label="E-postadresse"
                                 placeholder=""
                                 {...field}
+                                variant={fieldState.error ? 'error' : 'info'}
+                                feedback={fieldState.error?.message}
+                            />
+                        )}
+                    />
+                    <Controller
+                        name="phoneNumber"
+                        control={control}
+                        rules={{
+                            required: 'Dette feltet er påkrevet.',
+                            pattern: {
+                                value: /^[0-9]{8}$/g,
+                                message:
+                                    'Ugyldig mobilnummer. Den må være 8 siffer.',
+                            },
+                        }}
+                        render={({ field, fieldState }) => (
+                            <TextField
+                                label="Mobilnummer"
+                                placeholder=""
+                                {...field}
+                                type="number"
                                 variant={fieldState.error ? 'error' : 'info'}
                                 feedback={fieldState.error?.message}
                             />
