@@ -19,7 +19,7 @@ import {
 import { Controller, useForm } from 'react-hook-form'
 
 type Props = {
-    nickname: string
+    name: string
     level: Level
     target: StopPlace
     setTarget: (target: StopPlace) => void
@@ -37,7 +37,7 @@ type FormValues = {
 }
 
 export function VictoryScreen({
-    nickname = '',
+    name = '',
     level,
     target,
     numLegs,
@@ -54,7 +54,7 @@ export function VictoryScreen({
         setValue,
         getValues,
     } = useForm<FormValues>({
-        defaultValues: { name: nickname, email: '', consent: false },
+        defaultValues: { name: name, email: '', consent: false },
     })
     const navigate = useNavigate()
     const [isError, setError] = useState<boolean>(false)

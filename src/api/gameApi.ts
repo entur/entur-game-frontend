@@ -2,7 +2,7 @@ const baseUrl = import.meta.env.VITE_APP_BACKEND_URL ?? 'http://localhost:8080'
 
 export type Player = {
     id: number
-    nickname: string
+    name: string
 }
 
 export type GameResponse = {
@@ -16,25 +16,22 @@ export async function getGame(gameId: string): Promise<GameResponse> {
     return await response.json()
 }
 
-export async function createGame(nickname: string): Promise<GameResponse> {
-    const response = await fetch(
-        `${baseUrl}/game/create/nickname/${nickname}`,
-        {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+export async function createGame(name: string): Promise<GameResponse> {
+    const response = await fetch(`${baseUrl}/game/create/name/${name}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
         },
-    )
+    })
     return await response.json()
 }
 
 export async function joinGame(
     gameId: string,
-    nickname: string,
+    name: string,
 ): Promise<GameResponse> {
     const response = await fetch(
-        `${baseUrl}/game/join/${gameId}/nickname/${nickname}`,
+        `${baseUrl}/game/join/${gameId}/name/${name}`,
         {
             method: 'POST',
             headers: {

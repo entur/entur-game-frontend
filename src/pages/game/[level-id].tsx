@@ -39,7 +39,7 @@ function GamePage(): JSX.Element {
             />
             <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
                 <Game
-                    nickname={''}
+                    name={''}
                     level={level}
                     startTimer={startTimer}
                     // eslint-disable-next-line @typescript-eslint/no-empty-function

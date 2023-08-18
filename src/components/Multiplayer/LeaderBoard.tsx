@@ -51,12 +51,10 @@ export const LeaderBoard = ({ difficulty }: Props): JSX.Element => {
                     <TableBody>
                         {players.map((player, index) => (
                             <TableRow
-                                key={generateKey(
-                                    player.score + player.nickname,
-                                )}
+                                key={generateKey(player.score + player.name)}
                             >
                                 <DataCell>{index + 1}</DataCell>
-                                <DataCell>{player.nickname}</DataCell>
+                                <DataCell>{player.name}</DataCell>
                                 <DataCell>{player.score}</DataCell>
                                 <DataCell>{player.difficulty}</DataCell>
                                 <DataCell>{player.totalOptions}</DataCell>
