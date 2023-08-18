@@ -17,7 +17,7 @@ import { DepartureAndOnLinePickerModal } from './components/DepartureAndOnLinePi
 import { isTruthy } from '../../utils/isTruthy'
 import { TravelLegFinished } from './components/TravelLegFinished'
 import DeadScreen from './DeadScreen'
-import VictoryScreen from './VictoryScreen'
+import { VictoryScreen } from './VictoryScreen/VictoryScreen'
 
 export interface StopAndTime {
     stopPlace: StopPlace | StopPlaceDetails
@@ -27,7 +27,7 @@ export interface StopAndTime {
 const startTime = new Date()
 
 type Props = {
-    nickname: string
+    name: string
     level: Level
     startTimer: number
     handleWinner: () => void
@@ -47,7 +47,7 @@ function GameScreen({
     setTimeDescription,
     startTimer,
     handleWinner,
-    nickname,
+    name,
 }: Props): ReactElement {
     const navigate = useNavigate()
     const [hasBeenSprinkled, setSprinkled] = useState<boolean>(false)
@@ -194,7 +194,7 @@ function GameScreen({
         return (
             <div className="app" style={{ maxWidth: '800px' }}>
                 <VictoryScreen
-                    nickname={nickname}
+                    name={name}
                     level={level}
                     target={targets[0]}
                     setTarget={(target) => {
@@ -204,8 +204,6 @@ function GameScreen({
                     currentTime={currentTime}
                     startTime={startTime}
                     startTimer={startTimer}
-                    travelLegs={travelLegs}
-                    travelLegsMode={travelLegsMode}
                 />
             </div>
         )

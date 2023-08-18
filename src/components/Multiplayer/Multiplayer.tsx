@@ -27,7 +27,7 @@ function Multiplayer(): JSX.Element {
     const [sessionId, setSessionId] = useState<string | null>(null)
     const [winner, setWinner] = useState<string>('')
     const [finished, setFinished] = useState<boolean>(false)
-    const [nickname, setNickname] = useState<string>('')
+    const [name, setName] = useState<string>('')
 
     return (
         <div className="multiplayer">
@@ -46,8 +46,8 @@ function Multiplayer(): JSX.Element {
                         level={level}
                         setLevel={setLevel}
                         winner={winner}
-                        nickname={nickname}
-                        setNickname={setNickname}
+                        name={name}
+                        setName={setName}
                         setWinner={setWinner}
                         finished={finished}
                         client={client}
@@ -165,19 +165,19 @@ function Multiplayer(): JSX.Element {
                     numLegs={numLegs}
                     setNumLegs={setNumLegs}
                     setTimeDescription={setTimeDescription}
-                    nickname={nickname}
+                    name={name}
                     level={level}
                     startTimer={startTimer}
                     handleWinner={() => {
                         setFinished(true)
                         client.publish({
                             destination: '/topic/' + sessionId + '/finished',
-                            body: JSON.stringify(nickname),
+                            body: JSON.stringify(name),
                         })
                         client.publish({
                             destination:
                                 '/app/topic/' + sessionId + '/finished',
-                            body: nickname,
+                            body: name,
                         })
                     }}
                 />

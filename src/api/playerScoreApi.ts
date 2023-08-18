@@ -6,7 +6,9 @@ export interface Destination {
 }
 
 export interface PlayerResponse {
-    nickname: string
+    name: string
+    email: string
+    phoneNumber: number
     difficulty: 'Lett' | 'Middels' | 'Vanskelig' | 'Event'
     score: number
     totalOptions: number
@@ -29,12 +31,13 @@ export async function getTopTenByDifficulty(
 
 export async function savePlayerScore(
     playerInfo: PlayerRequest,
-): Promise<void> {
-    await fetch(`${baseUrl}/player-score`, {
+): Promise<Response> {
+    const response = await fetch(`${baseUrl}/player-score`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(playerInfo),
     })
+    return response
 }

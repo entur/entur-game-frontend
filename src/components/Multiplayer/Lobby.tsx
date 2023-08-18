@@ -24,8 +24,8 @@ type Props = {
     setLevel: React.Dispatch<React.SetStateAction<Level>>
     winner: string
     setWinner: React.Dispatch<React.SetStateAction<string>>
-    nickname: string
-    setNickname: React.Dispatch<React.SetStateAction<string>>
+    name: string
+    setName: React.Dispatch<React.SetStateAction<string>>
     finished: boolean
     client: Client
 }
@@ -38,8 +38,8 @@ function Lobby({
     setSessionId,
     level,
     setLevel,
-    nickname,
-    setNickname,
+    name,
+    setName,
 }: Props): JSX.Element {
     const navigate = useNavigate()
     const {
@@ -67,7 +67,7 @@ function Lobby({
 
     const handleJoinGame = async () => {
         if (sessionId !== null) {
-            await joinGame(sessionId, nickname)
+            await joinGame(sessionId, name)
             subscribeToGame({
                 gameId: sessionId,
                 setLevel,
@@ -80,7 +80,7 @@ function Lobby({
             const winner = new TextDecoder()
                 .decode(message.binaryBody)
                 .replaceAll('"', '')
-            if (nickname !== winner) {
+            if (name !== winner) {
                 sprinkleEmojis({
                     emoji: '😭',
                     count: 50,
@@ -141,9 +141,9 @@ function Lobby({
         >
             <TextField
                 label="Kallenavn"
-                value={nickname ?? ''}
+                value={name ?? ''}
                 onChange={(event) => {
-                    setNickname(event.target.value)
+                    setName(event.target.value)
                 }}
                 style={{ marginBottom: '20px' }}
             />
@@ -157,17 +157,17 @@ function Lobby({
             />
 
             <PrimaryButton
-                disabled={!(sessionId && nickname)}
+                disabled={!(sessionId && name)}
                 style={{ marginBottom: '20px', marginRight: '20px' }}
                 onClick={handleJoinGame}
             >
                 Bli med
             </PrimaryButton>
             <PrimaryButton
-                disabled={!(nickname && !sessionId)}
+                disabled={!(name && !sessionId)}
                 style={{ marginBottom: '20px', marginRight: '20px' }}
                 onClick={async () => {
-                    const game = await createGame(nickname)
+                    const game = await createGame(name)
                     setSessionId(game.id)
                     setOwner(true)
                     setJoined(true)
@@ -184,7 +184,7 @@ function Lobby({
                             const winner = new TextDecoder()
                                 .decode(message.binaryBody)
                                 .replaceAll('"', '')
-                            if (nickname !== winner) {
+                            if (name !== winner) {
                                 sprinkleEmojis({
                                     emoji: '😭',
                                     count: 50,

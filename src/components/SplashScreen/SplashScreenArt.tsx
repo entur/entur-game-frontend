@@ -7,7 +7,7 @@ type BackgroundImage = {
     className?: string
 }
 
-export function ArtBoardCookieImage({
+export function SplashArtBoardCookieImage({
     className,
 }: BackgroundImage): ReactElement {
     return (
@@ -17,19 +17,18 @@ export function ArtBoardCookieImage({
         />
     )
 }
-export function ArtBoardOvalImage({
+export function SplashArtBoardOvalImage({
     className,
 }: BackgroundImage): ReactElement {
     return (
         <div
-            // className={`bg-no-repeat h-80 w-96 ${className}`}
             className={`bg-no-repeat h-72 w-72 ${className}`}
             style={{ backgroundImage: `url(${ArtBoardOval})` }}
         />
     )
 }
 
-export function ArtBoardCircleImage({
+export function SplashArtBoardCircleImage({
     className,
 }: BackgroundImage): ReactElement {
     return (

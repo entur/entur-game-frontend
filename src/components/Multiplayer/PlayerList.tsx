@@ -15,10 +15,10 @@ function PlayerList({ refreshCounter, sessionId }: props): JSX.Element {
         async function fetchData() {
             if (sessionId) {
                 const response = await getGame(sessionId)
-                const playerNicknames = response.playerList.map(
-                    (player) => player.nickname,
+                const [playerNames] = response.playerList.map(
+                    (player) => player.name,
                 )
-                setPlayers(playerNicknames)
+                setPlayers([playerNames])
             }
         }
         fetchData()
