@@ -1,35 +1,57 @@
 import React from 'react'
-import { Label } from '@entur/typography'
+import { Heading5, Label, Paragraph } from '@entur/typography'
 
 import Heart from '../assets/icons/Heart.svg'
 import DeadHeart from '../assets/icons/DeadHeart.svg'
 import { generateKey } from '../utils/generateUniqueKey'
+import { ClockIcon, TrackIcon } from '@entur/icons'
 
 type Props = {
     className?: string
-    description: string
+    timeDescriptionUsed: string
+    numLegs: number
     healthLeft: number
 }
 
 function GameStatus({
     className = '',
-    description,
+    timeDescriptionUsed,
+    numLegs,
     healthLeft,
 }: Props): React.ReactElement {
     return (
         <div className={className}>
             <div className="max-w-3xl mx-auto border-2 border-blue-70 rounded">
-                <div className="flex flex-row pt-5 pr-8 pl-8 pb-5">
+                <div className="flex flex-row pt-5 pr-5 pl-8 pb-5">
                     <span>
                         <Label className="text-blue-50">Din reise</Label>
-                        <p className="text-blue-main">{description}</p>
+                        <div className="flex flex-row gap-5">
+                            <div className="flex flex-row gap-2 content-center">
+                                <TrackIcon className="w-6 h-6 pt-1" />
+                                <Heading5
+                                    className="pt-1 text-coral"
+                                    margin="none"
+                                >
+                                    {numLegs}
+                                </Heading5>
+                            </div>
+                            <div className="flex flex-row gap-2 content-center">
+                                <ClockIcon className="w-6 h-6 pt-1" />
+                                <Heading5
+                                    className="pt-1 text-coral"
+                                    margin="none"
+                                >
+                                    {timeDescriptionUsed}
+                                </Heading5>
+                            </div>
+                        </div>
                     </span>
-                    <div className="self-center ml-20 w-0.5 h-11 bg-blue-80"></div>
+                    <div className="self-center ml-10 w-0.5 h-11 bg-blue-80" />
                     <div className="flex flex-col ml-8">
                         <Label className="text-blue-50" margin="none">
                             Liv
                         </Label>
-                        <div className="flex flex-row">
+                        <div className="flex flex-row pt-1">
                             {Array.from(Array(healthLeft), (_, k) => {
                                 return (
                                     <img

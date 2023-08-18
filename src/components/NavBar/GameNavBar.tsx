@@ -16,7 +16,7 @@ function GameNavBar({
 }: Props): ReactElement {
     const navigate = useNavigate()
     return (
-        <div className="flex flex-row pt-4 justify-between item-center">
+        <div className="flex flex-row pt-4 justify-between item-centers">
             <div className="self-center ml-5 mr-20">
                 <img
                     className="cursor-pointer"
@@ -27,7 +27,8 @@ function GameNavBar({
             </div>
             <GameStatus
                 className="mr-4"
-                description={`Du har reist ${numLegs} etappe og ${timeDescription}`}
+                numLegs={numLegs}
+                timeDescriptionUsed={timeDescription}
                 healthLeft={healthLeft}
             />
         </div>
