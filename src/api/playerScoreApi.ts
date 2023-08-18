@@ -39,5 +39,5 @@ export async function savePlayerScore(
         },
         body: JSON.stringify(playerInfo),
     })
-    return await response.json()
+    return response
 }
