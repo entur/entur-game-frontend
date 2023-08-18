@@ -12,7 +12,10 @@ import { Level } from '../../../constant/levels'
 import { StopPlace } from '@entur/sdk'
 import { useNavigate } from 'react-router-dom'
 import { savePlayerScore } from '../../../api/playerScoreApi'
-import { formatIntervalToSeconds } from '../../../utils/dateFnsUtils'
+import {
+    formatIntervalToSeconds,
+    formatTimeForEndOfGame,
+} from '../../../utils/dateFnsUtils'
 import { Controller, useForm } from 'react-hook-form'
 
 type Props = {
@@ -33,7 +36,6 @@ type FormValues = {
     consent: boolean
 }
 
-//TODO: Text description on this session. Currently static
 export function VictoryScreen({
     nickname = '',
     level,
@@ -56,6 +58,12 @@ export function VictoryScreen({
     })
     const navigate = useNavigate()
     const [isError, setError] = useState<boolean>(false)
+    const timeDescription = formatTimeForEndOfGame(
+        currentTime,
+        startTime,
+        level.difficulty,
+        numLegs,
+    )
 
     async function onSubmit(data: FormValues) {
         const response = await savePlayerScore({
@@ -100,13 +108,12 @@ export function VictoryScreen({
                 >
                     <Heading3 className="font-semibold">Du er fremme!</Heading3>
                     <Paragraph>
-                        Du kom deg fra Jernbanetorget, Oslo til Trondheim S,
-                        Trondheim på 2 etapper og 9 timer 2 minutter 55
-                        sekunder.
+                        {`Du kom deg fra ${level.start.name} til ${level.targets[0].name} på ${numLegs} etapper og ${timeDescription}`}
                         <br />
                         <br />
-                        Vår reiseplanlegger har beregnet en optimal rute der
-                        etapper er 2, og reisetid er 7 timer, 42 minutter.
+                        TODO: skrive en dynamisk tekst på optimal rute. Vår
+                        reiseplanlegger har beregnet en optimal rute der etapper
+                        er 2, og reisetid er 7 timer, 42 minutter.
                     </Paragraph>
                     <Controller
                         name="name"
