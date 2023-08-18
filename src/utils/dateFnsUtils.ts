@@ -18,11 +18,9 @@ export function formatTimeForEndOfGame(
     attempts: number,
 ): string {
     if (level === 'Event' && attempts === 0) {
-        startTime.setDate(26)
         startTime.setHours(7, 0)
         startTime.setSeconds(0)
         startTime.setFullYear(2023)
-        currentTime.setDate(26)
         currentTime.setHours(7, 0, 1)
         currentTime.setSeconds(0)
         currentTime.setFullYear(2023)
