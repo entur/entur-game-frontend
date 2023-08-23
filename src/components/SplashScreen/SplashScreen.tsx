@@ -38,7 +38,7 @@ export function SplashScreen(): JSX.Element {
                 </div>
                 <Button
                     className="sm:ml-20 font-semibold max-w-xs"
-                    onClick={() => navigate('/main')}
+                    onClick={() => navigate('/option')}
                     variant="success"
                 >
                     Kjør!

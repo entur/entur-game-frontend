@@ -7,12 +7,14 @@ import Multiplayer from './components/Multiplayer/Multiplayer'
 import MainPage from './pages/main/MainPage'
 import GamePage from './pages/game/[level-id]'
 import { MainMenu } from './pages/MainMenu'
+import { OptionMenu } from './pages/OptionMenu'
 
 function App(): JSX.Element {
     return (
         <ToastProvider>
             <Routes>
                 <Route path="/" element={<MainMenu />} />
+                <Route path="/option" element={<OptionMenu />} />
                 <Route path="/main" element={<MainPage />} />
                 <Route path="/game/:levelId" element={<GamePage />} />
                 <Route path="/multiplayer" element={<Multiplayer />} />
