@@ -13,17 +13,9 @@ import iconRightArrow from '../assets/icons/IconButtonRight.svg'
 function SelectLevel({ isEvent }: { isEvent: boolean }): JSX.Element {
     const navigate = useNavigate()
     const [selectedRadio, setSelectedRadio] = useState(null)
-    const [showButton, setShowButton] = useState(false)
 
     const handleRadioClick = (levelId) => {
         setSelectedRadio(levelId)
-        setShowButton(true)
-    }
-
-    const handleButtonClick = () => {
-        if (selectedRadio !== null) {
-            navigate(`/game/${selectedRadio}`)
-        }
     }
 
     return (
@@ -32,10 +24,12 @@ function SelectLevel({ isEvent }: { isEvent: boolean }): JSX.Element {
                 <RadioGroup
                     name="ticket-type"
                     label="Velg billettype:"
-                    onChange={() => console.log('')}
+                    onChange={() => {
+                        // Intentional
+                    }}
                     value={selectedRadio}
                 >
-                    <div style={{ display: 'grid', gridGap: '16px' }}>
+                    <div className="grid gap-6">
                         {!isEvent && (
                             <>
                                 {EASY.map((level) => (
@@ -298,16 +292,17 @@ function SelectLevel({ isEvent }: { isEvent: boolean }): JSX.Element {
                                 ))}
                             </>
                         )}
-                        {showButton && (
+                        {selectedRadio && (
                             <Button
                                 variant="success"
                                 style={{ height: '64px' }}
                                 className="flex items-center justify-between w-full px-4 py-4 mt-10"
-                                onClick={handleButtonClick}
+                                onClick={() =>
+                                    navigate(`/game/${selectedRadio}`)
+                                }
                             >
                                 <span className="mr-auto">Start reisen</span>
                                 <span className="ml-auto">
-                                    {/*<IconButtonRight className="w-5 h-5" />*/}
                                     <img
                                         className="w-5 h-5"
                                         src={iconRightArrow}
@@ -320,7 +315,7 @@ function SelectLevel({ isEvent }: { isEvent: boolean }): JSX.Element {
                     {!isEvent && (
                         <div>
                             <Heading5>
-                                Ønsker du å pille med flere?{' '}
+                                Ønsker du å spille med flere?{' '}
                                 <Link to="/multiplayer" className="underline">
                                     Prøv flerspillermodus her
                                 </Link>
