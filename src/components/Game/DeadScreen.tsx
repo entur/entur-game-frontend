@@ -16,6 +16,7 @@ function DeadScreen({ mode, stopPlace }: Props): JSX.Element {
         fade: 10,
         fontSize: 60,
     })
+    window.scrollTo(0, 0) // Scroll to top of the screen
     return (
         <>
             <Heading2>Du døde!</Heading2>
