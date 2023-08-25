@@ -81,6 +81,7 @@ function GameScreen({
                 numLegs,
             ),
         )
+        window.scrollTo(0, document.body.scrollHeight)
     }, [currentTime])
 
     const selectMode = (newMode: QueryMode) => {
@@ -218,9 +219,8 @@ function GameScreen({
             </div>
         )
     }
-
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col mb-4">
             <FromAndToTitle className="mt-10 xl:mt-28" level={level} />
             <Heading4 margin="none">Hvordan vil du starte?</Heading4>
             <div className="mt-5 xl:mt-14">
@@ -242,7 +242,7 @@ function GameScreen({
                 <TravelLegFinished targets={targets} />
             </div>
             <SecondaryButton
-                className="bg-lavender hover:bg-blue-80 sm:mt-28 mt-10 sm:place-self-start place-self-center"
+                className="bg-lavender hover:bg-blue-80 sm:mt-28 mt-10 mb-10 sm:place-self-start place-self-center"
                 onClick={() => navigate('/')}
             >
                 Avslutt reise
