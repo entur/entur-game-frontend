@@ -20,8 +20,8 @@ export function SplashScreen(): JSX.Element {
                     <Heading1 className="text-white sm:text-6xl text-3xl shrink">
                         EN
                     </Heading1>
-                    <Heading1 className="text-coral sm:text-6xl text-3xl shrink">
-                        MIDDELS
+                    <Heading1 className="text-coral sm:text-6xl text-3xl shrink italic">
+                        KOLLEKTIV
                     </Heading1>
                     <Heading1 className="text-white sm:text-6xl text-3xl shrink">
                         TUR
