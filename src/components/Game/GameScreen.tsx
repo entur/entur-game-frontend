@@ -86,6 +86,7 @@ function GameScreen({
     const selectMode = (newMode: QueryMode) => {
         setMode(newMode)
         if (newMode === 'foot') {
+            setDepartures([]) // Reset departures before showing walkable stops
             getWalkableStopPlaces(stopPlace).then((stops) => {
                 setStopsOnLine(
                     stops.map((stop) => ({
@@ -114,6 +115,7 @@ function GameScreen({
             })
         } else {
             getDepartures(stopPlace.id, newMode, currentTime).then((deps) => {
+                setStopsOnLine([]) // Reset walkable stops before showing departures
                 setDepartures(deps)
                 if (!deps.length) {
                     if (totalHp >= 0) {
