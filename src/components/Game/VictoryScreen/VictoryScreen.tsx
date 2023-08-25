@@ -217,7 +217,7 @@ export function VictoryScreen({
                             loading={isSubmitting || isLoading}
                             onClick={() => navigate('/')}
                         >
-                            Spill på nytt
+                            Avslutt reise
                         </SecondaryButton>
                     </div>
                 </form>
