@@ -34,7 +34,7 @@ function GamePage(): JSX.Element {
     }
 
     return (
-        <div>
+        <>
             <GameNavBar
                 healthLeft={totalHp + 1}
                 numLegs={numLegs}
@@ -54,7 +54,7 @@ function GamePage(): JSX.Element {
                     setTimeDescription={setTimeDescription}
                 />
             </div>
-        </div>
+        </>
     )
 }
 
