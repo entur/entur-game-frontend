@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom'
 import Game from '../../components/Game/GameScreen'
 import { Level, EASY, ALL_LEVELS } from '../../constant/levels'
 import GameNavBar from '../../components/NavBar/GameNavBar'
+import { useBackground } from '../../backgroundContext'
 
 function GamePage(): JSX.Element {
     const [totalHp, setTotalHp] = useState<number>(2)
@@ -13,8 +14,10 @@ function GamePage(): JSX.Element {
     const [startTimer, setStartTimer] = useState<number>(0)
     const [numLegs, setNumLegs] = useState<number>(0)
     const [timeDescription, setTimeDescription] = useState<string>('')
+    const { setBackgroundColor } = useBackground()
 
     useEffect(() => {
+        setBackgroundColor('bg-blue-90')
         const level = ALL_LEVELS.find((level) => level.id === levelId)
         if (level === undefined) {
             setLevelError(true)
@@ -22,7 +25,8 @@ function GamePage(): JSX.Element {
         }
         setLevel(level)
         setStartTimer(Date.now())
-    }, [])
+        return () => setBackgroundColor('bg-main-blue')
+    }, [setBackgroundColor])
 
     if (isLevelError) {
         //TODO: redirect to main screen
@@ -30,8 +34,7 @@ function GamePage(): JSX.Element {
     }
 
     return (
-        // <body className="bg-blue-90 sm:w-screen sm:h-screen h-full w-full">
-        <div className="bg-blue-90 min-h-screen min-w-screen">
+        <>
             <GameNavBar
                 healthLeft={totalHp + 1}
                 numLegs={numLegs}
@@ -51,7 +54,7 @@ function GamePage(): JSX.Element {
                     setTimeDescription={setTimeDescription}
                 />
             </div>
-        </div>
+        </>
     )
 }
 

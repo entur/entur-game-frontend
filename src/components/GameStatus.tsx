@@ -1,5 +1,5 @@
 import React from 'react'
-import { Heading5, Label, Paragraph } from '@entur/typography'
+import { Heading5, Label } from '@entur/typography'
 
 import Heart from '../assets/icons/Heart.svg'
 import DeadHeart from '../assets/icons/DeadHeart.svg'

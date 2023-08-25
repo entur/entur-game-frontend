@@ -1,10 +1,15 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import SplashScreen from '../components/SplashScreen/SplashScreen'
+import { useBackground } from '../backgroundContext'
 
 export function MainMenu(): ReactElement {
-    return (
-        <div className="bg-blue-main h-screen w-screen">
-            <SplashScreen />
-        </div>
-    )
+    const { setBackgroundColor } = useBackground()
+
+    useEffect(() => {
+        setBackgroundColor('bg-blue-main')
+
+        return () => setBackgroundColor('bg-blue-90')
+    }, [setBackgroundColor])
+
+    return <SplashScreen />
 }
