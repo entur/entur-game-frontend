@@ -1,7 +1,6 @@
 import React, { ReactElement, useState } from 'react'
 import { Heading3, Heading5, Label, Paragraph } from '@entur/typography'
 import { Checkbox, TextField } from '@entur/form'
-import { MenuNavBar } from '../../NavBar/MenuNavBar'
 import { PrimaryButton, SecondaryButton } from '@entur/button'
 import {
     VictoryArtBoardCircleImage,
@@ -95,7 +94,6 @@ export function VictoryScreen({
             <VictoryArtBoardOvalImage className="absolute -top-20 -left-32 hidden xl:block" />
             <VictoryArtBoardCookieImage className="absolute -bottom-28 -left-52  hidden xl:block" />
             <VictoryArtBoardCircleImage className="absolute bottom-60 -right-72 hidden xl:block" />
-            <MenuNavBar />
             <div className="flex justify-center">
                 {isError && (
                     <Paragraph className="bg-coral">Noe gikk galt.</Paragraph>

@@ -1,10 +1,17 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Contrast, NavigationCard } from '@entur/layout'
 import { MobilityIcon, NorwayIcon } from '@entur/icons'
+import { useBackground } from '../backgroundContext'
 
 export function OptionMenu(): ReactElement {
+    const { setBackgroundColor } = useBackground()
     const navigate = useNavigate()
+
+    useEffect(() => {
+        setBackgroundColor('bg-blue-main')
+    }, [])
+
     return (
         <div className="bg-blue-main flex flex-col justify-center items-center min-h-screen min-w-screen">
             <Contrast>
@@ -12,7 +19,7 @@ export function OptionMenu(): ReactElement {
                     <NavigationCard
                         title="Konkurranse modus"
                         titleIcon={<MobilityIcon />}
-                        onClick={() => navigate('/main')}
+                        onClick={() => navigate('/event')}
                     >
                         Bli med på en reise og vinn en el-sparkesykkel. Den
                         beste VINNER - kanskje det er deg?
@@ -20,7 +27,7 @@ export function OptionMenu(): ReactElement {
                     <NavigationCard
                         title="Øve modus"
                         titleIcon={<NorwayIcon />}
-                        onClick={() => navigate('/main')}
+                        onClick={() => navigate('/practice')}
                     >
                         Får å bli kjent med spillet så kan du prøve vår
                         Enspiller eller Flerspiller modus!

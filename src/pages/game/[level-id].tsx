@@ -34,7 +34,6 @@ function GamePage(): JSX.Element {
     }
 
     return (
-        // <body className="bg-blue-90 sm:w-screen sm:h-screen h-full w-full">
         <div>
             <GameNavBar
                 healthLeft={totalHp + 1}
