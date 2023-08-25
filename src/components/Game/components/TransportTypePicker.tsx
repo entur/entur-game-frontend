@@ -6,8 +6,10 @@ import { Heading2 } from '@entur/typography'
 
 import { getModeIcon, getModeTranslation } from '../../../utils/transportMapper'
 import { ALL_MODES } from '../../../constant/queryMode'
+import { Loader } from '@entur/loader'
 
 type Props = {
+    isLoading: boolean
     mode: QueryMode | null
     usedMode: QueryMode[]
     selectMode: (mode: QueryMode) => void
@@ -16,6 +18,7 @@ type Props = {
 }
 
 function TransportTypePicker({
+    isLoading,
     mode,
     usedMode,
     selectMode,
@@ -30,7 +33,9 @@ function TransportTypePicker({
             </Heading2>
             <ChoiceChipGroup
                 value={mode || 'none'}
-                onChange={console.log}
+                onChange={() => {
+                    /* Do nothing */
+                }}
                 name="Transport mode"
             >
                 <>
@@ -42,7 +47,7 @@ function TransportTypePicker({
                                 key={mode}
                                 value={mode}
                                 onClick={() => selectMode(mode)}
-                                disabled={disabled}
+                                disabled={disabled || isLoading}
                             >
                                 {getModeIcon(mode)}
                                 {getModeTranslation(mode)}
@@ -54,6 +59,7 @@ function TransportTypePicker({
                         key="wait"
                         value="wait"
                         onClick={() => wait()}
+                        disabled={isLoading}
                     >
                         <SleepIcon />
                         Vent 6 timer

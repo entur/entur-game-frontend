@@ -50,6 +50,7 @@ function GameScreen({
     name,
 }: Props): ReactElement {
     const navigate = useNavigate()
+    const [isLoading, setLoading] = useState<boolean>(false)
     const [hasBeenSprinkled, setSprinkled] = useState<boolean>(false)
     const [dead, setDead] = useState<boolean>(false)
     const [travelLegsMode, setTravelLegsMode] = useState<QueryMode[]>([])
@@ -86,6 +87,7 @@ function GameScreen({
 
     const selectMode = (newMode: QueryMode) => {
         setMode(newMode)
+        setLoading(true)
         if (newMode === 'foot') {
             setDepartures([]) // Reset departures before showing walkable stops
             getWalkableStopPlaces(stopPlace).then((stops) => {
@@ -110,9 +112,9 @@ function GameScreen({
                     setMode(null)
                 } else {
                     setModalOpen(true)
-                    setUsedMode([])
                     setTravelLegsMode((prev) => [...prev, newMode])
                 }
+                setLoading(false)
             })
         } else {
             getDepartures(stopPlace.id, newMode, currentTime).then((deps) => {
@@ -131,9 +133,9 @@ function GameScreen({
                     setMode(null)
                 } else {
                     setModalOpen(true)
-                    setUsedMode([])
                     setTravelLegsMode((prev) => [...prev, newMode])
                 }
+                setLoading(false)
             })
         }
     }
@@ -168,6 +170,7 @@ function GameScreen({
     }
 
     const selectStopOnLine = (stopAndTime: StopAndTime) => {
+        setUsedMode([])
         setStopsOnLine([])
         setCurrentTime(stopAndTime.time)
         setMode(null)
@@ -231,6 +234,7 @@ function GameScreen({
             </div>
             <div className="mt-5 ml-9 xl:mr-4 xl:ml-12">
                 <TransportTypePicker
+                    isLoading={isLoading}
                     mode={mode}
                     usedMode={usedMode}
                     selectMode={selectMode}
