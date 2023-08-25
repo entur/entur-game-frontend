@@ -12,9 +12,9 @@ import iconRightArrow from '../assets/icons/IconButtonRight.svg'
 
 function SelectLevel({ isEvent }: { isEvent: boolean }): JSX.Element {
     const navigate = useNavigate()
-    const [selectedRadio, setSelectedRadio] = useState(null)
+    const [selectedRadio, setSelectedRadio] = useState<null | string>(null)
 
-    const handleRadioClick = (levelId) => {
+    const handleRadioClick = (levelId: string) => {
         setSelectedRadio(levelId)
     }
 

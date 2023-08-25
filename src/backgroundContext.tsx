@@ -9,11 +9,11 @@ const BackgroundContext = createContext<BackgroundContextType | undefined>(
     undefined,
 )
 
-export const BackgroundProvider: React.FC = ({
-    children,
-}: {
+type Props = {
     children: ReactElement
-}) => {
+}
+
+export const BackgroundProvider = ({ children }: Props): ReactElement => {
     const [backgroundColor, setBackgroundColor] = useState('bg-blue-main')
 
     return (

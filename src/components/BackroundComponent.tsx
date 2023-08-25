@@ -4,11 +4,11 @@ import { useNavigate } from 'react-router-dom'
 import EnturPartnerIconDark from '../assets/icons/EnturPartnerDark.svg'
 import EnturPartnerIconLight from '../assets/icons/EnturPartnerLight.svg'
 
-const BackgroundComponent: React.FC = ({
-    children,
-}: {
+type Props = {
     children: ReactElement
-}) => {
+}
+
+const BackgroundComponent = ({ children }: Props): ReactElement => {
     const Dark = () => {
         return (
             <>
