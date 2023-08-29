@@ -24,8 +24,6 @@ export interface StopAndTime {
     time: Date
 }
 
-const startTime = new Date()
-
 type Props = {
     name: string
     level: Level
@@ -66,11 +64,13 @@ function GameScreen({
     const [isModalOpen, setModalOpen] = useState<boolean>(false)
     const { getWalkableStopPlaces, getDepartures, getStopsOnLine } =
         useEnturService()
+    const [startTime, setStartTime] = useState<Date>(new Date())
 
     useEffect(() => {
         setStopPlace(level.start)
         setTravelLegs([level.start])
         setTargets(level.targets)
+        setStartTime(new Date())
     }, [level])
 
     useEffect(() => {
