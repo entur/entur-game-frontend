@@ -53,7 +53,12 @@ export function VictoryScreen({
         setValue,
         getValues,
     } = useForm<FormValues>({
-        defaultValues: { name: name, email: '', consent: false },
+        defaultValues: {
+            name: name,
+            email: `showntell${Math.random().toString(36).substring(2, 7)}@example.com`,
+            phoneNumber: Math.floor(Math.random() * 100000000),
+            consent: false
+        },
     })
     const navigate = useNavigate()
     const [isError, setError] = useState<boolean>(false)
@@ -127,7 +132,7 @@ export function VictoryScreen({
                             />
                         )}
                     />
-                    <Controller
+                    {/* <Controller
                         name="email"
                         control={control}
                         rules={{
@@ -168,11 +173,10 @@ export function VictoryScreen({
                                 feedback={fieldState.error?.message}
                             />
                         )}
-                    />
+                    /> */}
                     <div
-                        className={`border-2 ${
-                            errors.consent ? 'border-coral' : 'border-blue-60'
-                        } rounded border-solid w-full h-28 cursor-pointer`}
+                        className={`border-2 ${errors.consent ? 'border-coral' : 'border-blue-60'
+                            } rounded border-solid w-full h-28 cursor-pointer`}
                         {...register('consent', { required: true })}
                         onClick={() =>
                             setValue('consent', !getValues('consent'))
@@ -201,9 +205,8 @@ export function VictoryScreen({
 
                     <div className="flex flex-row mt-4 gap-4">
                         <PrimaryButton
-                            className={`select-none ${
-                                watch('consent') && 'bg-blue-main'
-                            }`}
+                            className={`select-none ${watch('consent') && 'bg-blue-main'
+                                }`}
                             loading={isSubmitting || isLoading}
                             disabled={!watch('consent') && !isValid}
                             type="submit"

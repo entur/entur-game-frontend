@@ -100,47 +100,75 @@ export const HARD: Level[] = [
     },
 ]
 
+// export const EVENT: Level[] = [
+//     {
+//         id: 'j54ls',
+//         name: 'Mandal sentrum - Alta sentrum',
+//         description: 'Fra Mandal sentrum til Alta sentrum',
+//         start: {
+//             id: 'NSR:StopPlace:22329',
+//             name: 'Mandal sentrum',
+//             latitude: 58.0287,
+//             longitude: 7.4597,
+//         },
+//         targets: [
+//             {
+//                 id: 'NSR:StopPlace:56826',
+//                 name: 'Alta sentrum',
+//             },
+//         ],
+//         difficulty: 'Event',
+//         optimalRoute: 12,
+//         optimalTraveltime: '123 timer, 12 minutter',
+//     },
+//     {
+//         id: 'k2s21',
+//         name: 'Ski stasjon - Alexander Kiellands plass, Oslo',
+//         description: 'Fra Ski stasjon til Alexander Kiellands plass, Oslo',
+//         start: {
+//             id: 'NSR:StopPlace:60944',
+//             name: 'Ski stasjon',
+//             latitude: 59.7191,
+//             longitude: 10.8355,
+//         },
+//         targets: [
+//             {
+//                 id: 'NSR:StopPlace:6288',
+//                 name: 'Alexander Kiellands plass',
+//             },
+//         ],
+//         difficulty: 'Event',
+//         optimalRoute: 12,
+//         optimalTraveltime: '123 timer, 12 minutter',
+//     },
+// ]
+
+
 export const EVENT: Level[] = [
     {
         id: 'j54ls',
-        name: 'Mandal sentrum - Alta sentrum',
-        description: 'Fra Mandal sentrum til Alta sentrum',
+        name: 'Hemsedal sentrum - Hamar stasjon',
+        description: 'Fra Hemsedal sentrum til Hamar stasjon',
         start: {
-            id: 'NSR:StopPlace:22329',
-            name: 'Mandal sentrum',
-            latitude: 58.0287,
-            longitude: 7.4597,
+            id: 'NSR:StopPlace:16600',
+            name: 'Hemsedal sentrum',
+            latitude: 60.862774,
+            longitude: 8.554615,
         },
         targets: [
             {
-                id: 'NSR:StopPlace:56826',
-                name: 'Alta sentrum',
+                id: 'NSR:StopPlace:60045',
+                name: 'Hamar stasjon',
             },
-        ],
-        difficulty: 'Event',
-        optimalRoute: 12,
-        optimalTraveltime: '123 timer, 12 minutter',
-    },
-    {
-        id: 'k2s21',
-        name: 'Ski stasjon - Alexander Kiellands plass, Oslo',
-        description: 'Fra Ski stasjon til Alexander Kiellands plass, Oslo',
-        start: {
-            id: 'NSR:StopPlace:60944',
-            name: 'Ski stasjon',
-            latitude: 59.7191,
-            longitude: 10.8355,
-        },
-        targets: [
             {
-                id: 'NSR:StopPlace:6288',
-                name: 'Alexander Kiellands plass',
+                id: 'NSR:StopPlace:10559',
+                name: 'Hamar stasjon',
             },
         ],
         difficulty: 'Event',
-        optimalRoute: 12,
-        optimalTraveltime: '123 timer, 12 minutter',
-    },
+        optimalRoute: 4,
+        optimalTraveltime: '4 timer, 52 minutter',
+    }
 ]
 
 export const ALL_LEVELS = [...EASY, ...MEDIUM, ...HARD, ...EVENT]

@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import easy from '@assets/images/easy.png'
 import medium from '@assets/images/medium.png'
 import hard from '@assets/images/hard.png'
+import twist from '@assets/images/twist.jpg'
 import { EASY, EVENT, HARD, MEDIUM } from '../constant/levels'
 import { RadioGroup, RadioPanel } from '@entur/form'
 import { Button, SecondaryButton } from '@entur/button'
@@ -235,7 +236,7 @@ function SelectLevel({ isEvent }: { isEvent: boolean }): JSX.Element {
                                     <RadioPanel
                                         title={
                                             <span style={{ fontSize: '32px' }}>
-                                                JAVAZONE 2023
+                                                SHOW AND TELL NR 6
                                             </span>
                                         }
                                         key={level.name}
@@ -272,13 +273,13 @@ function SelectLevel({ isEvent }: { isEvent: boolean }): JSX.Element {
                                                     color: '#BABBCF',
                                                 }}
                                             >
-                                                Prøv sjansen og vinn
-                                                sparkesykkel
+                                                Er du Enturs beste reiseplanlegger?
+                                                vinn en pose twist!
                                             </span>
                                         </div>
                                         <div className="flex">
                                             <img
-                                                src={hard}
+                                                src={twist}
                                                 alt="Your Image"
                                                 style={{
                                                     width: '154px',
@@ -324,9 +325,9 @@ function SelectLevel({ isEvent }: { isEvent: boolean }): JSX.Element {
                     )}
                     <SecondaryButton
                         className="bg-lavender select-none mt-20"
-                        onClick={() => navigate('/option')}
+                        onClick={() => navigate('/')}
                     >
-                        Til spillmodus
+                        tilbake
                     </SecondaryButton>
                 </RadioGroup>
             </div>

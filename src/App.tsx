@@ -12,6 +12,7 @@ import BackroundComponent from './components/BackroundComponent'
 import { OptionMenu } from './pages/OptionMenu'
 import EventPage from './pages/main/EventPage'
 import EventHighscorePage from './pages/EventHighscorePage'
+import ShownTell from './pages/ShownTell'
 
 function App(): JSX.Element {
     return (
@@ -26,6 +27,7 @@ function App(): JSX.Element {
                         <Route path="/game/:levelId" element={<GamePage />} />
                         <Route path="/multiplayer" element={<Multiplayer />} />
                         <Route path="/EventHighscore" element={<EventHighscorePage />} />
+                        <Route path="/Showntell" element={<ShownTell />} />
                     </Routes>
                 </BackroundComponent>
             </BackgroundProvider>
