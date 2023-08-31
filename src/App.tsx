@@ -8,7 +8,7 @@ import PracticePage from './pages/main/PracticePage'
 import GamePage from './pages/game/[level-id]'
 import { MainMenu } from './pages/MainMenu'
 import { BackgroundProvider } from './backgroundContext'
-import BackroundComponent from './components/BackroundComponent'
+import BackroundComponent from './components/BackgroundComponent'
 import { OptionMenu } from './pages/OptionMenu'
 import EventPage from './pages/main/EventPage'
 import EventHighscorePage from './pages/EventHighscorePage'
@@ -26,7 +26,10 @@ function App(): JSX.Element {
                         <Route path="/option" element={<OptionMenu />} />
                         <Route path="/game/:levelId" element={<GamePage />} />
                         <Route path="/multiplayer" element={<Multiplayer />} />
-                        <Route path="/EventHighscore" element={<EventHighscorePage />} />
+                        <Route
+                            path="/EventHighscore"
+                            element={<EventHighscorePage />}
+                        />
                         <Route path="/Showntell" element={<ShownTell />} />
                     </Routes>
                 </BackroundComponent>
