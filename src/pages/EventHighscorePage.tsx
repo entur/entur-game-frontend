@@ -9,7 +9,7 @@ import {
     HeaderCell,
 } from '@entur/table'
 import '@entur/table/dist/styles.css'
-import { getTopTenByDifficulty, PlayerResponse } from '../api/playerScoreApi'
+import { PlayerResponse } from '../api/playerScoreApi'
 import { generateKey } from '../utils/generateUniqueKey'
 
 enum Difficulty {

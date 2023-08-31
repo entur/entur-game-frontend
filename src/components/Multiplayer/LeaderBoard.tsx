@@ -9,7 +9,7 @@ import {
     HeaderCell,
 } from '@entur/table'
 import '@entur/table/dist/styles.css'
-import { getTopTenByDifficulty, PlayerResponse } from '../../api/playerScoreApi'
+import { getByDifficulty, PlayerResponse } from '../../api/playerScoreApi'
 import { generateKey } from '../../utils/generateUniqueKey'
 
 type Props = {
@@ -21,7 +21,7 @@ export const LeaderBoard = ({ difficulty }: Props): JSX.Element => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const data = await getTopTenByDifficulty(difficulty)
+            const data = await getByDifficulty(difficulty)
             setPlayers(data)
         }
 
