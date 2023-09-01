@@ -14,7 +14,8 @@ type Props = {
     usedMode: QueryMode[]
     selectMode: (mode: QueryMode) => void
     wait: () => void
-    stopPlace: StopPlace
+    stopPlace: StopPlace,
+    firstMove: boolean
 }
 
 function TransportTypePicker({
@@ -24,6 +25,7 @@ function TransportTypePicker({
     selectMode,
     wait,
     stopPlace,
+    firstMove,
 }: Props): ReactElement {
     return (
         <div className="bg-white border-4 border-white shadow-sm rounded-sm pl-10 pb-8 pr-10">
@@ -54,16 +56,19 @@ function TransportTypePicker({
                             </ChoiceChip>
                         )
                     })}
-                    <ChoiceChip
-                        className="border-2 ml-1 mr-2 mt-3 w-38 h-10 rounded-3xl sm:text-lg select-none"
-                        key="wait"
-                        value="wait"
-                        onClick={() => wait()}
-                        disabled={isLoading}
-                    >
-                        <SleepIcon />
-                        Vent 6 timer
-                    </ChoiceChip>
+                    {!firstMove && (
+                        <ChoiceChip
+                            className="border-2 ml-1 mr-2 mt-3 w-38 h-10 rounded-3xl sm:text-lg select-none"
+                            key="wait"
+                            value="wait"
+                            onClick={() => wait()}
+                            disabled={isLoading}
+                        >
+                            <SleepIcon />
+                            Vent 6 timer
+                        </ChoiceChip>
+                    )}
+
                 </>
             </ChoiceChipGroup>
         </div>

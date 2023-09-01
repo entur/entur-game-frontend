@@ -1,10 +1,10 @@
 import React, { ReactElement, useEffect, useState } from 'react'
-import { Heading4 } from '@entur/typography'
+import { Heading4, Paragraph } from '@entur/typography'
 import { Departure, QueryMode, StopPlace, StopPlaceDetails } from '@entur/sdk'
 import { addHours, addMinutes } from 'date-fns'
 import { sprinkleEmojis } from 'emoji-sprinkle'
 import { useNavigate } from 'react-router-dom'
-import { SecondaryButton } from '@entur/button'
+import { PrimaryButton, SecondaryButton } from '@entur/button'
 
 import { Level } from '../../constant/levels'
 import { InvalidTravelModal } from './components/InvalidTravelModal'
@@ -18,6 +18,7 @@ import { isTruthy } from '../../utils/isTruthy'
 import { TravelLegFinished } from './components/TravelLegFinished'
 import DeadScreen from './DeadScreen'
 import { VictoryScreen } from './VictoryScreen/VictoryScreen'
+import { Modal } from '@entur/modal'
 
 export interface StopAndTime {
     stopPlace: StopPlace | StopPlaceDetails
@@ -65,6 +66,7 @@ function GameScreen({
     const { getWalkableStopPlaces, getDepartures, getStopsOnLine } =
         useEnturService()
     const [startTime, setStartTime] = useState<Date>(new Date())
+    const [waitModalIsOpen, setWaitModalIsOpen] = useState<boolean>(false)
 
     useEffect(() => {
         setStopPlace(level.start)
@@ -84,6 +86,7 @@ function GameScreen({
         )
         window.scrollTo(0, document.body.scrollHeight)
     }, [currentTime])
+
 
     const selectMode = (newMode: QueryMode) => {
         setMode(newMode)
@@ -152,7 +155,7 @@ function GameScreen({
                             if (
                                 !stop ||
                                 d.expectedDepartureTime <=
-                                    departure.expectedDepartureTime
+                                departure.expectedDepartureTime
                             )
                                 return undefined
                             const nextDep = departures[index + 1]
@@ -184,6 +187,7 @@ function GameScreen({
 
     const wait = () => {
         setCurrentTime((prev) => addHours(prev, 6))
+        setWaitModalIsOpen(true)
     }
 
     if (targets.some((sp) => sp.id === stopPlace.id)) {
@@ -240,6 +244,7 @@ function GameScreen({
                     selectMode={selectMode}
                     wait={wait}
                     stopPlace={stopPlace}
+                    firstMove={travelLegs.length === 1}
                 />
             </div>
             <div className="mt-5 xl:mt-14">
@@ -257,6 +262,17 @@ function GameScreen({
                 setNoTransport={setNoTransport}
                 stopPlace={stopPlace.name}
             />
+            <Modal
+                open={waitModalIsOpen}
+                onDismiss={() => setWaitModalIsOpen(false)}
+                title="Du har ventet i seks timer"
+                size="medium"
+            >
+                <Paragraph>
+                    Du har ventet i seks timer, og kan nå fortsette reisen.
+                </Paragraph>
+                <PrimaryButton onClick={() => setWaitModalIsOpen(false)}>OK</PrimaryButton>
+            </Modal>
             <DepartureAndOnLinePickerModal
                 isOpenModal={isModalOpen}
                 departures={departures}
