@@ -46,6 +46,7 @@ export async function savePlayerScore(
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            'Auth': import.meta.env.VITE_APP_SECRET
         },
         body: JSON.stringify(playerInfo),
     })
