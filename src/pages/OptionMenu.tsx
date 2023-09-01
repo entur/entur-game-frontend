@@ -29,8 +29,8 @@ export function OptionMenu(): ReactElement {
                         titleIcon={<NorwayIcon />}
                         onClick={() => navigate('/practice')}
                     >
-                        Får å bli kjent med spillet så kan du prøve vår
-                        Enspiller eller Flerspiller modus!
+                        For å bli kjent med spillet så kan du enten spille
+                        alene eller utfordre hverandre!
                     </NavigationCard>
                 </div>
             </Contrast>
