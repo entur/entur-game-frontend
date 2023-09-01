@@ -29,6 +29,16 @@ export async function getTopTenByDifficulty(
     return await response.json()
 }
 
+export async function getByDifficulty(
+    difficulty: string,
+    size?: number,
+): Promise<PlayerResponse[]> {
+    const response = await fetch(
+        `${baseUrl}/player-score?difficulty=${difficulty}&size=${size ?? 20}`,
+    )
+    return await response.json()
+}
+
 export async function savePlayerScore(
     playerInfo: PlayerRequest,
 ): Promise<Response> {
