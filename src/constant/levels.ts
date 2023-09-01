@@ -103,23 +103,23 @@ export const HARD: Level[] = [
 export const EVENT: Level[] = [
     {
         id: 'j54ls',
-        name: 'Mandal sentrum - Alta sentrum',
-        description: 'Fra Mandal sentrum til Alta sentrum',
+        name: 'Hokksund - Alna senter',
+        description: 'Fra Hokksund til Alna senter',
         start: {
-            id: 'NSR:StopPlace:22329',
-            name: 'Mandal sentrum',
-            latitude: 58.0287,
-            longitude: 7.4597,
+            id: 'NSR:StopPlace:58834',
+            name: 'Hokksund',
+            latitude: 59.767177,
+            longitude: 9.91113,
         },
         targets: [
             {
-                id: 'NSR:StopPlace:56826',
-                name: 'Alta sentrum',
-            },
+                id: 'NSR:StopPlace:6237',
+                name: 'Alna senter'
+            }
         ],
         difficulty: 'Event',
-        optimalRoute: 12,
-        optimalTraveltime: '123 timer, 12 minutter',
+        optimalRoute: 7,
+        optimalTraveltime: '2 timer, 7 minutter',
     },
     {
         id: 'k2s21',
