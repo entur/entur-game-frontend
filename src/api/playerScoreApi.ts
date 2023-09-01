@@ -20,7 +20,7 @@ export interface PlayerResponse {
 
 export type PlayerRequest = Omit<PlayerResponse, 'score'>
 
-export async function getTopTwentyByDifficulty(
+export async function getTopTenByDifficulty(
     difficulty: string,
 ): Promise<PlayerResponse[]> {
     const response = await fetch(
@@ -28,20 +28,10 @@ export async function getTopTwentyByDifficulty(
     )
     return await response.json()
 }
-export async function getByDifficulty(
-    difficulty: string,
-    size: number = 20
-): Promise<PlayerResponse[]> {
-    const response = await fetch(
-        `${baseUrl}/player-score?difficulty=${difficulty}&size=${size}`,
-    )
-    return await response.json()
-}
 
 export async function savePlayerScore(
     playerInfo: PlayerRequest,
 ): Promise<Response> {
-
     const response = await fetch(`${baseUrl}/player-score`, {
         method: 'POST',
         headers: {

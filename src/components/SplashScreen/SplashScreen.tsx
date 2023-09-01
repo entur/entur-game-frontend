@@ -21,7 +21,7 @@ export function SplashScreen(): JSX.Element {
                         EN
                     </Heading1>
                     <Heading1 className="text-coral sm:text-6xl text-3xl shrink italic">
-                        SHOW AND TELL
+                        KOLLEKTIV
                     </Heading1>
                     <Heading1 className="text-white sm:text-6xl text-3xl shrink">
                         TUR
@@ -32,12 +32,13 @@ export function SplashScreen(): JSX.Element {
                         Velkommen om bord!
                     </Heading3>
                     <Paragraph className="text-white max-w-md text-center font-normal">
-                        Lyst på en pose twist? finn en bedre reiserute en kollegaene dine!
+                        Er du smartere enn vår reiseplanlegger? Bli med på og
+                        vinn gratis kollektivreiser!
                     </Paragraph>
                 </div>
                 <Button
                     className="sm:ml-20 font-semibold max-w-xs"
-                    onClick={() => navigate('/event')}
+                    onClick={() => navigate('/option')}
                     variant="success"
                 >
                     Kjør!
