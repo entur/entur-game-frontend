@@ -72,7 +72,7 @@ function GameScreen({
         setStopPlace(level.start)
         setTravelLegs([level.start])
         setTargets(level.targets)
-        setStartTime(new Date())
+        setStartTime(new Date(2023, 8, 4, 13, 1, 0, 0))
     }, [level])
 
     useEffect(() => {
@@ -86,7 +86,6 @@ function GameScreen({
         )
         window.scrollTo(0, document.body.scrollHeight)
     }, [currentTime])
-
 
     const selectMode = (newMode: QueryMode) => {
         setMode(newMode)
@@ -155,7 +154,7 @@ function GameScreen({
                             if (
                                 !stop ||
                                 d.expectedDepartureTime <=
-                                departure.expectedDepartureTime
+                                    departure.expectedDepartureTime
                             )
                                 return undefined
                             const nextDep = departures[index + 1]
@@ -271,7 +270,9 @@ function GameScreen({
                 <Paragraph>
                     Du har ventet i seks timer, og kan nå fortsette reisen.
                 </Paragraph>
-                <PrimaryButton onClick={() => setWaitModalIsOpen(false)}>OK</PrimaryButton>
+                <PrimaryButton onClick={() => setWaitModalIsOpen(false)}>
+                    OK
+                </PrimaryButton>
             </Modal>
             <DepartureAndOnLinePickerModal
                 isOpenModal={isModalOpen}
