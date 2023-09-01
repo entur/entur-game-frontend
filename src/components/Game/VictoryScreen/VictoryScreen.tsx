@@ -45,26 +45,19 @@ export function VictoryScreen({
     startTimer,
 }: Props): ReactElement {
     const {
-        formState: {
-            // errors,
-            isLoading,
-            isSubmitting,
-            isValid,
-        },
+        formState: { errors, isLoading, isSubmitting, isValid },
         control,
-        // register,
+        register,
         handleSubmit,
         watch,
-        // setValue,
-        // getValues,
+        setValue,
+        getValues,
     } = useForm<FormValues>({
         defaultValues: {
             name: name,
-            email: `showntell${Math.random()
-                .toString(36)
-                .substring(2, 7)}@example.com`,
+            email: `showntell${Math.random().toString(36).substring(2, 7)}@example.com`,
             phoneNumber: Math.floor(Math.random() * 100000000),
-            consent: true,
+            consent: false
         },
     })
     const navigate = useNavigate()
@@ -121,9 +114,9 @@ export function VictoryScreen({
                         {`Du kom deg fra ${level.start.name} til ${level.targets[0].name} på ${numLegs} etapper og ${timeDescription}`}
                         <br />
                         <br />
-                        {/* TODO: skrive en dynamisk tekst på optimal rute. Vår
+                        TODO: skrive en dynamisk tekst på optimal rute. Vår
                         reiseplanlegger har beregnet en optimal rute der etapper
-                        er 2, og reisetid er 7 timer, 42 minutter. */}
+                        er 2, og reisetid er 7 timer, 42 minutter.
                     </Paragraph>
                     <Controller
                         name="name"
@@ -181,10 +174,9 @@ export function VictoryScreen({
                             />
                         )}
                     /> */}
-                    {/* <div
-                        className={`border-2 ${
-                            errors.consent ? 'border-coral' : 'border-blue-60'
-                        } rounded border-solid w-full h-28 cursor-pointer`}
+                    <div
+                        className={`border-2 ${errors.consent ? 'border-coral' : 'border-blue-60'
+                            } rounded border-solid w-full h-28 cursor-pointer`}
                         {...register('consent', { required: true })}
                         onClick={() =>
                             setValue('consent', !getValues('consent'))
@@ -209,26 +201,25 @@ export function VictoryScreen({
                                 e-post i forbindelse med konkurransen.
                             </Label>
                         </div>
-                    </div> */}
+                    </div>
 
                     <div className="flex flex-row mt-4 gap-4">
                         <PrimaryButton
-                            className={`select-none ${
-                                watch('consent') && 'bg-blue-main'
-                            }`}
+                            className={`select-none ${watch('consent') && 'bg-blue-main'
+                                }`}
                             loading={isSubmitting || isLoading}
                             disabled={!watch('consent') && !isValid}
                             type="submit"
                         >
                             Lagre poengsum
                         </PrimaryButton>
-                        {/* <SecondaryButton
+                        <SecondaryButton
                             className="bg-lavender select-none"
                             loading={isSubmitting || isLoading}
                             onClick={() => navigate('/')}
                         >
                             Avslutt reise
-                        </SecondaryButton> */}
+                        </SecondaryButton>
                     </div>
                 </form>
             </div>

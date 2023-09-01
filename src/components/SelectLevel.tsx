@@ -21,9 +21,8 @@ function SelectLevel({ isEvent }: { isEvent: boolean }): JSX.Element {
 
     return (
         <>
-            <div className="max-w-screen max-h-screen">
+            <div style={{ minWidth: '640px', maxHeight: '524px' }}>
                 <RadioGroup
-                    className="p-4"
                     name="ticket-type"
                     label="Velg billettype:"
                     onChange={() => {
@@ -236,10 +235,9 @@ function SelectLevel({ isEvent }: { isEvent: boolean }): JSX.Element {
                                 {EVENT.map((level) => (
                                     <RadioPanel
                                         title={
-                                            // <span style={{ fontSize: '32px' }}>
-                                            //     SHOW AND TELL NR 6
-                                            // </span>
-                                            ''
+                                            <span style={{ fontSize: '32px' }}>
+                                                SHOW AND TELL NR 6
+                                            </span>
                                         }
                                         key={level.name}
                                         secondaryLabel={level.difficulty}
@@ -248,11 +246,11 @@ function SelectLevel({ isEvent }: { isEvent: boolean }): JSX.Element {
                                         }
                                         value={level.id}
                                         size="large"
-                                        // style={{
-                                        //     width: '100%',
-                                        //     height: '154px',
-                                        //     paddingLeft: '190px',
-                                        // }}
+                                        style={{
+                                            width: '100%',
+                                            height: '154px',
+                                            paddingLeft: '190px',
+                                        }}
                                     >
                                         <div
                                             style={{
@@ -260,22 +258,6 @@ function SelectLevel({ isEvent }: { isEvent: boolean }): JSX.Element {
                                                 flexDirection: 'column',
                                             }}
                                         >
-                                            <div className="">
-                                                <img
-                                                    className="object-scale-down w-24 h-24 -right-20"
-                                                    src={twist}
-                                                    alt="Your Image"
-                                                    // style={{
-                                                    //     width: '154px',
-                                                    //     height: '154px',
-                                                    //     marginLeft: '-190px',
-                                                    //     marginTop: '-138px',
-                                                    // }}
-                                                />
-                                            </div>
-                                            <span style={{ fontSize: '32px' }}>
-                                                SHOW AND TELL
-                                            </span>
                                             <span
                                                 style={{
                                                     marginTop: '20px',
@@ -291,51 +273,62 @@ function SelectLevel({ isEvent }: { isEvent: boolean }): JSX.Element {
                                                     color: '#BABBCF',
                                                 }}
                                             >
-                                                Er du Enturs beste
-                                                reiseplanlegger? Vinn en pose
-                                                twist!
+                                                Er du Enturs beste reiseplanlegger?
+                                                vinn en pose twist!
                                             </span>
+                                        </div>
+                                        <div className="flex">
+                                            <img
+                                                src={twist}
+                                                alt="Your Image"
+                                                style={{
+                                                    width: '154px',
+                                                    height: '154px',
+                                                    marginLeft: '-190px',
+                                                    marginTop: '-138px',
+                                                }}
+                                            />
                                         </div>
                                     </RadioPanel>
                                 ))}
                             </>
                         )}
-                        <Button
-                            disabled={!selectedRadio}
-                            variant="success"
-                            style={{ height: '64px' }}
-                            className="flex items-center justify-between px-4 py-4 mt-10 w-92"
-                            onClick={() => navigate(`/game/${selectedRadio}`)}
-                        >
-                            <span className="mr-auto">Start reisen</span>
-                            <span className="ml-auto">
-                                <img
-                                    className="w-5 h-5"
-                                    src={iconRightArrow}
-                                    alt="icon"
-                                ></img>
-                            </span>
-                        </Button>
-                        {!isEvent && (
-                            <div>
-                                <Heading5>
-                                    Ønsker du å spille med flere?{' '}
-                                    <Link
-                                        to="/multiplayer"
-                                        className="underline"
-                                    >
-                                        Prøv flerspillermodus her
-                                    </Link>
-                                </Heading5>
-                            </div>
+                        {selectedRadio && (
+                            <Button
+                                variant="success"
+                                style={{ height: '64px' }}
+                                className="flex items-center justify-between w-full px-4 py-4 mt-10"
+                                onClick={() =>
+                                    navigate(`/game/${selectedRadio}`)
+                                }
+                            >
+                                <span className="mr-auto">Start reisen</span>
+                                <span className="ml-auto">
+                                    <img
+                                        className="w-5 h-5"
+                                        src={iconRightArrow}
+                                        alt="icon"
+                                    ></img>
+                                </span>
+                            </Button>
                         )}
-                        <SecondaryButton
-                            className="bg-lavender select-none mt-20 w-24"
-                            onClick={() => navigate('/')}
-                        >
-                            Tilbake
-                        </SecondaryButton>
                     </div>
+                    {!isEvent && (
+                        <div>
+                            <Heading5>
+                                Ønsker du å spille med flere?{' '}
+                                <Link to="/multiplayer" className="underline">
+                                    Prøv flerspillermodus her
+                                </Link>
+                            </Heading5>
+                        </div>
+                    )}
+                    <SecondaryButton
+                        className="bg-lavender select-none mt-20"
+                        onClick={() => navigate('/')}
+                    >
+                        tilbake
+                    </SecondaryButton>
                 </RadioGroup>
             </div>
         </>

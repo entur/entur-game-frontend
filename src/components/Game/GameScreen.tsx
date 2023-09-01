@@ -70,7 +70,7 @@ function GameScreen({
         setStopPlace(level.start)
         setTravelLegs([level.start])
         setTargets(level.targets)
-        setStartTime(new Date(2023, 7, 31, 14, 0, 0, 0))
+        setStartTime(new Date())
     }, [level])
 
     useEffect(() => {
@@ -82,12 +82,8 @@ function GameScreen({
                 numLegs,
             ),
         )
-        // window.scrollTo(0, document.body.scrollHeight)
+        window.scrollTo(0, document.body.scrollHeight)
     }, [currentTime])
-
-    useEffect(() => {
-        window.scrollTo(0, 0)
-    }, [])
 
     const selectMode = (newMode: QueryMode) => {
         setMode(newMode)

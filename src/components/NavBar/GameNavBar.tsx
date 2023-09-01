@@ -16,7 +16,7 @@ function GameNavBar({
         <div className="flex flex-row pt-4 justify-between ">
             <div className="flex-grow" />
             <GameStatus
-                className="mr-4 sm:mt-[-70px]"
+                className="mr-4 mt-[-70px]"
                 numLegs={numLegs}
                 timeDescriptionUsed={timeDescription}
                 healthLeft={healthLeft}

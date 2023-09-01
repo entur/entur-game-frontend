@@ -51,7 +51,7 @@ function GameStatus({
                         <Label className="text-blue-50" margin="none">
                             Liv
                         </Label>
-                        <div className="flex flex-row pt-1 sm:pr-0 pr-6">
+                        <div className="flex flex-row pt-1">
                             {Array.from(Array(healthLeft), (_, k) => {
                                 return (
                                     <img

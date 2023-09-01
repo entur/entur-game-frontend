@@ -18,9 +18,7 @@ export function EventPage(): JSX.Element {
         <div className="flex flex-col items-center justify-center mt-20">
             <Contrast>
                 <Heading2>Hvor erfaren er du?</Heading2>
-                <div className="max-w-sm">
-                    <SelectLevel isEvent={true} />
-                </div>
+                <SelectLevel isEvent={true} />
             </Contrast>
         </div>
     )
