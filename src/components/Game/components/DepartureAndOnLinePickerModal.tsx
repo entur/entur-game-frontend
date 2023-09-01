@@ -111,7 +111,7 @@ export const DepartureAndOnLinePickerModal = ({
                                 >
                                     {stop.stopPlace.name}
                                 </ChoiceChip>
-                            ))}
+                            )).slice(1)}
                         </ChoiceChipGroup>
                     </div>
                 ) : null}
