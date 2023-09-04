@@ -14,7 +14,7 @@ function GameNavBar({
 }: Props): ReactElement {
     return (
         <div className="flex flex-row pt-4 justify-between ">
-            <div className="flex-grow" />
+            <div className="flex-grow " />
             <GameStatus
                 className="mr-4 mt-[-70px]"
                 numLegs={numLegs}

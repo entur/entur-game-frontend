@@ -2,23 +2,24 @@ import React, { ReactElement } from 'react'
 import { ChoiceChip, ChoiceChipGroup } from '@entur/chip'
 import { SleepIcon } from '@entur/icons'
 import { QueryMode, StopPlace } from '@entur/sdk'
-import { Heading2 } from '@entur/typography'
+import { Heading2, Heading4 } from '@entur/typography'
 
 import { getModeIcon, getModeTranslation } from '../../../utils/transportMapper'
 import { ALL_MODES } from '../../../constant/queryMode'
-import { Loader } from '@entur/loader'
 
 type Props = {
+    currentTime: Date
     isLoading: boolean
     mode: QueryMode | null
     usedMode: QueryMode[]
     selectMode: (mode: QueryMode) => void
     wait: () => void
-    stopPlace: StopPlace,
+    stopPlace: StopPlace
     firstMove: boolean
 }
 
 function TransportTypePicker({
+    currentTime,
     isLoading,
     mode,
     usedMode,
@@ -33,8 +34,17 @@ function TransportTypePicker({
                 Velg transportmåte fra{' '}
                 <span className="text-coral">{stopPlace.name}</span>
             </Heading2>
+            <Heading4 margin="none" className="select-none">
+                Klokken er:{' '}
+                <span className="text-coral">
+                    {currentTime.toLocaleTimeString('nb-NO', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                    })}
+                </span>
+            </Heading4>
             <ChoiceChipGroup
-                value={mode || 'none'}
+                value={mode ?? 'none'}
                 onChange={() => {
                     /* Do nothing */
                 }}
@@ -68,7 +78,6 @@ function TransportTypePicker({
                             Vent 6 timer
                         </ChoiceChip>
                     )}
-
                 </>
             </ChoiceChipGroup>
         </div>

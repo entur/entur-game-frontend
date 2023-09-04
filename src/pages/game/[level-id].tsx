@@ -35,11 +35,13 @@ function GamePage(): JSX.Element {
 
     return (
         <>
-            <GameNavBar
-                healthLeft={totalHp + 1}
-                numLegs={numLegs}
-                timeDescription={timeDescription}
-            />
+            <div className="sm:sticky top-20">
+                <GameNavBar
+                    healthLeft={totalHp + 1}
+                    numLegs={numLegs}
+                    timeDescription={timeDescription}
+                />
+            </div>
             <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
                 <Game
                     name={''}

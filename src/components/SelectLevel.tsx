@@ -317,7 +317,7 @@ function SelectLevel({ isEvent }: { isEvent: boolean }): JSX.Element {
                             <Heading5>
                                 Ønsker du å spille med flere?{' '}
                                 <Link to="/multiplayer" className="underline">
-                                    Prøv flerspillermodus her
+                                    Prøv flerspillermodus her (BETA)
                                 </Link>
                             </Heading5>
                         </div>

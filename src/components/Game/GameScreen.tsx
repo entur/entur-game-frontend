@@ -9,7 +9,7 @@ import { PrimaryButton, SecondaryButton } from '@entur/button'
 import { Level } from '../../constant/levels'
 import { InvalidTravelModal } from './components/InvalidTravelModal'
 import { useEnturService } from '../../hooks/useEnturService'
-import { formatTimeForEndOfGame } from '../../utils/dateFnsUtils'
+import { formatDate, formatTimeForEndOfGame } from '../../utils/dateFnsUtils'
 import FromAndToTitle from './components/FromAndToTitle'
 import TransportTypePicker from './components/TransportTypePicker'
 import TravelLegStart from './components/TravelLegStart/TravelLegStart'
@@ -57,14 +57,16 @@ function GameScreen({
     const [mode, setMode] = useState<QueryMode | null>(null)
     const [departures, setDepartures] = useState<Departure[]>([])
     const [stopsOnLine, setStopsOnLine] = useState<StopAndTime[]>([])
-    const [currentTime, setCurrentTime] = useState<Date>(new Date())
     const [noTransport, setNoTransport] = useState<boolean>(false)
     const [isModalOpen, setModalOpen] = useState<boolean>(false)
     const [travelLegs, setTravelLegs] = useState<StopPlace[]>([level.start])
     const [usedMode, setUsedMode] = useState<QueryMode[]>([])
     const { getWalkableStopPlaces, getDepartures, getStopsOnLine } =
         useEnturService()
-    const [startTime, setStartTime] = useState<Date>(new Date())
+    const [startTime, setStartTime] = useState<Date>(
+        new Date(2023, 8, 4, 13, 1, 0, 0),
+    )
+    const [currentTime, setCurrentTime] = useState<Date>(startTime)
     // TravelLegStart states
     const [travelLegsMode, setTravelLegsMode] = useState<QueryMode[]>([])
     const [usedDepartures, setUsedDepartures] = useState<
@@ -158,7 +160,7 @@ function GameScreen({
                             if (
                                 !stop ||
                                 d.expectedDepartureTime <=
-                                    departure.expectedDepartureTime
+                                departure.expectedDepartureTime
                             )
                                 return undefined
                             const nextDep = departures[index + 1]
@@ -232,6 +234,7 @@ function GameScreen({
     return (
         <div className="flex flex-col mb-4">
             <FromAndToTitle className="mt-10 xl:mt-28" level={level} />
+            <Heading4 margin="none">{formatDate(startTime)}</Heading4>
             <Heading4 margin="none">Hvordan vil du starte?</Heading4>
             <div className="mt-5 xl:mt-14">
                 <TravelLegStart
@@ -242,6 +245,7 @@ function GameScreen({
             </div>
             <div className="mt-5 ml-9 xl:mr-4 xl:ml-12">
                 <TransportTypePicker
+                    currentTime={currentTime}
                     isLoading={isLoading}
                     mode={mode}
                     usedMode={usedMode}
