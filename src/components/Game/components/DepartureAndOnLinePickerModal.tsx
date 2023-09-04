@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, SetStateAction, Dispatch, useEffect } from 'react'
 import { Heading2 } from '@entur/typography'
 import { ChoiceChip, ChoiceChipGroup } from '@entur/chip'
 import { Departure, QueryMode } from '@entur/sdk'
@@ -14,7 +14,8 @@ type Props = {
     mode: QueryMode | null
     selectStopOnLine: (stopAndTime: StopAndTime) => void
     isOpenModal: boolean
-    setModalOpen: React.Dispatch<React.SetStateAction<boolean>>
+    setModalOpen: Dispatch<SetStateAction<boolean>>
+    setUsedDepartures: Dispatch<SetStateAction<(Departure | undefined)[]>>
 }
 
 export const DepartureAndOnLinePickerModal = ({
@@ -25,18 +26,25 @@ export const DepartureAndOnLinePickerModal = ({
     selectStopOnLine,
     isOpenModal,
     setModalOpen,
+    setUsedDepartures,
 }: Props): JSX.Element => {
+    const [pickedDeparture, setPickedDeparture] = useState<
+        Departure | undefined
+    >(undefined)
     return (
         <>
             <Modal
                 open={isOpenModal}
-                onDismiss={() => setModalOpen(false)}
+                onDismiss={() => {
+                    // Should probably reset usedDepartures here
+                    setModalOpen(false)
+                }}
                 title=""
                 size="medium"
             >
                 <>
                     {departures?.length ? (
-                        <div>
+                        <>
                             <Heading2>Velg avgang</Heading2>
                             <ChoiceChipGroup
                                 value="none"
@@ -67,9 +75,10 @@ export const DepartureAndOnLinePickerModal = ({
                                                     .frontText +
                                                 departure.serviceJourney.id
                                             }
-                                            onClick={() =>
+                                            onClick={() => {
                                                 selectDeparture(departure)
-                                            }
+                                                setPickedDeparture(departure)
+                                            }}
                                         >
                                             {mode ? getModeIcon(mode) : null}
                                             {
@@ -88,11 +97,11 @@ export const DepartureAndOnLinePickerModal = ({
                                         </ChoiceChip>
                                     ))}
                             </ChoiceChipGroup>
-                        </div>
+                        </>
                     ) : null}
                 </>
                 {stopsOnLine?.length ? (
-                    <div>
+                    <>
                         <Heading2>
                             Hvor vil du gå {mode === 'foot' ? 'til' : 'av'}?
                         </Heading2>
@@ -107,13 +116,20 @@ export const DepartureAndOnLinePickerModal = ({
                                     className="select-none"
                                     key={stop.stopPlace.id}
                                     value={stop.stopPlace.id}
-                                    onClick={() => selectStopOnLine(stop)}
+                                    onClick={() => {
+                                        selectStopOnLine(stop)
+                                        setUsedDepartures((prev) => [
+                                            ...prev,
+                                            pickedDeparture as Departure,
+                                        ])
+                                        setPickedDeparture(undefined)
+                                    }}
                                 >
                                     {stop.stopPlace.name}
                                 </ChoiceChip>
                             )).slice(1)}
                         </ChoiceChipGroup>
-                    </div>
+                    </>
                 ) : null}
             </Modal>
         </>

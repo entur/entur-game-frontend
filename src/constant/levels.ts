@@ -114,8 +114,8 @@ export const EVENT: Level[] = [
         targets: [
             {
                 id: 'NSR:StopPlace:6237',
-                name: 'Alna senter'
-            }
+                name: 'Alna senter',
+            },
         ],
         difficulty: 'Event',
         optimalRoute: 7,

@@ -1,15 +1,22 @@
 import React, { ReactElement } from 'react'
-import { QueryMode, StopPlace } from '@entur/sdk'
+import { Departure, QueryMode, StopPlace } from '@entur/sdk'
 import { TravelLeg, TravelLegProps } from '@entur/travel'
-import { Heading4 } from '@entur/typography'
-import { generateKey } from '../../../utils/generateUniqueKey'
+import { Heading5 } from '@entur/typography'
+import { generateKey } from '../../../../utils/generateUniqueKey'
+import { TravelLegTag } from './TravelLegTag'
 
 type Props = {
     travelLegs: StopPlace[]
     travelLegsMode: QueryMode[]
+    usedDepartures: (Departure | undefined)[]
 }
-// TODO: Add transport line to TravelLeg
-function TravelLegStart({ travelLegs, travelLegsMode }: Props): ReactElement {
+
+function TravelLegStart({
+    travelLegs,
+    travelLegsMode,
+    usedDepartures,
+}: Props): ReactElement {
+    // Show only one travel leg if there is only one
     if (travelLegs.length === 1) {
         return (
             <div className="flex flex-row">
@@ -20,7 +27,7 @@ function TravelLegStart({ travelLegs, travelLegsMode }: Props): ReactElement {
                     showStop={false}
                     showLine={false}
                 />
-                <Heading4 margin="none">{travelLegs[0].name}</Heading4>
+                <Heading5 margin="none">{travelLegs[0].name}</Heading5>
             </div>
         )
     }
@@ -43,11 +50,28 @@ function TravelLegStart({ travelLegs, travelLegsMode }: Props): ReactElement {
                             direction="vertical"
                             showStop={false}
                         />
-                        <Heading4 margin="none">
-                            {travelLegs[index].name}
-                        </Heading4>
+                        <div className="flex flex-col">
+                            <Heading5 margin="none">
+                                {travelLegs[index].name}
+                            </Heading5>
+                            <div className="flex flex-row mt-4">
+                                <TravelLegTag
+                                    usedDeparture={usedDepartures[index + 1]}
+                                />
+                                <Heading5
+                                    className="ml-3 place-self-center"
+                                    margin="none"
+                                >
+                                    {
+                                        usedDepartures[index + 1]
+                                            ?.destinationDisplay.frontText
+                                    }
+                                </Heading5>
+                            </div>
+                        </div>
                     </div>
                 ) : (
+                    // Last travel leg
                     <div
                         key={generateKey(travelLeg.id)}
                         className="flex flex-row"
@@ -63,9 +87,9 @@ function TravelLegStart({ travelLegs, travelLegsMode }: Props): ReactElement {
                             showStop={false}
                             showLine={false}
                         />
-                        <Heading4 margin="none">
+                        <Heading5 margin="none">
                             {travelLegs[index].name}
-                        </Heading4>
+                        </Heading5>
                     </div>
                 )
             })}

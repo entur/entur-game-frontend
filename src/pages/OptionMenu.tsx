@@ -17,7 +17,7 @@ export function OptionMenu(): ReactElement {
             <Contrast>
                 <div className="space-y-10 mt-10">
                     <NavigationCard
-                        title="Konkurranse modus"
+                        title="Konkurransemodus"
                         titleIcon={<MobilityIcon />}
                         onClick={() => navigate('/event')}
                     >
@@ -25,12 +25,12 @@ export function OptionMenu(): ReactElement {
                         beste VINNER - kanskje det er deg?
                     </NavigationCard>
                     <NavigationCard
-                        title="Øve modus"
+                        title="Øvelsesmodus"
                         titleIcon={<NorwayIcon />}
                         onClick={() => navigate('/practice')}
                     >
-                        For å bli kjent med spillet så kan du enten spille
-                        alene eller utfordre hverandre!
+                        For å bli kjent med spillet så kan du enten spille alene
+                        eller utfordre hverandre!
                     </NavigationCard>
                 </div>
             </Contrast>

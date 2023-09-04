@@ -17,15 +17,13 @@ enum Difficulty {
     Medium = 'Middels',
     Hard = 'Vanskelig',
     Event = 'Event',
-
-
 }
 
 export const EventHighscorePage = (): JSX.Element => {
     const [players, setPlayers] = useState<PlayerResponse[]>([])
     const difficulty = Difficulty.Medium
     function getNorwegianWeekday() {
-        const today = new Date();
+        const today = new Date()
         const weekdays = [
             'Søndag',
             'Mandag',
@@ -33,14 +31,14 @@ export const EventHighscorePage = (): JSX.Element => {
             'Onsdag',
             'Torsdag',
             'Fredag',
-            'Lørdag'
-        ];
-        const weekdayIndex = today.getDay();
-        return weekdays[weekdayIndex];
+            'Lørdag',
+        ]
+        const weekdayIndex = today.getDay()
+        return weekdays[weekdayIndex]
     }
 
     function generateMockPlayers(count: number): PlayerResponse[] {
-        const players: PlayerResponse[] = [];
+        const players: PlayerResponse[] = []
 
         for (let i = 0; i < count; i++) {
             const player: PlayerResponse = {
@@ -50,20 +48,22 @@ export const EventHighscorePage = (): JSX.Element => {
                 totalOptions: Math.floor(Math.random() * 100),
                 totalTravelTime: Math.floor(Math.random() * 100),
                 totalPlaytime: Math.floor(Math.random() * 100),
-                fromDestination: { id: 'fromId', destination: 'fromDestination' },
+                fromDestination: {
+                    id: 'fromId',
+                    destination: 'fromDestination',
+                },
                 toDestination: { id: 'toId', destination: 'toDestination' },
                 email: 'player' + i + '@mock.com',
                 //set phone number to random 8 digit number
                 phoneNumber: Math.floor(Math.random() * 100000000),
-            };
+            }
             //sort players by score
 
-
-            players.push(player);
+            players.push(player)
         }
-        players.sort((a, b) => b.score - a.score);
+        players.sort((a, b) => b.score - a.score)
 
-        return players;
+        return players
     }
 
     useEffect(() => {
@@ -71,7 +71,7 @@ export const EventHighscorePage = (): JSX.Element => {
         //         const data = await getTopTenByDifficulty(difficulty)
         //         setPlayers(data)
         //     }
-        setPlayers(generateMockPlayers(100));
+        setPlayers(generateMockPlayers(100))
         //sort players by score
 
         //     fetchData()
@@ -81,20 +81,22 @@ export const EventHighscorePage = (): JSX.Element => {
     }
     function getPodium(index: number): JSX.Element {
         if (index === 0) {
-            return (<Paragraph className='text-white'>🥇</Paragraph>);
+            return <Paragraph className="text-white">🥇</Paragraph>
         } else if (index === 1) {
-            return <Paragraph className='text-white'>🥈</Paragraph>;
+            return <Paragraph className="text-white">🥈</Paragraph>
         } else if (index === 2) {
-            return <Paragraph className='text-white'>🥉</Paragraph>;
+            return <Paragraph className="text-white">🥉</Paragraph>
         } else {
-            return <Paragraph className='text-white'>{index + 1}</Paragraph>;
+            return <Paragraph className="text-white">{index + 1}</Paragraph>
         }
     }
 
-
     return (
         <>
-            <Heading1 className='text-white'>{getNorwegianWeekday()} - {import.meta.env.VITE_APP_EVENT_NAME} Førsteplass vinner el. Sparkesykkel!</Heading1>
+            <Heading1 className="text-white">
+                {getNorwegianWeekday()} - {import.meta.env.VITE_APP_EVENT_NAME}{' '}
+                Førsteplass vinner el. Sparkesykkel!
+            </Heading1>
             <div className="leaderboard text-white">
                 <Table>
                     <TableHead>

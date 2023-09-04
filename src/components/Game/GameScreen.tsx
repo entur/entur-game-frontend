@@ -12,7 +12,7 @@ import { useEnturService } from '../../hooks/useEnturService'
 import { formatTimeForEndOfGame } from '../../utils/dateFnsUtils'
 import FromAndToTitle from './components/FromAndToTitle'
 import TransportTypePicker from './components/TransportTypePicker'
-import TravelLegStart from './components/TravelLegStart'
+import TravelLegStart from './components/TravelLegStart/TravelLegStart'
 import { DepartureAndOnLinePickerModal } from './components/DepartureAndOnLinePickerModal'
 import { isTruthy } from '../../utils/isTruthy'
 import { TravelLegFinished } from './components/TravelLegFinished'
@@ -52,20 +52,24 @@ function GameScreen({
     const [isLoading, setLoading] = useState<boolean>(false)
     const [hasBeenSprinkled, setSprinkled] = useState<boolean>(false)
     const [dead, setDead] = useState<boolean>(false)
-    const [travelLegsMode, setTravelLegsMode] = useState<QueryMode[]>([])
     const [stopPlace, setStopPlace] = useState<StopPlace>(level.start)
-    const [travelLegs, setTravelLegs] = useState<StopPlace[]>([level.start])
     const [targets, setTargets] = useState<StopPlace[]>(level.targets)
     const [mode, setMode] = useState<QueryMode | null>(null)
     const [departures, setDepartures] = useState<Departure[]>([])
     const [stopsOnLine, setStopsOnLine] = useState<StopAndTime[]>([])
     const [currentTime, setCurrentTime] = useState<Date>(new Date())
     const [noTransport, setNoTransport] = useState<boolean>(false)
-    const [usedMode, setUsedMode] = useState<QueryMode[]>([])
     const [isModalOpen, setModalOpen] = useState<boolean>(false)
+    const [travelLegs, setTravelLegs] = useState<StopPlace[]>([level.start])
+    const [usedMode, setUsedMode] = useState<QueryMode[]>([])
     const { getWalkableStopPlaces, getDepartures, getStopsOnLine } =
         useEnturService()
     const [startTime, setStartTime] = useState<Date>(new Date())
+    // TravelLegStart states
+    const [travelLegsMode, setTravelLegsMode] = useState<QueryMode[]>([])
+    const [usedDepartures, setUsedDepartures] = useState<
+        (Departure | undefined)[]
+    >([undefined])
     const [waitModalIsOpen, setWaitModalIsOpen] = useState<boolean>(false)
 
     useEffect(() => {
@@ -233,6 +237,7 @@ function GameScreen({
                 <TravelLegStart
                     travelLegs={travelLegs}
                     travelLegsMode={travelLegsMode}
+                    usedDepartures={usedDepartures}
                 />
             </div>
             <div className="mt-5 ml-9 xl:mr-4 xl:ml-12">
@@ -282,6 +287,7 @@ function GameScreen({
                 mode={mode}
                 selectStopOnLine={selectStopOnLine}
                 setModalOpen={setModalOpen}
+                setUsedDepartures={setUsedDepartures}
             />
         </div>
     )
