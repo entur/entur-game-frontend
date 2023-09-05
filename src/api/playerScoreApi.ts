@@ -24,7 +24,7 @@ export async function getTopTenByDifficulty(
     difficulty: string,
 ): Promise<PlayerResponse[]> {
     const response = await fetch(
-        `${baseUrl}/player-score?difficulty=${difficulty}`,
+        `${baseUrl}/player-score/difficulty=${difficulty}`,
     )
     return await response.json()
 }
@@ -34,7 +34,7 @@ export async function getByDifficulty(
     size?: number,
 ): Promise<PlayerResponse[]> {
     const response = await fetch(
-        `${baseUrl}/player-score?difficulty=${difficulty}&size=${size ?? 20}`,
+        `${baseUrl}/player-score/${difficulty}?size=${size ?? 20}`,
     )
     return await response.json()
 }
@@ -46,7 +46,7 @@ export async function savePlayerScore(
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Auth': import.meta.env.VITE_APP_SECRET
+            Auth: import.meta.env.VITE_APP_SECRET,
         },
         body: JSON.stringify(playerInfo),
     })

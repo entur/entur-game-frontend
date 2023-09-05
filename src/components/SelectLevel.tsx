@@ -4,17 +4,19 @@ import { Link, useNavigate } from 'react-router-dom'
 import easy from '@assets/images/easy.png'
 import medium from '@assets/images/medium.png'
 import hard from '@assets/images/hard.png'
-import { EASY, EVENT, HARD, MEDIUM } from '../constant/levels'
+import { EASY, HARD, MEDIUM } from '../constant/levels'
 import { RadioGroup, RadioPanel } from '@entur/form'
 import { Button, SecondaryButton } from '@entur/button'
 import { Heading5 } from '@entur/typography'
 import iconRightArrow from '../assets/icons/IconButtonRight.svg'
 
+type Difficulty = 'Lett' | 'Middels' | 'Vanskelig' | 'Event'
+
 function SelectLevel({ isEvent }: { isEvent: boolean }): JSX.Element {
     const navigate = useNavigate()
-    const [selectedRadio, setSelectedRadio] = useState<null | string>(null)
+    const [selectedRadio, setSelectedRadio] = useState<null | Difficulty>(null)
 
-    const handleRadioClick = (levelId: string) => {
+    const handleRadioClick = (levelId: Difficulty) => {
         setSelectedRadio(levelId)
     }
 
@@ -42,9 +44,9 @@ function SelectLevel({ isEvent }: { isEvent: boolean }): JSX.Element {
                                         key={level.name}
                                         secondaryLabel={level.difficulty}
                                         onClick={() =>
-                                            handleRadioClick(level.id)
+                                            handleRadioClick(level.difficulty)
                                         }
-                                        value={level.id}
+                                        value={level.difficulty}
                                         size="large"
                                         style={{
                                             width: '100%',
@@ -107,9 +109,9 @@ function SelectLevel({ isEvent }: { isEvent: boolean }): JSX.Element {
                                         key={level.name}
                                         secondaryLabel={level.difficulty}
                                         onClick={() =>
-                                            handleRadioClick(level.id)
+                                            handleRadioClick(level.difficulty)
                                         }
-                                        value={level.id}
+                                        value={level.difficulty}
                                         size="large"
                                         style={{
                                             width: '100%',
@@ -172,9 +174,9 @@ function SelectLevel({ isEvent }: { isEvent: boolean }): JSX.Element {
                                         key={level.name}
                                         secondaryLabel={level.difficulty}
                                         onClick={() =>
-                                            handleRadioClick(level.id)
+                                            handleRadioClick(level.difficulty)
                                         }
-                                        value={level.id}
+                                        value={level.difficulty}
                                         size="large"
                                         style={{
                                             width: '100%',
@@ -211,69 +213,6 @@ function SelectLevel({ isEvent }: { isEvent: boolean }): JSX.Element {
                                             >
                                                 Fra svorsk til nordnorsk, du
                                                 avanserer!{' '}
-                                            </span>
-                                        </div>
-                                        <div className="flex">
-                                            <img
-                                                src={hard}
-                                                alt="Your Image"
-                                                style={{
-                                                    width: '154px',
-                                                    height: '154px',
-                                                    marginLeft: '-190px',
-                                                    marginTop: '-138px',
-                                                }}
-                                            />
-                                        </div>
-                                    </RadioPanel>
-                                ))}
-                            </>
-                        )}
-                        {isEvent && (
-                            <>
-                                {EVENT.map((level) => (
-                                    <RadioPanel
-                                        title={
-                                            <span style={{ fontSize: '32px' }}>
-                                                JAVAZONE 2023
-                                            </span>
-                                        }
-                                        key={level.name}
-                                        secondaryLabel={level.difficulty}
-                                        onClick={() =>
-                                            handleRadioClick(level.id)
-                                        }
-                                        value={level.id}
-                                        size="large"
-                                        style={{
-                                            width: '100%',
-                                            height: '154px',
-                                            paddingLeft: '190px',
-                                        }}
-                                    >
-                                        <div
-                                            style={{
-                                                display: 'flex',
-                                                flexDirection: 'column',
-                                            }}
-                                        >
-                                            <span
-                                                style={{
-                                                    marginTop: '20px',
-                                                    fontSize: '22px',
-                                                }}
-                                            >
-                                                Konkurranse
-                                            </span>
-                                            <span
-                                                style={{
-                                                    marginTop: '10px',
-                                                    fontSize: '14px',
-                                                    color: '#BABBCF',
-                                                }}
-                                            >
-                                                Prøv sjansen og vinn
-                                                sparkesykkel
                                             </span>
                                         </div>
                                         <div className="flex">

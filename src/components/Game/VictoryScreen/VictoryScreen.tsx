@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { Heading3, Heading5, Label, Paragraph } from '@entur/typography'
 import { Checkbox, TextField } from '@entur/form'
 import { PrimaryButton, SecondaryButton } from '@entur/button'
@@ -16,6 +16,7 @@ import {
     formatTimeForEndOfGame,
 } from '../../../utils/dateFnsUtils'
 import { Controller, useForm } from 'react-hook-form'
+import { getOptimalRouteText } from '../../../api/gameModeApi'
 
 type Props = {
     name: string
@@ -63,6 +64,7 @@ export function VictoryScreen({
         level.difficulty,
         numLegs,
     )
+    const [optimalRouteText, setOptimalRouteText] = useState<string>('')
 
     async function onSubmit(data: FormValues) {
         const response = await savePlayerScore({
@@ -89,6 +91,15 @@ export function VictoryScreen({
         setError(true)
     }
 
+    useEffect(() => {
+        async function getData(): Promise<void> {
+            const data = await getOptimalRouteText(level.difficulty)
+            setOptimalRouteText(data)
+        }
+        getData()
+        window.scroll(0, 0)
+    }, [])
+
     return (
         <div className="bg-blue-90 min-h-screen min-w-screen">
             <VictoryArtBoardOvalImage className="absolute -top-20 -left-32 hidden xl:block" />
@@ -109,9 +120,7 @@ export function VictoryScreen({
                         {`Du kom deg fra ${level.start.name} til ${level.targets[0].name} på ${numLegs} etapper og ${timeDescription}`}
                         <br />
                         <br />
-                        TODO: skrive en dynamisk tekst på optimal rute. Vår
-                        reiseplanlegger har beregnet en optimal rute der etapper
-                        er 2, og reisetid er 7 timer, 42 minutter.
+                        {optimalRouteText}
                     </Paragraph>
                     <Controller
                         name="name"
@@ -120,8 +129,8 @@ export function VictoryScreen({
                             required: 'Dette feltet er påkrevet.',
                             maxLength: {
                                 value: 50,
-                                message: 'Maks 50 tegn.'
-                            }
+                                message: 'Maks 50 tegn.',
+                            },
                         }}
                         render={({ field, fieldState }) => (
                             <TextField
@@ -176,8 +185,9 @@ export function VictoryScreen({
                         )}
                     />
                     <div
-                        className={`border-2 ${errors.consent ? 'border-coral' : 'border-blue-60'
-                            } rounded border-solid w-full h-28 cursor-pointer`}
+                        className={`border-2 ${
+                            errors.consent ? 'border-coral' : 'border-blue-60'
+                        } rounded border-solid w-full h-28 cursor-pointer`}
                         {...register('consent', { required: true })}
                         onClick={() =>
                             setValue('consent', !getValues('consent'))
@@ -206,8 +216,9 @@ export function VictoryScreen({
 
                     <div className="flex flex-row mt-4 gap-4">
                         <PrimaryButton
-                            className={`select-none ${watch('consent') && 'bg-blue-main'
-                                }`}
+                            className={`select-none ${
+                                watch('consent') && 'bg-blue-main'
+                            }`}
                             loading={isSubmitting || isLoading}
                             disabled={!watch('consent') && !isValid}
                             type="submit"

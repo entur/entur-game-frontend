@@ -4,14 +4,11 @@ import { Contrast, NavigationCard } from '@entur/layout'
 import { MobilityIcon, NorwayIcon } from '@entur/icons'
 import { useBackground } from '../backgroundContext'
 import { useFlags } from 'flagsmith/react'
-import { EVENT } from '../constant/levels'
 
 export function OptionMenu(): ReactElement {
     const { javazone2 } = useFlags(['javazone2'])
     const { setBackgroundColor } = useBackground()
     const navigate = useNavigate()
-    const javazoneIdOne = EVENT[0].id
-    const javazoneIdTwo = EVENT[1].id
 
     useEffect(() => {
         setBackgroundColor('bg-blue-main')
@@ -25,10 +22,10 @@ export function OptionMenu(): ReactElement {
                         title="Konkurransemodus"
                         titleIcon={<MobilityIcon />}
                         onClick={() => {
-                            const level = javazone2.enabled
-                                ? javazoneIdTwo
-                                : javazoneIdOne
-                            navigate(`/game/${level}`)
+                            const difficulty = javazone2.enabled
+                                ? 'Javazone1'
+                                : 'Javazone42'
+                            navigate(`/game/${difficulty}`)
                         }}
                     >
                         Bli med på en reise og vinn en el-sparkesykkel. Den

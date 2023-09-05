@@ -37,7 +37,7 @@ function App(): JSX.Element {
                             <Route path="/event" element={<EventPage />} />
                             <Route path="/option" element={<OptionMenu />} />
                             <Route
-                                path="/game/:levelId"
+                                path="/game/:difficulty"
                                 element={<GamePage />}
                             />
                             <Route

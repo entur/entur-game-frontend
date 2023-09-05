@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { Heading1 } from '@entur/typography'
 
 import Game from '../../components/Game/GameScreen'
-import { Level, EASY, ALL_LEVELS } from '../../constant/levels'
+import { Level, EASY } from '../../constant/levels'
 import GameNavBar from '../../components/NavBar/GameNavBar'
 import { useBackground } from '../../backgroundContext'
+import { getGameMode } from '../../api/gameModeApi'
 
 function GamePage(): JSX.Element {
     const [totalHp, setTotalHp] = useState<number>(2)
-    const { levelId } = useParams()
+    const { difficulty } = useParams()
     const [isLevelError, setLevelError] = useState<boolean>(false)
     const [level, setLevel] = useState<Level>(EASY[0])
     const [startTimer, setStartTimer] = useState<number>(0)
@@ -18,19 +20,33 @@ function GamePage(): JSX.Element {
 
     useEffect(() => {
         setBackgroundColor('bg-blue-90')
-        const level = ALL_LEVELS.find((level) => level.id === levelId)
-        if (level === undefined) {
-            setLevelError(true)
-            return
-        }
-        setLevel(level)
         setStartTimer(Date.now())
         return () => setBackgroundColor('bg-main-blue')
     }, [setBackgroundColor])
 
+    useEffect(() => {
+        async function getData() {
+            const gameMode = await getGameMode(difficulty ?? 'Lett')
+            if (gameMode === null) {
+                setLevelError(true)
+                return
+            }
+            if (gameMode.difficulty.toLowerCase() === 'lett') {
+                setLevel({ ...gameMode, targets: EASY[0].targets }) // Fix targets to make it easier to win
+            } else {
+                setLevel(gameMode)
+            }
+        }
+        getData()
+    }, [])
+
     if (isLevelError) {
         //TODO: redirect to main screen
-        return <div>Level not found</div>
+        return (
+            <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
+                <Heading1>Level not found</Heading1>
+            </div>
+        )
     }
 
     return (
