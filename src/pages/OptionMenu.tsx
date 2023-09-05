@@ -23,8 +23,8 @@ export function OptionMenu(): ReactElement {
                         titleIcon={<MobilityIcon />}
                         onClick={() => {
                             const difficulty = javazone2.enabled
-                                ? 'Javazone1'
-                                : 'Javazone42'
+                                ? 'Javazone42'
+                                : 'Javazone1'
                             navigate(`/game/${difficulty}`)
                         }}
                     >
