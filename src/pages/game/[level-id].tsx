@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Heading1 } from '@entur/typography'
+import { Loader } from '@entur/loader'
 
 import Game from '../../components/Game/GameScreen'
 import { Level, EASY } from '../../constant/levels'
@@ -12,7 +13,7 @@ function GamePage(): JSX.Element {
     const [totalHp, setTotalHp] = useState<number>(2)
     const { difficulty } = useParams()
     const [isLevelError, setLevelError] = useState<boolean>(false)
-    const [level, setLevel] = useState<Level>(EASY[0])
+    const [level, setLevel] = useState<Level | null>(null)
     const [startTimer, setStartTimer] = useState<number>(0)
     const [numLegs, setNumLegs] = useState<number>(0)
     const [timeDescription, setTimeDescription] = useState<string>('')
@@ -59,18 +60,22 @@ function GamePage(): JSX.Element {
                 />
             </div>
             <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
-                <Game
-                    name={''}
-                    level={level}
-                    startTimer={startTimer}
-                    // eslint-disable-next-line @typescript-eslint/no-empty-function
-                    handleWinner={() => {}}
-                    totalHp={totalHp}
-                    setTotalHp={setTotalHp}
-                    numLegs={numLegs}
-                    setNumLegs={setNumLegs}
-                    setTimeDescription={setTimeDescription}
-                />
+                {level === null ? (
+                    <Loader>Loading...</Loader>
+                ) : (
+                    <Game
+                        name={''}
+                        level={level}
+                        startTimer={startTimer}
+                        // eslint-disable-next-line @typescript-eslint/no-empty-function
+                        handleWinner={() => {}}
+                        totalHp={totalHp}
+                        setTotalHp={setTotalHp}
+                        numLegs={numLegs}
+                        setNumLegs={setNumLegs}
+                        setTimeDescription={setTimeDescription}
+                    />
+                )}
             </div>
         </>
     )
