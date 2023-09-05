@@ -116,7 +116,13 @@ export function VictoryScreen({
                     <Controller
                         name="name"
                         control={control}
-                        rules={{ required: 'Dette feltet er påkrevet.' }}
+                        rules={{
+                            required: 'Dette feltet er påkrevet.',
+                            maxLength: {
+                                value: 50,
+                                message: 'Maks 50 tegn.'
+                            }
+                        }}
                         render={({ field, fieldState }) => (
                             <TextField
                                 label="Navn"
@@ -170,9 +176,8 @@ export function VictoryScreen({
                         )}
                     />
                     <div
-                        className={`border-2 ${
-                            errors.consent ? 'border-coral' : 'border-blue-60'
-                        } rounded border-solid w-full h-28 cursor-pointer`}
+                        className={`border-2 ${errors.consent ? 'border-coral' : 'border-blue-60'
+                            } rounded border-solid w-full h-28 cursor-pointer`}
                         {...register('consent', { required: true })}
                         onClick={() =>
                             setValue('consent', !getValues('consent'))
@@ -201,9 +206,8 @@ export function VictoryScreen({
 
                     <div className="flex flex-row mt-4 gap-4">
                         <PrimaryButton
-                            className={`select-none ${
-                                watch('consent') && 'bg-blue-main'
-                            }`}
+                            className={`select-none ${watch('consent') && 'bg-blue-main'
+                                }`}
                             loading={isSubmitting || isLoading}
                             disabled={!watch('consent') && !isValid}
                             type="submit"

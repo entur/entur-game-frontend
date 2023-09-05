@@ -4,12 +4,6 @@
     padding: 1rem;
 }
 
-.leaderboard {
-    margin-left: 10px;
-    max-width: 1200px;
-    overflow-x: scroll;
-}
-
 .media-card-images {
     margin-top: 8px;
     margin-right: 8px;
