@@ -17,7 +17,7 @@ import useSWR from 'swr'
 
 export const EventHighscorePage = (): JSX.Element => {
     const { javazone2 } = useFlags(['javazone2'])
-    const difficulty = javazone2.enabled ? 'Javazone1' : 'Javazone1'
+    const difficulty = javazone2.enabled ? 'Javazone1' : 'Javazone42'
     const { data: players } = useSWR(
         '/players',
         () => getByDifficulty(difficulty, 200),
@@ -28,7 +28,7 @@ export const EventHighscorePage = (): JSX.Element => {
     }
 
     return (
-        <div className="h-full w-full no-scrollbar">
+        <div className="h-full w-full scrollbar-hide">
             <EnInsertTur />
             <Table className="text-white" spacing="small">
                 <TableHead>
