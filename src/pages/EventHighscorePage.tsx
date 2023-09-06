@@ -17,10 +17,10 @@ import useSWR from 'swr'
 
 export const EventHighscorePage = (): JSX.Element => {
     const { javazone2 } = useFlags(['javazone2'])
-    const difficulty = javazone2.enabled ? 'Javazone42' : 'Javazone1'
+    const difficulty = javazone2.enabled ? 'Javazone1' : 'Javazone1'
     const { data: players } = useSWR(
         '/players',
-        () => getByDifficulty(difficulty),
+        () => getByDifficulty(difficulty, 30),
         { refreshInterval: 1000 * 10 },
     )
     if (players === undefined) {
