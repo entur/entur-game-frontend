@@ -28,9 +28,9 @@ export const EventHighscorePage = (): JSX.Element => {
     }
 
     return (
-        <div className="h-screen w-screen">
+        <div className="h-full w-full">
             <EnInsertTur />
-            <Table className="text-white">
+            <Table className="text-white" spacing="small">
                 <TableHead>
                     <TableRow>
                         <HeaderCell>
@@ -62,7 +62,7 @@ export const EventHighscorePage = (): JSX.Element => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {players.slice(0, 30).map((player, index) => (
+                    {players.map((player, index) => (
                         <TableRow key={generateKey(player.score + player.name)}>
                             <DataCell>
                                 <Heading1 className="text-white">
