@@ -28,7 +28,7 @@ export const EventHighscorePage = (): JSX.Element => {
     }
 
     return (
-        <div className="h-full w-full">
+        <div className="h-full w-full no-scrollbar">
             <EnInsertTur />
             <Table className="text-white" spacing="small">
                 <TableHead>
