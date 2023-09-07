@@ -85,7 +85,7 @@ export function VictoryScreen({
         if (response.status > 199 && response.status < 299) {
             setTimeout(() => {
                 navigate('/')
-            }, 1000)
+            }, 5000)
             return
         }
         setError(true)
