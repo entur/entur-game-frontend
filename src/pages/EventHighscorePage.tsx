@@ -15,6 +15,7 @@ import EnInsertTur from '../components/EnInsertTur'
 import { sprinkleEmojis } from 'emoji-sprinkle'
 
 import useSWR from 'swr'
+import { PrimaryButton, SuccessButton } from '@entur/button'
 
 export const EventHighscorePage = (): JSX.Element => {
     let { data: players } = useSWR(
@@ -43,10 +44,10 @@ export const EventHighscorePage = (): JSX.Element => {
 
     players = players.filter((player) => player.score > 0)
     let winner = ''
+    let winners = players.filter((player) => player.rank === 1)
     if (localStorage.getItem("winner") !== null) {
         winner = JSON.parse(localStorage.getItem("winner")!)
     } else {
-        const winners = players.filter((player) => player.rank === 1)
         const winnerIndex = Math.floor(Math.random() * winners.length)
         const winnerPlayer = winners[winnerIndex]
         winner = winnerPlayer.name
@@ -64,10 +65,6 @@ export const EventHighscorePage = (): JSX.Element => {
 
 
     if (now.getTime() > fourPM.getTime()) {
-        //run this every 5 seconds
-        setTimeout(() => {
-            window.location.reload();
-        }, 5000);
 
         sprinkleEmojis({
             emoji: '🎉',
@@ -75,18 +72,55 @@ export const EventHighscorePage = (): JSX.Element => {
             fade: 10,
             fontSize: 30,
         })
-        return (
-            <>
-                <EnInsertTur />
-                <br />
-                <br />
-                <br />
-                <br />
-                <Heading1 className="text-white text-center">Gratulerer <span className="text-coral text-center">{winner} </span> </Heading1>
-                <Heading1 className="text-white text-center">Du vant Sparkesykkelen!</Heading1>
+        if (localStorage.getItem("won") !== "true") {
+            console.log("76");
 
-            </>
-        )
+            return (
+                <>
+                    <div className="grid grid-cols-3 gap-4">
+
+                        {winners.map((player, index) => (
+                            <Paragraph className="text-white text-center text-9xl"> {player.name.substring(0, player.name.indexOf(' '))}<span className="text-coral text-center text-9xl"> {player.name.substring(player.name.indexOf(' ') + 1)} </span> </Paragraph>
+                        ))}
+                    </ div>
+                    <SuccessButton className='w-96 h-64 text-center place-self-center mt-20 rounded-3xl' onClick={() => {
+                        localStorage.setItem("won", "true")
+                        window.location.reload()
+                    }}><Paragraph className="text-black text-center text-7xl"> Trekk Vinner!  </Paragraph> </SuccessButton>
+                </>
+            )
+
+        } else {
+
+            return (
+                <>
+                    <EnInsertTur />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <Heading1 className="text-white text-center text-9xl">Gratulerer <span className="text-coral text-center text-9xl">{winner} </span> </Heading1>
+                    <Heading1 className="text-white text-center text-9xl">Du vant Sparkesykkelen!</Heading1>
+
+                </>
+            )
+        }
     } else {
         return (
             <div className="h-full w-full scrollbar-hide" style={{ cursor: "none" }}>
