@@ -6,6 +6,7 @@ export interface Destination {
 }
 
 export interface PlayerResponse {
+    rank?: number
     name: string
     email: string
     phoneNumber: number
