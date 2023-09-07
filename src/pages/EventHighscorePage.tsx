@@ -20,7 +20,7 @@ export const EventHighscorePage = (): JSX.Element => {
     const difficulty = javazone2.enabled ? 'Javazone1' : 'Javazone42'
     const { data: players } = useSWR(
         '/players',
-        () => getByDifficulty(difficulty, 200),
+        () => getByDifficulty('Javazone42', 200),
         { refreshInterval: 1000 * 10 },
     )
     if (players === undefined) {
