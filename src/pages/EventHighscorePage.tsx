@@ -12,13 +12,10 @@ import '@entur/table/dist/styles.css'
 import { getByDifficulty } from '../api/playerScoreApi'
 import { generateKey } from '../utils/generateUniqueKey'
 import EnInsertTur from '../components/EnInsertTur'
-import { useFlags } from 'flagsmith/react'
 import useSWR from 'swr'
 
 export const EventHighscorePage = (): JSX.Element => {
-    const { javazone2 } = useFlags(['javazone2'])
-    const difficulty = javazone2.enabled ? 'Javazone1' : 'Javazone42'
-    const { data: players } = useSWR(
+    let { data: players } = useSWR(
         '/players',
         () => getByDifficulty('Javazone42', 200),
         { refreshInterval: 1000 * 10 },
@@ -27,8 +24,10 @@ export const EventHighscorePage = (): JSX.Element => {
         return <p>Laster inn...</p>
     }
 
+    players = players.filter((player) => player.score > 0)
+
     return (
-        <div className="h-full w-full scrollbar-hide">
+        <div className="h-full w-full scrollbar-hide" style={{ cursor: "none" }}>
             <EnInsertTur />
             <Table className="text-white" spacing="small">
                 <TableHead>
