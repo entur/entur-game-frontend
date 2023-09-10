@@ -6,14 +6,14 @@ import { FlagsmithProvider } from 'flagsmith/react'
 
 import './App.css'
 import Multiplayer from './components/Multiplayer/Multiplayer'
-import PracticePage from './pages/main/PracticePage'
+import PracticePage from './pages/practice/PracticePage'
 import GamePage from './pages/game/[level-id]'
 import { MainMenu } from './pages/MainMenu'
 import { BackgroundProvider } from './backgroundContext'
 import BackgroundComponent from './components/BackgroundComponent'
-import { OptionMenu } from './pages/OptionMenu'
-import EventPage from './pages/main/EventPage'
-import EventHighscorePage from './pages/EventHighscorePage'
+import { OptionMenu } from './pages/option/OptionMenu'
+import EventHighscorePage from './pages/event-high-score/EventHighscorePage'
+import { EditEvent } from './pages/event/edit/EditEvent'
 
 const environmentID = import.meta.env.VITE_APP_FLAGSMITH_ENVIRONMENT
 
@@ -34,7 +34,6 @@ function App(): JSX.Element {
                                 path="/practice"
                                 element={<PracticePage />}
                             />
-                            <Route path="/event" element={<EventPage />} />
                             <Route path="/option" element={<OptionMenu />} />
                             <Route
                                 path="/game/:difficulty"
@@ -48,6 +47,7 @@ function App(): JSX.Element {
                                 path="/EventHighscore"
                                 element={<EventHighscorePage />}
                             />
+                            <Route path="/event/edit" element={<EditEvent />} />
                         </Routes>
                     </BackgroundComponent>
                 </BackgroundProvider>

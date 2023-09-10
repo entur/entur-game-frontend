@@ -2,17 +2,25 @@ import React, { ReactElement, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Contrast, NavigationCard } from '@entur/layout'
 import { MobilityIcon, NorwayIcon } from '@entur/icons'
-import { useBackground } from '../backgroundContext'
-import { useFlags } from 'flagsmith/react'
+import { Loader } from '@entur/loader'
+import useSWR from 'swr'
+import { useBackground } from '../../backgroundContext'
+import { getActiveGameModeEvent } from '../../api/gameModeApi'
 
 export function OptionMenu(): ReactElement {
-    const { javazone2 } = useFlags(['javazone2'])
+    const { data: activeGameMode } = useSWR('/game-mode/active-event', () =>
+        getActiveGameModeEvent(),
+    )
     const { setBackgroundColor } = useBackground()
     const navigate = useNavigate()
 
     useEffect(() => {
         setBackgroundColor('bg-blue-main')
     }, [])
+
+    if (activeGameMode === undefined) {
+        return <Loader>Laster inn...</Loader>
+    }
 
     return (
         <div className="bg-blue-main flex flex-col justify-center items-center min-h-screen min-w-screen">
@@ -22,10 +30,9 @@ export function OptionMenu(): ReactElement {
                         title="Konkurransemodus"
                         titleIcon={<MobilityIcon />}
                         onClick={() => {
-                            const difficulty = javazone2.enabled
-                                ? 'Javazone42'
-                                : 'Javazone1'
-                            navigate(`/game/${difficulty}`)
+                            navigate(
+                                `/game/${activeGameMode?.difficulty ?? 'Lett'}`,
+                            )
                         }}
                     >
                         Bli med på en reise og vinn en el-sparkesykkel. Den
