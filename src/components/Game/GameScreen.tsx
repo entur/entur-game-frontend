@@ -64,7 +64,7 @@ function GameScreen({
     const { getWalkableStopPlaces, getDepartures, getStopsOnLine } =
         useEnturService()
     const [startTime, setStartTime] = useState<Date>(
-        new Date(2023, 8, 11, 13, 1, 0, 0),
+        new Date(2023, 8, 13, 13, 1, 0, 0),
     )
     const [currentTime, setCurrentTime] = useState<Date>(startTime)
     // TravelLegStart states
@@ -78,7 +78,7 @@ function GameScreen({
         setStopPlace(level.start)
         setTravelLegs([level.start])
         setTargets(level.targets)
-        setStartTime(new Date(2023, 8, 11, 13, 1, 0, 0))
+        setStartTime(new Date(2023, 8, 13, 13, 1, 0, 0))
     }, [level])
 
     useEffect(() => {
