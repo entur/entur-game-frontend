@@ -31,6 +31,7 @@ export const DepartureAndOnLinePickerModal = ({
     const [pickedDeparture, setPickedDeparture] = useState<
         Departure | undefined
     >(undefined)
+    console.log(stopsOnLine)
     return (
         <>
             <Modal
@@ -127,7 +128,7 @@ export const DepartureAndOnLinePickerModal = ({
                                 >
                                     {stop.stopPlace.name}
                                 </ChoiceChip>
-                            )).slice(1)}
+                            ))}
                         </ChoiceChipGroup>
                     </>
                 ) : null}
