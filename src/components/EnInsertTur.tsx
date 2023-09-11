@@ -9,7 +9,7 @@ export function EnInsertTur(): JSX.Element {
             <Heading1 className="text-white sm:text-6xl text-3xl shrink">
                 EN
             </Heading1>
-            <div className="sm:w-80 w-38">
+            <div className="sm:w-60 w-38 flex justify-center">
                 <ShiftingHeader />
             </div>
             <Heading1 className="text-white sm:text-6xl text-3xl shrink">
