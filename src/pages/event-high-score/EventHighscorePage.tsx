@@ -14,11 +14,15 @@ import { generateKey } from '../../utils/generateUniqueKey'
 import EnInsertTur from '../../components/EnInsertTur'
 
 import useSWR from 'swr'
+import { getActiveGameModeEvent } from '../../api/gameModeApi'
 
 export const EventHighscorePage = (): JSX.Element => {
+    const { data: activeGameMode } = useSWR('/game-mode/active-event', () =>
+        getActiveGameModeEvent(),
+    )
     let { data: players } = useSWR(
-        '/players',
-        () => getByDifficulty('Javazone42', 200),
+        `/players/${activeGameMode !== undefined}`,
+        () => getByDifficulty(activeGameMode?.difficulty ?? 'Lett', 200),
         { refreshInterval: 1000 * 10 },
     )
     if (players === undefined) {
