@@ -9,14 +9,14 @@ import {
     HeaderCell,
 } from '@entur/table'
 import '@entur/table/dist/styles.css'
-import { getByDifficulty } from '../../api/playerScoreApi'
-import { generateKey } from '../../utils/generateUniqueKey'
-import EnInsertTur from '../../components/EnInsertTur'
+import { getByDifficulty } from '../api/playerScoreApi'
+import { generateKey } from '../utils/generateUniqueKey'
+import EnInsertTur from '../components/EnInsertTur'
 
 import useSWR from 'swr'
-import { getActiveGameModeEvent } from '../../api/gameModeApi'
+import { getActiveGameModeEvent } from '../api/gameModeApi'
 
-export const EventHighscorePage = (): JSX.Element => {
+export const EventHighScorePage = (): JSX.Element => {
     const { data: activeGameMode } = useSWR('/game-mode/active-event', () =>
         getActiveGameModeEvent(),
     )
@@ -123,85 +123,3 @@ export const EventHighscorePage = (): JSX.Element => {
         </div>
     )
 }
-export default EventHighscorePage
-
-// if (now.getTime() > fourPM.getTime()) {
-//     sprinkleEmojis({
-//         emoji: '🎉',
-//         count: 50,
-//         fade: 10,
-//         fontSize: 30,
-//     })
-//     if (localStorage.getItem('won') !== 'true') {
-//         console.log('76')
-
-//         return (
-//             <>
-//                 <div className="grid grid-cols-3 gap-4">
-//                     {winners.map((player, index) => (
-//                         <Paragraph className="text-white text-center text-9xl">
-//                             {' '}
-//                             {player.name.substring(
-//                                 0,
-//                                 player.name.indexOf(' '),
-//                             )}
-//                             <span className="text-coral text-center text-9xl">
-//                                 {' '}
-//                                 {player.name.substring(
-//                                     player.name.indexOf(' ') + 1,
-//                                 )}{' '}
-//                             </span>{' '}
-//                         </Paragraph>
-//                     ))}
-//                 </div>
-//                 <SuccessButton
-//                     className="w-96 h-64 text-center place-self-center mt-20 rounded-3xl"
-//                     onClick={() => {
-//                         localStorage.setItem('won', 'true')
-//                         window.location.reload()
-//                     }}
-//                 >
-//                     <Paragraph className="text-black text-center text-7xl">
-//                         {' '}
-//                         Trekk Vinner!{' '}
-//                     </Paragraph>{' '}
-//                 </SuccessButton>
-//             </>
-//         )
-//     } else {
-//         return (
-//             <>
-//                 <EnInsertTur />
-//                 <br />
-//                 <br />
-//                 <br />
-//                 <br />
-//                 <br />
-//                 <br />
-//                 <br />
-//                 <br />
-//                 <br />
-//                 <br />
-//                 <br />
-//                 <br />
-//                 <br />
-//                 <br />
-//                 <br />
-//                 <br />
-//                 <br />
-//                 <br />
-//                 <br />
-//                 <br />
-//                 <Heading1 className="text-white text-center text-9xl">
-//                     Gratulerer{' '}
-//                     <span className="text-coral text-center text-9xl">
-//                         {winner}{' '}
-//                     </span>{' '}
-//                 </Heading1>
-//                 <Heading1 className="text-white text-center text-9xl">
-//                     Du vant Sparkesykkelen!
-//                 </Heading1>
-//             </>
-//         )
-//     }
-// } else {

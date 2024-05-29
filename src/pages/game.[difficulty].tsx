@@ -3,13 +3,13 @@ import { useParams } from 'react-router-dom'
 import { Heading1 } from '@entur/typography'
 import { Loader } from '@entur/loader'
 
-import Game from '../../components/Game/GameScreen'
-import { Level, EASY } from '../../constant/levels'
-import GameNavBar from '../../components/NavBar/GameNavBar'
-import { useBackground } from '../../backgroundContext'
-import { getGameMode } from '../../api/gameModeApi'
+import Game from '../components/Game/GameScreen'
+import { Level, EASY } from '../constant/levels'
+import GameNavBar from '../components/NavBar/GameNavBar'
+import { useBackground } from '../contexts/backgroundContext'
+import { getGameMode } from '../api/gameModeApi'
 
-function GamePage(): JSX.Element {
+export function GamePage(): JSX.Element {
     const [totalHp, setTotalHp] = useState<number>(2)
     const { difficulty } = useParams()
     const [isLevelError, setLevelError] = useState<boolean>(false)
@@ -49,6 +49,9 @@ function GamePage(): JSX.Element {
             </div>
         )
     }
+    if(level === null) {
+        return <Loader>Loading...</Loader>
+    }
 
     return (
         <>
@@ -60,9 +63,6 @@ function GamePage(): JSX.Element {
                 />
             </div>
             <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
-                {level === null ? (
-                    <Loader>Loading...</Loader>
-                ) : (
                     <Game
                         name={''}
                         level={level}
@@ -75,10 +75,7 @@ function GamePage(): JSX.Element {
                         setNumLegs={setNumLegs}
                         setTimeDescription={setTimeDescription}
                     />
-                )}
             </div>
         </>
     )
 }
-
-export default GamePage

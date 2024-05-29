@@ -1,8 +1,8 @@
 import React, { ReactElement, useEffect } from 'react'
 import SplashScreen from '../components/SplashScreen/SplashScreen'
-import { useBackground } from '../backgroundContext'
+import { useBackground } from '../contexts/backgroundContext'
 
-export function MainMenu(): ReactElement {
+export function MainPage(): ReactElement {
     const { setBackgroundColor } = useBackground()
 
     useEffect(() => {

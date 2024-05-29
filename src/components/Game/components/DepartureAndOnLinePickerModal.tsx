@@ -31,7 +31,6 @@ export const DepartureAndOnLinePickerModal = ({
     const [pickedDeparture, setPickedDeparture] = useState<
         Departure | undefined
     >(undefined)
-    console.log(stopsOnLine)
     return (
         <>
             <Modal

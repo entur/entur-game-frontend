@@ -63,9 +63,7 @@ function GameScreen({
     const [usedMode, setUsedMode] = useState<QueryMode[]>([])
     const { getWalkableStopPlaces, getDepartures, getStopsOnLine } =
         useEnturService()
-    const [startTime, setStartTime] = useState<Date>(
-        new Date(),
-    )
+    const [startTime, setStartTime] = useState<Date>(new Date())
     const [currentTime, setCurrentTime] = useState<Date>(startTime)
     // TravelLegStart states
     const [travelLegsMode, setTravelLegsMode] = useState<QueryMode[]>([])
@@ -160,7 +158,7 @@ function GameScreen({
                             if (
                                 !stop ||
                                 d.expectedDepartureTime <=
-                                departure.expectedDepartureTime
+                                    departure.expectedDepartureTime
                             )
                                 return undefined
                             const nextDep = departures[index + 1]
@@ -298,3 +296,4 @@ function GameScreen({
 }
 
 export default GameScreen
+

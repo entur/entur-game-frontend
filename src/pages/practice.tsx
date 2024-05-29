@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
 import { Heading2 } from '@entur/typography'
 
-import SelectLevel from '../../components/SelectLevel'
-import { useBackground } from '../../backgroundContext'
+import SelectLevel from '../components/SelectLevel'
+import { useBackground } from '../contexts/backgroundContext'
 import { Contrast } from '@entur/layout'
 
 export function PracticePage(): JSX.Element {
@@ -24,4 +24,3 @@ export function PracticePage(): JSX.Element {
     )
 }
 
-export default PracticePage
