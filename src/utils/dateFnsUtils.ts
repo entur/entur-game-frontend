@@ -55,13 +55,34 @@ export function formatTime(value: Date | string): string {
 }
 
 export function formatDate(date: Date): string {
-    const weekdays = ['Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag'];
-    const months = ['Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Desember'];
-    const dayOfWeek = weekdays[date.getDay()];
-    const dayOfMonth = date.getDate();
-    const month = months[date.getMonth()];
-    return `${dayOfWeek} ${dayOfMonth}. ${month}`;
-  }
+    const weekdays = [
+        'Søndag',
+        'Mandag',
+        'Tirsdag',
+        'Onsdag',
+        'Torsdag',
+        'Fredag',
+        'Lørdag',
+    ]
+    const months = [
+        'Januar',
+        'Februar',
+        'Mars',
+        'April',
+        'Mai',
+        'Juni',
+        'Juli',
+        'August',
+        'September',
+        'Oktober',
+        'November',
+        'Desember',
+    ]
+    const dayOfWeek = weekdays[date.getDay()]
+    const dayOfMonth = date.getDate()
+    const month = months[date.getMonth()]
+    return `${dayOfWeek} ${dayOfMonth}. ${month}`
+}
 
 export function formatDateAndTime(value: Date | string): string {
     const date = typeof value === 'string' ? parseISO(value) : value

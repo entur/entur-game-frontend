@@ -8,16 +8,17 @@ import {
     DataCell,
     HeaderCell,
 } from '@entur/table'
+import { useParams } from 'react-router-dom'
+import invariant from 'tiny-invariant'
 import '@entur/table/dist/styles.css'
-import { getByDifficulty, PlayerResponse } from '../../api/playerScoreApi'
-import { generateKey } from '../../utils/generateUniqueKey'
 
-type Props = {
-    difficulty: string
-}
+import { getByDifficulty, PlayerResponse } from '../api/playerScoreApi'
+import { generateKey } from '../utils/generateUniqueKey'
 
-export const LeaderBoard = ({ difficulty }: Props): JSX.Element => {
+export const LeaderBoard = (): JSX.Element => {
+    const { difficulty } = useParams<{ difficulty: string }>()
     const [players, setPlayers] = useState<PlayerResponse[]>([])
+    invariant(difficulty)
 
     useEffect(() => {
         const fetchData = async () => {

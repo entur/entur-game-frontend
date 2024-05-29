@@ -4,10 +4,10 @@ import { Contrast, NavigationCard } from '@entur/layout'
 import { MobilityIcon, NorwayIcon } from '@entur/icons'
 import { Loader } from '@entur/loader'
 import useSWR from 'swr'
-import { useBackground } from '../../backgroundContext'
-import { getActiveGameModeEvent } from '../../api/gameModeApi'
+import { useBackground } from '../contexts/backgroundContext'
+import { getActiveGameModeEvent } from '../api/gameModeApi'
 
-export function OptionMenu(): ReactElement {
+export function OptionPage(): ReactElement {
     const { data: activeGameMode } = useSWR('/game-mode/active-event', () =>
         getActiveGameModeEvent(),
     )

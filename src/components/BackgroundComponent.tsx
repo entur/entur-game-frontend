@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { useBackground } from '../backgroundContext'
+import { useBackground } from '../contexts/backgroundContext'
 import { useNavigate } from 'react-router-dom'
 import EnturPartnerIconDark from '../assets/icons/EnturPartnerDark.svg'
 import EnturPartnerIconLight from '../assets/icons/EnturPartnerLight.svg'

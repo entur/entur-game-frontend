@@ -3,18 +3,18 @@ import { Heading3 } from '@entur/typography'
 
 import { Contrast } from '@entur/layout'
 
-import { useBackground } from '../../../backgroundContext'
+import { useBackground } from '../contexts/backgroundContext'
 import { Dropdown, NormalizedDropdownItemType } from '@entur/dropdown'
 import useSWR, { mutate } from 'swr'
 import {
     getActiveGameModeEvent,
     getAllGameMode,
     updateActiveGameModeEvent,
-} from '../../../api/gameModeApi'
+} from '../api/gameModeApi'
 import { Loader } from '@entur/loader'
 import { PrimaryButton } from '@entur/button'
 
-export function EditEvent(): JSX.Element {
+export function EventEditPage(): JSX.Element {
     const { data: gameModes } = useSWR('/game-mode', () => getAllGameMode())
     const { data: activeGameMode } = useSWR('/game-mode/active-event', () =>
         getActiveGameModeEvent(),
