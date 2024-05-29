@@ -15,13 +15,13 @@
         "resolveJsonModule": true,
         "isolatedModules": true,
         "noEmit": true,
-        "jsx": "react-jsx"
+        "jsx": "react-jsx",
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["src/*"],
+            "@components/*": ["src/components/*"],
+            "@assets/*": ["src/assets/*"]
     },
-    "baseUrl": ".",
-    "paths": {
-        "@/*": ["src/*"],
-        "@components/*": ["src/components/*"],
-        "@assets/*": ["src/assets/*"]
     },
     "include": ["src"]
 }

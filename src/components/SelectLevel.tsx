@@ -251,16 +251,6 @@ function SelectLevel({ isEvent }: { isEvent: boolean }): JSX.Element {
                             </Button>
                         )}
                     </div>
-                    {!isEvent && (
-                        <div>
-                            <Heading5>
-                                Ønsker du å spille med flere?{' '}
-                                <Link to="/multiplayer" className="underline">
-                                    Prøv flerspillermodus her (BETA)
-                                </Link>
-                            </Heading5>
-                        </div>
-                    )}
                     <SecondaryButton
                         className="bg-lavender select-none mt-20"
                         onClick={() => navigate('/option')}

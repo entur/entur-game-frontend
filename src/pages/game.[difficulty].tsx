@@ -49,6 +49,9 @@ export function GamePage(): JSX.Element {
             </div>
         )
     }
+    if(level === null) {
+        return <Loader>Loading...</Loader>
+    }
 
     return (
         <>
@@ -60,9 +63,6 @@ export function GamePage(): JSX.Element {
                 />
             </div>
             <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
-                {level === null ? (
-                    <Loader>Loading...</Loader>
-                ) : (
                     <Game
                         name={''}
                         level={level}
@@ -75,7 +75,6 @@ export function GamePage(): JSX.Element {
                         setNumLegs={setNumLegs}
                         setTimeDescription={setTimeDescription}
                     />
-                )}
             </div>
         </>
     )

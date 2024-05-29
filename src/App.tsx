@@ -1,7 +1,5 @@
 import React from 'react'
 import { ToastProvider } from '@entur/alert'
-import flagsmith from 'flagsmith'
-import { FlagsmithProvider } from 'flagsmith/react'
 
 import './App.css'
 import { BackgroundProvider } from './contexts/backgroundContext'
@@ -12,12 +10,6 @@ const environmentID = import.meta.env.VITE_APP_FLAGSMITH_ENVIRONMENT
 
 function App(): JSX.Element {
     return (
-        <FlagsmithProvider
-            options={{
-                environmentID: environmentID,
-            }}
-            flagsmith={flagsmith}
-        >
             <ToastProvider>
                 <BackgroundProvider>
                     <BackgroundComponent>
@@ -25,7 +17,6 @@ function App(): JSX.Element {
                     </BackgroundComponent>
                 </BackgroundProvider>
             </ToastProvider>
-        </FlagsmithProvider>
     )
 }
 
