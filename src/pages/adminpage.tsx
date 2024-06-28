@@ -1,18 +1,26 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TextField } from '@entur/form';
 import { SuccessButton } from '@entur/button';
 import { Heading1 } from '@entur/typography';
 import { ForwardIcon } from '@entur/icons';
 import { Contrast } from '@entur/layout';
+import { useBackground } from '../contexts/backgroundContext'
 
-export function AdminPage(): JSX.Element {
+export function AdminPage(): ReactElement {
+    const { setBackgroundColor } = useBackground()
+
+    useEffect(() => {
+        setBackgroundColor('$colors-brand-white')
+        return () => setBackgroundColor('$colors-brand-white')
+    }, [setBackgroundColor])
+
     // må legge inn funksjonelitet for å hente fra API
     const navigate = useNavigate();
 
     return (
         <div className='max-w-md mx-auto p-4'>
-            <Contrast>
+
                 <Heading1>
                     Admin Panel
                 </Heading1>
@@ -21,8 +29,7 @@ export function AdminPage(): JSX.Element {
                     <TextField size="medium" label="Stopp" variant="information"></TextField>
                     <SuccessButton onClick={() => navigate('/')}> <ForwardIcon /></SuccessButton> 
                 </div>
-               
-            </Contrast> 
+             
         </div>
     );
 }
