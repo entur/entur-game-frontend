@@ -12,9 +12,7 @@ function App(): JSX.Element {
     return (
             <ToastProvider>
                 <BackgroundProvider>
-                    <BackgroundComponent>
                         <Router />
-                    </BackgroundComponent>
                 </BackgroundProvider>
             </ToastProvider>
     )

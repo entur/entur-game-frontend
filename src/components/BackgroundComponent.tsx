@@ -45,7 +45,7 @@ const BackgroundComponent = ({ children }: Props): ReactElement => {
 
     return (
         <div
-            className={`flex flex-col ${backgroundColor} w-screen min-h-screen`}
+            className={`flex ${backgroundColor} w-screen min-h-screen`}
         >
             <IconComponent />
             {children}
