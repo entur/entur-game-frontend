@@ -1,14 +1,12 @@
 import { ReactElement, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TextField } from '@entur/form';
-import { SuccessButton } from '@entur/button';
-import { Heading2, LeadParagraph,  } from '@entur/typography';
+import { Heading1, LeadParagraph,  } from '@entur/typography';
 import { AdjustmentsIcon, BulletListIcon } from '@entur/icons';
-import { Contrast, NavigationCard } from '@entur/layout';
+import { NavigationCard } from '@entur/layout';
 import { useBackground } from '../contexts/backgroundContext'
-import { AdminNavBar } from '@/components/NavBar/AdminNavBar';
+import AdminLayout from '@/components/Layout/AdminLayout';
 
-export function AdminPage(): ReactElement {
+export function AdminPage(): JSX.Element  {
     const { setBackgroundColor } = useBackground()
 
     useEffect(() => {
@@ -22,23 +20,20 @@ export function AdminPage(): ReactElement {
     // tailwing og styling på endres på
     return (
         <div>
-            <AdminNavBar></AdminNavBar>
-            <div className='flex items-center justify-center'>
-                <Heading2>
-                    Spillets admin-panel
-                </Heading2>
-            </div>
-            <div className='flex items-center justify-center'>
+            <div className='flex flex-col items-center justify-center'>
+                <Heading1> Spillets admin-panel</Heading1>
                 <LeadParagraph>Konfigurer nye ruter og se nåværende leaderboard</LeadParagraph>
             </div>
-            <div className='flex flex-row items center'> 
+            <div className='flex items-center gap-16 px-52 py-37 w-16 md:w-32 lg:w-48'> 
                 <NavigationCard 
+                    className='flex-1'
                     title="Opprett rute" 
                     titleIcon={<AdjustmentsIcon/>} 
                     href="https://om.entur.no/reisende/reiseplanleggeren/">
                         Her oppretter du en ny rute.  Du velger hvor og når ruten begynner, og hvor den skal ende. 
                 </NavigationCard>
                 <NavigationCard 
+                    className='flex-1'
                     title="Leaderboard" 
                     titleIcon={<BulletListIcon/>}  
                     href="https://om.entur.no/reisende/reiseplanleggeren/">
