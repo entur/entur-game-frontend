@@ -38,7 +38,6 @@ export async function updateActiveGameModeEvent(
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                Auth: import.meta.env.VITE_APP_SECRET,
             },
             body: JSON.stringify({}),
         },
