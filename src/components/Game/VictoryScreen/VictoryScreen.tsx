@@ -10,13 +10,13 @@ import {
 import { Level } from '../../../constant/levels'
 import { StopPlace } from '@entur/sdk'
 import { useNavigate } from 'react-router-dom'
-import { savePlayerScore } from '../../../api/playerScoreApi'
+import { savePlayerScore } from '../../../data/api/playerScoreApi'
 import {
     formatIntervalToSeconds,
     formatTimeForEndOfGame,
 } from '../../../utils/dateFnsUtils'
 import { Controller, useForm } from 'react-hook-form'
-import { getOptimalRouteText } from '../../../api/gameModeApi'
+import { getOptimalRouteText } from '../../../data/api/gameModeApi'
 
 type Props = {
     name: string

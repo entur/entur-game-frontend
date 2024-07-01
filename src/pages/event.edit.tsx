@@ -10,7 +10,7 @@ import {
     getActiveGameModeEvent,
     getAllGameMode,
     updateActiveGameModeEvent,
-} from '../api/gameModeApi'
+} from '../data/api/gameModeApi'
 import { Loader } from '@entur/loader'
 import { PrimaryButton } from '@entur/button'
 

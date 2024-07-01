@@ -9,12 +9,12 @@ import {
     HeaderCell,
 } from '@entur/table'
 import '@entur/table/dist/styles.css'
-import { getByDifficulty } from '../api/playerScoreApi'
+import { getByDifficulty } from '../data/api/playerScoreApi'
 import { generateKey } from '../utils/generateUniqueKey'
 import EnInsertTur from '../components/EnInsertTur'
 
 import useSWR from 'swr'
-import { getActiveGameModeEvent } from '../api/gameModeApi'
+import { getActiveGameModeEvent } from '../data/api/gameModeApi'
 
 export const EventHighScorePage = (): JSX.Element => {
     const { data: activeGameMode } = useSWR('/game-mode/active-event', () =>

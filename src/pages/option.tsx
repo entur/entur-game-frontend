@@ -5,7 +5,7 @@ import { MobilityIcon, NorwayIcon } from '@entur/icons'
 import { Loader } from '@entur/loader'
 import useSWR from 'swr'
 import { useBackground } from '../contexts/backgroundContext'
-import { getActiveGameModeEvent } from '../api/gameModeApi'
+import { getActiveGameModeEvent } from '../data/api/gameModeApi'
 
 export function OptionPage(): ReactElement {
     const { data: activeGameMode } = useSWR('/game-mode/active-event', () =>

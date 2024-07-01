@@ -1,4 +1,4 @@
-import { Level } from '../constant/levels'
+import { Level } from '../../constant/levels'
 
 const baseUrl = import.meta.env.VITE_APP_BACKEND_URL ?? 'http://localhost:8080'
 
