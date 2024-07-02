@@ -1,0 +1,35 @@
+[
+  {
+    "playerId": 1,
+    "playerName": "Magnus Farstad",
+    "email": "magnus.farstad@bekk.no",
+    "phoneNumber": 12345678,
+    "totalStepNumber": 2,
+    "score": 100,
+    "totalPlayTime": "00:00:19",
+    "totalTravelTime": "07:35:38",
+    "eventId": 1
+  },
+  {
+    "playerId": 2,
+    "playerName": "Jon",
+    "email": "magnus.farstad@bekk.no",
+    "phoneNumber": 12345678,
+    "totalStepNumber": 2,
+    "score": 50,
+    "totalPlayTime": "00:00:19",
+    "totalTravelTime": "07:35:38",
+    "eventId": 1
+  },
+  {
+    "playerId": 3,
+    "playerName": "Per Kristian",
+    "email": "magnus.farstad@bekk.no",
+    "phoneNumber": 12345678,
+    "totalStepNumber": 2,
+    "score": 200,
+    "totalPlayTime": "00:00:19",
+    "totalTravelTime": "07:35:38",
+    "eventId": 1
+  }
+]

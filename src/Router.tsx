@@ -5,7 +5,7 @@ import { MainPage } from './pages'
 import { PracticePage } from './pages/practice'
 import { OptionPage } from './pages/option'
 import { GamePage } from './pages/game.[difficulty]'
-import { EventHighScorePage } from './pages/event.high-score'
+import { LeaderBoard } from './pages/event.high-score'
 import { EventEditPage } from './pages/event.edit'
 
 export function Router() {
@@ -17,7 +17,7 @@ export function Router() {
             <Route path="/game/:difficulty" element={<GamePage />} />
             <Route
                 path="/leaderboard/:difficulty"
-                element={<EventHighScorePage />}
+                element={<LeaderBoard />}
             />
             <Route path="/event/edit" element={<EventEditPage />} />
             <Route path="*" element={<>Page not found</>} />

@@ -1,5 +1,7 @@
 import React from 'react'
 import { Heading1, Heading3 } from '@entur/typography'
+import MockEvent from "../mock-api/event.json"
+import MockPlayers from "../mock-api/player.json"
 import {
     Table,
     TableHead,
@@ -12,11 +14,14 @@ import '@entur/table/dist/styles.css'
 import { getByDifficulty } from '../api/playerScoreApi'
 import { generateKey } from '../utils/generateUniqueKey'
 import EnInsertTur from '../components/EnInsertTur'
+import { Event } from '@/types/types'
 
 import useSWR from 'swr'
 import { getActiveGameModeEvent } from '../api/gameModeApi'
+import {Player} from "@/types/types";
+import {sortNumber} from "@/lib/sorters";
 
-export const EventHighScorePage = (): JSX.Element => {
+export const LeaderBoard = (): JSX.Element => {
     const { data: activeGameMode } = useSWR('/game-mode/active-event', () =>
         getActiveGameModeEvent(),
     )
@@ -25,26 +30,16 @@ export const EventHighScorePage = (): JSX.Element => {
         () => getByDifficulty(activeGameMode?.difficulty ?? 'Lett', 200),
         { refreshInterval: 1000 * 10 },
     )
-    if (players === undefined) {
+
+    const event: Event = MockEvent
+    let mockPlayers: Player[] = MockPlayers
+
+    if (mockPlayers === undefined) {
         return <p>Laster inn...</p>
     }
 
-    players = players.map((player, index) => {
-        if (index === 0) {
-            player.rank = 1
-        } else {
-            if (players !== undefined) {
-                if (player.score === players[index - 1].score) {
-                    player.rank = players[index - 1].rank
-                } else {
-                    player.rank = index + 1
-                }
-            }
-        }
-        return player
-    })
-
-    players = players.filter((player) => player.score > 0)
+    mockPlayers = mockPlayers.filter((player) => player.score > 0)
+    mockPlayers.sort((a, b) => sortNumber(a.score, b.score))
 
     return (
         <div
@@ -84,16 +79,16 @@ export const EventHighScorePage = (): JSX.Element => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {players.map((player) => (
-                        <TableRow key={generateKey(player.score + player.name)}>
+                    {mockPlayers.map((player, index) => (
+                        <TableRow key={generateKey(player.score + player.playerName)}>
                             <DataCell>
                                 <Heading1 className="text-white">
-                                    {player.rank}
+                                    {index + 1}
                                 </Heading1>
                             </DataCell>
                             <DataCell>
                                 <Heading3 className="text-white">
-                                    {player.name}
+                                    {player.playerName}
                                 </Heading3>
                             </DataCell>
                             <DataCell>
@@ -103,7 +98,7 @@ export const EventHighScorePage = (): JSX.Element => {
                             </DataCell>
                             <DataCell>
                                 <Heading3 className="text-white">
-                                    {player.totalOptions}
+                                    {player.totalStepNumber}
                                 </Heading3>
                             </DataCell>
                             <DataCell>
@@ -113,7 +108,7 @@ export const EventHighScorePage = (): JSX.Element => {
                             </DataCell>
                             <DataCell>
                                 <Heading3 className="text-white">
-                                    {player.totalPlaytime}
+                                    {player.totalPlayTime}
                                 </Heading3>
                             </DataCell>
                         </TableRow>
