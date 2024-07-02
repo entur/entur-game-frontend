@@ -1,12 +1,12 @@
-import { ReactElement, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Heading1, LeadParagraph,  } from '@entur/typography';
-import { AdjustmentsIcon, BulletListIcon } from '@entur/icons';
-import { NavigationCard } from '@entur/layout';
+import { ReactElement, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Heading1, LeadParagraph } from '@entur/typography'
+import { AdjustmentsIcon, BulletListIcon } from '@entur/icons'
+import { NavigationCard } from '@entur/layout'
 import { useBackground } from '../contexts/backgroundContext'
-import AdminLayout from '@/components/Layout/AdminLayout';
+import { AdminNavBar } from '@/components/NavBar/AdminNavBar'
 
-export function AdminPage(): JSX.Element  {
+export function AdminPage(): JSX.Element {
     const { setBackgroundColor } = useBackground()
 
     useEffect(() => {
@@ -14,32 +14,37 @@ export function AdminPage(): JSX.Element  {
         return () => setBackgroundColor('$colors-brand-white')
     }, [setBackgroundColor])
 
-    // må legge inn funksjonelitet for å hente fra API
-    const navigate = useNavigate();
-
     // tailwing og styling på endres på
     return (
         <div>
-            <div className='flex flex-col items-center justify-center'>
+            <AdminNavBar></AdminNavBar>
+            <div className="flex flex-col items-center justify-center">
                 <Heading1> Spillets admin-panel</Heading1>
-                <LeadParagraph>Konfigurer nye ruter og se nåværende leaderboard</LeadParagraph>
+                <LeadParagraph>
+                    Konfigurer nye ruter og se nåværende leaderboard
+                </LeadParagraph>
             </div>
-            <div className='flex items-center gap-16 px-52 py-37 w-16 md:w-32 lg:w-48'> 
-                <NavigationCard 
-                    className='flex-1'
-                    title="Opprett rute" 
-                    titleIcon={<AdjustmentsIcon/>} 
-                    href="https://om.entur.no/reisende/reiseplanleggeren/">
-                        Her oppretter du en ny rute.  Du velger hvor og når ruten begynner, og hvor den skal ende. 
+            <div className="grid grid-cols-2 items-center gap-16 p-12">
+                <NavigationCard
+                    className="h-full"
+                    title="Opprett rute"
+                    titleIcon={<AdjustmentsIcon />}
+                    href="https://om.entur.no/reisende/reiseplanleggeren/"
+                >
+                    Her oppretter du en ny rute. Du velger hvor og når ruten
+                    begynner, og hvor den skal ende.
                 </NavigationCard>
-                <NavigationCard 
-                    className='flex-1'
-                    title="Leaderboard" 
-                    titleIcon={<BulletListIcon/>}  
-                    href="https://om.entur.no/reisende/reiseplanleggeren/">
-                        Her har du oversikt over alle lagrede poengsummer og mulighet til å trekke en vinner blandt de beste poengsummene. 
+                <NavigationCard
+                    className="h-full"
+                    title="Leaderboard"
+                    titleIcon={<BulletListIcon />}
+                    href="https://om.entur.no/reisende/reiseplanleggeren/"
+                >
+                    Her har du oversikt over alle lagrede poengsummer og
+                    mulighet til å trekke en vinner blandt de beste
+                    poengsummene.
                 </NavigationCard>
             </div>
         </div>
-    );
+    )
 }

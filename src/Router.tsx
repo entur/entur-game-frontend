@@ -8,15 +8,11 @@ import { GamePage } from './pages/game.[difficulty]'
 import { EventHighScorePage } from './pages/event.high-score'
 import { EventEditPage } from './pages/event.edit'
 import { AdminPage } from './pages/adminpage'
-import AdminLayout from './components/Layout/AdminLayout'
 
 export function Router() {
     return (
         <Routes>
-            <Route path="/admin" element={
-                <AdminLayout>
-                    <AdminPage></AdminPage>
-                </AdminLayout>} />
+            <Route path="/admin" element={<AdminPage />} />
             <Route path="/" element={<MainPage />} />
             <Route path="/practice" element={<PracticePage />} />
             <Route path="/option" element={<OptionPage />} />
