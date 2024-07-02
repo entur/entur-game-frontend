@@ -1,14 +1,8 @@
-import { ReactElement, useEffect, useState } from 'react'
+import { ReactElement, useCallback, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { TextField } from '@entur/form'
-import { Button, SuccessButton } from '@entur/button'
+import { Button } from '@entur/button'
 import { Heading1, Heading3, LeadParagraph } from '@entur/typography'
-import {
-    ForwardIcon,
-    MapPinIcon,
-    DestinationIcon,
-    CityBikeIcon,
-} from '@entur/icons'
+import { ForwardIcon, MapPinIcon, CityBikeIcon } from '@entur/icons'
 import { useBackground } from '../contexts/backgroundContext'
 import { BlockquoteFooter } from '@entur/typography'
 import { TimePicker } from '@entur/datepicker'
@@ -23,6 +17,27 @@ export function AdminCreateJourney(): ReactElement {
         setBackgroundColor('$colors-brand-white')
         return () => setBackgroundColor('$colors-brand-white')
     }, [setBackgroundColor])
+
+    const fetchItems = useCallback(async (inputValue, abortControllerRef) => {
+        try {
+            const response = await fetch(
+                `https://dummyjson.com/products/search?q=${inputValue}&limit=15&select=title`,
+                // Bruk signalet fra abortController for å avbryte utdaterte kall
+                { signal: abortControllerRef.current.signal },
+            )
+            const data = await response.json()
+            if (data.message !== undefined) return [data.message]
+            const processedData = data.products.map((item) => {
+                return { label: item.title, value: item.id }
+            })
+            return processedData
+        } catch (error) {
+            // AbortError må sendes videre til komponenten for å håndtere cleanup riktig
+            if (error && error.name === 'AbortError') throw error
+            console.error('noe galt')
+            return []
+        }
+    }, [])
 
     const [selected, setSelected] = useState(null)
     const navigate = useNavigate()
@@ -39,32 +54,31 @@ export function AdminCreateJourney(): ReactElement {
                 </LeadParagraph>
                 <div className="space-y-10 mt-10">
                     <Heading3>Velg start og mål</Heading3>
-                    {/* <SearchableDropdown
-                            label="Start"
-                            items={cities}
-                            selectedItem={selected}
-                            //onChange={setSelected} må legge inn API til stoppested
-                            clearable
-                            /> */}
-                    <TextField
-                        size="medium"
+                    <SearchableDropdown
+                        label="Start"
+                        items={fetchItems}
+                        selectedItem={selected}
+                        prepend={<ForwardIcon></ForwardIcon>}
+                        onChange={setSelected}
+                    />
+                    <SearchableDropdown
                         label="Mål"
-                        variant="information"
-                    ></TextField>
-                    <SuccessButton onClick={() => navigate('/')}>
-                        {' '}
-                        <ForwardIcon />
-                    </SuccessButton>
+                        items={fetchItems}
+                        prepend={<MapPinIcon></MapPinIcon>}
+                        selectedItem={selected}
+                        onChange={setSelected}
+                    />
                 </div>
                 <div className="space-y-10 mt-10">
                     <Heading3>Velg starttidspunkt</Heading3>
                     <TimePicker
                         label="Tid"
                         selectedTime={time}
+                        locale="no-NB"
                         onChange={(time: ZonedDateTime | null) => setTime(time)}
                     />
                     <Button width="auto" variant="primary" size="medium">
-                        Opprett spill
+                        Opprett rute
                     </Button>
                 </div>
             </div>
