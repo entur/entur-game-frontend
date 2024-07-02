@@ -22,6 +22,7 @@ import '@entur/alert/dist/styles.css'
 import '@entur/modal/dist/styles.css'
 import '@entur/dropdown/dist/styles.css'
 import '@entur/datepicker/dist/styles.css'
+import '@entur/menu/dist/styles.css'
 
 import './index.css'
 import App from './App'

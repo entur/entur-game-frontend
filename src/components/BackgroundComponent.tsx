@@ -12,14 +12,12 @@ const BackgroundComponent = ({ children }: Props): ReactElement => {
     const Dark = () => {
         return (
             <>
-                <div className="pt-10 ml-5 mr-20">
-                    <img
-                        className="cursor-pointer"
-                        onClick={() => navigate('/')}
-                        src={EnturPartnerIconDark}
-                        alt="entur partner"
-                    />
-                </div>
+                <img
+                    className="cursor-pointer ml-5 mr-20 block h-full pt-12"
+                    onClick={() => navigate('/')}
+                    src={EnturPartnerIconDark}
+                    alt="entur partner"
+                />
             </>
         )
     }
@@ -27,14 +25,12 @@ const BackgroundComponent = ({ children }: Props): ReactElement => {
     const Light = () => {
         return (
             <>
-                <div className="pt-10 ml-5 mr-20">
-                    <img
-                        className="cursor-pointer"
-                        onClick={() => navigate('/')}
-                        src={EnturPartnerIconLight}
-                        alt="entur partner"
-                    />
-                </div>
+                <img
+                    className="cursor-pointer  ml-5 mr-20 block h-full pt-12"
+                    onClick={() => navigate('/')}
+                    src={EnturPartnerIconLight}
+                    alt="entur partner"
+                />
             </>
         )
     }
@@ -44,9 +40,7 @@ const BackgroundComponent = ({ children }: Props): ReactElement => {
     const IconComponent = backgroundColor === 'bg-blue-main' ? Light : Dark
 
     return (
-        <div
-            className={`flex flex-col ${backgroundColor} w-screen min-h-screen`}
-        >
+        <div className={`flex ${backgroundColor} w-screen min-h-screen`}>
             <IconComponent />
             {children}
         </div>
