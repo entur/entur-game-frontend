@@ -1,9 +1,9 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TextField } from '@entur/form';
-import { SuccessButton } from '@entur/button';
+import { Button, SuccessButton } from '@entur/button';
 import { Heading1, Heading3, LeadParagraph } from '@entur/typography';
-import { ForwardIcon, MapPinIcon, DestinationIcon } from '@entur/icons';
+import { ForwardIcon, MapPinIcon, DestinationIcon, CityBikeIcon } from '@entur/icons';
 import { useBackground } from '../contexts/backgroundContext'
 import { BlockquoteFooter } from '@entur/typography';
 import { TimePicker } from '@entur/datepicker';
@@ -18,6 +18,7 @@ export function AdminCreateJourney(): ReactElement {
         return () => setBackgroundColor('$colors-brand-white')
     }, [setBackgroundColor])
 
+    
     const [selected, setSelected] = useState(null)
     const navigate = useNavigate();
     const [time, setTime] = useState<ZonedDateTime | null>(now('Europe/Oslo'))
@@ -31,12 +32,13 @@ export function AdminCreateJourney(): ReactElement {
                 <LeadParagraph>Konfigurer ny rute ved å angi start, mål og starttidspunkt</LeadParagraph>
                 <div className="space-y-10 mt-10">
                     <Heading3>Velg start og mål</Heading3>
-                    <SearchableDropdown
+                    {/* <SearchableDropdown
                         label="Start"
                         items={cities}
                         selectedItem={selected}
-                        onChange={setSelected}
-                        />
+                        //onChange={setSelected} må legge inn API til stoppested
+                        clearable
+                        /> */}
                     <TextField size="medium" label="Mål" variant="information"></TextField>
                     <SuccessButton onClick={() => navigate('/')}> <ForwardIcon /></SuccessButton> 
                 </div>
@@ -46,6 +48,7 @@ export function AdminCreateJourney(): ReactElement {
                         label="Tid"
                         selectedTime={time}
                         onChange={(time: ZonedDateTime | null)=> setTime(time)}/>
+                    <Button width="auto" variant="primary" size="medium">Opprett spill</Button>
                 </div>
         </div>
     );
