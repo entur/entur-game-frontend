@@ -10,13 +10,13 @@ const environmentID = import.meta.env.VITE_APP_FLAGSMITH_ENVIRONMENT
 
 function App(): JSX.Element {
     return (
-            <ToastProvider>
-                <BackgroundProvider>
-                    <BackgroundComponent>
-                        <Router />
-                    </BackgroundComponent>
-                </BackgroundProvider>
-            </ToastProvider>
+        <ToastProvider>
+            <BackgroundProvider>
+                <BackgroundComponent>
+                    <Router />
+                </BackgroundComponent>
+            </BackgroundProvider>
+        </ToastProvider>
     )
 }
 
