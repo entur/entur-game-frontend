@@ -1,3 +1,5 @@
+import { Score } from '@/types/types'
+
 const baseUrl = import.meta.env.VITE_APP_BACKEND_URL ?? 'http://localhost:8080'
 
 export interface Destination {
@@ -21,16 +23,6 @@ export interface PlayerResponse {
 
 export type PlayerRequest = Omit<PlayerResponse, 'score'>
 
-export async function getByDifficulty(
-    difficulty: string,
-    size?: number,
-): Promise<PlayerResponse[]> {
-    const response = await fetch(
-        `${baseUrl}/player-score/${difficulty}?size=${size ?? 20}`,
-    )
-    return await response.json()
-}
-
 export async function savePlayerScore(
     playerInfo: PlayerRequest,
 ): Promise<Response> {
@@ -42,4 +34,9 @@ export async function savePlayerScore(
         body: JSON.stringify(playerInfo),
     })
     return response
+}
+
+export async function getPlayerScoresByActiveEvent(): Promise<Score[]> {
+    const response = await fetch(`${baseUrl}/score/active`)
+    return await response.json()
 }

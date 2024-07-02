@@ -1,7 +1,5 @@
 import React from 'react'
 import { Heading1, Heading3 } from '@entur/typography'
-import MockEvent from "../mock-api/event.json"
-import MockPlayers from "../mock-api/player.json"
 import {
     Table,
     TableHead,
@@ -11,35 +9,26 @@ import {
     HeaderCell,
 } from '@entur/table'
 import '@entur/table/dist/styles.css'
-import { getByDifficulty } from '../api/playerScoreApi'
+import { getPlayerScoresByActiveEvent } from '../api/playerScoreApi'
 import { generateKey } from '../utils/generateUniqueKey'
 import EnInsertTur from '../components/EnInsertTur'
-import { Event } from '@/types/types'
+import { Score } from '@/types/types'
 
 import useSWR from 'swr'
-import { getActiveGameModeEvent } from '../api/gameModeApi'
-import {Player} from "@/types/types";
-import {sortNumber} from "@/lib/sorters";
+
+import { sortNumber } from '@/lib/sorters'
 
 export const LeaderBoard = (): JSX.Element => {
-    const { data: activeGameMode } = useSWR('/game-mode/active-event', () =>
-        getActiveGameModeEvent(),
-    )
-    let { data: players } = useSWR(
-        `/players/${activeGameMode !== undefined}`,
-        () => getByDifficulty(activeGameMode?.difficulty ?? 'Lett', 200),
-        { refreshInterval: 1000 * 10 },
+    let { data: scores } = useSWR<Score[]>('/players', () =>
+        getPlayerScoresByActiveEvent(),
     )
 
-    const event: Event = MockEvent
-    let mockPlayers: Player[] = MockPlayers
-
-    if (mockPlayers === undefined) {
+    if (scores === undefined) {
         return <p>Laster inn...</p>
     }
 
-    mockPlayers = mockPlayers.filter((player) => player.score > 0)
-    mockPlayers.sort((a, b) => sortNumber(a.score, b.score))
+    scores = scores.filter((score) => score.scoreValue > 0)
+    scores.sort((a, b) => sortNumber(a.scoreValue, b.scoreValue))
 
     return (
         <div
@@ -79,8 +68,12 @@ export const LeaderBoard = (): JSX.Element => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {mockPlayers.map((player, index) => (
-                        <TableRow key={generateKey(player.score + player.playerName)}>
+                    {scores.map((score, index) => (
+                        <TableRow
+                            key={generateKey(
+                                score.scoreValue + score.player.playerName,
+                            )}
+                        >
                             <DataCell>
                                 <Heading1 className="text-white">
                                     {index + 1}
@@ -88,27 +81,27 @@ export const LeaderBoard = (): JSX.Element => {
                             </DataCell>
                             <DataCell>
                                 <Heading3 className="text-white">
-                                    {player.playerName}
+                                    {score.player.playerName}
                                 </Heading3>
                             </DataCell>
                             <DataCell>
                                 <Heading3 className="text-white">
-                                    {player.score}
+                                    {score.scoreValue}
                                 </Heading3>
                             </DataCell>
                             <DataCell>
                                 <Heading3 className="text-white">
-                                    {player.totalStepNumber}
+                                    {score.totalStepNumber}
                                 </Heading3>
                             </DataCell>
                             <DataCell>
                                 <Heading3 className="text-white">
-                                    {player.totalTravelTime}
+                                    {score.totalTravelTime}
                                 </Heading3>
                             </DataCell>
                             <DataCell>
                                 <Heading3 className="text-white">
-                                    {player.totalPlayTime}
+                                    {score.totalPlayTime}
                                 </Heading3>
                             </DataCell>
                         </TableRow>
