@@ -1,4 +1,7 @@
 module.exports = {
+    env: {
+        node: true,
+    },
     root: true,
     parser: '@typescript-eslint/parser',
     plugins: ['@typescript-eslint', 'react', 'prettier'],
@@ -19,5 +22,5 @@ module.exports = {
         react: {
             version: 'detect',
         },
-    }
+    },
 }
