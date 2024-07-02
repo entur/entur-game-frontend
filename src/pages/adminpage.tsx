@@ -18,13 +18,13 @@ export function AdminPage(): JSX.Element {
     return (
         <div>
             <AdminNavBar></AdminNavBar>
-            <div className="flex flex-col items-center justify-center">
+            <div className="flex flex-col items-center justify-center mr-20">
                 <Heading1> Spillets admin-panel</Heading1>
                 <LeadParagraph>
                     Konfigurer nye ruter og se nåværende leaderboard
                 </LeadParagraph>
             </div>
-            <div className="grid grid-cols-2 items-center gap-16 p-12">
+            <div className="grid grid-cols-2 items-center gap-16 p-12 mr-20">
                 <NavigationCard
                     className="h-full"
                     title="Opprett rute"
