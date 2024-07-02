@@ -1,6 +1,6 @@
 import { AdminNavBar } from '@/components/NavBar/AdminNavBar'
 import { ReactElement } from 'react'
 
-export function LeaderboardPage(): ReactElement {
+export function AdmindLeaderboardPage(): ReactElement {
     return <AdminNavBar></AdminNavBar>
 }
