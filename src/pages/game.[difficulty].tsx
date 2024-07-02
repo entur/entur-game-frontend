@@ -49,12 +49,12 @@ export function GamePage(): JSX.Element {
             </div>
         )
     }
-    if(level === null) {
+    if (level === null) {
         return <Loader>Loading...</Loader>
     }
 
     return (
-        <>
+        <main className="flex flex-col">
             <div className="sm:sticky top-20">
                 <GameNavBar
                     healthLeft={totalHp + 1}
@@ -63,19 +63,19 @@ export function GamePage(): JSX.Element {
                 />
             </div>
             <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
-                    <Game
-                        name={''}
-                        level={level}
-                        startTimer={startTimer}
-                        // eslint-disable-next-line @typescript-eslint/no-empty-function
-                        handleWinner={() => {}}
-                        totalHp={totalHp}
-                        setTotalHp={setTotalHp}
-                        numLegs={numLegs}
-                        setNumLegs={setNumLegs}
-                        setTimeDescription={setTimeDescription}
-                    />
+                <Game
+                    name={''}
+                    level={level}
+                    startTimer={startTimer}
+                    // eslint-disable-next-line @typescript-eslint/no-empty-function
+                    handleWinner={() => {}}
+                    totalHp={totalHp}
+                    setTotalHp={setTotalHp}
+                    numLegs={numLegs}
+                    setNumLegs={setNumLegs}
+                    setTimeDescription={setTimeDescription}
+                />
             </div>
-        </>
+        </main>
     )
 }
