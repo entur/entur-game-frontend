@@ -14,7 +14,7 @@ export function Router() {
     return (
         <Routes>
             <Route path="/admin" element={<AdminPage />} />
-            <Route path="/admin/create-journey" element={<AdminCreateJourney />} />
+            <Route path="/admin-create-journey" element={<AdminCreateJourney />} />
             <Route path="/" element={<MainPage />} />
             <Route path="/practice" element={<PracticePage />} />
             <Route path="/option" element={<OptionPage />} />
