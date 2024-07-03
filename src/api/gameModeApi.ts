@@ -13,7 +13,7 @@ export async function getOptimalRouteText(difficulty: string): Promise<string> {
     return response.text()
 }
 
-export async function getGameMode(difficulty: string): Promise<Level | null> {
+export async function getGameModeByDifficulty(difficulty: string): Promise<Level | null> {
     const response = await fetch(`${baseUrl}/game-mode/${difficulty}`)
     if (response.status !== 200) return null
     return response.json()

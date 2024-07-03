@@ -9,7 +9,7 @@ import GameNavBar from '../components/NavBar/GameNavBar'
 import { useBackground } from '../contexts/backgroundContext' //TODO-later: hvorfor er det funksjon for backgrunnen???
 
 import { Level, EASY } from '../constant/levels' //TODO: "Level" (også difficulty) -> eventname, dette må endres
-import { getGameMode } from '../api/gameModeApi' //TODO: må også endres, gameMode -> event
+import { getGameModeByDifficulty } from '../api/gameModeApi' //TODO: må også endres, gameMode -> event
 
 export function GamePage(): JSX.Element {
     //visuals and game logic
@@ -33,7 +33,7 @@ export function GamePage(): JSX.Element {
 
     useEffect(() => {
         async function getData() {
-            const gameMode = await getGameMode(eventname ?? 'Lett')
+            const gameMode = await getGameModeByDifficulty(eventname ?? 'Lett')
             if (gameMode === null) {
                 setLevelError(true)
                 return
