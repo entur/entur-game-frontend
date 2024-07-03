@@ -11,7 +11,7 @@ import { getGameMode } from '../api/gameModeApi'
 
 export function GamePage(): JSX.Element {
     const [totalHp, setTotalHp] = useState<number>(2)
-    const { difficulty } = useParams()
+    const { eventname } = useParams()
     const [isLevelError, setLevelError] = useState<boolean>(false)
     const [level, setLevel] = useState<Level | null>(null)
     const [startTimer, setStartTimer] = useState<number>(0)
@@ -27,7 +27,7 @@ export function GamePage(): JSX.Element {
 
     useEffect(() => {
         async function getData() {
-            const gameMode = await getGameMode(difficulty ?? 'Lett')
+            const gameMode = await getGameMode(eventname ?? 'Lett')
             if (gameMode === null) {
                 setLevelError(true)
                 return
@@ -55,6 +55,7 @@ export function GamePage(): JSX.Element {
 
     return (
         <main className="flex flex-col">
+            <p>{eventname}</p>
             <div className="sm:sticky top-20">
                 <GameNavBar
                     healthLeft={totalHp + 1}

@@ -4,7 +4,7 @@ import { Route, Routes } from 'react-router-dom'
 import { MainPage } from './pages'
 import { PracticePage } from './pages/practice'
 import { OptionPage } from './pages/option'
-import { GamePage } from './pages/game.[difficulty]'
+import { GamePage } from './pages/game.[eventname]'
 import { EventHighScorePage } from './pages/event.high-score'
 import { EventEditPage } from './pages/event.edit'
 import { AdminPage } from './pages/adminpage'
@@ -16,7 +16,7 @@ export function Router() {
             <Route path="/" element={<MainPage />} />
             <Route path="/practice" element={<PracticePage />} />
             <Route path="/option" element={<OptionPage />} />
-            <Route path="/game/:difficulty" element={<GamePage />} />
+            <Route path="/game/:eventname" element={<GamePage />} />
             <Route
                 path="/leaderboard/:difficulty"
                 element={<EventHighScorePage />}
