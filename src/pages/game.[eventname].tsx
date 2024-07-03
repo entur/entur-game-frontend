@@ -1,23 +1,29 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+
 import { Heading1 } from '@entur/typography'
 import { Loader } from '@entur/loader'
 
 import Game from '../components/Game/GameScreen'
-import { Level, EASY } from '../constant/levels'
 import GameNavBar from '../components/NavBar/GameNavBar'
-import { useBackground } from '../contexts/backgroundContext'
-import { getGameMode } from '../api/gameModeApi'
+import { useBackground } from '../contexts/backgroundContext' //TODO-later: hvorfor er det funksjon for backgrunnen???
+
+import { Level, EASY } from '../constant/levels' //TODO: "Level" (også difficulty) -> eventname, dette må endres
+import { getGameMode } from '../api/gameModeApi' //TODO: må også endres, gameMode -> event
 
 export function GamePage(): JSX.Element {
-    const [totalHp, setTotalHp] = useState<number>(2)
-    const { eventname } = useParams()
-    const [isLevelError, setLevelError] = useState<boolean>(false)
-    const [level, setLevel] = useState<Level | null>(null)
-    const [startTimer, setStartTimer] = useState<number>(0)
+    //visuals and game logic
     const [numLegs, setNumLegs] = useState<number>(0)
+    const [startTimer, setStartTimer] = useState<number>(0)
     const [timeDescription, setTimeDescription] = useState<string>('')
-    const { setBackgroundColor } = useBackground()
+    const [totalHp, setTotalHp] = useState<number>(2)
+    const { setBackgroundColor } = useBackground() //TODO-later: backgroundColor
+
+    //event logic
+    const { eventname } = useParams()
+    const [isLevelError, setLevelError] = useState<boolean>(false) //TODO: level
+    const [level, setLevel] = useState<Level | null>(null) //TODO: level
+    
 
     useEffect(() => {
         setBackgroundColor('bg-blue-90')
