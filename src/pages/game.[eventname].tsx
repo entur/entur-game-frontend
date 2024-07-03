@@ -8,7 +8,6 @@ import Game from '../components/Game/GameScreen'
 import GameNavBar from '../components/NavBar/GameNavBar'
 import { useBackground } from '../contexts/backgroundContext' //TODO-later: hvorfor er det funksjon for backgrunnen???
 
-import { Level, EASY } from '../constant/levels' //TODO: "Level" (også difficulty) -> eventname, dette må endres
 import { getGameModeByDifficulty, getEventByEventName } from '../api/gameModeApi' //TODO: må også endres, gameMode -> event
 import { Event } from '@/types/types'
 import mockEvent from '../mock-api/event'
@@ -23,8 +22,8 @@ export function GamePage(): JSX.Element {
 
     //event logic
     const { eventName } = useParams()
-    const [isLevelError, setLevelError] = useState<boolean>(false) //TODO: level
-    const [level, setLevel] = useState<Level | null>(null) //TODO: level
+    const [event, setEvent] = useState<Event | null>(mockEvent) //TODO: mockEvent
+    const [isEventError, setEventError] = useState<boolean>(false) //TODO: mockEvent
     const [eventJson, setEventJson] = useState<Event | null>(null)
     const [loadingEventJson, setLoadingEventJson] = useState<boolean>(true)
 
@@ -36,15 +35,13 @@ export function GamePage(): JSX.Element {
 
     useEffect(() => {
         async function getData() {
-            const gameMode = await getGameModeByDifficulty(eventName ?? 'Lett')
-            if (gameMode === null) {
-                setLevelError(true)
+            console.log(event)
+            if (event === null) {
+                setEventError(true)
                 return
-            }
-            if (gameMode.difficulty.toLowerCase() === 'lett') {
-                setLevel({ ...gameMode, targets: EASY[0].targets }) // Fix targets to make it easier to win
             } else {
-                setLevel(gameMode)
+                setEventError(false)
+                setEvent(event)
             }
         }
         getData()
@@ -59,7 +56,7 @@ export function GamePage(): JSX.Element {
         fetchEventJson()
     }, [])
 
-    if (isLevelError) {
+    if (isEventError) {
         // TODO: redirect to main screen
         return (
             <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
@@ -67,7 +64,7 @@ export function GamePage(): JSX.Element {
             </div>
         )
     }
-    if (level === null) {
+    if (event === null) {
         return <Loader>Loading...</Loader>
     }
 
@@ -77,14 +74,7 @@ export function GamePage(): JSX.Element {
                 {loadingEventJson ? (
                     <Loader>Loading event data...</Loader>
                 ) : (
-                    <pre>{JSON.stringify(level, null, 2)}</pre>
-                )}
-            </div>
-            <div>
-                {loadingEventJson ? (
-                    <Loader>Loading event data...</Loader>
-                ) : (
-                    <pre>{JSON.stringify(mockEvent, null, 2)}</pre>
+                    <pre>{JSON.stringify(event, null, 2)}</pre>
                 )}
             </div>
             <div className="sm:sticky top-20">
@@ -97,7 +87,7 @@ export function GamePage(): JSX.Element {
             <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
                 <Game
                     name={''}
-                    event={mockEvent}
+                    event={event}
                     startTimer={startTimer}
                     // eslint-disable-next-line @typescript-eslint/no-empty-function
                     handleWinner={() => {}}
