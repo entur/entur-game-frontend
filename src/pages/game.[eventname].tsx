@@ -9,7 +9,8 @@ import GameNavBar from '../components/NavBar/GameNavBar'
 import { useBackground } from '../contexts/backgroundContext' //TODO-later: hvorfor er det funksjon for backgrunnen???
 
 import { Level, EASY } from '../constant/levels' //TODO: "Level" (også difficulty) -> eventname, dette må endres
-import { getGameModeByDifficulty } from '../api/gameModeApi' //TODO: må også endres, gameMode -> event
+import { getGameModeByDifficulty, getEventByEventName } from '../api/gameModeApi' //TODO: må også endres, gameMode -> event
+import { Event } from '@/types/types'
 
 export function GamePage(): JSX.Element {
     //visuals and game logic
@@ -20,10 +21,11 @@ export function GamePage(): JSX.Element {
     const { setBackgroundColor } = useBackground() //TODO-later: backgroundColor
 
     //event logic
-    const { eventname } = useParams()
+    const { eventName } = useParams()
     const [isLevelError, setLevelError] = useState<boolean>(false) //TODO: level
     const [level, setLevel] = useState<Level | null>(null) //TODO: level
-    
+    const [eventJson, setEventJson] = useState<Event | null>(null)
+    const [loadingEventJson, setLoadingEventJson] = useState<boolean>(true)
 
     useEffect(() => {
         setBackgroundColor('bg-blue-90')
@@ -33,7 +35,7 @@ export function GamePage(): JSX.Element {
 
     useEffect(() => {
         async function getData() {
-            const gameMode = await getGameModeByDifficulty(eventname ?? 'Lett')
+            const gameMode = await getGameModeByDifficulty(eventName ?? 'Lett')
             if (gameMode === null) {
                 setLevelError(true)
                 return
@@ -45,10 +47,19 @@ export function GamePage(): JSX.Element {
             }
         }
         getData()
+    }, [eventName])
+
+    useEffect(() => {
+        async function fetchEventJson() {
+            const event = await getEventByEventName('event4')
+            setEventJson(event)
+            setLoadingEventJson(false)
+        }
+        fetchEventJson()
     }, [])
 
     if (isLevelError) {
-        //TODO: redirect to main screen
+        // TODO: redirect to main screen
         return (
             <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
                 <Heading1>Level not found</Heading1>
@@ -61,7 +72,14 @@ export function GamePage(): JSX.Element {
 
     return (
         <main className="flex flex-col">
-            <p>{eventname}</p>
+            <p>{eventName}</p>
+            <div>
+                {loadingEventJson ? (
+                    <Loader>Loading event data...</Loader>
+                ) : (
+                    <pre>{JSON.stringify(eventJson, null, 2)}</pre>
+                )}
+            </div>
             <div className="sm:sticky top-20">
                 <GameNavBar
                     healthLeft={totalHp + 1}

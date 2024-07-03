@@ -1,4 +1,5 @@
 import { Level } from '../constant/levels'
+import { Event } from '@/types/types'
 
 const baseUrl = import.meta.env.VITE_APP_BACKEND_URL ?? 'http://localhost:8080'
 
@@ -43,5 +44,11 @@ export async function updateActiveGameModeEvent(
             body: JSON.stringify({}),
         },
     )
+    return response.json()
+}
+
+export async function getEventByEventName(eventName: string): Promise<Event | null> {
+    const response = await fetch(`${baseUrl}/event/${eventName}`)
+    if (response.status !== 200) return null
     return response.json()
 }
