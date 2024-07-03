@@ -11,6 +11,7 @@ import { useBackground } from '../contexts/backgroundContext' //TODO-later: hvor
 import { Level, EASY } from '../constant/levels' //TODO: "Level" (også difficulty) -> eventname, dette må endres
 import { getGameModeByDifficulty, getEventByEventName } from '../api/gameModeApi' //TODO: må også endres, gameMode -> event
 import { Event } from '@/types/types'
+import mockEvent from '../mock-api/event'
 
 export function GamePage(): JSX.Element {
     //visuals and game logic
@@ -72,12 +73,18 @@ export function GamePage(): JSX.Element {
 
     return (
         <main className="flex flex-col">
-            <p>{eventName}</p>
             <div>
                 {loadingEventJson ? (
                     <Loader>Loading event data...</Loader>
                 ) : (
-                    <pre>{JSON.stringify(eventJson, null, 2)}</pre>
+                    <pre>{JSON.stringify(level, null, 2)}</pre>
+                )}
+            </div>
+            <div>
+                {loadingEventJson ? (
+                    <Loader>Loading event data...</Loader>
+                ) : (
+                    <pre>{JSON.stringify(mockEvent, null, 2)}</pre>
                 )}
             </div>
             <div className="sm:sticky top-20">
@@ -90,7 +97,7 @@ export function GamePage(): JSX.Element {
             <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
                 <Game
                     name={''}
-                    level={level}
+                    event={mockEvent}
                     startTimer={startTimer}
                     // eslint-disable-next-line @typescript-eslint/no-empty-function
                     handleWinner={() => {}}

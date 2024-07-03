@@ -6,7 +6,7 @@ import { sprinkleEmojis } from 'emoji-sprinkle'
 import { useNavigate } from 'react-router-dom'
 import { PrimaryButton, SecondaryButton } from '@entur/button'
 
-import { Level } from '../../constant/levels'
+import { Event } from '@/types/types'
 import { InvalidTravelModal } from './components/InvalidTravelModal'
 import { useEnturService } from '../../hooks/useEnturService'
 import { formatDate, formatTimeForEndOfGame } from '../../utils/dateFnsUtils'
@@ -27,7 +27,7 @@ export interface StopAndTime {
 
 type Props = {
     name: string
-    level: Level
+    event: Event
     startTimer: number
     handleWinner: () => void
     totalHp: number
@@ -38,7 +38,7 @@ type Props = {
 }
 
 function GameScreen({
-    level,
+    event,
     totalHp,
     setTotalHp,
     numLegs,
@@ -52,14 +52,14 @@ function GameScreen({
     const [isLoading, setLoading] = useState<boolean>(false)
     const [hasBeenSprinkled, setSprinkled] = useState<boolean>(false)
     const [dead, setDead] = useState<boolean>(false)
-    const [stopPlace, setStopPlace] = useState<StopPlace>(level.start)
-    const [targets, setTargets] = useState<StopPlace[]>(level.targets)
+    const [stopPlace, setStopPlace] = useState<StopPlace>(event.startLocation)
+    const [targets, setTargets] = useState<StopPlace[]>(event.endLocation)
     const [mode, setMode] = useState<QueryMode | null>(null)
     const [departures, setDepartures] = useState<Departure[]>([])
     const [stopsOnLine, setStopsOnLine] = useState<StopAndTime[]>([])
     const [noTransport, setNoTransport] = useState<boolean>(false)
     const [isModalOpen, setModalOpen] = useState<boolean>(false)
-    const [travelLegs, setTravelLegs] = useState<StopPlace[]>([level.start])
+    const [travelLegs, setTravelLegs] = useState<StopPlace[]>([event.startLocation])
     const [usedMode, setUsedMode] = useState<QueryMode[]>([])
     const { getWalkableStopPlaces, getDepartures, getStopsOnLine } =
         useEnturService()
@@ -73,18 +73,18 @@ function GameScreen({
     const [waitModalIsOpen, setWaitModalIsOpen] = useState<boolean>(false)
 
     useEffect(() => {
-        setStopPlace(level.start)
-        setTravelLegs([level.start])
-        setTargets(level.targets)
+        setStopPlace(event.startLocation)
+        setTravelLegs([event.startLocation])
+        setTargets(event.endLocation)
         setStartTime(new Date())
-    }, [level])
-
+    }, [event])
+    // TODO: level.difficulty er ndret til "lett" nå for å ungå bugs, men må fikses senere
     useEffect(() => {
         setTimeDescription(
             formatTimeForEndOfGame(
                 currentTime,
                 startTime,
-                level.difficulty,
+                "lett",
                 numLegs,
             ),
         )
@@ -208,7 +208,7 @@ function GameScreen({
             <div className="app" style={{ maxWidth: '800px' }}>
                 <VictoryScreen
                     name={name}
-                    level={level}
+                    event={event}
                     target={targets[0]}
                     setTarget={(target) => {
                         setTargets([target])
@@ -231,7 +231,7 @@ function GameScreen({
     }
     return (
         <div className="flex flex-col mb-4">
-            <FromAndToTitle className="mt-10 xl:mt-28" level={level} />
+            <FromAndToTitle className="mt-10 xl:mt-28" event={event} />
             <Heading4 margin="none">{formatDate(startTime)}</Heading4>
             <Heading4 margin="none">Hvordan vil du starte?</Heading4>
             <div className="mt-5 xl:mt-14">

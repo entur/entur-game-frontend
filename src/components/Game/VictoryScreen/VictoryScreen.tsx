@@ -7,7 +7,7 @@ import {
     VictoryArtBoardCookieImage,
     VictoryArtBoardOvalImage,
 } from './VictoryScreenArt'
-import { Level } from '../../../constant/levels'
+import { Event } from '@/types/types'
 import { StopPlace } from '@entur/sdk'
 import { useNavigate } from 'react-router-dom'
 import { savePlayerScore } from '../../../api/playerScoreApi'
@@ -20,7 +20,7 @@ import { getOptimalRouteText } from '../../../api/gameModeApi'
 
 type Props = {
     name: string
-    level: Level
+    event: Event
     target: StopPlace
     setTarget: (target: StopPlace) => void
     numLegs: number
@@ -38,7 +38,7 @@ type FormValues = {
 
 export function VictoryScreen({
     name = '',
-    level,
+    event,
     target,
     numLegs,
     currentTime,
@@ -58,21 +58,23 @@ export function VictoryScreen({
     })
     const navigate = useNavigate()
     const [isError, setError] = useState<boolean>(false)
+    //TODO: level.difficulty er endret til event.eventName, men det bør skjekkes om går bra
     const timeDescription = formatTimeForEndOfGame(
         currentTime,
         startTime,
-        level.difficulty,
+        event.eventName,
         numLegs,
     )
     const [optimalRouteText, setOptimalRouteText] = useState<string>('')
 
     async function onSubmit(data: FormValues) {
+        // TODO: level.difficulty er endret til "lett" nå for å ungå bugs, men må fikses senere
         const response = await savePlayerScore({
             ...data,
-            difficulty: level.difficulty,
+            difficulty: "Lett",
             fromDestination: {
-                destination: level.start.name,
-                id: level.start.id,
+                destination: event.startLocation.name,
+                id: event.startLocation.id,
             },
             toDestination: {
                 destination: target.name,
@@ -91,9 +93,10 @@ export function VictoryScreen({
         setError(true)
     }
 
+    //TODO: sjekk om level.difficulty->event.eventName går bra
     useEffect(() => {
         async function getData(): Promise<void> {
-            const data = await getOptimalRouteText(level.difficulty)
+            const data = await getOptimalRouteText(event.eventName)
             setOptimalRouteText(data)
         }
         getData()
@@ -117,7 +120,7 @@ export function VictoryScreen({
                 >
                     <Heading3 className="font-semibold">Du er fremme!</Heading3>
                     <Paragraph>
-                        {`Du kom deg fra ${level.start.name} til ${level.targets[0].name} på ${numLegs} etapper og ${timeDescription}`}
+                        {`Du kom deg fra ${event.startLocation.name} til ${event.endLocation[0].name} på ${numLegs} etapper og ${timeDescription}`}
                         <br />
                         <br />
                         {optimalRouteText}

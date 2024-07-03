@@ -1,18 +1,13 @@
+import { StopPlace } from "@entur/sdk/lib/fields/StopPlace";
+
 export type Event = {
     eventId: number;
     eventName: string;
-    startLocationId: StopPlace[];
-    endLocationId: StopPlace[];
+    startLocation: StopPlace;
+    endLocation: StopPlace[];
     startTime: string;
     optimalStepNumber: number;
     optimalTravelTime: number;
-  }
-  
-  type StopPlace = {
-    id: string;
-    name: string;
-    latitude: number;
-    longitude: number;
   }
 
 export type Player = {
