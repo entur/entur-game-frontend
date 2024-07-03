@@ -1,8 +1,7 @@
 import { ReactElement, useCallback, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { Button } from '@entur/button'
 import { Heading1, Heading3, LeadParagraph } from '@entur/typography'
-import { ForwardIcon, MapPinIcon, CityBikeIcon } from '@entur/icons'
+import { MapPinIcon, DestinationIcon } from '@entur/icons'
 import { useBackground } from '../contexts/backgroundContext'
 import { BlockquoteFooter } from '@entur/typography'
 import { TimePicker } from '@entur/datepicker'
@@ -18,29 +17,8 @@ export function AdminCreateJourney(): ReactElement {
         return () => setBackgroundColor('$colors-brand-white')
     }, [setBackgroundColor])
 
-    const fetchItems = useCallback(async (inputValue, abortControllerRef) => {
-        try {
-            const response = await fetch(
-                `https://dummyjson.com/products/search?q=${inputValue}&limit=15&select=title`,
-                // Bruk signalet fra abortController for å avbryte utdaterte kall
-                { signal: abortControllerRef.current.signal },
-            )
-            const data = await response.json()
-            if (data.message !== undefined) return [data.message]
-            const processedData = data.products.map((item) => {
-                return { label: item.title, value: item.id }
-            })
-            return processedData
-        } catch (error) {
-            // AbortError må sendes videre til komponenten for å håndtere cleanup riktig
-            if (error && error.name === 'AbortError') throw error
-            console.error('noe galt')
-            return []
-        }
-    }, [])
-
     const [selected, setSelected] = useState(null)
-    const navigate = useNavigate()
+
     const [time, setTime] = useState<ZonedDateTime | null>(now('Europe/Oslo'))
 
     return (
@@ -56,17 +34,17 @@ export function AdminCreateJourney(): ReactElement {
                     <Heading3>Velg start og mål</Heading3>
                     <SearchableDropdown
                         label="Start"
-                        items={fetchItems}
+                        items={[]}
                         selectedItem={selected}
-                        prepend={<ForwardIcon></ForwardIcon>}
-                        onChange={setSelected}
+                        prepend={<MapPinIcon></MapPinIcon>}
+                        // onChange={setSelected}
                     />
                     <SearchableDropdown
                         label="Mål"
-                        items={fetchItems}
-                        prepend={<MapPinIcon></MapPinIcon>}
+                        items={[]}
+                        prepend={<DestinationIcon></DestinationIcon>}
                         selectedItem={selected}
-                        onChange={setSelected}
+                        //onChange={setSelected}
                     />
                 </div>
                 <div className="space-y-10 mt-10">
