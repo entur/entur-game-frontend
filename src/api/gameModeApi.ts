@@ -81,6 +81,7 @@ export async function getEventByEventName(eventName: string): Promise<Event | nu
         endLocation: endLocation,
         startTime: baseEvent.startTime,
         optimalStepNumber: baseEvent.optimalStepNumber,
-        optimalTravelTime: baseEvent.optimalTravelTime
+        optimalTravelTime: baseEvent.optimalTravelTime,
+        isActive: baseEvent.isActive
     } as Event
 }

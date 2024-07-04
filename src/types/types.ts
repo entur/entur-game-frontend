@@ -8,6 +8,7 @@ export type Event = {
     startTime: string;
     optimalStepNumber: number;
     optimalTravelTime: number;
+    isActive: boolean
   }
 
   export type BackendEvent = {
@@ -18,6 +19,7 @@ export type Event = {
     startTime: string;
     optimalStepNumber: number;
     optimalTravelTime: number;
+    isActive: boolean
   }
 
 export type Player = {
