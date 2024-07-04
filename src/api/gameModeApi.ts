@@ -8,14 +8,6 @@ const baseUrl = import.meta.env.VITE_APP_BACKEND_URL ?? 'http://localhost:8080'
 const myHeaders = new Headers()
 myHeaders.append('Content-Type', 'text/plain; charset=UTF-8')
 
-export async function getOptimalRouteText(difficulty: string): Promise<string> {
-    const response = await fetch(
-        `${baseUrl}/game-mode/optimal-route/${difficulty}`,
-        { headers: myHeaders },
-    )
-    return response.text()
-}
-
 export async function getGameModeByDifficulty(difficulty: string): Promise<Level | null> {
     const response = await fetch(`${baseUrl}/game-mode/${difficulty}`)
     if (response.status !== 200) return null
@@ -47,6 +39,15 @@ export async function updateActiveGameModeEvent(
         },
     )
     return response.json()
+}
+
+export async function createOptimalRouteText(event: Event): Promise<string> {
+    const totalSeconds = event?.optimalTravelTime;
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    
+    return `Vår reiseplanlegger har beregnet en optimal rute der antall etapper er ${event?.optimalStepNumber} og reisetid er ${hours} timer, ${minutes} minutter og ${seconds} sekunder.`;
 }
 
 export async function getBackendEventByEventName(eventName: string): Promise<BackendEvent | null> {

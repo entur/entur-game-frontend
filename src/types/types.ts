@@ -11,7 +11,7 @@ export type Event = {
     isActive: boolean
   }
 
-  export type BackendEvent = {
+export type BackendEvent = {
     eventId: number;
     eventName: string;
     startLocationId: string,
@@ -20,7 +20,7 @@ export type Event = {
     optimalStepNumber: number;
     optimalTravelTime: number;
     isActive: boolean
-  }
+}
 
 export type Player = {
     playerId: number;

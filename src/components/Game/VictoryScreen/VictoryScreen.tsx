@@ -16,7 +16,7 @@ import {
     formatTimeForEndOfGame,
 } from '../../../utils/dateFnsUtils'
 import { Controller, useForm } from 'react-hook-form'
-import { getOptimalRouteText } from '../../../api/gameModeApi'
+import { createOptimalRouteText } from '../../../api/gameModeApi'
 
 type Props = {
     name: string
@@ -91,13 +91,12 @@ export function VictoryScreen({
         setError(true)
     }
 
-    //TODO: sjekk om level.difficulty->event.eventName går bra
     useEffect(() => {
-        async function getData(): Promise<void> {
-            const data = await getOptimalRouteText(event.eventName)
+        async function getOptimalRouteText(): Promise<void> {
+            const data = await createOptimalRouteText(event)
             setOptimalRouteText(data)
         }
-        getData()
+        getOptimalRouteText()
         window.scroll(0, 0)
     }, [])
 
