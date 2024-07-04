@@ -33,8 +33,8 @@ export function AdminCreateJourney(): ReactElement {
                 const mappedData = data.features.map((feature) => {
                     const { id, name } = feature.properties || {}
                     return {
-                        value: name ?? '',
-                        label: id ?? '',
+                        label: name ?? '',
+                        value: id ?? '',
                     }
                 })
 
