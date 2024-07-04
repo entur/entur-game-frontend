@@ -8,7 +8,7 @@ import { GamePage } from './pages/game.[difficulty]'
 import { EventHighScorePage } from './pages/event.high-score'
 import { EventEditPage } from './pages/event.edit'
 import { AdminPage } from './pages/adminpage'
-import { AdminCreateJourney } from './pages/admin.create-journey'
+import { AdminCreateJourney } from './pages/AdminCreateJourney'
 import { AdmindLeaderboardPage } from './pages/admin-leaderboard'
 
 export function Router() {
