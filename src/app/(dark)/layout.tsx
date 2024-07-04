@@ -9,7 +9,7 @@ export default function DarkModeLayout({
     children: React.ReactNode
 }>) {
     return (
-        <div className={`bg-blue-main flex flex-col w-screen min-h-screen`}>
+        <div className="bg-blue-main flex flex-col w-screen min-h-screen">
             <Link href="/" className="pt-10 ml-5 mr-20">
                 <Image
                     className="cursor-pointer"

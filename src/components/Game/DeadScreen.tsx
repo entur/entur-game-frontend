@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { Heading2, Paragraph } from '@entur/typography'
 import { getModeTranslation } from '@/lib/utils/transportMapper'
