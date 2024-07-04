@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 
-import { Level } from '../../../constant/levels'
+import { Level } from '@/lib/constants/levels'
 import { Heading4 } from '@entur/typography'
 
 type Props = {

@@ -1,19 +1,21 @@
-import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+"use client"
 
-import easy from '@assets/images/easy.png'
-import medium from '@assets/images/medium.png'
-import hard from '@assets/images/hard.png'
-import { EASY, HARD, MEDIUM } from '../constant/levels'
+import React, { useState } from 'react'
+
+import easy from '@/lib/assets/images/easy.png'
+import medium from '@/lib/assets/images/medium.png'
+import hard from '@/lib/assets/images/hard.png'
+import { EASY, HARD, MEDIUM } from '@/lib/constants/levels'
 import { RadioGroup, RadioPanel } from '@entur/form'
 import { Button, SecondaryButton } from '@entur/button'
-import { Heading5 } from '@entur/typography'
-import iconRightArrow from '../assets/icons/IconButtonRight.svg'
+import iconRightArrow from '@/lib/assets/icons/IconButtonRight.svg'
+import {useRouter} from "next/navigation";
+import Image from "next/image";
 
 type Difficulty = 'Lett' | 'Middels' | 'Vanskelig' | 'Event'
 
 function SelectLevel({ isEvent }: { isEvent: boolean }): JSX.Element {
-    const navigate = useNavigate()
+    const router = useRouter()
     const [selectedRadio, setSelectedRadio] = useState<null | Difficulty>(null)
 
     const handleRadioClick = (levelId: Difficulty) => {
@@ -86,7 +88,7 @@ function SelectLevel({ isEvent }: { isEvent: boolean }): JSX.Element {
                                             </span>
                                         </div>
                                         <div className="flex">
-                                            <img
+                                            <Image
                                                 src={easy}
                                                 alt="Your Image"
                                                 style={{
@@ -151,7 +153,7 @@ function SelectLevel({ isEvent }: { isEvent: boolean }): JSX.Element {
                                             </span>
                                         </div>
                                         <div className="flex">
-                                            <img
+                                            <Image
                                                 src={medium}
                                                 alt="Your Image"
                                                 style={{
@@ -216,7 +218,7 @@ function SelectLevel({ isEvent }: { isEvent: boolean }): JSX.Element {
                                             </span>
                                         </div>
                                         <div className="flex">
-                                            <img
+                                            <Image
                                                 src={hard}
                                                 alt="Your Image"
                                                 style={{
@@ -237,7 +239,7 @@ function SelectLevel({ isEvent }: { isEvent: boolean }): JSX.Element {
                                 style={{ height: '64px' }}
                                 className="flex items-center justify-between w-full px-4 py-4 mt-10"
                                 onClick={() =>
-                                    navigate(`/game/${selectedRadio}`)
+                                    router.push(`/game/${selectedRadio}`)
                                 }
                             >
                                 <span className="mr-auto">Start reisen</span>
@@ -253,7 +255,7 @@ function SelectLevel({ isEvent }: { isEvent: boolean }): JSX.Element {
                     </div>
                     <SecondaryButton
                         className="bg-lavender select-none mt-20"
-                        onClick={() => navigate('/option')}
+                        onClick={() => router.push('/option')}
                     >
                         Til spillmodus
                     </SecondaryButton>

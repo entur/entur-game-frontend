@@ -1,20 +1,21 @@
+"use client"
+
 import React, { ReactElement, useEffect, useState } from 'react'
 import { Heading4, Paragraph } from '@entur/typography'
 import { Departure, QueryMode, StopPlace, StopPlaceDetails } from '@entur/sdk'
 import { addHours, addMinutes } from 'date-fns'
-import { sprinkleEmojis } from 'emoji-sprinkle'
-import { useNavigate } from 'react-router-dom'
 import { PrimaryButton, SecondaryButton } from '@entur/button'
+import {useRouter} from "next/navigation";
 
-import { Level } from '../../constant/levels'
+import { Level } from '@/lib/constants/levels'
 import { InvalidTravelModal } from './components/InvalidTravelModal'
-import { useEnturService } from '../../hooks/useEnturService'
-import { formatDate, formatTimeForEndOfGame } from '../../utils/dateFnsUtils'
+import { useEnturService } from '@/lib/hooks/useEnturService'
+import { formatDate, formatTimeForEndOfGame } from '@/lib/utils/dateFnsUtils'
 import FromAndToTitle from './components/FromAndToTitle'
 import TransportTypePicker from './components/TransportTypePicker'
 import TravelLegStart from './components/TravelLegStart/TravelLegStart'
 import { DepartureAndOnLinePickerModal } from './components/DepartureAndOnLinePickerModal'
-import { isTruthy } from '../../utils/isTruthy'
+import { isTruthy } from '@/lib/utils/isTruthy'
 import { TravelLegFinished } from './components/TravelLegFinished'
 import DeadScreen from './DeadScreen'
 import { VictoryScreen } from './VictoryScreen/VictoryScreen'
@@ -48,9 +49,8 @@ function GameScreen({
     handleWinner,
     name,
 }: Props): ReactElement {
-    const navigate = useNavigate()
+    const router = useRouter()
     const [isLoading, setLoading] = useState<boolean>(false)
-    const [hasBeenSprinkled, setSprinkled] = useState<boolean>(false)
     const [dead, setDead] = useState<boolean>(false)
     const [stopPlace, setStopPlace] = useState<StopPlace>(level.start)
     const [targets, setTargets] = useState<StopPlace[]>(level.targets)
@@ -195,15 +195,6 @@ function GameScreen({
 
     if (targets.some((sp) => sp.id === stopPlace.id)) {
         handleWinner()
-        if (!hasBeenSprinkled) {
-            sprinkleEmojis({
-                emoji: '🎉',
-                count: 50,
-                fade: 10,
-                fontSize: 30,
-            })
-            setSprinkled(true)
-        }
         return (
             <div className="app" style={{ maxWidth: '800px' }}>
                 <VictoryScreen
@@ -258,7 +249,7 @@ function GameScreen({
             </div>
             <SecondaryButton
                 className="bg-lavender hover:bg-blue-80 sm:mt-28 mt-10 mb-10 sm:place-self-start place-self-center"
-                onClick={() => navigate('/')}
+                onClick={() => router.push('/')}
             >
                 Avslutt reise
             </SecondaryButton>

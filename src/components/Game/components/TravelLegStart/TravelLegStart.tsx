@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import { Departure, QueryMode, StopPlace } from '@entur/sdk'
 import { TravelLeg, TravelLegProps } from '@entur/travel'
 import { Heading5 } from '@entur/typography'
-import { generateKey } from '../../../../utils/generateUniqueKey'
+import { generateKey } from '@/lib/utils/generateUniqueKey'
 import { TravelLegTag } from './TravelLegTag'
 
 type Props = {

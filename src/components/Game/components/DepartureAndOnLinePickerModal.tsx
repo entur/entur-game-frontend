@@ -3,8 +3,8 @@ import { Heading2 } from '@entur/typography'
 import { ChoiceChip, ChoiceChipGroup } from '@entur/chip'
 import { Departure, QueryMode } from '@entur/sdk'
 import { Modal } from '@entur/modal'
-import { getModeIcon } from '../../../utils/transportMapper'
-import { formatTime } from '../../../utils/dateFnsUtils'
+import { getModeIcon } from '@/lib/utils/transportMapper'
+import { formatTime } from '@/lib/utils/dateFnsUtils'
 import { StopAndTime } from '../GameScreen'
 
 type Props = {
@@ -48,7 +48,7 @@ export const DepartureAndOnLinePickerModal = ({
                             <Heading2>Velg avgang</Heading2>
                             <ChoiceChipGroup
                                 value="none"
-                                onChange={console.log}
+                                onChange={() => {}}
                                 name="Departure"
                             >
                                 {departures
@@ -108,7 +108,7 @@ export const DepartureAndOnLinePickerModal = ({
 
                         <ChoiceChipGroup
                             value="none"
-                            onChange={console.log}
+                            onChange={() => {}}
                             name="Stop on line"
                         >
                             {stopsOnLine.map((stop) => (
