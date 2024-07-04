@@ -1,4 +1,4 @@
-import React, { useState, SetStateAction, Dispatch, useEffect } from 'react'
+import { useState, SetStateAction, Dispatch } from 'react'
 import { Heading2 } from '@entur/typography'
 import { ChoiceChip, ChoiceChipGroup } from '@entur/chip'
 import { Departure, QueryMode } from '@entur/sdk'

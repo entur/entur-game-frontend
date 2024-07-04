@@ -5,7 +5,7 @@ import Heart from '@/lib/assets/icons/Heart.svg'
 import DeadHeart from '@/lib/assets/icons/DeadHeart.svg'
 import { generateKey } from '@/lib/utils/generateUniqueKey'
 import { ClockIcon, TrackIcon } from '@entur/icons'
-import Image from "next/image";
+import Image from 'next/image'
 
 type Props = {
     className?: string

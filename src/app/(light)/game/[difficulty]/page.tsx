@@ -19,7 +19,7 @@ export default function GamePage(): JSX.Element {
     const params: Params = useParams()
     const [isLevelError, setLevelError] = useState<boolean>(false)
     const [level, setLevel] = useState<Level | null>(null)
-    const [startTimer, setStartTimer] = useState<number>(0)
+    const [startTimer] = useState<number>(0)
     const [numLegs, setNumLegs] = useState<number>(0)
     const [timeDescription, setTimeDescription] = useState<string>('')
 

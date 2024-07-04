@@ -1,11 +1,11 @@
-"use client"
+'use client'
 
 import React, { ReactElement, useEffect, useState } from 'react'
 import { Heading4, Paragraph } from '@entur/typography'
 import { Departure, QueryMode, StopPlace, StopPlaceDetails } from '@entur/sdk'
 import { addHours, addMinutes } from 'date-fns'
 import { PrimaryButton, SecondaryButton } from '@entur/button'
-import {useRouter} from "next/navigation";
+import { useRouter } from 'next/navigation'
 
 import { Level } from '@/lib/constants/levels'
 import { InvalidTravelModal } from './components/InvalidTravelModal'
@@ -287,4 +287,3 @@ function GameScreen({
 }
 
 export default GameScreen
-

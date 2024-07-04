@@ -15,8 +15,8 @@ import {
     formatTimeForEndOfGame,
 } from '@/lib/utils/dateFnsUtils'
 import { getOptimalRouteText } from '@/lib/api/gameModeApi'
-import {Controller, useForm} from "react-hook-form";
-import {useRouter} from "next/navigation";
+import { Controller, useForm } from 'react-hook-form'
+import { useRouter } from 'next/navigation'
 
 type Props = {
     name: string

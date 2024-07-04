@@ -33,7 +33,6 @@ export function TravelTimeline({
                                     style={{ height: '75px' }}
                                     transport="foot"
                                     direction="vertical"
-                                    showStart={false}
                                 />
                                 <div
                                     style={{
@@ -66,7 +65,6 @@ export function TravelTimeline({
                                     ] as TravelLegProps['transport']
                                 }
                                 direction="vertical"
-                                showStart={false}
                             />
                             <div
                                 style={{

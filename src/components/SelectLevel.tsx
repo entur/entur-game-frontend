@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import React, { useState } from 'react'
 
@@ -9,8 +9,8 @@ import { EASY, HARD, MEDIUM } from '@/lib/constants/levels'
 import { RadioGroup, RadioPanel } from '@entur/form'
 import { Button, SecondaryButton } from '@entur/button'
 import iconRightArrow from '@/lib/assets/icons/IconButtonRight.svg'
-import {useRouter} from "next/navigation";
-import Image from "next/image";
+import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 type Difficulty = 'Lett' | 'Middels' | 'Vanskelig' | 'Event'
 
