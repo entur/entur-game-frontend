@@ -59,7 +59,7 @@ export function GamePage(): JSX.Element {
             </div>
         )
     }
-    if (event === null) { //TODO: set eventError=true if event === null to long
+    if (event === null) { //TODO: errorHandling dersom event=== null for lenge, vi vises Event not found etter en viss tid
         return <Loader>Loading...</Loader>
     }
 
