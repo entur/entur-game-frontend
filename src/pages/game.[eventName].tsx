@@ -22,8 +22,7 @@ export function GamePage(): JSX.Element {
     //event logic
     const { eventName } = useParams()
     const [event, setEvent] = useState<Event | null>(null)
-    const [isEventError, setEventError] = useState<boolean>(false) 
-    const [loadingEvent, setLoadingEvent] = useState<boolean>(true)
+    const [isEventError, setEventError] = useState<boolean>(false)
 
     useEffect(() => {
         setBackgroundColor('bg-blue-90')
@@ -44,7 +43,6 @@ export function GamePage(): JSX.Element {
                 return
             } else {
                 setEventError(false)
-                setLoadingEvent(false)
                 setEvent(eventJson)
             }
         }
@@ -59,19 +57,12 @@ export function GamePage(): JSX.Element {
             </div>
         )
     }
-    if (event === null) { //TODO: errorHandling dersom event=== null for lenge, vi vises Event not found etter en viss tid
+    if (event === null) { //TODO: errorHandling dersom event=== null for lenge. "event not found" bør vises i stedet etter en viss tid
         return <Loader>Loading...</Loader>
     }
 
     return (
         <main className="flex flex-col">
-            <div>
-                {loadingEvent ? (
-                    <Loader>Loading event data...</Loader>
-                ) : (
-                    <pre>{JSON.stringify(event, null, 2)}</pre>
-                )}
-            </div>
             <div className="sm:sticky top-20">
                 <GameNavBar
                     healthLeft={totalHp + 1}
