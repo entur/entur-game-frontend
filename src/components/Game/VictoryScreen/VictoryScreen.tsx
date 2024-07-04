@@ -16,7 +16,7 @@ import {
     formatTimeForEndOfGame,
 } from '../../../utils/dateFnsUtils'
 import { Controller, useForm } from 'react-hook-form'
-import { createOptimalRouteText } from '../../../api/gameModeApi'
+import { createOptimalRouteText } from '../../../api/eventApi'
 
 type Props = {
     name: string
@@ -66,7 +66,7 @@ export function VictoryScreen({
     const [optimalRouteText, setOptimalRouteText] = useState<string>('')
 
     async function onSubmit(data: FormValues) {
-        // TODO: level.difficulty er endret til "lett" nå for å ungå bugs, men må fikses senere
+        // TODO: savePlayerScore bør endres totalt, difficulty bør bl.a. fjernes
         const response = await savePlayerScore({
             ...data,
             difficulty: "Lett",

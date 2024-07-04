@@ -8,7 +8,7 @@ import Game from '../components/Game/GameScreen'
 import GameNavBar from '../components/NavBar/GameNavBar'
 import { useBackground } from '../contexts/backgroundContext' //TODO-later: hvorfor er det funksjon for backgrunnen???
 
-import { getEventByEventName } from '../api/gameModeApi' //TODO: migrer gameModeApi til eventApi
+import { getEventByEventName } from '../api/eventApi' //TODO: migrer gameModeApi til eventApi
 import { Event } from '@/types/types'
 
 export function GamePage(): JSX.Element {
