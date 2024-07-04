@@ -78,14 +78,12 @@ function GameScreen({
         setEndLocation(event.endLocation)
         setStartTime(new Date())
     }, [event])
-    // TODO: level.difficulty er endret til "lett" nå for å ungå bugs, men må fikses senere
+    
     useEffect(() => {
         setTimeDescription(
             formatTimeForEndOfGame(
                 currentTime,
-                startTime,
-                "lett",
-                numLegs,
+                startTime
             ),
         )
         window.scrollTo(0, document.body.scrollHeight)

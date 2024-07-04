@@ -58,12 +58,10 @@ export function VictoryScreen({
     })
     const navigate = useNavigate()
     const [isError, setError] = useState<boolean>(false)
-    //TODO: level.difficulty er endret til event.eventName, men det bør skjekkes om går bra
+    
     const timeDescription = formatTimeForEndOfGame(
         currentTime,
-        startTime,
-        event.eventName,
-        numLegs,
+        startTime
     )
     const [optimalRouteText, setOptimalRouteText] = useState<string>('')
 
