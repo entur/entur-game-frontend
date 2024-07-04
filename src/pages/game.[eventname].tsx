@@ -33,7 +33,12 @@ export function GamePage(): JSX.Element {
 
     useEffect(() => {
         async function fetchEventJson() {
-            const eventJson = await getEventByEventName('Event 2: middle') //TODO: bytt til eventName
+            if (!eventName) {
+                setEventError(true)
+                return
+            }
+
+            const eventJson = await getEventByEventName(eventName) 
             if (eventJson === null) {
                 setEventError(true)
                 return
@@ -54,7 +59,7 @@ export function GamePage(): JSX.Element {
             </div>
         )
     }
-    if (event === null) {
+    if (event === null) { //TODO: set eventError=true if event === null to long
         return <Loader>Loading...</Loader>
     }
 

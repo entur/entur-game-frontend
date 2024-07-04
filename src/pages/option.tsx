@@ -31,7 +31,7 @@ export function OptionPage(): ReactElement {
                         titleIcon={<MobilityIcon />}
                         onClick={() => {
                             navigate(
-                                `/game/${activeGameMode?.difficulty ?? 'Lett'}`,
+                                `/game/${activeGameMode?.difficulty ?? 'event4'}`,
                             )
                         }}
                     >
