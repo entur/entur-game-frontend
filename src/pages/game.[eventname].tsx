@@ -55,7 +55,7 @@ export function GamePage(): JSX.Element {
         // TODO: redirect to main screen
         return (
             <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
-                <Heading1>Level not found</Heading1>
+                <Heading1>Event not found</Heading1>
             </div>
         )
     }

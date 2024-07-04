@@ -21,8 +21,8 @@ import { getOptimalRouteText } from '../../../api/gameModeApi'
 type Props = {
     name: string
     event: Event
-    target: StopPlace
-    setTarget: (target: StopPlace) => void
+    endLocation: StopPlace
+    setEndLocation: (endLocation: StopPlace) => void
     numLegs: number
     currentTime: Date
     startTime: Date
@@ -39,7 +39,7 @@ type FormValues = {
 export function VictoryScreen({
     name = '',
     event,
-    target,
+    endLocation,
     numLegs,
     currentTime,
     startTime,
@@ -77,8 +77,8 @@ export function VictoryScreen({
                 id: event.startLocation.id,
             },
             toDestination: {
-                destination: target.name,
-                id: target.id,
+                destination: endLocation.name,
+                id: endLocation.id,
             },
             totalOptions: numLegs,
             totalPlaytime: Math.trunc((Date.now() - startTimer) / 1000),

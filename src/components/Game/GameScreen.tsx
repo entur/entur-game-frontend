@@ -52,8 +52,8 @@ function GameScreen({
     const [isLoading, setLoading] = useState<boolean>(false)
     const [hasBeenSprinkled, setSprinkled] = useState<boolean>(false)
     const [dead, setDead] = useState<boolean>(false)
-    const [stopPlace, setStopPlace] = useState<StopPlace>(event.startLocation)
-    const [targets, setTargets] = useState<StopPlace[]>(event.endLocation)
+    const [startLocation, setStartLocation] = useState<StopPlace>(event.startLocation)
+    const [endLocation, setEndLocation] = useState<StopPlace[]>(event.endLocation) //TODO: end-location should ideally not be a list
     const [mode, setMode] = useState<QueryMode | null>(null)
     const [departures, setDepartures] = useState<Departure[]>([])
     const [stopsOnLine, setStopsOnLine] = useState<StopAndTime[]>([])
@@ -73,12 +73,12 @@ function GameScreen({
     const [waitModalIsOpen, setWaitModalIsOpen] = useState<boolean>(false)
 
     useEffect(() => {
-        setStopPlace(event.startLocation)
+        setStartLocation(event.startLocation)
         setTravelLegs([event.startLocation])
-        setTargets(event.endLocation)
+        setEndLocation(event.endLocation)
         setStartTime(new Date())
     }, [event])
-    // TODO: level.difficulty er ndret til "lett" nå for å ungå bugs, men må fikses senere
+    // TODO: level.difficulty er endret til "lett" nå for å ungå bugs, men må fikses senere
     useEffect(() => {
         setTimeDescription(
             formatTimeForEndOfGame(
@@ -96,7 +96,7 @@ function GameScreen({
         setLoading(true)
         if (newMode === 'foot') {
             setDepartures([]) // Reset departures before showing walkable stops
-            getWalkableStopPlaces(stopPlace).then((stops) => {
+            getWalkableStopPlaces(startLocation).then((stops) => {
                 setStopsOnLine(
                     stops.map((stop) => ({
                         stopPlace: stop,
@@ -123,7 +123,7 @@ function GameScreen({
                 setLoading(false)
             })
         } else {
-            getDepartures(stopPlace.id, newMode, currentTime).then((deps) => {
+            getDepartures(startLocation.id, newMode, currentTime).then((deps) => {
                 setStopsOnLine([]) // Reset walkable stops before showing departures
                 setDepartures(deps)
                 if (!deps.length) {
@@ -182,7 +182,7 @@ function GameScreen({
         setMode(null)
         setModalOpen(false)
         if (stopAndTime) {
-            setStopPlace(stopAndTime.stopPlace)
+            setStartLocation(stopAndTime.stopPlace)
             setTravelLegs((prev) => [...prev, stopAndTime.stopPlace])
             setNumLegs((prev) => prev + 1)
         }
@@ -193,7 +193,7 @@ function GameScreen({
         setWaitModalIsOpen(true)
     }
 
-    if (targets.some((sp) => sp.id === stopPlace.id)) {
+    if (endLocation.some((sp) => sp.id === startLocation.id)) {
         handleWinner()
         if (!hasBeenSprinkled) {
             sprinkleEmojis({
@@ -209,9 +209,9 @@ function GameScreen({
                 <VictoryScreen
                     name={name}
                     event={event}
-                    target={targets[0]}
-                    setTarget={(target) => {
-                        setTargets([target])
+                    endLocation={endLocation[0]}
+                    setEndLocation={(endLocation) => {
+                        setEndLocation([endLocation])
                     }}
                     numLegs={numLegs}
                     currentTime={currentTime}
@@ -225,7 +225,7 @@ function GameScreen({
     if (dead && mode) {
         return (
             <div className="app" style={{ maxWidth: '800px' }}>
-                <DeadScreen mode={mode} stopPlace={stopPlace} />
+                <DeadScreen mode={mode} stopPlace={startLocation} />
             </div>
         )
     }
@@ -249,12 +249,12 @@ function GameScreen({
                     usedMode={usedMode}
                     selectMode={selectMode}
                     wait={wait}
-                    stopPlace={stopPlace}
+                    stopPlace={startLocation}
                     firstMove={travelLegs.length === 1}
                 />
             </div>
             <div className="mt-5 xl:mt-14">
-                <TravelLegFinished targets={targets} />
+                <TravelLegFinished endLocation={endLocation} />
             </div>
             <SecondaryButton
                 className="bg-lavender hover:bg-blue-80 sm:mt-28 mt-10 mb-10 sm:place-self-start place-self-center"
@@ -266,7 +266,7 @@ function GameScreen({
                 usedMode={usedMode}
                 noTransport={noTransport}
                 setNoTransport={setNoTransport}
-                stopPlace={stopPlace.name}
+                stopPlace={startLocation.name}
             />
             <Modal
                 open={waitModalIsOpen}

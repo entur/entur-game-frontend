@@ -4,10 +4,10 @@ import { TravelLeg } from '@entur/travel'
 import { Heading4 } from '@entur/typography'
 
 type Props = {
-    targets: StopPlace[]
+    endLocation: StopPlace[]
 }
 
-export function TravelLegFinished({ targets }: Props): ReactElement {
+export function TravelLegFinished({ endLocation }: Props): ReactElement {
     return (
         <>
             <div className="flex flex-row">
@@ -18,7 +18,7 @@ export function TravelLegFinished({ targets }: Props): ReactElement {
                     showStart={false}
                 />
                 <Heading4 className="place-self-end" margin="none">
-                    {targets[0].name}
+                    {endLocation[0].name}
                 </Heading4>
             </div>
         </>
