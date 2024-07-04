@@ -4,8 +4,8 @@ import { SleepIcon } from '@entur/icons'
 import { QueryMode, StopPlace } from '@entur/sdk'
 import { Heading2, Heading4 } from '@entur/typography'
 
-import { getModeIcon, getModeTranslation } from '../../../utils/transportMapper'
-import { ALL_MODES } from '../../../constant/queryMode'
+import { getModeIcon, getModeTranslation } from '@/lib/utils/transportMapper'
+import { ALL_MODES } from '@/lib/constants/queryMode'
 
 type Props = {
     currentTime: Date
