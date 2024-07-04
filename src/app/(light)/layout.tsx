@@ -10,13 +10,15 @@ export default function DarkModeLayout({
 }>) {
     return (
         <div className={`bg-blue-90 flex flex-col w-screen min-h-screen`}>
-            <Link href="/" className="pt-10 ml-5 mr-20">
-                <Image
-                    className="cursor-pointer"
-                    src={EnturPartnerIconDark}
-                    alt="entur partner"
-                />
-            </Link>
+            <div className="flex items-center pt-10 ml-5">
+                <Link href="/" className="mr-20">
+                    <Image
+                        className="cursor-pointer"
+                        src={EnturPartnerIconDark}
+                        alt="entur partner"
+                    />
+                </Link>
+            </div>
             {children}
         </div>
     )
