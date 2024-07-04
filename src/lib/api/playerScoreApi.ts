@@ -1,3 +1,5 @@
+import { PlayerScore } from '@/lib/types'
+
 const baseUrl = 'http://localhost:8080'
 
 export interface Destination {
@@ -21,25 +23,6 @@ export interface PlayerResponse {
 
 export type PlayerRequest = Omit<PlayerResponse, 'score'>
 
-export async function getTopTenByDifficulty(
-    difficulty: string,
-): Promise<PlayerResponse[]> {
-    const response = await fetch(
-        `${baseUrl}/player-score/difficulty=${difficulty}`,
-    )
-    return await response.json()
-}
-
-export async function getByDifficulty(
-    difficulty: string,
-    size?: number,
-): Promise<PlayerResponse[]> {
-    const response = await fetch(
-        `${baseUrl}/player-score/${difficulty}?size=${size ?? 20}`,
-    )
-    return await response.json()
-}
-
 export async function savePlayerScore(
     playerInfo: PlayerRequest,
 ): Promise<Response> {
@@ -51,4 +34,9 @@ export async function savePlayerScore(
         body: JSON.stringify(playerInfo),
     })
     return response
+}
+
+export async function getPlayerScoresByActiveEvent(): Promise<PlayerScore[]> {
+    const response = await fetch(`${baseUrl}/score/active`)
+    return await response.json()
 }

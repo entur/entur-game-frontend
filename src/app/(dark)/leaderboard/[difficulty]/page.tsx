@@ -11,42 +11,27 @@ import {
     HeaderCell,
 } from '@entur/table'
 import '@entur/table/dist/styles.css'
-import { getByDifficulty } from '@/lib/api/playerScoreApi'
 import { generateKey } from '@/lib/utils/generateUniqueKey'
 import EnInsertTur from '@/components/EnInsertTur'
 
 import useSWR from 'swr'
-import { getActiveGameModeEvent } from '@/lib/api/gameModeApi'
+import { sortNumber } from '@/lib/utils/sorters'
+import { PlayerScore } from '@/lib/types'
+import { getPlayerScoresByActiveEvent } from '@/lib/api/playerScoreApi'
 
 export default function EventHighScorePage(): JSX.Element {
-    const { data: activeGameMode } = useSWR('/game-mode/active-event', () =>
-        getActiveGameModeEvent(),
+    let { data: playerScores } = useSWR<PlayerScore[]>('/players', () =>
+        getPlayerScoresByActiveEvent(),
     )
-    let { data: players } = useSWR(
-        `/players/${activeGameMode !== undefined}`,
-        () => getByDifficulty(activeGameMode?.difficulty ?? 'Lett', 200),
-        { refreshInterval: 1000 * 10 },
-    )
-    if (players === undefined) {
+
+    if (playerScores === undefined) {
         return <p>Laster inn...</p>
     }
 
-    players = players.map((player, index) => {
-        if (index === 0) {
-            player.rank = 1
-        } else {
-            if (players !== undefined) {
-                if (player.score === players[index - 1].score) {
-                    player.rank = players[index - 1].rank
-                } else {
-                    player.rank = index + 1
-                }
-            }
-        }
-        return player
-    })
-
-    players = players.filter((player) => player.score > 0)
+    playerScores = playerScores.filter(
+        (playerScore) => playerScore.scoreValue > 0,
+    )
+    playerScores.sort((a, b) => sortNumber(a.scoreValue, b.scoreValue))
 
     return (
         <div
@@ -86,36 +71,36 @@ export default function EventHighScorePage(): JSX.Element {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {players.map((player) => (
-                        <TableRow key={generateKey(player.score + player.name)}>
+                    {playerScores.map((playerScore, index) => (
+                        <TableRow key={playerScore.scoreId}>
                             <DataCell>
                                 <Heading1 className="text-white">
-                                    {player.rank}
+                                    {index + 1}
                                 </Heading1>
                             </DataCell>
                             <DataCell>
                                 <Heading3 className="text-white">
-                                    {player.name}
+                                    {playerScore.player.playerName}
                                 </Heading3>
                             </DataCell>
                             <DataCell>
                                 <Heading3 className="text-white">
-                                    {player.score}
+                                    {playerScore.scoreValue}
                                 </Heading3>
                             </DataCell>
                             <DataCell>
                                 <Heading3 className="text-white">
-                                    {player.totalOptions}
+                                    {playerScore.totalStepNumber}
                                 </Heading3>
                             </DataCell>
                             <DataCell>
                                 <Heading3 className="text-white">
-                                    {player.totalTravelTime}
+                                    {playerScore.totalTravelTime}
                                 </Heading3>
                             </DataCell>
                             <DataCell>
                                 <Heading3 className="text-white">
-                                    {player.totalPlaytime}
+                                    {playerScore.totalPlayTime}
                                 </Heading3>
                             </DataCell>
                         </TableRow>
