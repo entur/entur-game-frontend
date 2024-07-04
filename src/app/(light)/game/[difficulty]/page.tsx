@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import React, { useEffect, useState } from 'react'
 import { Heading1 } from '@entur/typography'
@@ -8,7 +8,7 @@ import Game from '@/components/Game/GameScreen'
 import { Level, EASY } from '@/lib/constants/levels'
 import GameNavBar from '@/components/NavBar/GameNavBar'
 import { getGameMode } from '@/lib/api/gameModeApi'
-import {useParams} from "next/navigation";
+import { useParams } from 'next/navigation'
 
 type Params = {
     difficulty: string
@@ -47,7 +47,7 @@ export default function GamePage(): JSX.Element {
             </div>
         )
     }
-    if(level === null) {
+    if (level === null) {
         return <Loader>Loading...</Loader>
     }
 

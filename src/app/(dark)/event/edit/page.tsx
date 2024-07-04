@@ -1,6 +1,6 @@
-"use client"
+'use client'
 
-import React, { useEffect } from 'react'
+import { useState } from 'react'
 import { Heading3 } from '@entur/typography'
 
 import { Contrast } from '@entur/layout'
@@ -11,7 +11,7 @@ import {
     getActiveGameModeEvent,
     getAllGameMode,
     updateActiveGameModeEvent,
-} from "@/lib/api/gameModeApi"
+} from '@/lib/api/gameModeApi'
 import { Loader } from '@entur/loader'
 import { PrimaryButton } from '@entur/button'
 
@@ -21,14 +21,14 @@ export default function EventEditPage(): JSX.Element {
         getActiveGameModeEvent(),
     )
     const [selectedItem, setSelectedItem] =
-        React.useState<NormalizedDropdownItemType | null>(
+        useState<NormalizedDropdownItemType | null>(
             activeGameMode
                 ? {
-                    label:
-                        activeGameMode.name +
-                        ` (${activeGameMode.difficulty})`,
-                    value: activeGameMode.difficulty,
-                }
+                      label:
+                          activeGameMode.name +
+                          ` (${activeGameMode.difficulty})`,
+                      value: activeGameMode.difficulty,
+                  }
                 : null,
         )
 
