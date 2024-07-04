@@ -8,9 +8,8 @@ import Game from '../components/Game/GameScreen'
 import GameNavBar from '../components/NavBar/GameNavBar'
 import { useBackground } from '../contexts/backgroundContext' //TODO-later: hvorfor er det funksjon for backgrunnen???
 
-import { getGameModeByDifficulty, getEventByEventName } from '../api/gameModeApi' //TODO: må også endres, gameMode -> event
+import { getEventByEventName } from '../api/gameModeApi' //TODO: migrer gameModeApi til eventApi
 import { Event } from '@/types/types'
-import mockEvent from '../mock-api/event'
 
 export function GamePage(): JSX.Element {
     //visuals and game logic
@@ -22,10 +21,9 @@ export function GamePage(): JSX.Element {
 
     //event logic
     const { eventName } = useParams()
-    const [event, setEvent] = useState<Event | null>(mockEvent) //TODO: mockEvent
-    const [isEventError, setEventError] = useState<boolean>(false) //TODO: mockEvent
-    const [eventJson, setEventJson] = useState<Event | null>(null)
-    const [loadingEventJson, setLoadingEventJson] = useState<boolean>(true)
+    const [event, setEvent] = useState<Event | null>(null)
+    const [isEventError, setEventError] = useState<boolean>(false) 
+    const [loadingEvent, setLoadingEvent] = useState<boolean>(true)
 
     useEffect(() => {
         setBackgroundColor('bg-blue-90')
@@ -34,24 +32,16 @@ export function GamePage(): JSX.Element {
     }, [setBackgroundColor])
 
     useEffect(() => {
-        async function getData() {
-            console.log(event)
-            if (event === null) {
+        async function fetchEventJson() {
+            const eventJson = await getEventByEventName('Event 2: middle') //TODO: bytt til eventName
+            if (eventJson === null) {
                 setEventError(true)
                 return
             } else {
                 setEventError(false)
-                setEvent(event)
+                setLoadingEvent(false)
+                setEvent(eventJson)
             }
-        }
-        getData()
-    }, [eventName])
-
-    useEffect(() => {
-        async function fetchEventJson() {
-            const event = await getEventByEventName('event4')
-            setEventJson(event)
-            setLoadingEventJson(false)
         }
         fetchEventJson()
     }, [])
@@ -71,7 +61,7 @@ export function GamePage(): JSX.Element {
     return (
         <main className="flex flex-col">
             <div>
-                {loadingEventJson ? (
+                {loadingEvent ? (
                     <Loader>Loading event data...</Loader>
                 ) : (
                     <pre>{JSON.stringify(event, null, 2)}</pre>

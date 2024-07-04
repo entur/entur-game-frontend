@@ -10,6 +10,16 @@ export type Event = {
     optimalTravelTime: number;
   }
 
+  export type BackendEvent = {
+    eventId: number;
+    eventName: string;
+    startLocationId: string,
+    endLocationId: string,
+    startTime: string;
+    optimalStepNumber: number;
+    optimalTravelTime: number;
+  }
+
 export type Player = {
     playerId: number;
     playerName: string;
