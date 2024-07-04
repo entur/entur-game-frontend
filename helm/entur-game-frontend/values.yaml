@@ -1,0 +1,28 @@
+common:
+    app: entur-game
+    shortname: game
+    team: partner
+    ingress:
+        enabled: true
+        trafficType: public
+    service:
+        internalPort: 3000
+    container:
+        image: <+artifacts.primary.image>
+        cpu: 0.10
+        memory: 44
+        replicas: 2
+        probes:
+            liveness:
+                path: '/health'
+            readiness:
+                path: '/health'
+            startup:
+                path: '/health'
+        envFrom:
+            - configMapRef:
+                  name: entur-game-frontend-config
+    # secrets:
+    #     auth0-credentials:
+    #         - MNG_AUTH0_INT_CLIENT_SECRET
+    #         - MNG_AUTH0_INT_CLIENT_ID

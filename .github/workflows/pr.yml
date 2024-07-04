@@ -1,0 +1,14 @@
+name: PR
+on:
+    workflow_dispatch:
+    pull_request:
+
+jobs:
+    docker-lint:
+        uses: entur/gha-docker/.github/workflows/lint.yml@v1
+
+    helm-lint-permission-admin:
+        uses: entur/gha-helm/.github/workflows/lint.yml@v1
+        with:
+            environment: dev
+            chart: helm/entur-game-frontend

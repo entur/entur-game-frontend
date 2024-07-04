@@ -1,0 +1,12 @@
+common:
+    env: tst
+    ingress:
+        host: entur-game.staging.entur.org
+    container:
+        env:
+            - name: gcloud_logging
+              value: 'true'
+            - name: LOG_LEVEL
+              value: info
+            - name: DOCKER_IMAGE
+              value: <+artifacts.primary.image>
