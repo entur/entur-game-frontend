@@ -12,53 +12,46 @@ import { data } from '@entur/tokens'
 
 type TGeoresponse = {
     features: Array<{
-        items: {
+        properties: {
             id?: string
             name?: string
         }
     }>
 }
 
-const fetchItems = useCallback(
-    async (inputValue: string): Promise<NormalizedDropdownItemType[]> => {
-        console.log(inputValue)
-        try {
-            const response = await fetch(
-                `https://api.staging.entur.io/geocoder/v1/autocomplete?text=${inputValue}&size=5&lang=no`,
-                // Bruk signalet fra abortController for å avbryte utdaterte kall
-            )
-                .then((res) => res.json())
-                .then((data: TGeoresponse) => {
-                    return data.features.map(({ items }) => ({
-                        value: items.id ?? '',
-                        label: items.name ?? '',
-                    }))
-                })
-            console.log(response)
-            return response
-            // const data = await response.json()
-            // if (data.message !== undefined) return [data.message]
-
-            // const processedData = data.products.map(
-            //     (item: { title: String; id: String }) => {
-            //         return { label: item.title, value: item.id }
-            //     },
-            // )
-            // return processedData
-        } catch (error) {
-            // AbortError må sendes videre til komponenten for å håndtere cleanup riktig
-            if (error === 'AbortError') throw error
-            console.error('noe galt')
-            return []
-        }
-    },
-    [],
-)
-
 export function AdminCreateJourney(): ReactElement {
-    const [selected, setSelected] = useState<NormalizedDropdownItemType | null>(
-        null,
+    const fetchItems = useCallback(
+        async (inputValue: string): Promise<NormalizedDropdownItemType[]> => {
+            if (inputValue.length < 3) return []
+            console.log(inputValue)
+            try {
+                const response = await fetch(
+                    `https://api.entur.io/geocoder/v1/autocomplete?text=${inputValue}&size=5&lang=no&layer=venue`,
+                )
+                const data: TGeoresponse = await response.json()
+                console.log('Fetched data:', data)
+                const mappedData = data.features.map((feature) => {
+                    const { id, name } = feature.properties || {}
+                    return {
+                        value: name ?? '',
+                        label: id ?? '',
+                    }
+                })
+
+                console.log('Mapped data:', mappedData)
+                return mappedData
+            } catch (error) {
+                if (error === 'AbortError') throw error
+                console.error('Error fetching data:', error)
+                return []
+            }
+        },
+        [],
     )
+    const [selectedStart, setSelectedStart] =
+        useState<NormalizedDropdownItemType | null>(null)
+    const [selectedGoal, setSelectedGoal] =
+        useState<NormalizedDropdownItemType | null>(null)
 
     const [time, setTime] = useState<ZonedDateTime | null>(now('Europe/Oslo'))
     const { setBackgroundColor } = useBackground()
@@ -82,16 +75,16 @@ export function AdminCreateJourney(): ReactElement {
                     <SearchableDropdown
                         label="Start"
                         items={fetchItems}
-                        selectedItem={selected}
+                        selectedItem={selectedStart}
                         prepend={<MapPinIcon></MapPinIcon>}
-                        onChange={setSelected}
+                        onChange={setSelectedStart}
                     />
                     <SearchableDropdown
                         label="Mål"
                         items={fetchItems}
                         prepend={<DestinationIcon></DestinationIcon>}
-                        selectedItem={selected}
-                        onChange={setSelected}
+                        selectedItem={selectedGoal}
+                        onChange={setSelectedGoal}
                     />
                 </div>
                 <div className="space-y-10 mt-10">
