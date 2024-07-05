@@ -29,7 +29,7 @@ export function AdminPage(): JSX.Element {
                     className="h-full"
                     title="Opprett rute"
                     titleIcon={<AdjustmentsIcon />}
-                    href="https://om.entur.no/reisende/reiseplanleggeren/"
+                    href="http://localhost:3000/admin-create-journey"
                 >
                     Her oppretter du en ny rute. Du velger hvor og når ruten
                     begynner, og hvor den skal ende.
@@ -38,7 +38,7 @@ export function AdminPage(): JSX.Element {
                     className="h-full"
                     title="Leaderboard"
                     titleIcon={<BulletListIcon />}
-                    href="https://om.entur.no/reisende/reiseplanleggeren/"
+                    href="http://localhost:3000/admin-leaderboard"
                 >
                     Her har du oversikt over alle lagrede poengsummer og
                     mulighet til å trekke en vinner blandt de beste
