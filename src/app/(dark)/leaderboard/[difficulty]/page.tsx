@@ -1,5 +1,6 @@
 'use client'
 
+//TODO: hva må playerScoros eller url være for at koden skal kunne kjøres
 import React from 'react'
 import { Heading1, Heading3 } from '@entur/typography'
 import {
@@ -11,7 +12,6 @@ import {
     HeaderCell,
 } from '@entur/table'
 import '@entur/table/dist/styles.css'
-import { generateKey } from '@/lib/utils/generateUniqueKey'
 import EnInsertTur from '@/components/EnInsertTur'
 
 import useSWR from 'swr'
