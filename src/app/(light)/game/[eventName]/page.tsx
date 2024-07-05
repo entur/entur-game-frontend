@@ -1,0 +1,82 @@
+'use client'
+
+import React, { useEffect, useState } from 'react'
+import { useParams } from 'next/navigation'
+
+import { Heading1 } from '@entur/typography'
+import { Loader } from '@entur/loader'
+
+import Game from '@/components/Game/GameScreen'
+import GameNavBar from '@/components/NavBar/GameNavBar' //TODO: hvorfor er det en GameNavBar
+import { getEventByEventName } from '@/lib/api/eventApi'
+import { Event } from '@/lib/types'
+
+export default function GamePage(): JSX.Element {
+    //visuals and game logic
+    const [numLegs, setNumLegs] = useState<number>(0)
+    const [startTimer, setStartTimer] = useState<number>(0)
+    const [timeDescription, setTimeDescription] = useState<string>('')
+    const [totalHp, setTotalHp] = useState<number>(2)
+
+    //event logic
+    const { eventName } = useParams()
+    const [event, setEvent] = useState<Event | null>(null)
+    const [isEventError, setEventError] = useState<boolean>(false)
+
+    useEffect(() => {
+        async function fetchEventJson() {
+            if (!eventName || Array.isArray(eventName)) { //TODO: skjekk om Array.isArray(eventName) går bra, tror det skal gå bra fordi eventName aldri er string[]
+                setEventError(true)
+                return
+            }
+
+            const eventJson = await getEventByEventName(eventName) 
+            if (eventJson === null) {
+                setEventError(true)
+                return
+            } else {
+                setEventError(false)
+                setEvent(eventJson)
+            }
+        }
+        fetchEventJson()
+    }, [])
+
+    if (isEventError) {
+        // TODO: redirect to main screen
+        return (
+            <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
+                <Heading1>Event not found</Heading1>
+            </div>
+        )
+    }
+    if (event === null) { //TODO: errorHandling dersom event=== null for lenge. "event not found" bør vises i stedet etter en viss tid
+        return <Loader>Loading...</Loader>
+    }
+
+    return (
+        <main className="flex flex-col">
+            <div className="sm:sticky top-20">
+                <GameNavBar
+                    healthLeft={totalHp + 1}
+                    numLegs={numLegs}
+                    timeDescription={timeDescription}
+                />
+            </div>
+            <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
+                <Game
+                    name={''}
+                    event={event}
+                    startTimer={startTimer}
+                    // eslint-disable-next-line @typescript-eslint/no-empty-function
+                    handleWinner={() => {}}
+                    totalHp={totalHp}
+                    setTotalHp={setTotalHp}
+                    numLegs={numLegs}
+                    setNumLegs={setNumLegs}
+                    setTimeDescription={setTimeDescription}
+                />
+            </div>
+        </main>
+    )
+}

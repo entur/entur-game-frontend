@@ -7,22 +7,22 @@ import {
     VictoryArtBoardCookieImage,
     VictoryArtBoardOvalImage,
 } from './VictoryScreenArt'
-import { Level } from '@/lib/constants/levels'
+import { Event } from '@/lib/types'
 import { StopPlace } from '@entur/sdk'
 import { savePlayerScore } from '@/lib/api/playerScoreApi'
 import {
     formatIntervalToSeconds,
     formatTimeForEndOfGame,
 } from '@/lib/utils/dateFnsUtils'
-import { getOptimalRouteText } from '@/lib/api/gameModeApi'
 import { Controller, useForm } from 'react-hook-form'
+import { createOptimalRouteText } from '@/lib/api/eventApi'
 import { useRouter } from 'next/navigation'
 
 type Props = {
     name: string
-    level: Level
-    target: StopPlace
-    setTarget: (target: StopPlace) => void
+    event: Event
+    endLocation: StopPlace
+    setEndLocation: (endLocation: StopPlace) => void
     numLegs: number
     currentTime: Date
     startTime: Date
@@ -38,8 +38,8 @@ type FormValues = {
 
 export function VictoryScreen({
     name = '',
-    level,
-    target,
+    event,
+    endLocation,
     numLegs,
     currentTime,
     startTime,
@@ -58,25 +58,25 @@ export function VictoryScreen({
     })
     const router = useRouter()
     const [isError, setError] = useState<boolean>(false)
+    
     const timeDescription = formatTimeForEndOfGame(
         currentTime,
-        startTime,
-        level.difficulty,
-        numLegs,
+        startTime
     )
     const [optimalRouteText, setOptimalRouteText] = useState<string>('')
 
     async function onSubmit(data: FormValues) {
+        // TODO: savePlayerScore bør endres totalt, difficulty bør bl.a. fjernes
         const response = await savePlayerScore({
             ...data,
-            difficulty: level.difficulty,
+            difficulty: "Lett",
             fromDestination: {
-                destination: level.start.name,
-                id: level.start.id,
+                destination: event.startLocation.name,
+                id: event.startLocation.id,
             },
             toDestination: {
-                destination: target.name,
-                id: target.id,
+                destination: endLocation.name,
+                id: endLocation.id,
             },
             totalOptions: numLegs,
             totalPlaytime: Math.trunc((Date.now() - startTimer) / 1000),
@@ -92,11 +92,11 @@ export function VictoryScreen({
     }
 
     useEffect(() => {
-        async function getData(): Promise<void> {
-            const data = await getOptimalRouteText(level.difficulty)
+        async function getOptimalRouteText(): Promise<void> {
+            const data = await createOptimalRouteText(event)
             setOptimalRouteText(data)
         }
-        getData()
+        getOptimalRouteText()
         window.scroll(0, 0)
     }, [])
 
@@ -117,7 +117,7 @@ export function VictoryScreen({
                 >
                     <Heading3 className="font-semibold">Du er fremme!</Heading3>
                     <Paragraph>
-                        {`Du kom deg fra ${level.start.name} til ${level.targets[0].name} på ${numLegs} etapper og ${timeDescription}`}
+                        {`Du kom deg fra ${event.startLocation.name} til ${event.endLocation[0].name} på ${numLegs} etapper og ${timeDescription}`}
                         <br />
                         <br />
                         {optimalRouteText}
