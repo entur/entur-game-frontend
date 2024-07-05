@@ -4,11 +4,10 @@ import { Heading1, Heading3, LeadParagraph } from '@entur/typography'
 import { MapPinIcon, DestinationIcon } from '@entur/icons'
 import { useBackground } from '../contexts/backgroundContext'
 import { BlockquoteFooter } from '@entur/typography'
-import { TimePicker } from '@entur/datepicker'
+import { DatePicker, TimePicker } from '@entur/datepicker'
 import { now, ZonedDateTime } from '@internationalized/date'
 import { NormalizedDropdownItemType, SearchableDropdown } from '@entur/dropdown'
 import { AdminNavBar } from '@/components/NavBar/AdminNavBar'
-import { data } from '@entur/tokens'
 
 type TGeoresponse = {
     features: Array<{
@@ -22,8 +21,6 @@ type TGeoresponse = {
 export function AdminCreateJourney(): ReactElement {
     const fetchItems = useCallback(
         async (inputValue: string): Promise<NormalizedDropdownItemType[]> => {
-            if (inputValue.length < 3) return []
-            console.log(inputValue)
             try {
                 const response = await fetch(
                     `https://api.entur.io/geocoder/v1/autocomplete?text=${inputValue}&size=5&lang=no&layer=venue`,
@@ -37,7 +34,6 @@ export function AdminCreateJourney(): ReactElement {
                         value: id ?? '',
                     }
                 })
-
                 console.log('Mapped data:', mappedData)
                 return mappedData
             } catch (error) {
@@ -53,6 +49,9 @@ export function AdminCreateJourney(): ReactElement {
     const [selectedGoal, setSelectedGoal] =
         useState<NormalizedDropdownItemType | null>(null)
 
+    const [dateTime, setDateTime] = useState<ZonedDateTime | null>(
+        now('Europe/Oslo'),
+    )
     const [time, setTime] = useState<ZonedDateTime | null>(now('Europe/Oslo'))
     const { setBackgroundColor } = useBackground()
 
@@ -89,12 +88,25 @@ export function AdminCreateJourney(): ReactElement {
                 </div>
                 <div className="space-y-10 mt-10">
                     <Heading3>Velg starttidspunkt</Heading3>
-                    <TimePicker
-                        label="Tid"
-                        selectedTime={time}
-                        locale="no-NB"
-                        onChange={(time: ZonedDateTime | null) => setTime(time)}
-                    />
+                    <div style={{ display: 'flex', gap: '1rem' }}>
+                        <DatePicker
+                            label="Dato"
+                            selectedDate={dateTime}
+                            onChange={setDateTime}
+                            locale="nb-NO"
+                            // 'forcedReturnType' er nødvendig når
+                            // initiell state er 'null'
+                            forcedReturnType="ZonedDateTime"
+                        />
+                        <TimePicker
+                            label="Tid"
+                            selectedTime={time}
+                            locale="no-NB"
+                            onChange={(time: ZonedDateTime | null) =>
+                                setTime(time)
+                            }
+                        />
+                    </div>
                     <Button width="auto" variant="primary" size="medium">
                         Opprett rute
                     </Button>
