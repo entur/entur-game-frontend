@@ -13,7 +13,7 @@ import { Event } from '@/lib/types'
 
 export default function GamePage(): JSX.Element {
     //visuals and game logic
-    const startTimer = useState<number>(Date.now())
+    const [startTimer] = useState<number>(Date.now())
     const [timeDescription, setTimeDescription] = useState<string>('')
     const [numLegs, setNumLegs] = useState<number>(0)
     const [totalHp, setTotalHp] = useState<number>(2)
