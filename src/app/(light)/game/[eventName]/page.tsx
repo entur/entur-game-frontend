@@ -13,19 +13,19 @@ import { Event } from '@/lib/types'
 
 export default function GamePage(): JSX.Element {
     //visuals and game logic
-    const [numLegs, setNumLegs] = useState<number>(0)
-    const [startTimer, setStartTimer] = useState<number>(0)
+    const startTimer = useState<number>(Date.now())
     const [timeDescription, setTimeDescription] = useState<string>('')
+    const [numLegs, setNumLegs] = useState<number>(0)
     const [totalHp, setTotalHp] = useState<number>(2)
 
     //event logic
-    const { eventName } = useParams()
+    const { eventName } : {eventName: string} = useParams()
     const [event, setEvent] = useState<Event | null>(null)
     const [isEventError, setEventError] = useState<boolean>(false)
 
     useEffect(() => {
         async function fetchEventJson() {
-            if (!eventName || Array.isArray(eventName)) { //TODO: skjekk om Array.isArray(eventName) går bra, tror det skal gå bra fordi eventName aldri er string[]
+            if (!eventName) {
                 setEventError(true)
                 return
             }
@@ -38,6 +38,7 @@ export default function GamePage(): JSX.Element {
                 setEventError(false)
                 setEvent(eventJson)
             }
+            
         }
         fetchEventJson()
     }, [])
