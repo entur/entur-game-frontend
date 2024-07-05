@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
-import ArtBoardCookie from '../../../assets/images/ArtBoardCookie.png'
-import ArtBoardOval from '../../../assets/images/ArtBoardOval.png'
-import ArtBoardCircle from '../../../assets/images/ArtBoardCircle.png'
+import ArtBoardCookie from '@/lib/assets/images/ArtBoardCookie.png'
+import ArtBoardOval from '@/lib/assets/images/ArtBoardOval.png'
+import ArtBoardCircle from '@/lib/assets/images/ArtBoardCircle.png'
 
 type BackgroundImage = {
     className?: string

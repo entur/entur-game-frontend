@@ -1,10 +1,11 @@
 import React from 'react'
 import { Heading5, Label } from '@entur/typography'
 
-import Heart from '../assets/icons/Heart.svg'
-import DeadHeart from '../assets/icons/DeadHeart.svg'
-import { generateKey } from '../utils/generateUniqueKey'
+import Heart from '@/lib/assets/icons/Heart.svg'
+import DeadHeart from '@/lib/assets/icons/DeadHeart.svg'
+import { generateKey } from '@/lib/utils/generateUniqueKey'
 import { ClockIcon, TrackIcon } from '@entur/icons'
+import Image from 'next/image'
 
 type Props = {
     className?: string
@@ -54,7 +55,7 @@ function GameStatus({
                         <div className="flex flex-row pt-1">
                             {Array.from(Array(healthLeft), (_, k) => {
                                 return (
-                                    <img
+                                    <Image
                                         key={generateKey(k.toString())}
                                         src={Heart}
                                         alt="heart"
@@ -64,7 +65,7 @@ function GameStatus({
                             })}
                             {Array.from(Array(3 - healthLeft), (_, k) => {
                                 return (
-                                    <img
+                                    <Image
                                         key={generateKey(k.toString())}
                                         src={DeadHeart}
                                         alt="dead heart"

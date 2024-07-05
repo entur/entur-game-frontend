@@ -7,16 +7,16 @@ import {
     VictoryArtBoardCookieImage,
     VictoryArtBoardOvalImage,
 } from './VictoryScreenArt'
-import { Level } from '../../../constant/levels'
+import { Level } from '@/lib/constants/levels'
 import { StopPlace } from '@entur/sdk'
-import { useNavigate } from 'react-router-dom'
-import { savePlayerScore } from '../../../api/playerScoreApi'
+import { savePlayerScore } from '@/lib/api/playerScoreApi'
 import {
     formatIntervalToSeconds,
     formatTimeForEndOfGame,
-} from '../../../utils/dateFnsUtils'
+} from '@/lib/utils/dateFnsUtils'
+import { getOptimalRouteText } from '@/lib/api/gameModeApi'
 import { Controller, useForm } from 'react-hook-form'
-import { getOptimalRouteText } from '../../../api/gameModeApi'
+import { useRouter } from 'next/navigation'
 
 type Props = {
     name: string
@@ -56,7 +56,7 @@ export function VictoryScreen({
     } = useForm<FormValues>({
         defaultValues: { name: name, email: '', consent: false },
     })
-    const navigate = useNavigate()
+    const router = useRouter()
     const [isError, setError] = useState<boolean>(false)
     const timeDescription = formatTimeForEndOfGame(
         currentTime,
@@ -84,7 +84,7 @@ export function VictoryScreen({
         })
         if (response.status > 199 && response.status < 299) {
             setTimeout(() => {
-                navigate('/')
+                router.push('/')
             }, 5000)
             return
         }
@@ -229,7 +229,7 @@ export function VictoryScreen({
                             className="bg-lavender select-none"
                             loading={isSubmitting || isLoading}
                             disabled={watch('consent')}
-                            onClick={() => navigate('/')}
+                            onClick={() => router.push('/')}
                         >
                             Avslutt reise
                         </SecondaryButton>

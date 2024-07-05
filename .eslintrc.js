@@ -1,4 +1,7 @@
 module.exports = {
+    env: {
+        node: true,
+    },
     root: true,
     parser: '@typescript-eslint/parser',
     plugins: ['@typescript-eslint', 'react', 'prettier'],
@@ -14,10 +17,11 @@ module.exports = {
     ],
     rules: {
         'prettier/prettier': 'warn',
+        'react/react-in-jsx-scope': 'off',
     },
     settings: {
         react: {
             version: 'detect',
         },
-    }
+    },
 }

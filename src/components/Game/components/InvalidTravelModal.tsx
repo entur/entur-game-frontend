@@ -1,9 +1,9 @@
 import { QueryMode } from '@entur/sdk'
-import { getModeTranslation } from '../../../utils/transportMapper'
+import { getModeTranslation } from '@/lib/utils/transportMapper'
 import { Modal } from '@entur/modal'
 import React from 'react'
 import { Paragraph } from '@entur/typography'
-import brokenHeart from '@assets/icons/BrokenHeart.svg'
+import brokenHeart from '@/lib/assets/icons/BrokenHeart.svg'
 
 type Props = {
     usedMode: QueryMode[]

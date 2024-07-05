@@ -1,8 +1,9 @@
+'use client'
+
 import { Heading2, Paragraph } from '@entur/typography'
-import { getModeTranslation } from '../../utils/transportMapper'
+import { getModeTranslation } from '@/lib/utils/transportMapper'
 import { PrimaryButton } from '@entur/button'
 import React from 'react'
-import { sprinkleEmojis } from 'emoji-sprinkle'
 import { QueryMode, StopPlace } from '@entur/sdk'
 
 type Props = {
@@ -10,12 +11,6 @@ type Props = {
     stopPlace: StopPlace
 }
 function DeadScreen({ mode, stopPlace }: Props): JSX.Element {
-    sprinkleEmojis({
-        emoji: '👻',
-        count: 50,
-        fade: 10,
-        fontSize: 60,
-    })
     window.scrollTo(0, 0) // Scroll to top of the screen
     return (
         <>

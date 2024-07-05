@@ -15,7 +15,6 @@ export function TravelLegFinished({ targets }: Props): ReactElement {
                     className="mt-1 mb-2 mr-6 sm:mr-8 h-28 [&>*]:bg-blue-40"
                     transport="foot"
                     direction="vertical"
-                    showStart={false}
                 />
                 <Heading4 className="place-self-end" margin="none">
                     {targets[0].name}
