@@ -11,7 +11,6 @@ import {
     HeaderCell,
 } from '@entur/table'
 import '@entur/table/dist/styles.css'
-import { generateKey } from '@/lib/utils/generateUniqueKey'
 import EnInsertTur from '@/components/EnInsertTur'
 
 import useSWR from 'swr'
