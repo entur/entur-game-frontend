@@ -53,7 +53,7 @@ function GameScreen({
     const [isLoading, setLoading] = useState<boolean>(false)
     const [dead, setDead] = useState<boolean>(false)
     const [startLocation, setStartLocation] = useState<StopPlace>(event.startLocation)
-    const [endLocation, setEndLocation] = useState<StopPlace[]>(event.endLocation) //TODO: end-location should ideally not be a list
+    const [endLocation, setEndLocation] = useState<StopPlace[]>(event.endLocation) //TODO: end-location burde ideelt sett ikke være en liste
     const [mode, setMode] = useState<QueryMode | null>(null)
     const [departures, setDepartures] = useState<Departure[]>([])
     const [stopsOnLine, setStopsOnLine] = useState<StopAndTime[]>([])

@@ -7,7 +7,7 @@ import { Heading1 } from '@entur/typography'
 import { Loader } from '@entur/loader'
 
 import Game from '@/components/Game/GameScreen'
-import GameNavBar from '@/components/NavBar/GameNavBar' //TODO: hvorfor er det en GameNavBar
+import GameNavBar from '@/components/NavBar/GameNavBar'
 import { getEventByEventName } from '@/lib/api/eventApi'
 import { Event } from '@/lib/types'
 

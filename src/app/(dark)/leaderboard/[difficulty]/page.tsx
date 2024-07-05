@@ -1,6 +1,6 @@
 'use client'
 
-//TODO: hva må playerScoros eller url være for at koden skal kunne kjøres
+//TODO: hele fil renames: [difficulty] -> [eventName] etterhvert 
 import React from 'react'
 import { Heading1, Heading3 } from '@entur/typography'
 import {
