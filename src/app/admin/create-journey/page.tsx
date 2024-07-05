@@ -1,6 +1,6 @@
 'use client'
 
-import { ReactElement, useCallback, useEffect, useState } from 'react'
+import React, { ReactElement } from 'react'
 import { Button } from '@entur/button'
 import { Heading1, Heading3, LeadParagraph } from '@entur/typography'
 import { MapPinIcon, DestinationIcon } from '@entur/icons'
@@ -8,7 +8,7 @@ import { BlockquoteFooter } from '@entur/typography'
 import { DatePicker, TimePicker } from '@entur/datepicker'
 import { now, ZonedDateTime } from '@internationalized/date'
 import { NormalizedDropdownItemType, SearchableDropdown } from '@entur/dropdown'
-import { AdminNavBar } from '@/components/NavBar/AdminNavBar'
+
 
 type TGeoresponse = {
     features: Array<{
@@ -19,10 +19,11 @@ type TGeoresponse = {
     }>
 }
 
-export function AdminCreateJourney(): ReactElement {
-    const fetchItems = useCallback(
+export default function AdminCreateJourney(): ReactElement {
+    const fetchItems = React.useCallback(
         async (inputValue: string): Promise<NormalizedDropdownItemType[]> => {
             try {
+                if (inputValue.length < 2) return []
                 const response = await fetch(
                     `https://api.entur.io/geocoder/v1/autocomplete?text=${inputValue}&size=5&lang=no&layer=venue`,
                 )
@@ -35,7 +36,7 @@ export function AdminCreateJourney(): ReactElement {
                         value: id ?? '',
                     }
                 })
-                console.log('Mapped data:', mappedData)
+                // console.log('Mapped data:', mappedData)
                 return mappedData
             } catch (error) {
                 if (error === 'AbortError') throw error
@@ -46,25 +47,26 @@ export function AdminCreateJourney(): ReactElement {
         [],
     )
     const [selectedStart, setSelectedStart] =
-        useState<NormalizedDropdownItemType | null>(null)
+        React.useState<NormalizedDropdownItemType | null>(null)
     const [selectedGoal, setSelectedGoal] =
-        useState<NormalizedDropdownItemType | null>(null)
+        React.useState<NormalizedDropdownItemType | null>(null)
 
-    const [dateTime, setDateTime] = useState<ZonedDateTime | null>(
+    const [date, setDate] = React.useState<ZonedDateTime | null>(
         now('Europe/Oslo'),
     )
-    const [time, setTime] = useState<ZonedDateTime | null>(now('Europe/Oslo'))
+    const [time, setTime] = React.useState<ZonedDateTime | null>(now('Europe/Oslo'))
   
     return (
-        <div>
-            <AdminNavBar></AdminNavBar>
-            <div className="max-w-md mx-auto p-4">
+
+            <div className="max-w-md ml-56 p-4 ">
                 <BlockquoteFooter>Opprett Rute</BlockquoteFooter>
                 <Heading1>Opprett en ny rute</Heading1>
-                <LeadParagraph>
-                    Konfigurer ny rute ved å angi start, mål og starttidspunkt
-                </LeadParagraph>
-                <div className="space-y-10 mt-10">
+                <div className='pb-0 mb-0'>
+                    <LeadParagraph>
+                        Konfigurer ny rute ved å angi start, mål og starttidspunkt
+                    </LeadParagraph>
+                </div>
+                <div className="space-y-10 pt-6">
                     <Heading3>Velg start og mål</Heading3>
                     <SearchableDropdown
                         label="Start"
@@ -81,32 +83,29 @@ export function AdminCreateJourney(): ReactElement {
                         onChange={setSelectedGoal}
                     />
                 </div>
-                <div className="space-y-10 mt-10">
+                <div className="space-y-10 pt-12">
                     <Heading3>Velg starttidspunkt</Heading3>
-                    <div style={{ display: 'flex', gap: '1rem' }}>
+                    <div className='flex flex-row'>
+                        <div className='pr-10'>
                         <DatePicker
                             label="Dato"
-                            selectedDate={dateTime}
-                            onChange={setDateTime}
-                            locale="nb-NO"
-                            // 'forcedReturnType' er nødvendig når
-                            // initiell state er 'null'
-                            forcedReturnType="ZonedDateTime"
-                        />
+                            selectedDate={date}
+                            onChange={setDate}
+                            locale="nb-NO"></DatePicker>
+                        </div>
                         <TimePicker
                             label="Tid"
                             selectedTime={time}
                             locale="no-NB"
-                            onChange={(time: ZonedDateTime | null) =>
-                                setTime(time)
-                            }
-                        />
+                            onChange={setTime}></TimePicker>
                     </div>
-                    <Button width="auto" variant="primary" size="medium">
-                        Opprett rute
-                    </Button>
+                    <div className='pt-12'>
+                        <Button width="auto" variant="primary" size="medium">
+                            Opprett rute
+                        </Button>
+                    </div>
                 </div>
             </div>
-        </div>
+
     )
 }

@@ -13,7 +13,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body
-                className={`bg-blue-main flex flex-col w-screen min-h-screen`}
+                className={`$colors-brand-blue flex flex-col w-screen min-h-screen`}
             >
                 {children}
             </body>
