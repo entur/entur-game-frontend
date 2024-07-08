@@ -5,18 +5,19 @@ import { useParams } from 'next/navigation'
 
 import { BlockquoteFooter, Heading1, LeadParagraph } from '@entur/typography'
 import { Loader } from '@entur/loader'
+import { Modal } from '@entur/modal'  // Husk å importere nødvendige komponenter fra modal-biblioteket
 
 import { PlayerScore } from '@/lib/types/types'
-import { DataCell, HeaderCell, Table, TableBody, TableHead, TableRow } from '@entur/table';
+import { DataCell, HeaderCell, Table, TableBody, TableHead, TableRow } from '@entur/table'
 import { getPlayerScoresByActiveEvent } from '@/lib/api/playerScoreApi'
 import { Button } from '@entur/button'
 
 export default function GamePage(): JSX.Element {
-
     // const { eventName } : {eventName: string} = useParams() TODO: kanskje behold
 
     const [scores, setScores] = useState<PlayerScore[]>([]) 
     const [isScoreError, setScoreError] = useState<boolean>(false)
+    const [isOpen, setOpen] = useState<boolean>(false)
 
     useEffect(() => {
         async function getScores() {
@@ -33,7 +34,6 @@ export default function GamePage(): JSX.Element {
         }
         getScores()
     }, [])
-
 
     if (isScoreError || scores.length === 0 || scores == null) {
         // TODO: redirect to main screen
@@ -70,12 +70,21 @@ export default function GamePage(): JSX.Element {
                         </TableRow>
                     ))}
                 </TableBody>
-                <div className="pt-12">
-                    <Button width="auto" variant="success" size="medium">
-                        Trekk en vinner
-                    </Button>
-                </div>
             </Table>
+            <div className="pt-12">
+                <Button width="auto" variant="success" size="medium" onClick={() => setOpen(true)}>
+                    Trekk en vinner
+                </Button>
+            </div>
+            <Modal
+                open={isOpen}
+                onDismiss={() => setOpen(false)}
+                title={`Vinner: ${scores[0].player.playerName}`}
+                size="medium"
+            >
+                <p>E-post: {scores[0].player.email}</p>
+                <p>E-post: {scores[0].player.phoneNumber}</p>
+            </Modal>
         </div>
     )
 }
