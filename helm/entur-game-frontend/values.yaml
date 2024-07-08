@@ -19,9 +19,6 @@ common:
                 path: '/health'
             startup:
                 path: '/health'
-        envFrom:
-            - configMapRef:
-                  name: entur-game-frontend-config
     # secrets:
     #     auth0-credentials:
     #         - MNG_AUTH0_INT_CLIENT_SECRET
