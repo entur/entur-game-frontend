@@ -57,6 +57,7 @@ export default function AdminCreateJourney(): ReactElement {
         now('Europe/Oslo'),
     )
 
+    //TODO: vurdere className="max-w-screen ml-56 p-4 på første div for consistensy
     return (
         <div className="max-w-md ml-56 p-4 ">
             <BlockquoteFooter>Opprett Rute</BlockquoteFooter>

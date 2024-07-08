@@ -10,6 +10,7 @@ import Game from '@/components/Game/GameScreen'
 import GameNavBar from '@/components/NavBar/GameNavBar'
 import { getEventByEventName } from '@/lib/api/eventApi'
 import { Event } from '@/lib/types/types'
+import { DataCell, HeaderCell, Table, TableBody, TableHead, TableRow } from '@entur/table';
 
 export default function GamePage(): JSX.Element {
     const [startTimer] = useState<number>(Date.now())
@@ -54,7 +55,7 @@ export default function GamePage(): JSX.Element {
     }
 
     return (
-        <div className="max-w-md ml-56 p-4 ">
+        <div className="max-w-screen ml-56 p-4 ">
             <BlockquoteFooter>Ledertavle</BlockquoteFooter>
             <Heading1>Arendal stasjon - Trondheim S</Heading1>
             <div className="pb-0 mb-0">
@@ -62,6 +63,32 @@ export default function GamePage(): JSX.Element {
                     Ledertavle for nåværende rute
                 </LeadParagraph>
             </div>
+            <Table>
+            <TableHead>
+                <TableRow>
+                <HeaderCell>Spiller</HeaderCell>
+                <HeaderCell>Reisetid</HeaderCell>
+                <HeaderCell>Poengsum</HeaderCell>
+                </TableRow>
+            </TableHead>
+            <TableBody>
+                <TableRow>
+                <DataCell>Oscar</DataCell>
+                <DataCell>10.00</DataCell>
+                <DataCell>Østerås</DataCell>
+                </TableRow>
+                <TableRow>
+                <DataCell>Tomas</DataCell>
+                <DataCell>11.00</DataCell>
+                <DataCell>Østerås</DataCell>
+                </TableRow>
+                <TableRow>
+                <DataCell>Selma</DataCell>
+                <DataCell>12.00</DataCell>
+                <DataCell>Østerås</DataCell>
+                </TableRow>
+            </TableBody>
+            </Table>
         </div>
     )
 }
