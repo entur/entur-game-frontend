@@ -9,7 +9,7 @@ import { Loader } from '@entur/loader'
 import Game from '@/components/Game/GameScreen'
 import GameNavBar from '@/components/NavBar/GameNavBar'
 import { getEventByEventName } from '@/lib/api/eventApi'
-import { Event } from '@/lib/types'
+import { Event } from '@/lib/types/types'
 
 export default function GamePage(): JSX.Element {
     const [startTimer] = useState<number>(Date.now())
