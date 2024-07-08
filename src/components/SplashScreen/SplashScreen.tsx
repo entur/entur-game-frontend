@@ -55,9 +55,9 @@ export function SplashScreen(): JSX.Element {
                         <div className="w-80">
                             <Button
                                 className="font-semibold w-full"
-                                onClick={() =>
+                                onClick={() => 
                                     router.push(
-                                        `/game/${activeGameMode?.difficulty}`,
+                                        `/admin/create-journey`,
                                     )
                                 }
                                 variant="success"
