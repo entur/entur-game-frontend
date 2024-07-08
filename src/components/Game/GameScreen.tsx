@@ -7,7 +7,7 @@ import { addHours, addMinutes } from 'date-fns'
 import { PrimaryButton, SecondaryButton } from '@entur/button'
 import { useRouter } from 'next/navigation'
 
-import { Level } from '@/lib/constants/levels'
+import { Event } from '@/lib/types'
 import { InvalidTravelModal } from './components/InvalidTravelModal'
 import { useEnturService } from '@/lib/hooks/useEnturService'
 import { formatDate, formatTimeForEndOfGame } from '@/lib/utils/dateFnsUtils'
@@ -28,7 +28,7 @@ export interface StopAndTime {
 
 type Props = {
     name: string
-    level: Level
+    event: Event
     startTimer: number
     handleWinner: () => void
     totalHp: number
@@ -39,7 +39,7 @@ type Props = {
 }
 
 function GameScreen({
-    level,
+    event,
     totalHp,
     setTotalHp,
     numLegs,
@@ -52,14 +52,14 @@ function GameScreen({
     const router = useRouter()
     const [isLoading, setLoading] = useState<boolean>(false)
     const [dead, setDead] = useState<boolean>(false)
-    const [stopPlace, setStopPlace] = useState<StopPlace>(level.start)
-    const [targets, setTargets] = useState<StopPlace[]>(level.targets)
+    const [startLocation, setStartLocation] = useState<StopPlace>(event.startLocation)
+    const [endLocation, setEndLocation] = useState<StopPlace[]>(event.endLocation) //TODO: end-location burde ideelt sett ikke være en liste
     const [mode, setMode] = useState<QueryMode | null>(null)
     const [departures, setDepartures] = useState<Departure[]>([])
     const [stopsOnLine, setStopsOnLine] = useState<StopAndTime[]>([])
     const [noTransport, setNoTransport] = useState<boolean>(false)
     const [isModalOpen, setModalOpen] = useState<boolean>(false)
-    const [travelLegs, setTravelLegs] = useState<StopPlace[]>([level.start])
+    const [travelLegs, setTravelLegs] = useState<StopPlace[]>([event.startLocation])
     const [usedMode, setUsedMode] = useState<QueryMode[]>([])
     const { getWalkableStopPlaces, getDepartures, getStopsOnLine } =
         useEnturService()
@@ -73,19 +73,17 @@ function GameScreen({
     const [waitModalIsOpen, setWaitModalIsOpen] = useState<boolean>(false)
 
     useEffect(() => {
-        setStopPlace(level.start)
-        setTravelLegs([level.start])
-        setTargets(level.targets)
+        setStartLocation(event.startLocation)
+        setTravelLegs([event.startLocation])
+        setEndLocation(event.endLocation)
         setStartTime(new Date())
-    }, [level])
-
+    }, [event])
+    
     useEffect(() => {
         setTimeDescription(
             formatTimeForEndOfGame(
                 currentTime,
-                startTime,
-                level.difficulty,
-                numLegs,
+                startTime
             ),
         )
         window.scrollTo(0, document.body.scrollHeight)
@@ -96,7 +94,7 @@ function GameScreen({
         setLoading(true)
         if (newMode === 'foot') {
             setDepartures([]) // Reset departures before showing walkable stops
-            getWalkableStopPlaces(stopPlace).then((stops) => {
+            getWalkableStopPlaces(startLocation).then((stops) => {
                 setStopsOnLine(
                     stops.map((stop) => ({
                         stopPlace: stop,
@@ -123,7 +121,7 @@ function GameScreen({
                 setLoading(false)
             })
         } else {
-            getDepartures(stopPlace.id, newMode, currentTime).then((deps) => {
+            getDepartures(startLocation.id, newMode, currentTime).then((deps) => {
                 setStopsOnLine([]) // Reset walkable stops before showing departures
                 setDepartures(deps)
                 if (!deps.length) {
@@ -182,7 +180,7 @@ function GameScreen({
         setMode(null)
         setModalOpen(false)
         if (stopAndTime) {
-            setStopPlace(stopAndTime.stopPlace)
+            setStartLocation(stopAndTime.stopPlace)
             setTravelLegs((prev) => [...prev, stopAndTime.stopPlace])
             setNumLegs((prev) => prev + 1)
         }
@@ -193,16 +191,16 @@ function GameScreen({
         setWaitModalIsOpen(true)
     }
 
-    if (targets.some((sp) => sp.id === stopPlace.id)) {
+    if (endLocation.some((sp) => sp.id === startLocation.id)) {
         handleWinner()
         return (
             <div className="app" style={{ maxWidth: '800px' }}>
                 <VictoryScreen
                     name={name}
-                    level={level}
-                    target={targets[0]}
-                    setTarget={(target) => {
-                        setTargets([target])
+                    event={event}
+                    endLocation={endLocation[0]}
+                    setEndLocation={(endLocation) => {
+                        setEndLocation([endLocation])
                     }}
                     numLegs={numLegs}
                     currentTime={currentTime}
@@ -216,13 +214,13 @@ function GameScreen({
     if (dead && mode) {
         return (
             <div className="app" style={{ maxWidth: '800px' }}>
-                <DeadScreen mode={mode} stopPlace={stopPlace} />
+                <DeadScreen mode={mode} stopPlace={startLocation} />
             </div>
         )
     }
     return (
         <div className="flex flex-col mb-4">
-            <FromAndToTitle className="mt-10 xl:mt-28" level={level} />
+            <FromAndToTitle className="mt-10 xl:mt-28" event={event} />
             <Heading4 margin="none">{formatDate(startTime)}</Heading4>
             <Heading4 margin="none">Hvordan vil du starte?</Heading4>
             <div className="mt-5 xl:mt-14">
@@ -240,12 +238,12 @@ function GameScreen({
                     usedMode={usedMode}
                     selectMode={selectMode}
                     wait={wait}
-                    stopPlace={stopPlace}
+                    stopPlace={startLocation}
                     firstMove={travelLegs.length === 1}
                 />
             </div>
             <div className="mt-5 xl:mt-14">
-                <TravelLegFinished targets={targets} />
+                <TravelLegFinished endLocation={endLocation} />
             </div>
             <SecondaryButton
                 className="bg-lavender hover:bg-blue-80 sm:mt-28 mt-10 mb-10 sm:place-self-start place-self-center"
@@ -257,7 +255,7 @@ function GameScreen({
                 usedMode={usedMode}
                 noTransport={noTransport}
                 setNoTransport={setNoTransport}
-                stopPlace={stopPlace.name}
+                stopPlace={startLocation.name}
             />
             <Modal
                 open={waitModalIsOpen}

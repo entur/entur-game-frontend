@@ -13,18 +13,8 @@ export function formatInterval(currentTime: Date, startTime: Date): string {
 
 export function formatTimeForEndOfGame(
     currentTime: Date,
-    startTime: Date,
-    level: string,
-    attempts: number,
+    startTime: Date
 ): string {
-    if (level === 'Event' && attempts === 0) {
-        startTime.setHours(13, 1)
-        startTime.setSeconds(0)
-        startTime.setFullYear(2023)
-        currentTime.setHours(13, 1, 0)
-        currentTime.setSeconds(0)
-        currentTime.setFullYear(2023)
-    }
 
     const totalSecondsPlayed =
         (currentTime.getTime() - startTime.getTime()) / 1000

@@ -4,20 +4,20 @@ import { TravelLeg } from '@entur/travel'
 import { Heading4 } from '@entur/typography'
 
 type Props = {
-    targets: StopPlace[]
+    endLocation: StopPlace[]
 }
 
-export function TravelLegFinished({ targets }: Props): ReactElement {
+export function TravelLegFinished({ endLocation }: Props): ReactElement {
     return (
         <>
             <div className="flex flex-row">
-                <TravelLeg
+                <TravelLeg //TODO: vi har masse stygge prikker på venstre siden av ruten i spillet
                     className="mt-1 mb-2 mr-6 sm:mr-8 h-28 [&>*]:bg-blue-40"
                     transport="foot"
                     direction="vertical"
                 />
                 <Heading4 className="place-self-end" margin="none">
-                    {targets[0].name}
+                    {endLocation[0].name}
                 </Heading4>
             </div>
         </>

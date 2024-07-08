@@ -1,58 +1,60 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
+import { useParams } from 'next/navigation'
+
 import { Heading1 } from '@entur/typography'
 import { Loader } from '@entur/loader'
 
 import Game from '@/components/Game/GameScreen'
-import { Level, EASY } from '@/lib/constants/levels'
 import GameNavBar from '@/components/NavBar/GameNavBar'
-import { getGameMode } from '@/lib/api/gameModeApi'
-import { useParams } from 'next/navigation'
-
-type Params = {
-    difficulty: string
-}
+import { getEventByEventName } from '@/lib/api/eventApi'
+import { Event } from '@/lib/types'
 
 export default function GamePage(): JSX.Element {
-    const [totalHp, setTotalHp] = useState<number>(2)
-    const params: Params = useParams()
-    const [isLevelError, setLevelError] = useState<boolean>(false)
-    const [level, setLevel] = useState<Level | null>(null)
-    const [startTimer] = useState<number>(0)
-    const [numLegs, setNumLegs] = useState<number>(0)
+    const [startTimer] = useState<number>(Date.now())
     const [timeDescription, setTimeDescription] = useState<string>('')
+    const [numLegs, setNumLegs] = useState<number>(0)
+    const [totalHp, setTotalHp] = useState<number>(2)
+
+    const { eventName } : {eventName: string} = useParams()
+    const [event, setEvent] = useState<Event | null>(null)
+    const [isEventError, setEventError] = useState<boolean>(false)
 
     useEffect(() => {
-        async function getData() {
-            const gameMode = await getGameMode(params.difficulty)
-            if (gameMode === null) {
-                setLevelError(true)
+        async function fetchEventJson() {
+            if (!eventName) {
+                setEventError(true)
                 return
             }
-            if (gameMode.difficulty.toLowerCase() === 'lett') {
-                setLevel({ ...gameMode, targets: EASY[0].targets }) // Fix targets to make it easier to win
+
+            const eventJson = await getEventByEventName(eventName) 
+            if (eventJson === null) {
+                setEventError(true)
+                return
             } else {
-                setLevel(gameMode)
+                setEventError(false)
+                setEvent(eventJson)
             }
+            
         }
-        getData()
+        fetchEventJson()
     }, [])
 
-    if (isLevelError) {
-        //TODO: redirect to main screen
+    if (isEventError) {
+        // TODO: redirect to main screen
         return (
             <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
-                <Heading1>Level not found</Heading1>
+                <Heading1>Event ikke funnet</Heading1>
             </div>
         )
     }
-    if (level === null) {
-        return <Loader>Loading...</Loader>
+    if (event === null) { //TODO: errorHandling dersom event=== null for lenge. "event not found" bør vises i stedet etter en viss tid
+        return <Loader>Lasterer...</Loader>
     }
 
     return (
-        <>
+        <main className="flex flex-col">
             <div className="sm:sticky top-20">
                 <GameNavBar
                     healthLeft={totalHp + 1}
@@ -63,8 +65,9 @@ export default function GamePage(): JSX.Element {
             <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
                 <Game
                     name={''}
-                    level={level}
+                    event={event}
                     startTimer={startTimer}
+                    // eslint-disable-next-line @typescript-eslint/no-empty-function
                     handleWinner={() => {}}
                     totalHp={totalHp}
                     setTotalHp={setTotalHp}
@@ -73,6 +76,6 @@ export default function GamePage(): JSX.Element {
                     setTimeDescription={setTimeDescription}
                 />
             </div>
-        </>
+        </main>
     )
 }

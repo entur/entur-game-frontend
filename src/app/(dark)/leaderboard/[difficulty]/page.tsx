@@ -1,5 +1,6 @@
 'use client'
 
+//TODO: hele fil renames: [difficulty] -> [eventName] etterhvert 
 import React from 'react'
 import { Heading1, Heading3 } from '@entur/typography'
 import {
