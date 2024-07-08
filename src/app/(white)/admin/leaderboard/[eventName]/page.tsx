@@ -9,6 +9,7 @@ import { Loader } from '@entur/loader'
 import { PlayerScore } from '@/lib/types/types'
 import { DataCell, HeaderCell, Table, TableBody, TableHead, TableRow } from '@entur/table';
 import { getPlayerScoresByActiveEvent } from '@/lib/api/playerScoreApi'
+import { Button } from '@entur/button'
 
 export default function GamePage(): JSX.Element {
 
@@ -69,6 +70,11 @@ export default function GamePage(): JSX.Element {
                         </TableRow>
                     ))}
                 </TableBody>
+                <div className="pt-12">
+                    <Button width="auto" variant="success" size="medium">
+                        Trekk en vinner
+                    </Button>
+                </div>
             </Table>
         </div>
     )
