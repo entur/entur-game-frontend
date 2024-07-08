@@ -1,4 +1,4 @@
-import { PlayerScore } from '@/lib/types'
+import { PlayerScore } from '@/lib/types/types'
 
 const baseUrl = 'http://localhost:8080'
 

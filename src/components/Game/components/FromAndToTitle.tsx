@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 
-import { Event } from '@/lib/types'
+import { Event } from '@/lib/types/types'
 import { Heading4 } from '@entur/typography'
 
 type Props = {
