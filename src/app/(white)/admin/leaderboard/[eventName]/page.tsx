@@ -44,7 +44,7 @@ export default function GamePage(): JSX.Element {
     }
 
     return (
-        <div className="max-w-screen ml-56 p-4 ">
+        <div className="max-w-screen mx-56 p-4">
             <BlockquoteFooter>Ledertavle</BlockquoteFooter>
             <Heading1>Arendal stasjon - Trondheim S</Heading1>
             <div className="pb-0 mb-0">
