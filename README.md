@@ -38,4 +38,5 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 ```
 docker build -t entur-game-frontend .
+docker run -p 3000:3000 entur-game-frontend
 ```
