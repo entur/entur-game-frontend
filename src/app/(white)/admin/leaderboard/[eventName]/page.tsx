@@ -32,6 +32,9 @@ export default function GamePage(): JSX.Element {
                 setScoreError(false)
                 const sortedScores = scores.sort((a, b) => {
                     if (a.scoreValue === b.scoreValue) {
+                        if (a.totalTravelTime === b.totalTravelTime) {
+                            return Math.random() - 0.5
+                        }
                         return a.totalTravelTime - b.totalTravelTime
                     }
                     return b.scoreValue - a.scoreValue
@@ -91,7 +94,7 @@ export default function GamePage(): JSX.Element {
                 size="medium"
             >
                 <p>E-post: {leader.player.email}</p>
-                <p>E-post: {leader.player.phoneNumber}</p>
+                <p>Telefon: {leader.player.phoneNumber}</p>
             </Modal>
         </div>
     )
