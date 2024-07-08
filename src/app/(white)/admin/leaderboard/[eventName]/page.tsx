@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 
-import { Heading1 } from '@entur/typography'
+import { BlockquoteFooter, Heading1, LeadParagraph } from '@entur/typography'
 import { Loader } from '@entur/loader'
 
 import Game from '@/components/Game/GameScreen'
@@ -54,10 +54,14 @@ export default function GamePage(): JSX.Element {
     }
 
     return (
-        <main className="flex flex-col">
-            <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
-                Tabell her
+        <div className="max-w-md ml-56 p-4 ">
+            <BlockquoteFooter>Ledertavle</BlockquoteFooter>
+            <Heading1>Arendal stasjon - Trondheim S</Heading1>
+            <div className="pb-0 mb-0">
+                <LeadParagraph>
+                    Ledertavle for nåværende rute
+                </LeadParagraph>
             </div>
-        </main>
+        </div>
     )
 }
