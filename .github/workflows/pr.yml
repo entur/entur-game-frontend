@@ -12,3 +12,5 @@ jobs:
         with:
             environment: dev
             chart: helm/entur-game-frontend
+
+    # npm run build
