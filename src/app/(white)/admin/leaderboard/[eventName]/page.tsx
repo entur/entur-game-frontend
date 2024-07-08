@@ -18,6 +18,7 @@ export default function GamePage(): JSX.Element {
     const [scores, setScores] = useState<PlayerScore[]>([]) 
     const [isScoreError, setScoreError] = useState<boolean>(false)
     const [isOpen, setOpen] = useState<boolean>(false)
+    const [leader, setLeader] = useState<PlayerScore | null>(null) 
 
     useEffect(() => {
         async function getScores() {
@@ -29,13 +30,20 @@ export default function GamePage(): JSX.Element {
                 return
             } else {
                 setScoreError(false)
-                setScores(scores)
+                const sortedScores = scores.sort((a, b) => {
+                    if (a.scoreValue === b.scoreValue) {
+                        return a.totalTravelTime - b.totalTravelTime
+                    }
+                    return b.scoreValue - a.scoreValue
+                })
+                setScores(sortedScores)
+                setLeader(sortedScores[0])
             }
         }
         getScores()
     }, [])
 
-    if (isScoreError || scores.length === 0 || scores == null) {
+    if (isScoreError || scores.length === 0 || scores == null || leader == null) {
         // TODO: redirect to main screen
         return (
             <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
@@ -79,11 +87,11 @@ export default function GamePage(): JSX.Element {
             <Modal
                 open={isOpen}
                 onDismiss={() => setOpen(false)}
-                title={`Vinner: ${scores[0].player.playerName}`}
+                title={`Vinner: ${leader.player.playerName}`}
                 size="medium"
             >
-                <p>E-post: {scores[0].player.email}</p>
-                <p>E-post: {scores[0].player.phoneNumber}</p>
+                <p>E-post: {leader.player.email}</p>
+                <p>E-post: {leader.player.phoneNumber}</p>
             </Modal>
         </div>
     )
