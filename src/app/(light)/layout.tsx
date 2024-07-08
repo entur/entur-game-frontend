@@ -3,7 +3,7 @@ import EnturPartnerIconDark from '@/lib/assets/icons/EnturPartnerDark.svg'
 import Link from 'next/link'
 import Image from 'next/image'
 
-export default function DarkModeLayout({
+export default function LightModeLayout({
     children,
 }: Readonly<{
     children: React.ReactNode
