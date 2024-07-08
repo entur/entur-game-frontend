@@ -6,17 +6,11 @@ import { useParams } from 'next/navigation'
 import { BlockquoteFooter, Heading1, LeadParagraph } from '@entur/typography'
 import { Loader } from '@entur/loader'
 
-import Game from '@/components/Game/GameScreen'
-import GameNavBar from '@/components/NavBar/GameNavBar'
 import { getEventByEventName } from '@/lib/api/eventApi'
 import { Event } from '@/lib/types/types'
 import { DataCell, HeaderCell, Table, TableBody, TableHead, TableRow } from '@entur/table';
 
 export default function GamePage(): JSX.Element {
-    const [startTimer] = useState<number>(Date.now())
-    const [timeDescription, setTimeDescription] = useState<string>('')
-    const [numLegs, setNumLegs] = useState<number>(0)
-    const [totalHp, setTotalHp] = useState<number>(2)
 
     const { eventName } : {eventName: string} = useParams()
     const [event, setEvent] = useState<Event | null>(null)
