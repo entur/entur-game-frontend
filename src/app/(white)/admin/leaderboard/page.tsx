@@ -1,16 +1,17 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 import { BlockquoteFooter, Heading1, LeadParagraph } from '@entur/typography'
 import { Loader } from '@entur/loader'
-import { Modal } from '@entur/modal'  // Husk å importere nødvendige komponenter fra modal-biblioteket
+import { Modal } from '@entur/modal'
 
 import { PlayerScore } from '@/lib/types/types'
 import { DataCell, HeaderCell, Table, TableBody, TableHead, TableRow } from '@entur/table'
 import { getPlayerScoresByActiveEvent } from '@/lib/api/playerScoreApi'
 import { Button } from '@entur/button'
+import { BannerAlertBox } from '@entur/alert'
 
 export default function GamePage(): JSX.Element {
     // const { eventName } : {eventName: string} = useParams() TODO: kanskje behold
@@ -19,6 +20,7 @@ export default function GamePage(): JSX.Element {
     const [isScoreError, setScoreError] = useState<boolean>(false)
     const [isOpen, setOpen] = useState<boolean>(false)
     const [leader, setLeader] = useState<PlayerScore | null>(null) 
+    const router = useRouter()
 
     useEffect(() => {
         async function getScores() {
@@ -46,19 +48,26 @@ export default function GamePage(): JSX.Element {
         getScores()
     }, [])
 
-    if (isScoreError || scores.length === 0 || scores == null || leader == null) {
-        // TODO: redirect to main screen
+    //TODO: fiks så man har en ledertavle også før det er noen som har spilt
+    //TODO: andre logiske errors også du må skjekke først
+    if ( isScoreError || scores.length === 0 || scores == null || leader == null) {
         return (
-            <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
-                <Heading1>Aktivt event ikke funnet</Heading1>
+            <div className="max-w-screen mx-56 p-4">
+                <BlockquoteFooter>Ledertavle</BlockquoteFooter>
+                <BannerAlertBox title="Ingen rute opprettet" variant="information">Opprett ny rute for å se ledertavle.</BannerAlertBox>
+                <div className="pt-12">
+                    <Button width="auto" variant="primary" size="medium" onClick={() => router.push('/admin/create-journey')}>
+                        Opprett rute
+                    </Button>
+                </div>
             </div>
         )
     }
-
+    
     return (
         <div className="max-w-screen mx-56 p-4">
             <BlockquoteFooter>Ledertavle</BlockquoteFooter>
-            <Heading1>Arendal stasjon - Trondheim S</Heading1>
+            <Heading1>{leader.event.eventName}</Heading1>
             <div className="pb-0 mb-0">
                 <LeadParagraph>
                     Ledertavle for nåværende rute
