@@ -12,13 +12,11 @@ import { getEventByEventName } from '@/lib/api/eventApi'
 import { Event } from '@/lib/types'
 
 export default function GamePage(): JSX.Element {
-    //visuals and game logic
     const [startTimer] = useState<number>(Date.now())
     const [timeDescription, setTimeDescription] = useState<string>('')
     const [numLegs, setNumLegs] = useState<number>(0)
     const [totalHp, setTotalHp] = useState<number>(2)
 
-    //event logic
     const { eventName } : {eventName: string} = useParams()
     const [event, setEvent] = useState<Event | null>(null)
     const [isEventError, setEventError] = useState<boolean>(false)
@@ -47,12 +45,12 @@ export default function GamePage(): JSX.Element {
         // TODO: redirect to main screen
         return (
             <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
-                <Heading1>Event not found</Heading1>
+                <Heading1>Event ikke funnet</Heading1>
             </div>
         )
     }
     if (event === null) { //TODO: errorHandling dersom event=== null for lenge. "event not found" bør vises i stedet etter en viss tid
-        return <Loader>Loading...</Loader>
+        return <Loader>Lasterer...</Loader>
     }
 
     return (
