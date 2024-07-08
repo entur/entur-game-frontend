@@ -22,7 +22,7 @@ export default function GamePage(): JSX.Element {
     const [isEventError, setEventError] = useState<boolean>(false)
 
     useEffect(() => {
-        async function fetchEventJson() {
+        async function getEvent() {
             if (!eventName) {
                 setEventError(true)
                 return
@@ -38,7 +38,7 @@ export default function GamePage(): JSX.Element {
             }
             
         }
-        fetchEventJson()
+        getEvent()
     }, [])
 
     if (isEventError) {

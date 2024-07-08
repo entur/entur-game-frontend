@@ -7,45 +7,42 @@ import { BlockquoteFooter, Heading1, LeadParagraph } from '@entur/typography'
 import { Loader } from '@entur/loader'
 
 import { getEventByEventName } from '@/lib/api/eventApi'
-import { Event } from '@/lib/types/types'
+import { Event, PlayerScore} from '@/lib/types/types'
 import { DataCell, HeaderCell, Table, TableBody, TableHead, TableRow } from '@entur/table';
+import { getPlayerScoresByActiveEvent } from '@/lib/api/playerScoreApi'
 
 export default function GamePage(): JSX.Element {
 
-    const { eventName } : {eventName: string} = useParams()
-    const [event, setEvent] = useState<Event | null>(null)
-    const [isEventError, setEventError] = useState<boolean>(false)
+     // const { eventName } : {eventName: string} = useParams() TODO: kanskje behold
+
+    const [score, setScore] = useState<PlayerScore | null>(null) 
+    const [isScoreError, setScoreError] = useState<boolean>(false)
 
     useEffect(() => {
-        async function fetchEventJson() {
-            if (!eventName) {
-                setEventError(true)
-                return
-            }
-
-            const eventJson = await getEventByEventName(eventName) 
-            if (eventJson === null) {
-                setEventError(true)
+        async function getScore() {
+            const score = await getPlayerScoresByActiveEvent()
+            console.log("print score")
+            console.log(score)
+            if (score === null) {
+                setScoreError(true)
                 return
             } else {
-                setEventError(false)
-                setEvent(eventJson)
+                setScoreError(false)
+                setScore(score[0])
             }
             
         }
-        fetchEventJson()
+        getScore()
     }, [])
 
-    if (isEventError) {
+
+    if (isScoreError || score === null) {
         // TODO: redirect to main screen
         return (
             <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
-                <Heading1>Event ikke funnet</Heading1>
+                <Heading1>Aktivt event ikke funnet</Heading1>
             </div>
         )
-    }
-    if (event === null) { //TODO: errorHandling dersom event=== null for lenge. "event not found" bør vises i stedet etter en viss tid
-        return <Loader>Lasterer...</Loader>
     }
 
     return (
@@ -67,9 +64,9 @@ export default function GamePage(): JSX.Element {
             </TableHead>
             <TableBody>
                 <TableRow>
-                <DataCell>Oscar</DataCell>
-                <DataCell>10.00</DataCell>
-                <DataCell>Østerås</DataCell>
+                <DataCell>{score.player.playerName}</DataCell>
+                <DataCell>{score.totalTravelTime}</DataCell>
+                <DataCell>{score.scoreValue}</DataCell>
                 </TableRow>
                 <TableRow>
                 <DataCell>Tomas</DataCell>
