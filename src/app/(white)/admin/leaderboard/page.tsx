@@ -47,9 +47,6 @@ export default function GamePage(): JSX.Element {
         getScores()
     }, [])
 
-
-
-
     const handleDrawWinner = () => {
         if (scores.length === 0) {
             setShowAlert(true)
@@ -63,7 +60,7 @@ export default function GamePage(): JSX.Element {
     //TODO: Minst èn spiller kreves feilmelding bør kanskje ha mulighet til å forsvinne
     //TODO: bør oppdateres hver gang db-en oppdateres
 
-    if ( eventName === null ) {
+    if (eventName === null) {
         return (
             <div className="max-w-screen mx-56 p-4">
                 <BlockquoteFooter>Ledertavle</BlockquoteFooter>
@@ -72,7 +69,7 @@ export default function GamePage(): JSX.Element {
         )
     }
 
-    if ( isEventNameError ) {
+    if (isEventNameError) {
         return (
             <div className="max-w-screen mx-56 p-4">
                 <BlockquoteFooter>Ledertavle</BlockquoteFooter>
@@ -107,14 +104,22 @@ export default function GamePage(): JSX.Element {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {scores.slice(0, 5).map((score, index) => (
-                        <TableRow key={index}>
-                            <DataCell>{index + 1}</DataCell>
-                            <DataCell>{score.player.playerName}</DataCell>
-                            <DataCell>{score.totalTravelTime}</DataCell>
-                            <DataCell>{score.scoreValue}</DataCell>
-                        </TableRow>
-                    ))}
+                    {scores.length === 0 ? (
+                        <DataCell colSpan={4}>
+                            <SmallAlertBox variant="info" width="fit-content">
+                                Ingen spillere enda
+                            </SmallAlertBox>
+                        </DataCell>
+                    ) : (
+                        scores.slice(0, 5).map((score, index) => (
+                            <TableRow key={index}>
+                                <DataCell>{index + 1}</DataCell>
+                                <DataCell>{score.player.playerName}</DataCell>
+                                <DataCell>{score.totalTravelTime}</DataCell>
+                                <DataCell>{score.scoreValue}</DataCell>
+                            </TableRow>
+                        ))
+                    )}
                 </TableBody>
             </Table>
             <div className="pt-12">
