@@ -42,6 +42,7 @@ export default function GamePage(): JSX.Element {
                 const sortedScores = scores.sort((a, b) => b.scoreValue - a.scoreValue || a.totalTravelTime - b.totalTravelTime)
                 setScores(sortedScores)
                 setLeader(sortedScores[0])
+                setShowAlert(false)
             }
         }
         getScores()
