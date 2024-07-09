@@ -13,6 +13,7 @@ import { PlayerScore } from '@/lib/types/types'
 import { getPlayerScoresByActiveEvent } from '@/lib/api/playerScoreApi'
 import { getActiveEvent } from '@/lib/api/eventApi'
 import { Badge } from '@entur/layout'
+import { Pagination } from '@entur/menu'
 
 export default function GamePage(): JSX.Element {
     const [eventName, setEventName] = useState<string | null>(null)
@@ -22,6 +23,11 @@ export default function GamePage(): JSX.Element {
     const [isOpen, setOpen] = useState<boolean>(false)
     const [showAlert, setShowAlert] = useState<boolean>(false)
     const router = useRouter()
+
+    const [currentPage, setPage] = React.useState(1)
+    const [results, setResults] = React.useState(10)
+    const numberOfResults = scores.length
+    const pageCount = Math.ceil(numberOfResults / results)
 
     useEffect(() => {
         const getEventName = async () => {
@@ -58,9 +64,7 @@ export default function GamePage(): JSX.Element {
     };
 
     //TODO: plassering dersom flere har akkurat samme score?
-    //TODO: prikker dersom mer enn 5
-    //TODO: bør oppdateres hver gang db-en oppdateres
-    //TODO: event uten Navn
+    //TODO: bør oppdateres hver gang ny spiller legges til i db
 
     if (eventName === null) {
         return (
@@ -111,9 +115,14 @@ export default function GamePage(): JSX.Element {
                             <Badge variant="information" type="status">Ingen spillere ennå</Badge>
                         </DataCell>
                     ) : (
-                        scores.slice(0, 5).map((score, index) => (
+                        scores.filter(
+                            (item, index) =>
+                              index + 1 >= (currentPage - 1) * results + 1 &&
+                              index + 1 <= currentPage * results,
+                          )
+                          .map((score, index) => (
                             <TableRow key={index}>
-                                <DataCell>{index + 1}</DataCell>
+                                <DataCell>{index + (currentPage-1)*results + 1}</DataCell>
                                 <DataCell>{score.player.playerName}</DataCell>
                                 <DataCell>{score.totalTravelTime}</DataCell>
                                 <DataCell>{score.scoreValue}</DataCell>
@@ -122,6 +131,16 @@ export default function GamePage(): JSX.Element {
                     )}
                 </TableBody>
             </Table>
+            <div className="pt-12">
+                <Pagination
+                    pageCount={pageCount}
+                    currentPage={currentPage}
+                    onPageChange={page => setPage(page)}
+                    numberOfResults={numberOfResults}
+                    resultsPerPage={results}
+                    onResultsPerPageChange={e => setResults(e)}
+                />
+            </div>
             <div className="pt-12">
                 <Button width="auto" variant="success" size="medium" onClick={handleDrawWinner}>
                     Trekk en vinner
