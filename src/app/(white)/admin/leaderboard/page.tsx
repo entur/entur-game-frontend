@@ -61,6 +61,7 @@ export default function GamePage(): JSX.Element {
     //TODO: plassering dersom flere har akkurat samme score?
     //TODO: prikker dersom mer enn 5
     //TODO: Minst èn spiller kreves feilmelding bør kanskje ha mulighet til å forsvinne
+    //TODO: bør oppdateres hver gang db-en oppdateres
 
     if ( eventName === null ) {
         return (
