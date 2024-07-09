@@ -49,3 +49,26 @@ export async function createOptimalRouteText(event: Event): Promise<string> {
 
     return `Vår reiseplanlegger har beregnet en optimal rute der antall etapper er ${event?.optimalStepNumber} og reisetid er ${hours} timer, ${minutes} minutter og ${seconds} sekunder.`;
 } 
+
+
+export async function createNewEvent(event: Event): Promise<BackendEvent | null> {
+    try {
+      const response = await fetch(`${baseUrl}/new-event`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json', 
+        },
+        body: JSON.stringify(event), 
+      });
+  
+      if (!response.ok) {
+        console.error(`Error: ${response.status} - ${response.statusText}`);
+        return null;
+      }
+  
+      return await response.json();
+    } catch (error) {
+      console.error('Error creating new event:', error);
+      return null;
+    }
+  }
