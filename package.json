@@ -10,7 +10,6 @@
     "generate": "graphql-codegen"
   },
   "dependencies": {
-    "@apollo/client": "^3.10.8",
     "@entur/alert": "^0.16.10",
     "@entur/button": "^3.2.26",
     "@entur/chip": "^0.6.35",
@@ -29,9 +28,8 @@
     "@entur/typography": "^1.8.39",
     "@graphql-codegen/cli": "^5.0.2",
     "@internationalized/date": "^3.5.4",
-    "date-fns": "^3.6.0",
-    "flagsmith": "^4.0.2",
     "framer-motion": "^11.2.12",
+    "graphql": "^16.9.0",
     "graphql-tag": "^2.12.6",
     "isbot": "^5.1.11",
     "next": "^14.2.4",

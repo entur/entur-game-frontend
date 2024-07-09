@@ -1,4 +1,5 @@
-import { StopPlace } from "@entur/sdk/lib/fields/StopPlace";
+import { StopPlace } from "@/gql/graphql";
+
 
 export type Event = {
     eventId: number;

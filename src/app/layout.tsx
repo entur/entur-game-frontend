@@ -1,9 +1,7 @@
-import type { Metadata } from 'next'
+'use client';
+
 import '@/app/globals.css'
 
-export const metadata: Metadata = {
-    title: 'Entur-spillet',
-}
 
 export default function RootLayout({
     children,
