@@ -12,6 +12,7 @@ import { BannerAlertBox, SmallAlertBox } from '@entur/alert'
 import { PlayerScore } from '@/lib/types/types'
 import { getPlayerScoresByActiveEvent } from '@/lib/api/playerScoreApi'
 import { getActiveEvent } from '@/lib/api/eventApi'
+import { Badge } from '@entur/layout'
 
 export default function GamePage(): JSX.Element {
     const [eventName, setEventName] = useState<string | null>(null)
@@ -58,8 +59,8 @@ export default function GamePage(): JSX.Element {
 
     //TODO: plassering dersom flere har akkurat samme score?
     //TODO: prikker dersom mer enn 5
-    //TODO: Minst èn spiller kreves feilmelding bør kanskje ha mulighet til å forsvinne
     //TODO: bør oppdateres hver gang db-en oppdateres
+    //TODO: event uten Navn
 
     if (eventName === null) {
         return (
@@ -107,9 +108,7 @@ export default function GamePage(): JSX.Element {
                 <TableBody>
                     {scores.length === 0 ? (
                         <DataCell colSpan={4}>
-                            <SmallAlertBox variant="info" width="fit-content">
-                                Ingen spillere enda
-                            </SmallAlertBox>
+                            <Badge variant="information" type="status">Ingen spillere ennå</Badge>
                         </DataCell>
                     ) : (
                         scores.slice(0, 5).map((score, index) => (
