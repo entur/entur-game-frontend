@@ -1,7 +1,7 @@
-'use client';
+'use client'
 
 import '@/app/globals.css'
-
+import { ToastProvider } from '@entur/alert'
 
 export default function RootLayout({
     children,
@@ -10,11 +10,13 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en">
-            <body
-                className={`bg-blue-main flex flex-col w-screen min-h-screen`}
-            >
-                {children}
-            </body>
+            <ToastProvider>
+                <body
+                    className={`bg-blue-main flex flex-col w-screen min-h-screen`}
+                >
+                    {children}
+                </body>
+            </ToastProvider>
         </html>
     )
 }

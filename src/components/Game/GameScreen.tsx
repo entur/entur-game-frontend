@@ -7,7 +7,7 @@ import { addHours, addMinutes } from 'date-fns'
 import { PrimaryButton, SecondaryButton } from '@entur/button'
 import { useRouter } from 'next/navigation'
 
-import { Event } from '@/lib/types'
+import { Event } from '@/lib/types/types'
 import { InvalidTravelModal } from './components/InvalidTravelModal'
 import { useEnturService } from '@/lib/hooks/useEnturService'
 import { formatDate, formatTimeForEndOfGame } from '@/lib/utils/dateFnsUtils'
@@ -52,14 +52,20 @@ function GameScreen({
     const router = useRouter()
     const [isLoading, setLoading] = useState<boolean>(false)
     const [dead, setDead] = useState<boolean>(false)
-    const [startLocation, setStartLocation] = useState<StopPlace>(event.startLocation)
-    const [endLocation, setEndLocation] = useState<StopPlace[]>(event.endLocation) //TODO: end-location burde ideelt sett ikke være en liste
+    const [startLocation, setStartLocation] = useState<StopPlace>(
+        event.startLocation,
+    )
+    const [endLocation, setEndLocation] = useState<StopPlace[]>(
+        event.endLocation,
+    ) //TODO: end-location burde ideelt sett ikke være en liste
     const [mode, setMode] = useState<QueryMode | null>(null)
     const [departures, setDepartures] = useState<Departure[]>([])
     const [stopsOnLine, setStopsOnLine] = useState<StopAndTime[]>([])
     const [noTransport, setNoTransport] = useState<boolean>(false)
     const [isModalOpen, setModalOpen] = useState<boolean>(false)
-    const [travelLegs, setTravelLegs] = useState<StopPlace[]>([event.startLocation])
+    const [travelLegs, setTravelLegs] = useState<StopPlace[]>([
+        event.startLocation,
+    ])
     const [usedMode, setUsedMode] = useState<QueryMode[]>([])
     const { getWalkableStopPlaces, getDepartures, getStopsOnLine } =
         useEnturService()
@@ -78,14 +84,9 @@ function GameScreen({
         setEndLocation(event.endLocation)
         setStartTime(new Date())
     }, [event])
-    
+
     useEffect(() => {
-        setTimeDescription(
-            formatTimeForEndOfGame(
-                currentTime,
-                startTime
-            ),
-        )
+        setTimeDescription(formatTimeForEndOfGame(currentTime, startTime))
         window.scrollTo(0, document.body.scrollHeight)
     }, [currentTime])
 
@@ -121,26 +122,28 @@ function GameScreen({
                 setLoading(false)
             })
         } else {
-            getDepartures(startLocation.id, newMode, currentTime).then((deps) => {
-                setStopsOnLine([]) // Reset walkable stops before showing departures
-                setDepartures(deps)
-                if (!deps.length) {
-                    if (totalHp >= 0) {
-                        setTotalHp((prev) => prev - 1)
-                        setNoTransport(true)
+            getDepartures(startLocation.id, newMode, currentTime).then(
+                (deps) => {
+                    setStopsOnLine([]) // Reset walkable stops before showing departures
+                    setDepartures(deps)
+                    if (!deps.length) {
+                        if (totalHp >= 0) {
+                            setTotalHp((prev) => prev - 1)
+                            setNoTransport(true)
+                        }
+                        if (totalHp < 1) {
+                            setDead(true)
+                            return
+                        }
+                        setUsedMode((prev) => [...prev, newMode])
+                        setMode(null)
+                    } else {
+                        setModalOpen(true)
+                        setTravelLegsMode((prev) => [...prev, newMode])
                     }
-                    if (totalHp < 1) {
-                        setDead(true)
-                        return
-                    }
-                    setUsedMode((prev) => [...prev, newMode])
-                    setMode(null)
-                } else {
-                    setModalOpen(true)
-                    setTravelLegsMode((prev) => [...prev, newMode])
-                }
-                setLoading(false)
-            })
+                    setLoading(false)
+                },
+            )
         }
     }
 

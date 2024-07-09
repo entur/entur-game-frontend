@@ -9,7 +9,7 @@ import { Loader } from '@entur/loader'
 import Game from '@/components/Game/GameScreen'
 import GameNavBar from '@/components/NavBar/GameNavBar'
 import { getEventByEventName } from '@/lib/api/eventApi'
-import { Event } from '@/lib/types'
+import { Event } from '@/lib/types/types'
 
 export default function GamePage(): JSX.Element {
     const [startTimer] = useState<number>(Date.now())
@@ -17,7 +17,7 @@ export default function GamePage(): JSX.Element {
     const [numLegs, setNumLegs] = useState<number>(0)
     const [totalHp, setTotalHp] = useState<number>(2)
 
-    const { eventName } : {eventName: string} = useParams()
+    const { eventName }: { eventName: string } = useParams()
     const [event, setEvent] = useState<Event | null>(null)
     const [isEventError, setEventError] = useState<boolean>(false)
 
@@ -28,7 +28,7 @@ export default function GamePage(): JSX.Element {
                 return
             }
 
-            const eventJson = await getEventByEventName(eventName) 
+            const eventJson = await getEventByEventName(eventName)
             if (eventJson === null) {
                 setEventError(true)
                 return
@@ -36,7 +36,6 @@ export default function GamePage(): JSX.Element {
                 setEventError(false)
                 setEvent(eventJson)
             }
-            
         }
         fetchEventJson()
     }, [])
@@ -49,7 +48,8 @@ export default function GamePage(): JSX.Element {
             </div>
         )
     }
-    if (event === null) { //TODO: errorHandling dersom event=== null for lenge. "event not found" bør vises i stedet etter en viss tid
+    if (event === null) {
+        //TODO: errorHandling dersom event=== null for lenge. "event not found" bør vises i stedet etter en viss tid
         return <Loader>Lasterer...</Loader>
     }
 

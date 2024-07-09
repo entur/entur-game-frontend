@@ -1,6 +1,6 @@
 'use client'
 
-//TODO: hele fil renames: [difficulty] -> [eventName] etterhvert 
+//TODO: hele fil renames: [difficulty] -> [eventName] etterhvert
 import React from 'react'
 import { Heading1, Heading3 } from '@entur/typography'
 import {
@@ -16,7 +16,7 @@ import EnInsertTur from '@/components/EnInsertTur'
 
 import useSWR from 'swr'
 import { sortNumber } from '@/lib/utils/sorters'
-import { PlayerScore } from '@/lib/types'
+import { PlayerScore } from '@/lib/types/types'
 import { getPlayerScoresByActiveEvent } from '@/lib/api/playerScoreApi'
 
 export default function EventHighScorePage(): JSX.Element {

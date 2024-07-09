@@ -7,8 +7,12 @@ import { MapPinIcon, DestinationIcon } from '@entur/icons'
 import { BlockquoteFooter } from '@entur/typography'
 import { DatePicker, TimePicker, ZonedDateTime } from '@entur/datepicker'
 import { NormalizedDropdownItemType, SearchableDropdown } from '@entur/dropdown'
-import { GetTripInfoQuery, GetTripInfoQueryVariables } from '@/gql/graphql'
+import { GetTripInfoQueryVariables } from '@/gql/graphql'
 import { now } from '@internationalized/date'
+import { BackendEvent } from '@/lib/types/types'
+import { useRouter } from 'next/navigation'
+import { useToast } from '@entur/alert'
+import { createNewEvent } from '@/lib/api/eventApi'
 
 type TGeoresponse = {
     features: Array<{
@@ -65,55 +69,88 @@ function formatDateTime(
 }
 
 export default function AdminCreateJourney() {
+    const router = useRouter()
+    const { addToast } = useToast()
+    const [attemptedSubmit, setAttemptedSubmit] = useState(false)
     const [selectedStart, setSelectedStart] =
         useState<NormalizedDropdownItemType | null>(null)
     const [selectedGoal, setSelectedGoal] =
         useState<NormalizedDropdownItemType | null>(null)
-    const [date, setDate] = useState<ZonedDateTime | null>(
-        now('Europe/Oslo'),
-    )
-    const [time, setTime] = useState<ZonedDateTime | null>(
-        now('Europe/Oslo'),
-    )
+    const [date, setDate] = useState<ZonedDateTime | null>(now('Europe/Oslo'))
+    const [time, setTime] = useState<ZonedDateTime | null>(now('Europe/Oslo'))
 
     const formattedDateTime = date && time ? formatDateTime(date, time) : ''
 
+    const [event, setEvent] = useState<BackendEvent>()
 
+    const fetchTripInfo = useCallback(async () => {
+        if (!selectedStart?.label || !selectedGoal?.label) {
+            console.error('Error: selectedStart.label is required')
+            return
+        }
 
-    const [data, setData] = useState<GetTripInfoQuery>()
-
-
-    const fetchTripInfo = useCallback(() => {
         const variables: GetTripInfoQueryVariables = {
-          from: {
-            name: selectedStart?.label,
-            place: selectedStart?.value,
-          },
-          to: {
-            name: selectedGoal?.label,
-            place: selectedGoal?.value,
-          },
-          dateTime: formattedDateTime,
-        };
-    
+            from: {
+                name: selectedStart?.label,
+                place: selectedStart?.value,
+            },
+            to: {
+                name: selectedGoal?.label,
+                place: selectedGoal?.value,
+            },
+            dateTime: formattedDateTime,
+        }
+
+        const eventName = `${selectedStart?.value} - ${selectedGoal?.value}`
+
         fetch('https://api.entur.io/journey-planner/v3/graphql', {
-          method: 'POST',
-          headers: {
-            'ET-Client-Name': 'test-enturspillet',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ query, variables }),
+            method: 'POST',
+            headers: {
+                'ET-Client-Name': 'enturspillet',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ query, variables }),
         })
-          .then((res) => res.json())
-          .then((getTripInfo) => console.log(getTripInfo))
-          .catch((error) => console.error('Error fetching trip info:', error));
-      }, [selectedStart, selectedGoal, formattedDateTime]); 
-    
+            .then((res) => res.json())
+            .then((getTripInfo) => {
+                if (getTripInfo.data?.trip?.tripPatterns?.length > 0) {
+                    const tripPattern = getTripInfo.data.trip.tripPatterns[0]
 
+                    const newEvent: BackendEvent = {
+                        eventName: eventName,
+                        startLocationId: selectedStart?.value,
+                        endLocationId: selectedGoal?.value,
+                        startTime: formattedDateTime,
+                        optimalStepNumber: tripPattern.legs.length,
+                        optimalTravelTime: tripPattern.duration,
+                        isActive: true,
+                    }
+                    setEvent(newEvent)
+                }
+            })
+            .catch((error) => console.error('Error fetching trip info:', error))
+    }, [selectedStart, selectedGoal, formattedDateTime])
 
-    const handleOnClick = () => {
+    const handleOnClick =  () => {
+        if (!selectedStart || !selectedGoal || !selectedStart.label) {
+            setAttemptedSubmit(true)
+            console.error(
+                'Error: selectedStart.label is required for submission',
+            )
+            return
+        }
+
         fetchTripInfo()
-    };
+
+        if (event) {
+            createNewEvent(event)
+            router.push(`/admin`)
+            addToast({
+                title: 'Ny rute opprettet!',
+                content: <>Ruten kan spilles av alle med lenken</>,
+            })
+        }
+    }
 
     const fetchItems = useCallback(
         async (inputValue: string): Promise<NormalizedDropdownItemType[]> => {
@@ -157,6 +194,17 @@ export default function AdminCreateJourney() {
                     selectedItem={selectedStart}
                     prepend={<MapPinIcon></MapPinIcon>}
                     onChange={setSelectedStart}
+                    selectOnTab
+                    variant={
+                        attemptedSubmit && !selectedStart
+                            ? 'negative'
+                            : undefined
+                    }
+                    feedback={
+                        attemptedSubmit && !selectedStart
+                            ? 'Du må velge startsted'
+                            : undefined
+                    }
                 />
                 <SearchableDropdown
                     label="Mål"
@@ -164,6 +212,17 @@ export default function AdminCreateJourney() {
                     prepend={<DestinationIcon></DestinationIcon>}
                     selectedItem={selectedGoal}
                     onChange={setSelectedGoal}
+                    selectOnTab
+                    variant={
+                        attemptedSubmit && !selectedGoal
+                            ? 'negative'
+                            : undefined
+                    }
+                    feedback={
+                        attemptedSubmit && !selectedGoal
+                            ? 'Du må velge endestopp'
+                            : undefined
+                    }
                 />
             </div>
             <div className="space-y-10 pt-12">
