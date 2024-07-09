@@ -50,7 +50,7 @@ export default function GamePage(): JSX.Element {
         )
     }
     if (event === null) { //TODO: errorHandling dersom event=== null for lenge. "event not found" bør vises i stedet etter en viss tid
-        return <Loader>Lasterer...</Loader>
+        return <Loader>Laster...</Loader>
     }
 
     return (

@@ -11,27 +11,42 @@ import { PlayerScore } from '@/lib/types/types'
 import { DataCell, HeaderCell, Table, TableBody, TableHead, TableRow } from '@entur/table'
 import { getPlayerScoresByActiveEvent } from '@/lib/api/playerScoreApi'
 import { Button } from '@entur/button'
-import { BannerAlertBox } from '@entur/alert'
+import { BannerAlertBox, SmallAlertBox } from '@entur/alert'
+import { getActiveEvent } from '@/lib/api/eventApi'
+import { Badge } from '@entur/layout'
 
 export default function GamePage(): JSX.Element {
     // const { eventName } : {eventName: string} = useParams() TODO: kanskje behold
 
+    const [eventName, setEventName] = useState<string | null>(null)
     const [scores, setScores] = useState<PlayerScore[]>([]) 
-    const [isScoreError, setScoreError] = useState<boolean>(false)
+    const [isEventNameError, setEventNameError] = useState<boolean>(false)
     const [isOpen, setOpen] = useState<boolean>(false)
-    const [leader, setLeader] = useState<PlayerScore | null>(null) 
+    const [leader, setLeader] = useState<PlayerScore | null>(null)
+    const [showAlert, setShowAlert] = useState<boolean>(false)
     const router = useRouter()
+
+    useEffect(() => {
+        async function getEventName() {
+            const eventName = await getActiveEvent()
+            
+            if (eventName === null ) {
+                setEventNameError(true)
+                return
+            } else {
+                setEventNameError(false)
+                setEventName(eventName.eventName)
+            }
+        }
+        getEventName()
+    }, [])
 
     useEffect(() => {
         async function getScores() {
             const scores = await getPlayerScoresByActiveEvent()
-            console.log("print scores")
-            console.log(scores)
             if (scores === null || scores.length === 0) {
-                setScoreError(true)
                 return
             } else {
-                setScoreError(false)
                 const sortedScores = scores.sort((a, b) => {
                     if (a.scoreValue === b.scoreValue) {
                         if (a.totalTravelTime === b.totalTravelTime) {
@@ -48,13 +63,25 @@ export default function GamePage(): JSX.Element {
         getScores()
     }, [])
 
-    //TODO: fiks så man har en ledertavle også før det er noen som har spilt
-    //TODO: andre logiske errors også du må skjekke først
-    if ( isScoreError || scores.length === 0 || scores == null || leader == null) {
+    //TODO: plassering dersom flere har akkurat samme score?
+    //TODO: prikker dersom mer enn 5
+
+    if ( eventName === null ) {
         return (
             <div className="max-w-screen mx-56 p-4">
                 <BlockquoteFooter>Ledertavle</BlockquoteFooter>
-                <BannerAlertBox title="Ingen rute opprettet" variant="information">Opprett ny rute for å se ledertavle.</BannerAlertBox>
+                <Loader>Laster...</Loader>
+            </div>
+        )
+    }
+    
+    if ( isEventNameError ) {
+        return (
+            <div className="max-w-screen mx-56 p-4">
+                <BlockquoteFooter>Ledertavle</BlockquoteFooter>
+                <div className="pt-12">
+                    <BannerAlertBox title="Ingen rute opprettet" variant="information">Opprett ny rute for å se ledertavle.</BannerAlertBox>
+                </div>
                 <div className="pt-12">
                     <Button width="auto" variant="primary" size="medium" onClick={() => router.push('/admin/create-journey')}>
                         Opprett rute
@@ -64,10 +91,11 @@ export default function GamePage(): JSX.Element {
         )
     }
     
+    if ( leader === null ) {
     return (
         <div className="max-w-screen mx-56 p-4">
             <BlockquoteFooter>Ledertavle</BlockquoteFooter>
-            <Heading1>{leader.event.eventName}</Heading1>
+            <Heading1>{eventName}</Heading1>
             <div className="pb-0 mb-0">
                 <LeadParagraph>
                     Ledertavle for nåværende rute
@@ -76,14 +104,54 @@ export default function GamePage(): JSX.Element {
             <Table>
                 <TableHead>
                     <TableRow>
+                        <HeaderCell>Plassering</HeaderCell>
+                        <HeaderCell>Spiller</HeaderCell>
+                        <HeaderCell>Reisetid</HeaderCell>
+                        <HeaderCell>Poengsum</HeaderCell>
+                    </TableRow>
+                </TableHead>
+            </Table>
+            <div className="pt-12">
+                <Badge variant="information" type="status">Ingen spillere ennå</Badge>
+            </div>
+            <div className="pt-12">
+                <Button width="auto" variant="success" size="medium" onClick={() => setShowAlert(true)}>
+                    Trekk en vinner
+                </Button>
+            </div>
+            {showAlert && (
+                <div className="pt-12">
+                    <SmallAlertBox variant="negative" width="fit-content">
+                        Minst én spiller kreves for å trekke vinner.
+                    </SmallAlertBox>
+                </div>
+            )}
+        </div>
+    )
+    }
+
+    return (
+        <div className="max-w-screen mx-56 p-4">
+            <BlockquoteFooter>Ledertavle</BlockquoteFooter>
+            <Heading1>{eventName}</Heading1>
+            <div className="pb-0 mb-0">
+                <LeadParagraph>
+                    Ledertavle for nåværende rute
+                </LeadParagraph>
+            </div>
+            <Table>
+                <TableHead>
+                    <TableRow>
+                        <HeaderCell>Plassering</HeaderCell>
                         <HeaderCell>Spiller</HeaderCell>
                         <HeaderCell>Reisetid</HeaderCell>
                         <HeaderCell>Poengsum</HeaderCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {scores.map((score, index) => (
+                    {scores.slice(0, 5).map((score, index) => (
                         <TableRow key={index}>
+                            <DataCell>{index+1}</DataCell>
                             <DataCell>{score.player.playerName}</DataCell>
                             <DataCell>{score.totalTravelTime}</DataCell>
                             <DataCell>{score.scoreValue}</DataCell>
