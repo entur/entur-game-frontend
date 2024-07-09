@@ -103,6 +103,18 @@ export default function GamePage(): JSX.Element {
             <div className="pb-0 mb-0">
                 <LeadParagraph>Ledertavle for nåværende rute</LeadParagraph>
             </div>
+                <Button width="auto" variant="success" size="medium" onClick={handleDrawWinner} >
+                    Trekk en vinner
+                </Button>
+            {showAlert && (
+                <div className="pt-12">
+                    <SmallAlertBox variant="negative" width="fit-content">
+                        Minst én spiller kreves for å trekke vinner.
+                    </SmallAlertBox>
+                </div>
+            )}
+            <br/>
+            <br/>
             <Table>
                 <TableHead>
                     <TableRow>
@@ -143,18 +155,6 @@ export default function GamePage(): JSX.Element {
                     onResultsPerPageChange={e => setResults(e)}
                 />
             </div>
-            <div className="pt-12">
-                <Button width="auto" variant="success" size="medium" onClick={handleDrawWinner}>
-                    Trekk en vinner
-                </Button>
-            </div>
-            {showAlert && (
-                <div className="pt-12">
-                    <SmallAlertBox variant="negative" width="fit-content">
-                        Minst én spiller kreves for å trekke vinner.
-                    </SmallAlertBox>
-                </div>
-            )}
             <Modal
                 open={isOpen}
                 onDismiss={() => setOpen(false)}
