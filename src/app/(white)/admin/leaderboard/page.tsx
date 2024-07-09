@@ -63,9 +63,6 @@ export default function GamePage(): JSX.Element {
         }
     };
 
-    //TODO: plassering dersom flere har akkurat samme score?
-    //TODO: bør oppdateres hver gang ny spiller legges til i db
-
     if (eventName === null) {
         return (
             <div className="max-w-screen mx-56 p-4">
@@ -115,19 +112,18 @@ export default function GamePage(): JSX.Element {
                             <Badge variant="information" type="status">Ingen spillere ennå</Badge>
                         </DataCell>
                     ) : (
-                        scores.filter(
-                            (item, index) =>
-                              index + 1 >= (currentPage - 1) * results + 1 &&
-                              index + 1 <= currentPage * results,
-                          )
-                          .map((score, index) => (
-                            <TableRow key={index}>
-                                <DataCell>{index + (currentPage-1)*results + 1}</DataCell>
-                                <DataCell>{score.player.playerName}</DataCell>
-                                <DataCell>{score.totalTravelTime}</DataCell>
-                                <DataCell>{score.scoreValue}</DataCell>
-                            </TableRow>
-                        ))
+                        scores.slice((currentPage - 1) * results, currentPage * results)
+                          .map((score, index, array) => {
+                            const rank = (currentPage - 1) * results + array.slice(0, index).filter(item => item.scoreValue > score.scoreValue).length + 1
+                            return (
+                                <TableRow key={index}>
+                                    <DataCell>{rank}</DataCell>
+                                    <DataCell>{score.player.playerName}</DataCell>
+                                    <DataCell>{score.totalTravelTime}</DataCell>
+                                    <DataCell>{score.scoreValue}</DataCell>
+                                </TableRow>
+                            )
+                        })
                     )}
                 </TableBody>
             </Table>
