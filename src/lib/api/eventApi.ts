@@ -4,17 +4,21 @@ import { StopPlace } from '@entur/sdk/lib/fields/StopPlace'
 
 const baseUrl = 'http://localhost:8080'
 
-export async function getBackendEventByEventName(eventName: string): Promise<BackendEvent | null> {
+export async function getBackendEventByEventName(
+    eventName: string,
+): Promise<BackendEvent | null> {
     const response = await fetch(`${baseUrl}/event/${eventName}`)
     if (response.status !== 200) return null
     return response.json()
 }
 
 function findStopPlaceById(id: string): StopPlace | undefined {
-    return mockStopPlace.find(stopPlace => stopPlace.id === id)
+    return mockStopPlace.find((stopPlace) => stopPlace.id === id)
 }
 
-export async function getEventByEventName(eventName: string): Promise<Event | null> {
+export async function getEventByEventName(
+    eventName: string,
+): Promise<Event | null> {
     const baseEvent = await getBackendEventByEventName(eventName)
     if (!baseEvent) return null
 
@@ -25,8 +29,11 @@ export async function getEventByEventName(eventName: string): Promise<Event | nu
         return null
     }
 
-    if (typeof startLocation === 'undefined' || typeof endLocation[0] === 'undefined') {
-        return null;
+    if (
+        typeof startLocation === 'undefined' ||
+        typeof endLocation[0] === 'undefined'
+    ) {
+        return null
     }
 
     return {
@@ -37,15 +44,15 @@ export async function getEventByEventName(eventName: string): Promise<Event | nu
         startTime: baseEvent.startTime,
         optimalStepNumber: baseEvent.optimalStepNumber,
         optimalTravelTime: baseEvent.optimalTravelTime,
-        isActive: baseEvent.isActive
+        isActive: baseEvent.isActive,
     } as Event
 }
 
 export async function createOptimalRouteText(event: Event): Promise<string> {
-    const totalSeconds = event?.optimalTravelTime;
-    const hours = Math.floor(totalSeconds / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = totalSeconds % 60;
+    const totalSeconds = event?.optimalTravelTime
+    const hours = Math.floor(totalSeconds / 3600)
+    const minutes = Math.floor((totalSeconds % 3600) / 60)
+    const seconds = totalSeconds % 60
 
-    return `Vår reiseplanlegger har beregnet en optimal rute der antall etapper er ${event?.optimalStepNumber} og reisetid er ${hours} timer, ${minutes} minutter og ${seconds} sekunder.`;
-} 
+    return `Vår reiseplanlegger har beregnet en optimal rute der antall etapper er ${event?.optimalStepNumber} og reisetid er ${hours} timer, ${minutes} minutter og ${seconds} sekunder.`
+}
