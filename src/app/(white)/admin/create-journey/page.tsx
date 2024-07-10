@@ -88,7 +88,6 @@ export default function AdminCreateJourney() {
         }
     }, [event, router, addToast])
 
-
     const fetchTripInfo = useCallback(async () => {
         if (!selectedStart?.label || !selectedGoal?.label) {
             console.error('Error: selectedStart.label is required')
