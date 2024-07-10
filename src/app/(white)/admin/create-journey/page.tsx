@@ -7,7 +7,6 @@ import { MapPinIcon, DestinationIcon } from '@entur/icons'
 import { BlockquoteFooter } from '@entur/typography'
 import { DatePicker, TimePicker, ZonedDateTime } from '@entur/datepicker'
 import { NormalizedDropdownItemType, SearchableDropdown } from '@entur/dropdown'
-import { GetTripInfoQueryVariables } from '@/gql/graphql'
 import { now } from '@internationalized/date'
 import { BackendEvent } from '@/lib/types/types'
 import { useRouter } from 'next/navigation'
@@ -94,7 +93,7 @@ export default function AdminCreateJourney() {
             return
         }
 
-        const variables: GetTripInfoQueryVariables = {
+        const variables = {
             from: {
                 name: selectedStart?.label,
                 place: selectedStart?.value,
