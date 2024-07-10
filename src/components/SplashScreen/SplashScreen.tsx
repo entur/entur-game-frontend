@@ -2,7 +2,6 @@
 
 import { Heading3, Paragraph } from '@entur/typography'
 import { Button } from '@entur/button'
-import { Loader } from '@entur/loader'
 import {
     SplashArtBoardCircleImage,
     SplashArtBoardCookieImage,
@@ -10,20 +9,12 @@ import {
 } from './SplashScreenArt'
 import EnInsertTur from '../EnInsertTur'
 import { useRouter } from 'next/navigation'
-import { getActiveGameModeEvent } from '@/lib/api/gameModeApi'
-import useSWR from 'swr'
 import Image from 'next/image'
 import EnturPartnerIconLight from '@/lib/assets/icons/EnturPartnerLight.svg'
 import Link from 'next/link'
 
 export function SplashScreen(): JSX.Element {
     const router = useRouter()
-    const { data: activeGameMode } = useSWR('/game-mode/active-event', () =>
-        getActiveGameModeEvent(),
-    )
-    if (activeGameMode === undefined) {
-        return <Loader>Laster inn...</Loader>
-    }
     return (
         <>
             <Link href="/" className="pt-10 ml-5 mr-20">

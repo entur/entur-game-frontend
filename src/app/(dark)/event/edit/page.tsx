@@ -8,38 +8,39 @@ import { Contrast } from '@entur/layout'
 import { Dropdown, NormalizedDropdownItemType } from '@entur/dropdown'
 import useSWR, { mutate } from 'swr'
 import {
-    getActiveGameModeEvent,
-    getAllGameMode,
     updateActiveGameModeEvent,
 } from '@/lib/api/gameModeApi'
 import { Loader } from '@entur/loader'
 import { PrimaryButton } from '@entur/button'
+import { getActiveEvent, getAllEvents } from '@/lib/api/eventApi'
 
 export default function EventEditPage(): JSX.Element {
-    const { data: gameModes } = useSWR('/game-mode', () => getAllGameMode())
-    const { data: activeGameMode } = useSWR('/game-mode/active-event', () =>
-        getActiveGameModeEvent(),
+    const { data: events } = useSWR('/game-mode', () => getAllEvents())
+    const { data: activeEvent } = useSWR('/game-mode/active-event', () =>
+        getActiveEvent(),
     )
+
+    //TODO: kanskje legge til fra til og ikke bare navnet på eventet
+    //TODO: siste gameMode-funksjonen må byttes ut
     const [selectedItem, setSelectedItem] =
         useState<NormalizedDropdownItemType | null>(
-            activeGameMode
+            activeEvent
                 ? {
                       label:
-                          activeGameMode.name +
-                          ` (${activeGameMode.difficulty})`,
-                      value: activeGameMode.difficulty,
+                          activeEvent.eventName,
+                      value: activeEvent.eventName,
                   }
                 : null,
         )
 
-    if (gameModes === undefined || activeGameMode === undefined) {
+    if (events === undefined || events === null || activeEvent === undefined) {
         return <Loader>Laster inn...</Loader>
     }
 
-    const items = gameModes.map((gameMode) => {
+    const items = events.map((gameMode) => {
         return {
-            label: gameMode.name + ` (${gameMode.difficulty})`,
-            value: gameMode.difficulty,
+            label: gameMode.eventName,
+            value: gameMode.eventName,
         }
     })
     return (
@@ -49,8 +50,8 @@ export default function EventEditPage(): JSX.Element {
                     <Heading3>
                         Aktiv event:{' '}
                         <span className="text-coral">
-                            {activeGameMode
-                                ? `${activeGameMode.name} (${activeGameMode.difficulty})`
+                            {activeEvent
+                                ? `${activeEvent.eventName}`
                                 : 'INGEN'}
                         </span>
                     </Heading3>
