@@ -2,9 +2,7 @@
 
 import { useState } from 'react'
 import { Heading3 } from '@entur/typography'
-
 import { Contrast } from '@entur/layout'
-
 import { Dropdown, NormalizedDropdownItemType } from '@entur/dropdown'
 import useSWR, { mutate } from 'swr'
 import { Loader } from '@entur/loader'
@@ -21,14 +19,12 @@ export default function EventEditPage(): JSX.Element {
         getActiveEvent(),
     )
 
-    //TODO: kanskje legge til "fra - til" og ikke bare navnet på eventet
-    //TODO: kanskje se litt mer på formatering, aka toString og så Number() er rart og stygt
     const [selectedItem, setSelectedItem] =
-        useState<NormalizedDropdownItemType | null>(
+        useState<NormalizedDropdownItemType<number> | null>(
             activeEvent
                 ? {
                     label: activeEvent.eventName,
-                    value: activeEvent.eventId.toString(),
+                    value: activeEvent.eventId,
                 }
                 : null,
         )
@@ -40,15 +36,16 @@ export default function EventEditPage(): JSX.Element {
     const items = events.map((event) => {
         return {
             label: event.eventName,
-            value: event.eventId.toString(),
+            value: event.eventId,
         }
     })
+
     return (
         <div className="flex flex-col items-center justify-center mt-20">
             <Contrast>
                 <div className="w-64 mb-44">
                     <Heading3>
-                        Aktiv event:{' '}
+                        Aktivt event:{' '}
                         <span className="text-coral">
                             {activeEvent ? `${activeEvent.eventName}` : 'INGEN'}
                         </span>
@@ -70,8 +67,8 @@ export default function EventEditPage(): JSX.Element {
                     disabled={selectedItem === null}
                     onClick={async () => {
                         if (selectedItem !== null) {
-                            await updateActiveEvent(Number(selectedItem.value))
-                            await mutate('/game-mode/active-event')
+                            await updateActiveEvent(selectedItem.value)
+                            await mutate('/event/active')
                         }
                     }}
                 >
