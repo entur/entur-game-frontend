@@ -46,52 +46,59 @@ const query = `
     }
 `
 
-
-const fetchStopPlaceName = useCallback(async (stopPlaceId: string) => {
-    fetch('https://api.entur.io/journey-planner/v3/graphql', {
-        method: 'POST',
-        headers: {
-            'ET-Client-Name': 'enturspillet',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ query, variables: { stopPlaceId } }),
-    })
-        .then((res) => res.json())
-        .then((data) => {
-            if (data.errors) {
-                console.error('Error fetching stop place name:', data.errors);
-                return null;
-            }
-            const name = data.data.stopPlace.name;
-            console.log('Stop place name:', name);
-            return name;
+const fetchStopPlaceName = useCallback(async (stopPlaceId: string): Promise<string | null> => {
+    try {
+        const response = await fetch('https://api.entur.io/journey-planner/v3/graphql', {
+            method: 'POST',
+            headers: {
+                'ET-Client-Name': 'enturspillet',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ query, variables: { id: stopPlaceId } }),
         })
-        .catch((error) => console.error('Error fetching stop place name:', error))
-}, []);
-
-function findStopPlaceById(id: string): StopPlace | undefined {
-    return mockStopPlace.find((stopPlace) => stopPlace.id === id)
-}
+        const data = await response.json()
+        if (data.errors) {
+            console.error('Error fetching stop place name:', data.errors)
+            return null
+        }
+        return data.data.stopPlace.name
+    } catch (error) {
+        console.error('Error fetching stop place name:', error)
+        return null
+    }
+}, [])
 
 export async function getEventByEventName(
     eventName: string,
 ): Promise<Event | null> {
     const baseEvent = await getBackendEventByEventName(eventName)
     if (!baseEvent) return null
+    console.log("API")
+    console.log(baseEvent)
 
-    const startLocation = findStopPlaceById(baseEvent.startLocationId)
-    const endLocation = [findStopPlaceById(baseEvent.endLocationId)]
+    const startLocationName = await fetchStopPlaceName(baseEvent.startLocationId)
+    const endLocationName = await fetchStopPlaceName(baseEvent.endLocationId)
+    console.log(startLocationName)
+    console.log(endLocationName)
 
-    if (!startLocation || endLocation.length === 0) {
+    if (!startLocationName || !endLocationName) {
         return null
     }
 
-    if (
-        typeof startLocation === 'undefined' ||
-        typeof endLocation[0] === 'undefined'
-    ) {
-        return null
+    const startLocation: StopPlace = {
+        id: baseEvent.startLocationId,
+        name: startLocationName,
     }
+
+    const endLocation: StopPlace[] = [
+        {
+            id: baseEvent.endLocationId,
+            name: endLocationName,
+        }
+    ]
+
+    console.log(startLocation)
+    console.log(endLocation)
 
     return {
         eventId: baseEvent.eventId,
