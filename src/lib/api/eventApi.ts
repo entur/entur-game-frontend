@@ -1,7 +1,6 @@
 import { BackendEvent, Event } from '../types/types'
 import mockStopPlace from '../mock-api/stopPlace'
 import { StopPlace } from '@entur/sdk/lib/fields/StopPlace'
-import { useCallback } from 'react'
 
 const baseUrl = 'http://localhost:8080'
 
@@ -46,7 +45,7 @@ const query = `
     }
 `
 
-const fetchStopPlaceName = useCallback(async (stopPlaceId: string): Promise<string | null> => {
+async function fetchStopPlaceName(stopPlaceId: string): Promise<string | null> {
     try {
         const response = await fetch('https://api.entur.io/journey-planner/v3/graphql', {
             method: 'POST',
@@ -66,7 +65,7 @@ const fetchStopPlaceName = useCallback(async (stopPlaceId: string): Promise<stri
         console.error('Error fetching stop place name:', error)
         return null
     }
-}, [])
+}
 
 export async function getEventByEventName(
     eventName: string,
