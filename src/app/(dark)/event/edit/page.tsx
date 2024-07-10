@@ -7,29 +7,27 @@ import { Contrast } from '@entur/layout'
 
 import { Dropdown, NormalizedDropdownItemType } from '@entur/dropdown'
 import useSWR, { mutate } from 'swr'
-import {
-    updateActiveGameModeEvent,
-} from '@/lib/api/gameModeApi'
 import { Loader } from '@entur/loader'
 import { PrimaryButton } from '@entur/button'
-import { getActiveEvent, getAllEvents } from '@/lib/api/eventApi'
+import { getActiveEvent, getAllEvents, updateActiveEvent } from '@/lib/api/eventApi'
 
 export default function EventEditPage(): JSX.Element {
-    const { data: events } = useSWR('/game-mode', () => getAllEvents())
-    const { data: activeEvent } = useSWR('/game-mode/active-event', () =>
+    const { data: events } = useSWR('/event/all', () => getAllEvents())
+    const { data: activeEvent } = useSWR('/event/active', () =>
         getActiveEvent(),
     )
 
-    //TODO: kanskje legge til fra til og ikke bare navnet på eventet
+    //TODO: kanskje legge til "fra - til" og ikke bare navnet på eventet
     //TODO: siste gameMode-funksjonen må byttes ut
+    //TODO: kanskje se litt mer på formatering, aka toString og så Number() er rart og stygt
     const [selectedItem, setSelectedItem] =
         useState<NormalizedDropdownItemType | null>(
             activeEvent
                 ? {
-                      label:
-                          activeEvent.eventName,
-                      value: activeEvent.eventName,
-                  }
+                    label:
+                        activeEvent.eventName,
+                    value: activeEvent.eventId.toString(),
+                }
                 : null,
         )
 
@@ -37,10 +35,10 @@ export default function EventEditPage(): JSX.Element {
         return <Loader>Laster inn...</Loader>
     }
 
-    const items = events.map((gameMode) => {
+    const items = events.map((event) => {
         return {
-            label: gameMode.eventName,
-            value: gameMode.eventName,
+            label: event.eventName,
+            value: event.eventId.toString(),
         }
     })
     return (
@@ -72,7 +70,7 @@ export default function EventEditPage(): JSX.Element {
                     disabled={selectedItem === null}
                     onClick={async () => {
                         if (selectedItem !== null) {
-                            await updateActiveGameModeEvent(selectedItem.value)
+                            await updateActiveEvent(Number(selectedItem.value))
                             await mutate('/game-mode/active-event')
                         }
                     }}
