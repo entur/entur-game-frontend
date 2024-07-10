@@ -1,7 +1,5 @@
 /* eslint-disable */
-import * as types from './graphql';
-
-
+import * as types from './graphql'
 
 /**
  * Map of all GraphQL operations in the project.
@@ -14,15 +12,17 @@ import * as types from './graphql';
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-    "\n  query getTripInfo($from: Location!, $to: Location!, $dateTime: DateTime!) {\n    trip(from: $from, to: $to, numTripPatterns: 1, dateTime: $dateTime) {\n      tripPatterns {\n        duration\n        legs {\n          fromPlace {\n            name\n          }\n          toPlace {\n            name\n          }\n        }\n      }\n    }\n  }\n": types.GetTripInfoQuery,
-};
+    '\n  query getTripInfo($from: Location!, $to: Location!, $dateTime: DateTime!) {\n    trip(from: $from, to: $to, numTripPatterns: 1, dateTime: $dateTime) {\n      tripPatterns {\n        duration\n        legs {\n          fromPlace {\n            name\n          }\n          toPlace {\n            name\n          }\n        }\n      }\n    }\n  }\n':
+        types.GetTripInfoQuery,
+}
 
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query getTripInfo($from: Location!, $to: Location!, $dateTime: DateTime!) {\n    trip(from: $from, to: $to, numTripPatterns: 1, dateTime: $dateTime) {\n      tripPatterns {\n        duration\n        legs {\n          fromPlace {\n            name\n          }\n          toPlace {\n            name\n          }\n        }\n      }\n    }\n  }\n"): typeof import('./graphql').GetTripInfoQuery;
-
+export function graphql(
+    source: '\n  query getTripInfo($from: Location!, $to: Location!, $dateTime: DateTime!) {\n    trip(from: $from, to: $to, numTripPatterns: 1, dateTime: $dateTime) {\n      tripPatterns {\n        duration\n        legs {\n          fromPlace {\n            name\n          }\n          toPlace {\n            name\n          }\n        }\n      }\n    }\n  }\n',
+): typeof import('./graphql').GetTripInfoQuery
 
 export function graphql(source: string) {
-  return (documents as any)[source] ?? {};
+    return (documents as any)[source] ?? {}
 }

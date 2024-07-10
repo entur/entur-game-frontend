@@ -13,9 +13,8 @@ export function formatInterval(currentTime: Date, startTime: Date): string {
 
 export function formatTimeForEndOfGame(
     currentTime: Date,
-    startTime: Date
+    startTime: Date,
 ): string {
-
     const totalSecondsPlayed =
         (currentTime.getTime() - startTime.getTime()) / 1000
     const totalSeconds = Math.floor((totalSecondsPlayed + 1) % 60)

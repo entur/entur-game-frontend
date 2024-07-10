@@ -58,18 +58,15 @@ export function VictoryScreen({
     })
     const router = useRouter()
     const [isError, setError] = useState<boolean>(false)
-    
-    const timeDescription = formatTimeForEndOfGame(
-        currentTime,
-        startTime
-    )
+
+    const timeDescription = formatTimeForEndOfGame(currentTime, startTime)
     const [optimalRouteText, setOptimalRouteText] = useState<string>('')
 
     async function onSubmit(data: FormValues) {
         // TODO: savePlayerScore bør endres totalt, difficulty bør bl.a. fjernes
         const response = await savePlayerScore({
             ...data,
-            difficulty: "Lett",
+            difficulty: 'Lett',
             fromDestination: {
                 destination: event.startLocation.name,
                 id: event.startLocation.id,
