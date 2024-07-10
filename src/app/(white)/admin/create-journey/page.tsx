@@ -12,7 +12,7 @@ import { now } from '@internationalized/date'
 import { BackendEvent } from '@/lib/types/types'
 import { useRouter } from 'next/navigation'
 import { useToast } from '@entur/alert'
-import { createNewEvent } from '@/lib/api/eventApi'
+import { createEvent } from '@/lib/api/eventApi'
 
 type TGeoresponse = {
     features: Array<{
@@ -79,7 +79,7 @@ export default function AdminCreateJourney() {
 
     useEffect(() => {
         if (event) {
-            createNewEvent(event)
+            createEvent(event)
             router.push(`/admin`)
             addToast({
                 title: 'Ny rute opprettet!',
@@ -146,15 +146,6 @@ export default function AdminCreateJourney() {
         }
 
         fetchTripInfo()
-
-        if (event) {
-            createNewEvent(event)
-            router.push(`/admin`)
-            addToast({
-                title: 'Ny rute opprettet!',
-                content: <>Ruten kan spilles av alle med lenken</>,
-            })
-        }
     }
 
     const fetchItems = useCallback(

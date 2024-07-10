@@ -63,7 +63,7 @@ export async function createOptimalRouteText(event: Event): Promise<string> {
     return `Vår reiseplanlegger har beregnet en optimal rute der antall etapper er ${event?.optimalStepNumber} og reisetid er ${hours} timer, ${minutes} minutter og ${seconds} sekunder.`
 }
 
-export async function createNewEvent(
+export async function createEvent(
     event: BackendEvent,
 ): Promise<BackendEvent | null> {
     try {
