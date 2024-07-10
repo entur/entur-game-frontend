@@ -18,7 +18,6 @@ export default function EventEditPage(): JSX.Element {
     )
 
     //TODO: kanskje legge til "fra - til" og ikke bare navnet på eventet
-    //TODO: siste gameMode-funksjonen må byttes ut
     //TODO: kanskje se litt mer på formatering, aka toString og så Number() er rart og stygt
     const [selectedItem, setSelectedItem] =
         useState<NormalizedDropdownItemType | null>(
