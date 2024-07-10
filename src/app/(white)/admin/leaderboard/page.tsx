@@ -126,7 +126,7 @@ export default function GamePage(): JSX.Element {
                         Opprett rute
                     </Button>
                 </div>
-            </div >
+            </div>
         )
     }
 
@@ -145,15 +145,13 @@ export default function GamePage(): JSX.Element {
             >
                 Trekk en vinner
             </Button>
-            {
-                showAlert && (
-                    <div className="pt-12">
-                        <SmallAlertBox variant="negative" width="fit-content">
-                            Minst én spiller kreves for å trekke vinner.
-                        </SmallAlertBox>
-                    </div>
-                )
-            }
+            {showAlert && (
+                <div className="pt-12">
+                    <SmallAlertBox variant="negative" width="fit-content">
+                        Minst én spiller kreves for å trekke vinner.
+                    </SmallAlertBox>
+                </div>
+            )}
             <br />
             <br />
             <Table>
@@ -199,10 +197,9 @@ export default function GamePage(): JSX.Element {
                                     </TableRow>
                                 )
                             })
-                    )
-                    }
-                </TableBody >
-            </Table >
+                    )}
+                </TableBody>
+            </Table>
             <div className="pt-12">
                 <Pagination
                     pageCount={pageCount}
@@ -222,6 +219,6 @@ export default function GamePage(): JSX.Element {
                 <p>E-post: {leader?.player.email}</p>
                 <p>Telefon: {leader?.player.phoneNumber}</p>
             </Modal>
-        </div >
+        </div>
     )
 }

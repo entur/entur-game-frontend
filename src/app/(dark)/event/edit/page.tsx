@@ -9,7 +9,11 @@ import { Dropdown, NormalizedDropdownItemType } from '@entur/dropdown'
 import useSWR, { mutate } from 'swr'
 import { Loader } from '@entur/loader'
 import { PrimaryButton } from '@entur/button'
-import { getActiveEvent, getAllEvents, updateActiveEvent } from '@/lib/api/eventApi'
+import {
+    getActiveEvent,
+    getAllEvents,
+    updateActiveEvent,
+} from '@/lib/api/eventApi'
 
 export default function EventEditPage(): JSX.Element {
     const { data: events } = useSWR('/event/all', () => getAllEvents())
@@ -23,8 +27,7 @@ export default function EventEditPage(): JSX.Element {
         useState<NormalizedDropdownItemType | null>(
             activeEvent
                 ? {
-                    label:
-                        activeEvent.eventName,
+                    label: activeEvent.eventName,
                     value: activeEvent.eventId.toString(),
                 }
                 : null,
@@ -47,9 +50,7 @@ export default function EventEditPage(): JSX.Element {
                     <Heading3>
                         Aktiv event:{' '}
                         <span className="text-coral">
-                            {activeEvent
-                                ? `${activeEvent.eventName}`
-                                : 'INGEN'}
+                            {activeEvent ? `${activeEvent.eventName}` : 'INGEN'}
                         </span>
                     </Heading3>
                 </div>
@@ -74,7 +75,7 @@ export default function EventEditPage(): JSX.Element {
                         }
                     }}
                 >
-                    Oppdater event
+                    Sett event til aktiv
                 </PrimaryButton>
             </Contrast>
         </div>

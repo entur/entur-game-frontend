@@ -16,20 +16,14 @@ export async function getActiveEvent(): Promise<BackendEvent | null> {
     return response.json()
 }
 
-export async function updateActiveEvent(
-    gameId: number,
-): Promise<Event> {
-    const response = await fetch(
-        `${baseUrl}/event/active/${gameId}`,
-        {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({}),
+export async function updateActiveEvent(gameId: number): Promise<Event> {
+    const response = await fetch(`${baseUrl}/event/active/${gameId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
         },
-    )
-    console.log("test1.1")
+        body: JSON.stringify({}),
+    })
     return response.json()
 }
 
