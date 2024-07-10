@@ -68,7 +68,7 @@ export default function GamePage(): JSX.Element {
                     event={event}
                     startTimer={startTimer}
                     // eslint-disable-next-line @typescript-eslint/no-empty-function
-                    handleWinner={() => {}}
+                    handleWinner={() => { }}
                     totalHp={totalHp}
                     setTotalHp={setTotalHp}
                     numLegs={numLegs}

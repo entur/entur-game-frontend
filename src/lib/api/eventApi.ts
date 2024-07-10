@@ -1,6 +1,7 @@
 import { BackendEvent, Event } from '../types/types'
 import mockStopPlace from '../mock-api/stopPlace'
 import { StopPlace } from '@entur/sdk/lib/fields/StopPlace'
+import { useCallback } from 'react'
 
 const baseUrl = 'http://localhost:8080'
 
@@ -34,6 +35,39 @@ export async function getBackendEventByEventName(
     if (response.status !== 200) return null
     return response.json()
 }
+
+const query = `
+    query ($id: String!) {
+        stopPlace(
+            id: $id
+        ) {
+            name
+        }
+    }
+`
+
+
+const fetchStopPlaceName = useCallback(async (stopPlaceId: string) => {
+    fetch('https://api.entur.io/journey-planner/v3/graphql', {
+        method: 'POST',
+        headers: {
+            'ET-Client-Name': 'enturspillet',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ query, variables: { stopPlaceId } }),
+    })
+        .then((res) => res.json())
+        .then((data) => {
+            if (data.errors) {
+                console.error('Error fetching stop place name:', data.errors);
+                return null;
+            }
+            const name = data.data.stopPlace.name;
+            console.log('Stop place name:', name);
+            return name;
+        })
+        .catch((error) => console.error('Error fetching stop place name:', error))
+}, []);
 
 function findStopPlaceById(id: string): StopPlace | undefined {
     return mockStopPlace.find((stopPlace) => stopPlace.id === id)

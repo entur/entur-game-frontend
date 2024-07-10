@@ -12,9 +12,27 @@ import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import EnturPartnerIconLight from '@/lib/assets/icons/EnturPartnerLight.svg'
 import Link from 'next/link'
+import { getActiveEvent } from '@/lib/api/eventApi'
+import { useEffect, useState } from 'react'
 
 export function SplashScreen(): JSX.Element {
     const router = useRouter()
+    const [activeEventName, setActiveEventName] = useState<string | null>(null)
+    const [isEventNameError, setEventNameError] = useState<boolean>(false)
+
+    useEffect(() => {
+        const getActiveEventName = async () => {
+            const event = await getActiveEvent()
+            if (event) {
+                setActiveEventName(event.eventName)
+                setEventNameError(false)
+            } else {
+                setEventNameError(true)
+            }
+        }
+        getActiveEventName()
+    }, [])
+
     return (
         <>
             <Link href="/" className="pt-10 ml-5 mr-20">
@@ -47,7 +65,7 @@ export function SplashScreen(): JSX.Element {
                             <Button
                                 className="font-semibold w-full"
                                 onClick={() =>
-                                    router.push(`/admin/create-journey`)
+                                    router.push(`/game/${activeEventName}`)
                                 }
                                 variant="success"
                             >
