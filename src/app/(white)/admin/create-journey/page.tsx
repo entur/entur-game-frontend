@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Button } from '@entur/button'
 import { Heading1, Heading3, LeadParagraph } from '@entur/typography'
 import { MapPinIcon, DestinationIcon } from '@entur/icons'
@@ -56,14 +56,8 @@ function formatDateTime(
     const hour = pad(timeObj.hour, 2)
     const minute = pad(timeObj.minute, 2)
     const second = pad(timeObj.second, 2)
-    const millisecond = pad(timeObj.millisecond, 3)
 
-    const timezoneOffset = timeObj.offset / 3600000 // offset is i milliseconds
-    const offsetHours = pad(Math.floor(Math.abs(timezoneOffset)), 2)
-    const offsetMinutes = pad((Math.abs(timezoneOffset) * 60) % 60, 2)
-    const timezoneSign = timezoneOffset >= 0 ? '+' : '-'
-
-    const formattedDate = `${year}-${month}-${day}T${hour}:${minute}:${second}.${millisecond}${timezoneSign}${offsetHours}:${offsetMinutes}`
+    const formattedDate = `${year}-${month}-${day}T${hour}:${minute}:${second}`
 
     return formattedDate
 }
@@ -83,6 +77,18 @@ export default function AdminCreateJourney() {
 
     const [event, setEvent] = useState<BackendEvent>()
 
+    useEffect(() => {
+        if (event) {
+            createNewEvent(event)
+            router.push(`/admin`)
+            addToast({
+                title: 'Ny rute opprettet!',
+                content: <>Ruten kan spilles av alle med lenken</>,
+            })
+        }
+    }, [event, router, addToast])
+
+
     const fetchTripInfo = useCallback(async () => {
         if (!selectedStart?.label || !selectedGoal?.label) {
             console.error('Error: selectedStart.label is required')
@@ -101,7 +107,7 @@ export default function AdminCreateJourney() {
             dateTime: formattedDateTime,
         }
 
-        const eventName = `${selectedStart?.value} - ${selectedGoal?.value}`
+        const eventName = `${selectedStart?.label} - ${selectedGoal?.label}`
 
         fetch('https://api.entur.io/journey-planner/v3/graphql', {
             method: 'POST',
@@ -131,7 +137,7 @@ export default function AdminCreateJourney() {
             .catch((error) => console.error('Error fetching trip info:', error))
     }, [selectedStart, selectedGoal, formattedDateTime])
 
-    const handleOnClick =  () => {
+    const handleOnClick = () => {
         if (!selectedStart || !selectedGoal || !selectedStart.label) {
             setAttemptedSubmit(true)
             console.error(
