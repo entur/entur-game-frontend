@@ -1,5 +1,4 @@
 import { BackendEvent, Event } from '../types/types'
-import mockStopPlace from '../mock-api/stopPlace'
 import { StopPlace } from '@entur/sdk/lib/fields/StopPlace'
 
 const baseUrl = 'http://localhost:8080'
