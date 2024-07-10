@@ -7,7 +7,7 @@ import { addHours, addMinutes } from 'date-fns'
 import { PrimaryButton, SecondaryButton } from '@entur/button'
 import { useRouter } from 'next/navigation'
 
-import { Event } from '@/lib/types'
+import { Event } from '@/lib/types/types'
 import { InvalidTravelModal } from './components/InvalidTravelModal'
 import { useEnturService } from '@/lib/hooks/useEnturService'
 import { formatDate, formatTimeForEndOfGame } from '@/lib/utils/dateFnsUtils'

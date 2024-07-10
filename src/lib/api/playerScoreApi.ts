@@ -1,4 +1,4 @@
-import { PlayerScore } from '@/lib/types'
+import { PlayerScore } from '@/lib/types/types'
 
 const baseUrl = 'http://localhost:8080'
 
@@ -36,7 +36,10 @@ export async function savePlayerScore(
     return response
 }
 
-export async function getPlayerScoresByActiveEvent(): Promise<PlayerScore[]> {
+export async function getPlayerScoresByActiveEvent(): Promise<
+    PlayerScore[] | null
+> {
     const response = await fetch(`${baseUrl}/score/active`)
+    if (response.status !== 200) return null
     return await response.json()
 }

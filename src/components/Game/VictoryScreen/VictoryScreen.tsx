@@ -7,7 +7,7 @@ import {
     VictoryArtBoardCookieImage,
     VictoryArtBoardOvalImage,
 } from './VictoryScreenArt'
-import { Event } from '@/lib/types'
+import { Event } from '@/lib/types/types'
 import { StopPlace } from '@entur/sdk'
 import { savePlayerScore } from '@/lib/api/playerScoreApi'
 import {
