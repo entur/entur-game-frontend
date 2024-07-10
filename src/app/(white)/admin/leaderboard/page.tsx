@@ -72,7 +72,7 @@ export default function GamePage(): JSX.Element {
         currentPage: number,
         results: number,
         array: PlayerScore[],
-        index: any,
+        index: number,
         score: Score,
     ) => {
         return (
