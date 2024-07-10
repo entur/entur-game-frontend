@@ -2,56 +2,52 @@
 
 import { useState } from 'react'
 import { Heading3 } from '@entur/typography'
-
 import { Contrast } from '@entur/layout'
-
 import { Dropdown, NormalizedDropdownItemType } from '@entur/dropdown'
 import useSWR, { mutate } from 'swr'
-import {
-    getActiveGameModeEvent,
-    getAllGameMode,
-    updateActiveGameModeEvent,
-} from '@/lib/api/gameModeApi'
 import { Loader } from '@entur/loader'
 import { PrimaryButton } from '@entur/button'
+import {
+    getActiveEvent,
+    getAllEvents,
+    updateActiveEvent,
+} from '@/lib/api/eventApi'
 
 export default function EventEditPage(): JSX.Element {
-    const { data: gameModes } = useSWR('/game-mode', () => getAllGameMode())
-    const { data: activeGameMode } = useSWR('/game-mode/active-event', () =>
-        getActiveGameModeEvent(),
+    const { data: events } = useSWR('/event/all', () => getAllEvents())
+    const { data: activeEvent } = useSWR('/event/active', () =>
+        getActiveEvent(),
     )
+
     const [selectedItem, setSelectedItem] =
-        useState<NormalizedDropdownItemType | null>(
-            activeGameMode
+        useState<NormalizedDropdownItemType<number> | null>(
+            activeEvent
                 ? {
-                      label:
-                          activeGameMode.name +
-                          ` (${activeGameMode.difficulty})`,
-                      value: activeGameMode.difficulty,
-                  }
+                    label: activeEvent.eventName,
+                    value: activeEvent.eventId,
+                }
                 : null,
         )
 
-    if (gameModes === undefined || activeGameMode === undefined) {
+    if (events === undefined || events === null || activeEvent === undefined) {
         return <Loader>Laster inn...</Loader>
     }
 
-    const items = gameModes.map((gameMode) => {
+    const items = events.map((event) => {
         return {
-            label: gameMode.name + ` (${gameMode.difficulty})`,
-            value: gameMode.difficulty,
+            label: event.eventName,
+            value: event.eventId,
         }
     })
+
     return (
         <div className="flex flex-col items-center justify-center mt-20">
             <Contrast>
                 <div className="w-64 mb-44">
                     <Heading3>
-                        Aktiv event:{' '}
+                        Aktivt event:{' '}
                         <span className="text-coral">
-                            {activeGameMode
-                                ? `${activeGameMode.name} (${activeGameMode.difficulty})`
-                                : 'INGEN'}
+                            {activeEvent ? `${activeEvent.eventName}` : 'INGEN'}
                         </span>
                     </Heading3>
                 </div>
@@ -71,12 +67,12 @@ export default function EventEditPage(): JSX.Element {
                     disabled={selectedItem === null}
                     onClick={async () => {
                         if (selectedItem !== null) {
-                            await updateActiveGameModeEvent(selectedItem.value)
-                            await mutate('/game-mode/active-event')
+                            await updateActiveEvent(selectedItem.value)
+                            await mutate('/event/active')
                         }
                     }}
                 >
-                    Oppdater event
+                    Sett event til aktiv
                 </PrimaryButton>
             </Contrast>
         </div>

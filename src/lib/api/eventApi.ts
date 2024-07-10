@@ -4,9 +4,26 @@ import { StopPlace } from '@entur/sdk/lib/fields/StopPlace'
 
 const baseUrl = 'http://localhost:8080'
 
+export async function getAllEvents(): Promise<BackendEvent[] | null> {
+    const response = await fetch(`${baseUrl}/event/all`)
+    if (response.status !== 200) return null
+    return response.json()
+}
+
 export async function getActiveEvent(): Promise<BackendEvent | null> {
     const response = await fetch(`${baseUrl}/event/active`)
     if (response.status !== 200) return null
+    return response.json()
+}
+
+export async function updateActiveEvent(gameId: number): Promise<Event> {
+    const response = await fetch(`${baseUrl}/event/active/${gameId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({}),
+    })
     return response.json()
 }
 
