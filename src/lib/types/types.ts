@@ -12,7 +12,7 @@ export type Event = {
 }
 
 export type BackendEvent = {
-    eventId: number
+    eventId?: number
     eventName: string
     startLocationId: string
     endLocationId: string

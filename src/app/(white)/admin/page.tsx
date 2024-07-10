@@ -5,7 +5,6 @@ import { AdjustmentsIcon, BulletListIcon } from '@entur/icons'
 import { NavigationCard } from '@entur/layout'
 
 export default function AdminPage(): JSX.Element {
-    // tailwing og styling på endres på
     return (
         <div>
             <div className="flex flex-col items-center justify-center mr-20">
