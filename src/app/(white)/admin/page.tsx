@@ -1,8 +1,9 @@
 'use client'
 
-import { Heading1, LeadParagraph } from '@entur/typography'
+import { Heading1, Heading4, LeadParagraph } from '@entur/typography'
 import { AdjustmentsIcon, BulletListIcon } from '@entur/icons'
 import { NavigationCard } from '@entur/layout'
+import { CopyableText } from '@entur/alert'
 
 export default function AdminPage(): JSX.Element {
     return (
@@ -33,6 +34,17 @@ export default function AdminPage(): JSX.Element {
                     mulighet til å trekke en vinner blandt de beste
                     poengsummene.
                 </NavigationCard>
+            </div>
+            <div className="flex flex-col items-center justify-center mr-20 p-12">
+                <Heading4>Lenke til aktivt spill</Heading4>
+                <div className="mt-2">
+                    <CopyableText
+                        successHeading="Lenke kopiert!"
+                        successMessage=" "
+                    >
+                        localhost:3000
+                    </CopyableText>
+                </div>
             </div>
         </div>
     )

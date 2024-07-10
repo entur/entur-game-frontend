@@ -10,7 +10,7 @@ export const AdminNavBar: React.FC = () => {
     const path = usePathname()
     return (
         <div className="flex items-center pt-10 pl-5">
-            <Link href="/" className="mr-7">
+            <Link href="/admin" className="mr-7">
                 <Image
                     className="cursor-pointer"
                     src={AdminLogo}
