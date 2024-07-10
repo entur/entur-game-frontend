@@ -25,7 +25,7 @@ export default function AdminPage(): JSX.Element {
                 </NavigationCard>
                 <NavigationCard
                     className="h-full"
-                    title="Leaderboard"
+                    title="Ledertavle"
                     titleIcon={<BulletListIcon />}
                     href="http://localhost:3000/admin/leaderboard"
                 >

@@ -22,7 +22,7 @@ export default function GamePage(): JSX.Element {
     const [isEventError, setEventError] = useState<boolean>(false)
 
     useEffect(() => {
-        async function fetchEventJson() {
+        async function getEvent() {
             if (!eventName) {
                 setEventError(true)
                 return
@@ -37,7 +37,7 @@ export default function GamePage(): JSX.Element {
                 setEvent(eventJson)
             }
         }
-        fetchEventJson()
+        getEvent()
     }, [])
 
     if (isEventError) {
@@ -50,7 +50,7 @@ export default function GamePage(): JSX.Element {
     }
     if (event === null) {
         //TODO: errorHandling dersom event=== null for lenge. "event not found" bør vises i stedet etter en viss tid
-        return <Loader>Lasterer...</Loader>
+        return <Loader>Laster...</Loader>
     }
 
     return (

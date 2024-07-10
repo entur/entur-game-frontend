@@ -1,10 +1,10 @@
-import { StopPlace } from '@/gql/graphql'
+import { StopPlace } from '@entur/sdk/lib/fields/StopPlace'
 
 export type Event = {
     eventId: number
     eventName: string
-    startLocation: StopPlace;
-    endLocation: StopPlace[];
+    startLocation: StopPlace
+    endLocation: StopPlace[]
     startTime: string
     optimalStepNumber: number
     optimalTravelTime: number

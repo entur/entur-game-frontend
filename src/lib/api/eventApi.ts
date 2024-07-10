@@ -4,6 +4,12 @@ import { StopPlace } from '@entur/sdk/lib/fields/StopPlace'
 
 const baseUrl = 'http://localhost:8080'
 
+export async function getActiveEvent(): Promise<BackendEvent | null> {
+    const response = await fetch(`${baseUrl}/event/active`)
+    if (response.status !== 200) return null
+    return response.json()
+}
+
 export async function getBackendEventByEventName(
     eventName: string,
 ): Promise<BackendEvent | null> {

@@ -17,7 +17,7 @@ export const AdminNavBar: React.FC = () => {
                 active={path.endsWith('/leaderboard')}
                 href="/admin/leaderboard"
             >
-                Leaderboard
+                Ledertavle
             </TopNavigationItem>
         </nav>
     )
