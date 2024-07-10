@@ -10,7 +10,9 @@ export async function getActiveEvent(): Promise<BackendEvent | null> {
     return response.json()
 }
 
-export async function getBackendEventByEventName(eventName: string): Promise<BackendEvent | null> {
+export async function getBackendEventByEventName(
+    eventName: string,
+): Promise<BackendEvent | null> {
     const response = await fetch(`${baseUrl}/event/${eventName}`)
     if (response.status !== 200) return null
     return response.json()
@@ -60,4 +62,3 @@ export async function createOptimalRouteText(event: Event): Promise<string> {
 
     return `Vår reiseplanlegger har beregnet en optimal rute der antall etapper er ${event?.optimalStepNumber} og reisetid er ${hours} timer, ${minutes} minutter og ${seconds} sekunder.`
 }
-

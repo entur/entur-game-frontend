@@ -55,11 +55,11 @@ export default function AdminCreateJourney(): ReactElement {
     )
     const [time, setTime] = React.useState<ZonedDateTime | null>(
         now('Europe/Oslo'),
-     )
+    )
 
-     return (
-         <div className="max-w-md ml-56 p-4 ">
-             <BlockquoteFooter>Opprett Rute</BlockquoteFooter>
+    return (
+        <div className="max-w-md ml-56 p-4 ">
+            <BlockquoteFooter>Opprett Rute</BlockquoteFooter>
             <Heading1>Opprett en ny rute</Heading1>
             <div className="pb-0 mb-0">
                 <LeadParagraph>
