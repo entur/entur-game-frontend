@@ -72,13 +72,9 @@ export async function getEventByEventName(
 ): Promise<Event | null> {
     const baseEvent = await getBackendEventByEventName(eventName)
     if (!baseEvent) return null
-    console.log("API")
-    console.log(baseEvent)
 
     const startLocationName = await fetchStopPlaceName(baseEvent.startLocationId)
     const endLocationName = await fetchStopPlaceName(baseEvent.endLocationId)
-    console.log(startLocationName)
-    console.log(endLocationName)
 
     if (!startLocationName || !endLocationName) {
         return null
@@ -95,9 +91,6 @@ export async function getEventByEventName(
             name: endLocationName,
         }
     ]
-
-    console.log(startLocation)
-    console.log(endLocation)
 
     return {
         eventId: baseEvent.eventId,

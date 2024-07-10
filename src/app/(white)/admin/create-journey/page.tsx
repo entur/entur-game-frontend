@@ -153,7 +153,10 @@ export default function AdminCreateJourney() {
                         value: id ?? '',
                     }
                 })
-                return mappedData
+                const filteredData = mappedData.filter(
+                    (item) => !/^NSR:GroupOfStopPlaces:\d+$/.test(item.value)
+                )
+                return filteredData
             } catch (error) {
                 if (error === 'AbortError') throw error
                 console.error('Error fetching data:', error)
