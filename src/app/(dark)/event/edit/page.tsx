@@ -21,9 +21,9 @@ export default function EventEditPage(): JSX.Element {
         useState<NormalizedDropdownItemType<number> | null>(
             activeEvent && activeEvent.eventId !== undefined
                 ? {
-                    label: activeEvent.eventName,
-                    value: activeEvent.eventId,
-                }
+                      label: activeEvent.eventName,
+                      value: activeEvent.eventId,
+                  }
                 : null,
         )
 

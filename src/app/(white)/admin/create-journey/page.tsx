@@ -154,7 +154,7 @@ export default function AdminCreateJourney() {
                     }
                 })
                 const filteredData = mappedData.filter(
-                    (item) => !/^NSR:GroupOfStopPlaces:\d+$/.test(item.value)
+                    (item) => !/^NSR:GroupOfStopPlaces:\d+$/.test(item.value),
                 )
                 return filteredData
             } catch (error) {

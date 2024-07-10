@@ -46,14 +46,17 @@ const query = `
 
 async function fetchStopPlaceName(stopPlaceId: string): Promise<string | null> {
     try {
-        const response = await fetch('https://api.entur.io/journey-planner/v3/graphql', {
-            method: 'POST',
-            headers: {
-                'ET-Client-Name': 'enturspillet',
-                'Content-Type': 'application/json',
+        const response = await fetch(
+            'https://api.entur.io/journey-planner/v3/graphql',
+            {
+                method: 'POST',
+                headers: {
+                    'ET-Client-Name': 'enturspillet',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ query, variables: { id: stopPlaceId } }),
             },
-            body: JSON.stringify({ query, variables: { id: stopPlaceId } }),
-        })
+        )
         const data = await response.json()
         if (data.errors) {
             console.error('Error fetching stop place name:', data.errors)
@@ -72,7 +75,9 @@ export async function getEventByEventName(
     const baseEvent = await getBackendEventByEventName(eventName)
     if (!baseEvent) return null
 
-    const startLocationName = await fetchStopPlaceName(baseEvent.startLocationId)
+    const startLocationName = await fetchStopPlaceName(
+        baseEvent.startLocationId,
+    )
     const endLocationName = await fetchStopPlaceName(baseEvent.endLocationId)
 
     if (!startLocationName || !endLocationName) {
@@ -88,7 +93,7 @@ export async function getEventByEventName(
         {
             id: baseEvent.endLocationId,
             name: endLocationName,
-        }
+        },
     ]
 
     return {
