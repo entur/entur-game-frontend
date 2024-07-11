@@ -17,21 +17,23 @@ import EnInsertTur from '@/components/EnInsertTur'
 import useSWR from 'swr'
 import { sortNumber } from '@/lib/utils/sorters'
 import { PlayerScore } from '@/lib/types/types'
-import { getPlayerScoresByActiveEvent } from '@/lib/api/playerScoreApi'
+import { getActiveScores } from '@/lib/api/playerScoreApi'
+
+const fetchPlayerScores = async (): Promise<PlayerScore[]> => {
+    const scores = await getActiveScores()
+    return scores || []
+}
 
 export default function EventHighScorePage(): JSX.Element {
-    let { data: playerScores } = useSWR<PlayerScore[]>('/players', () =>
-        getPlayerScoresByActiveEvent(),
-    )
+    const { data: playerScores } = useSWR<PlayerScore[]>('/players', fetchPlayerScores)
 
     if (playerScores === undefined) {
         return <p>Laster inn...</p>
     }
 
-    playerScores = playerScores.filter(
-        (playerScore) => playerScore.scoreValue > 0,
-    )
-    playerScores.sort((a, b) => sortNumber(a.scoreValue, b.scoreValue))
+    const filteredPlayerScores = playerScores
+        .filter((playerScore) => playerScore.scoreValue > 0)
+        .sort((a, b) => sortNumber(a.scoreValue, b.scoreValue))
 
     return (
         <div
@@ -71,7 +73,7 @@ export default function EventHighScorePage(): JSX.Element {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {playerScores.map((playerScore, index) => (
+                    {filteredPlayerScores.map((playerScore, index) => (
                         <TableRow key={playerScore.scoreId}>
                             <DataCell>
                                 <Heading1 className="text-white">

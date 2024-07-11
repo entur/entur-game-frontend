@@ -36,7 +36,20 @@ export async function savePlayerScore(
     return response
 }
 
-export async function getPlayerScoresByActiveEvent(): Promise<
+export async function saveScore(
+    playerScore: PlayerScore,
+): Promise<Response> {
+    const response = await fetch(`${baseUrl}/score/save`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(playerScore),
+    })
+    return response
+}
+
+export async function getActiveScores(): Promise<
     PlayerScore[] | null
 > {
     const response = await fetch(`${baseUrl}/score/active`)
