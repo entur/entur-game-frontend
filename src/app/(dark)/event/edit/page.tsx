@@ -14,18 +14,16 @@ import {
 } from '@/lib/api/eventApi'
 
 export default function EventEditPage(): JSX.Element {
-    const { data: events } = useSWR('/event/all', () => getAllEvents())
-    const { data: activeEvent } = useSWR('/event/active', () =>
-        getActiveEvent(),
-    )
+    const { data: events } = useSWR('/event/all', getAllEvents)
+    const { data: activeEvent } = useSWR('/event/active', getActiveEvent)
 
     const [selectedItem, setSelectedItem] =
         useState<NormalizedDropdownItemType<number> | null>(
-            activeEvent
+            activeEvent && activeEvent.eventId !== undefined
                 ? {
-                    label: activeEvent.eventName,
-                    value: activeEvent.eventId,
-                }
+                      label: activeEvent.eventName,
+                      value: activeEvent.eventId,
+                  }
                 : null,
         )
 

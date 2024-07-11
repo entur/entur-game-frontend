@@ -8,19 +8,10 @@ import { BlockquoteFooter } from '@entur/typography'
 import { DatePicker, TimePicker, ZonedDateTime } from '@entur/datepicker'
 import { NormalizedDropdownItemType, SearchableDropdown } from '@entur/dropdown'
 import { now } from '@internationalized/date'
-import { BackendEvent } from '@/lib/types/types'
+import { BackendEvent, TGeoresponse } from '@/lib/types/types'
 import { useRouter } from 'next/navigation'
 import { useToast } from '@entur/alert'
 import { createEvent } from '@/lib/api/eventApi'
-
-type TGeoresponse = {
-    features: Array<{
-        properties: {
-            id?: string
-            name?: string
-        }
-    }>
-}
 
 const query = `
 query getTripInfo($from: Location!, $to: Location!, $dateTime: DateTime!) {
@@ -162,7 +153,10 @@ export default function AdminCreateJourney() {
                         value: id ?? '',
                     }
                 })
-                return mappedData
+                const filteredData = mappedData.filter(
+                    (item) => !/^NSR:GroupOfStopPlaces:\d+$/.test(item.value),
+                )
+                return filteredData
             } catch (error) {
                 if (error === 'AbortError') throw error
                 console.error('Error fetching data:', error)

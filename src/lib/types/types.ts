@@ -49,3 +49,12 @@ export type Score = {
     player?: Player
     event?: Event
 }
+
+export type TGeoresponse = {
+    features: Array<{
+        properties: {
+            id?: string
+            name?: string
+        }
+    }>
+}

@@ -1,5 +1,4 @@
 import { BackendEvent, Event } from '../types/types'
-import mockStopPlace from '../mock-api/stopPlace'
 import { StopPlace } from '@entur/sdk/lib/fields/StopPlace'
 
 const baseUrl = 'http://localhost:8080'
@@ -35,8 +34,39 @@ export async function getBackendEventByEventName(
     return response.json()
 }
 
-function findStopPlaceById(id: string): StopPlace | undefined {
-    return mockStopPlace.find((stopPlace) => stopPlace.id === id)
+const query = `
+    query ($id: String!) {
+        stopPlace(
+            id: $id
+        ) {
+            name
+        }
+    }
+`
+
+async function fetchStopPlaceName(stopPlaceId: string): Promise<string | null> {
+    try {
+        const response = await fetch(
+            'https://api.entur.io/journey-planner/v3/graphql',
+            {
+                method: 'POST',
+                headers: {
+                    'ET-Client-Name': 'enturspillet',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ query, variables: { id: stopPlaceId } }),
+            },
+        )
+        const data = await response.json()
+        if (data.errors) {
+            console.error('Error fetching stop place name:', data.errors)
+            return null
+        }
+        return data.data.stopPlace.name
+    } catch (error) {
+        console.error('Error fetching stop place name:', error)
+        return null
+    }
 }
 
 export async function getEventByEventName(
@@ -45,19 +75,26 @@ export async function getEventByEventName(
     const baseEvent = await getBackendEventByEventName(eventName)
     if (!baseEvent) return null
 
-    const startLocation = findStopPlaceById(baseEvent.startLocationId)
-    const endLocation = [findStopPlaceById(baseEvent.endLocationId)]
+    const startLocationName = await fetchStopPlaceName(
+        baseEvent.startLocationId,
+    )
+    const endLocationName = await fetchStopPlaceName(baseEvent.endLocationId)
 
-    if (!startLocation || endLocation.length === 0) {
+    if (!startLocationName || !endLocationName) {
         return null
     }
 
-    if (
-        typeof startLocation === 'undefined' ||
-        typeof endLocation[0] === 'undefined'
-    ) {
-        return null
+    const startLocation: StopPlace = {
+        id: baseEvent.startLocationId,
+        name: startLocationName,
     }
+
+    const endLocation: StopPlace[] = [
+        {
+            id: baseEvent.endLocationId,
+            name: endLocationName,
+        },
+    ]
 
     return {
         eventId: baseEvent.eventId,
