@@ -147,9 +147,9 @@ export default function AdminCreateJourney() {
                 )
                 const data: TGeoresponse = await response.json()
                 const mappedData = data.features.map((feature) => {
-                    const { id, name } = feature.properties || {}
+                    const { id, label } = feature.properties || {}
                     return {
-                        label: name ?? '',
+                        label: label ?? '',
                         value: id ?? '',
                     }
                 })
