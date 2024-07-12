@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useState } from 'react'
 import { Button } from '@entur/button'
-import { Heading1, Heading3, LeadParagraph } from '@entur/typography'
+import { Heading1, Heading3, LeadParagraph, Paragraph } from '@entur/typography'
 import { MapPinIcon, DestinationIcon } from '@entur/icons'
 import { BlockquoteFooter } from '@entur/typography'
 import { DatePicker, TimePicker, ZonedDateTime } from '@entur/datepicker'
@@ -166,55 +166,65 @@ export default function AdminCreateJourney() {
     )
 
     return (
-        <div className="max-w-md ml-56 p-4 ">
-            <BlockquoteFooter>Opprett Rute</BlockquoteFooter>
-            <Heading1>Opprett en ny rute</Heading1>
-            <div className="pb-0 mb-0">
-                <LeadParagraph>
+        <div className="ml-56 p-4 ">
+            <div className="flex flex-col">
+                <BlockquoteFooter>Opprett Rute</BlockquoteFooter>
+                <Heading1 margin="none">Opprett en ny rute</Heading1>
+                <LeadParagraph margin="bottom">
                     Konfigurer ny rute ved å angi start, mål og starttidspunkt
                 </LeadParagraph>
             </div>
-            <div className="space-y-10 pt-6">
+            <div className="flex flex-col pt-6">
                 <Heading3>Velg start og mål</Heading3>
-                <SearchableDropdown
-                    label="Start"
-                    items={fetchItems}
-                    selectedItem={selectedStart}
-                    prepend={<MapPinIcon></MapPinIcon>}
-                    onChange={setSelectedStart}
-                    selectOnTab
-                    variant={
-                        attemptedSubmit && !selectedStart
-                            ? 'negative'
-                            : undefined
-                    }
-                    feedback={
-                        attemptedSubmit && !selectedStart
-                            ? 'Du må velge startsted'
-                            : undefined
-                    }
-                />
-                <SearchableDropdown
-                    label="Mål"
-                    items={fetchItems}
-                    prepend={<DestinationIcon></DestinationIcon>}
-                    selectedItem={selectedGoal}
-                    onChange={setSelectedGoal}
-                    selectOnTab
-                    variant={
-                        attemptedSubmit && !selectedGoal
-                            ? 'negative'
-                            : undefined
-                    }
-                    feedback={
-                        attemptedSubmit && !selectedGoal
-                            ? 'Du må velge endestopp'
-                            : undefined
-                    }
-                />
+                <Paragraph margin="bottom">
+                    Velg hvilke to stoppested ruten til dette spillet skal gå
+                    mellom
+                </Paragraph>
+                <div className="max-w-md space-y-8">
+                    <SearchableDropdown
+                        label="Start"
+                        items={fetchItems}
+                        selectedItem={selectedStart}
+                        prepend={<MapPinIcon></MapPinIcon>}
+                        onChange={setSelectedStart}
+                        selectOnTab
+                        variant={
+                            attemptedSubmit && !selectedStart
+                                ? 'negative'
+                                : undefined
+                        }
+                        feedback={
+                            attemptedSubmit && !selectedStart
+                                ? 'Du må velge startsted'
+                                : undefined
+                        }
+                    />
+                    <SearchableDropdown
+                        label="Mål"
+                        items={fetchItems}
+                        prepend={<DestinationIcon></DestinationIcon>}
+                        selectedItem={selectedGoal}
+                        onChange={setSelectedGoal}
+                        selectOnTab
+                        variant={
+                            attemptedSubmit && !selectedGoal
+                                ? 'negative'
+                                : undefined
+                        }
+                        feedback={
+                            attemptedSubmit && !selectedGoal
+                                ? 'Du må velge endestopp'
+                                : undefined
+                        }
+                    />
+                </div>
             </div>
-            <div className="space-y-10 pt-12">
+            <div className="flex flex-col pt-12">
                 <Heading3>Velg starttidspunkt</Heading3>
+                <Paragraph margin="bottom">
+                    Velg hvilken dag og hvilket tidspunkt spillets reiserute
+                    skal starte på
+                </Paragraph>
                 <div className="flex flex-row">
                     <div className="pr-10">
                         <DatePicker
@@ -231,7 +241,7 @@ export default function AdminCreateJourney() {
                         onChange={setTime}
                     ></TimePicker>
                 </div>
-                <div className="pt-12">
+                <div className="pt-12 pb-12">
                     <Button
                         width="auto"
                         variant="primary"
