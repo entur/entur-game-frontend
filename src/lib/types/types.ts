@@ -54,7 +54,7 @@ export type TGeoresponse = {
     features: Array<{
         properties: {
             id?: string
-            name?: string
+            label?: string
         }
     }>
 }

@@ -1,7 +1,7 @@
 import '@/app/globals.css'
-import EnturPartnerIconDark from '@/lib/assets/icons/EnturPartnerDark.svg'
 import Link from 'next/link'
 import Image from 'next/image'
+import DarkLogo from '@/lib/assets/images/DarkLogo.png'
 
 export default function LightModeLayout({
     children,
@@ -14,8 +14,9 @@ export default function LightModeLayout({
                 <Link href="/" className="mr-20">
                     <Image
                         className="cursor-pointer"
-                        src={EnturPartnerIconDark}
+                        src={DarkLogo}
                         alt="entur partner"
+                        width={215}
                     />
                 </Link>
             </div>
