@@ -66,6 +66,7 @@ export default function AdminCreateJourney() {
     const formattedDateTime = date && time ? formatDateTime(date, time) : ''
 
     const [event, setEvent] = useState<BackendEvent>()
+    const [loading, setLoading] = useState<boolean>(false)
 
     useEffect(() => {
         if (event) {
@@ -80,9 +81,9 @@ export default function AdminCreateJourney() {
 
     const fetchTripInfo = useCallback(async () => {
         if (!selectedStart?.label || !selectedGoal?.label) {
-            console.error('Error: selectedStart.label is required')
             return
         }
+        setLoading(true)
 
         const variables = {
             from: {
@@ -124,14 +125,12 @@ export default function AdminCreateJourney() {
                 }
             })
             .catch((error) => console.error('Error fetching trip info:', error))
+            .finally(() => setLoading(false))
     }, [selectedStart, selectedGoal, formattedDateTime])
 
     const handleOnClick = () => {
         if (!selectedStart || !selectedGoal || !selectedStart.label) {
             setAttemptedSubmit(true)
-            console.error(
-                'Error: selectedStart.label is required for submission',
-            )
             return
         }
 
@@ -237,7 +236,8 @@ export default function AdminCreateJourney() {
                         width="auto"
                         variant="primary"
                         size="medium"
-                        onClick={() => handleOnClick()}
+                        onClick={handleOnClick}
+                        loading={loading}
                     >
                         Opprett rute
                     </Button>
