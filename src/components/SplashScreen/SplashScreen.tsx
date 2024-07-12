@@ -10,7 +10,7 @@ import {
 import EnInsertTur from '../EnInsertTur'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
-import EnturPartnerIconLight from '@/lib/assets/icons/EnturPartnerLight.svg'
+import LightLogo from '@/lib/assets/images/LightLogo.png'
 import Link from 'next/link'
 import { getActiveEvent } from '@/lib/api/eventApi'
 import { useEffect, useState } from 'react'
@@ -38,8 +38,9 @@ export function SplashScreen(): JSX.Element {
             <Link href="/" className="pt-10 ml-5 mr-20">
                 <Image
                     className="cursor-pointer"
-                    src={EnturPartnerIconLight}
+                    src={LightLogo}
                     alt="entur partner"
+                    width={215}
                 />
             </Link>
             <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
