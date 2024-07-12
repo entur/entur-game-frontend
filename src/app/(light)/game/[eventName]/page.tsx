@@ -27,18 +27,26 @@ export default function GamePage(): JSX.Element {
                 setEventError(true)
                 return
             }
+            //TODO: fix in backend!!
+            //TODO: then return how it was
 
-            const eventJson = await getEventByEventName(eventName)
-            if (eventJson === null) {
+            try {
+                const eventJson = await getEventByEventName(eventName)
+                if (eventJson === null) {
+                    setEventError(true)
+                    return
+                } else {
+                    setEventError(false)
+                    setEvent(eventJson)
+                }
+            } catch (error) {
+                console.error('Failed to fetch event:', error)
                 setEventError(true)
-                return
-            } else {
-                setEventError(false)
-                setEvent(eventJson)
             }
         }
         getEvent()
-    }, [])
+    }, [eventName])
+
 
     if (isEventError) {
         // TODO: redirect to main screen
@@ -68,7 +76,7 @@ export default function GamePage(): JSX.Element {
                     event={event}
                     startTimer={startTimer}
                     // eslint-disable-next-line @typescript-eslint/no-empty-function
-                    handleWinner={() => {}}
+                    handleWinner={() => { }}
                     totalHp={totalHp}
                     setTotalHp={setTotalHp}
                     numLegs={numLegs}

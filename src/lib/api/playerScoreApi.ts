@@ -1,4 +1,4 @@
-import { PlayerScore } from '@/lib/types/types'
+import { Player, PlayerScore } from '@/lib/types/types'
 
 const baseUrl = 'http://localhost:8080'
 
@@ -56,3 +56,35 @@ export async function getActiveScores(): Promise<
     if (response.status !== 200) return null
     return await response.json()
 }
+
+export async function getPlayerByPlayerName(
+    playerName: string,
+): Promise<Player | null> {
+    const response = await fetch(`${baseUrl}/player/${playerName}`)
+    if (response.status !== 200) return null
+    return response.json()
+}
+
+export async function createPlayer(
+    player: Player
+): Promise<Player | null> {
+    try {
+        const response = await fetch(`${baseUrl}/new-player`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(player),
+        })
+        if (!response.ok) {
+            console.error(`Error: ${response.status} - ${response.statusText}`)
+            return null
+        }
+        const responseData = await response.json()
+        return responseData
+    } catch (error) {
+        console.error('Error creating new player:', error)
+        return null
+    }
+}
+
