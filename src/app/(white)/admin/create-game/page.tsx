@@ -142,7 +142,7 @@ export default function AdminCreateJourney() {
             try {
                 if (inputValue.length < 2) return []
                 const response = await fetch(
-                    `https://api.entur.io/geocoder/v1/autocomplete?text=${inputValue}&size=8&lang=no&layer=venue`,
+                    `https://api.entur.io/geocoder/v1/autocomplete?text=${inputValue}&size=20&lang=no&layer=venue`,
                 )
                 const data: TGeoresponse = await response.json()
                 const mappedData = data.features.map((feature) => {
