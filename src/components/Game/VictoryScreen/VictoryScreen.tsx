@@ -43,8 +43,9 @@ export function VictoryScreen({
     numLegs,
     currentTime,
     startTime,
+    startTimer,
 }: Props): ReactElement {
-    const { addToast } = useToast() // Flytt useToast her
+    const { addToast } = useToast()
 
     const {
         formState: { errors, isLoading, isSubmitting, isValid },
@@ -65,7 +66,6 @@ export function VictoryScreen({
     const [optimalRouteText, setOptimalRouteText] = useState<string>('')
 
     async function onSubmit(data: FormValues) {
-        //TODO: consent må være true
         //TODO: legg til feilhåndtering på getEventByEventName slik som det er gjort på player
 
         const newPlayer: Player = {
@@ -85,12 +85,12 @@ export function VictoryScreen({
             isActive: event.isActive
         }
 
-        const playerScore: PlayerScore = {
+        const playerScore: PlayerScore = { //TODO: scoreValue, totalStepNumber, totalTraelTime og totalPlayTime bør sjekkes nøye for å se om de gjør det de skal
             scoreId: null,
-            scoreValue: 100,
-            totalStepNumber: 100,
-            totalTravelTime: 100,
-            totalPlayTime: 100,
+            scoreValue: (100.00 * (event.optimalStepNumber / numLegs) * (event.optimalTravelTime / formatIntervalToSeconds(currentTime, startTime))), //TODO: bli enig om måten scoreValue kalkuleres (per nå brukes gammel logikk)
+            totalStepNumber: numLegs,
+            totalTravelTime: formatIntervalToSeconds(currentTime, startTime),
+            totalPlayTime: Math.trunc((Date.now() - startTimer) / 1000),
             player: newPlayer,
             event: backendEvent
         }
@@ -98,6 +98,7 @@ export function VictoryScreen({
         const response = await saveScore(playerScore)
         console.log("response")
         console.log(response)
+        setError(false)
         if (response.status > 199 && response.status < 299) {
             addToast({
                 title: 'Poengsum registrert',
