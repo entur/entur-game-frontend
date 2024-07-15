@@ -17,6 +17,7 @@ import {
 import { Controller, useForm } from 'react-hook-form'
 import { createOptimalRouteText } from '@/lib/api/eventApi'
 import { useRouter } from 'next/navigation'
+import { useToast } from '@entur/alert'
 
 type Props = {
     name: string
@@ -45,6 +46,8 @@ export function VictoryScreen({
     startTime,
     startTimer,
 }: Props): ReactElement {
+    const { addToast } = useToast() // Flytt useToast her
+
     const {
         formState: { errors, isLoading, isSubmitting, isValid },
         control,
@@ -94,7 +97,13 @@ export function VictoryScreen({
         }
 
         const response = await saveScore(playerScore)
+        console.log("response")
+        console.log(response)
         if (response.status > 199 && response.status < 299) {
+            addToast({
+                title: 'Poengsum registrert!',
+                content: <>Takk for at du spilte</>,
+            })
             setTimeout(() => {
                 router.push('/')
             }, 5000)
