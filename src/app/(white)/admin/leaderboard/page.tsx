@@ -3,7 +3,12 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-import { BlockquoteFooter, Heading1, LeadParagraph } from '@entur/typography'
+import {
+    BlockquoteFooter,
+    Heading1,
+    LeadParagraph,
+    SubParagraph,
+} from '@entur/typography'
 import { Loader } from '@entur/loader'
 import { Modal } from '@entur/modal'
 import {
@@ -21,6 +26,8 @@ import { getPlayerScoresByActiveEvent } from '@/lib/api/playerScoreApi'
 import { getActiveEvent } from '@/lib/api/eventApi'
 import { Badge } from '@entur/layout'
 import { Pagination } from '@entur/menu'
+import { Tooltip } from '@entur/tooltip'
+import { ValidationInfoFilledIcon } from '@entur/icons'
 
 export default function GamePage(): JSX.Element {
     const [eventName, setEventName] = useState<string | null>(null)
@@ -132,10 +139,12 @@ export default function GamePage(): JSX.Element {
 
     return (
         <div className="max-w-screen mx-56 p-4">
-            <BlockquoteFooter>Ledertavle</BlockquoteFooter>
-            <Heading1>{eventName}</Heading1>
-            <div className="pb-0 mb-0">
-                <LeadParagraph>Ledertavle for nåværende rute</LeadParagraph>
+            <div className="flex flex-col pb-4">
+                <BlockquoteFooter>Ledertavle</BlockquoteFooter>
+                <Heading1 margin="none">{eventName}</Heading1>
+                <LeadParagraph margin="bottom">
+                    Ledertavle for nåværende spill
+                </LeadParagraph>
             </div>
             <Button
                 width="auto"
@@ -145,12 +154,18 @@ export default function GamePage(): JSX.Element {
             >
                 Trekk en vinner
             </Button>
+            <SubParagraph className="w-96 pt-2">
+                Ved å trykke på knappen trekkes en tilfeldig vinner blant
+                spillerne med høyest poengsum.
+            </SubParagraph>
             {showAlert && (
-                <div className="pt-12">
-                    <SmallAlertBox variant="negative" width="fit-content">
-                        Minst én spiller kreves for å trekke vinner.
-                    </SmallAlertBox>
-                </div>
+                <SmallAlertBox
+                    variant="negative"
+                    width="fit-content"
+                    margin="top"
+                >
+                    Minst én spiller kreves for å trekke vinner.
+                </SmallAlertBox>
             )}
             <br />
             <br />
