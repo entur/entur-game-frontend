@@ -73,7 +73,7 @@ export default function AdminCreateJourney() {
             createEvent(event)
             router.push(`/admin`)
             addToast({
-                title: 'Ny rute opprettet!',
+                title: 'Nytt spill opprettet!',
                 content: <>Ruten kan spilles av alle med lenken</>,
             })
         }
@@ -142,7 +142,7 @@ export default function AdminCreateJourney() {
             try {
                 if (inputValue.length < 2) return []
                 const response = await fetch(
-                    `https://api.entur.io/geocoder/v1/autocomplete?text=${inputValue}&size=5&lang=no&layer=venue`,
+                    `https://api.entur.io/geocoder/v1/autocomplete?text=${inputValue}&size=20&lang=no&layer=venue`,
                 )
                 const data: TGeoresponse = await response.json()
                 const mappedData = data.features.map((feature) => {
@@ -168,8 +168,8 @@ export default function AdminCreateJourney() {
     return (
         <div className="ml-56 p-4 ">
             <div className="flex flex-col">
-                <BlockquoteFooter>Opprett Rute</BlockquoteFooter>
-                <Heading1 margin="none">Opprett en ny rute</Heading1>
+                <BlockquoteFooter>Opprett Spill</BlockquoteFooter>
+                <Heading1 margin="none">Opprett et nytt spill</Heading1>
                 <LeadParagraph margin="bottom">
                     Konfigurer ny rute ved å angi start, mål og starttidspunkt
                 </LeadParagraph>
@@ -249,7 +249,7 @@ export default function AdminCreateJourney() {
                         onClick={handleOnClick}
                         loading={loading}
                     >
-                        Opprett rute
+                        Opprett spill
                     </Button>
                 </div>
             </div>
