@@ -28,7 +28,6 @@
         "@entur/tab": "^0.4.69",
         "@entur/table": "^4.8.12",
         "@entur/tokens": "^3.15.1",
-        "@entur/tooltip": "^3.0.0",
         "@entur/travel": "^4.2.0",
         "@entur/typography": "^1.8.39",
         "@graphql-codegen/cli": "^5.0.2",

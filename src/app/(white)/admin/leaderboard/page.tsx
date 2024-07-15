@@ -26,8 +26,6 @@ import { getPlayerScoresByActiveEvent } from '@/lib/api/playerScoreApi'
 import { getActiveEvent } from '@/lib/api/eventApi'
 import { Badge } from '@entur/layout'
 import { Pagination } from '@entur/menu'
-import { Tooltip } from '@entur/tooltip'
-import { ValidationInfoFilledIcon } from '@entur/icons'
 
 export default function GamePage(): JSX.Element {
     const [eventName, setEventName] = useState<string | null>(null)
