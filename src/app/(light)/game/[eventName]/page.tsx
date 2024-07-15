@@ -27,25 +27,18 @@ export default function GamePage(): JSX.Element {
                 setEventError(true)
                 return
             }
-            //TODO: fix in backend!!
-            //TODO: then return how it was
 
-            try {
-                const eventJson = await getEventByEventName(eventName)
-                if (eventJson === null) {
-                    setEventError(true)
-                    return
-                } else {
-                    setEventError(false)
-                    setEvent(eventJson)
-                }
-            } catch (error) {
-                console.error('Failed to fetch event:', error)
+            const eventJson = await getEventByEventName(eventName)
+            if (eventJson === null) {
                 setEventError(true)
+                return
+            } else {
+                setEventError(false)
+                setEvent(eventJson)
             }
         }
         getEvent()
-    }, [eventName])
+    }, [])
 
 
     if (isEventError) {

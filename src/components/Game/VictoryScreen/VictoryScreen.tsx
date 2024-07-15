@@ -66,7 +66,6 @@ export function VictoryScreen({
     const [optimalRouteText, setOptimalRouteText] = useState<string>('')
 
     async function onSubmit(data: FormValues) {
-        //TODO: legg til feilhåndtering på getEventByEventName slik som det er gjort på player
 
         const newPlayer: Player = {
             playerName: data.name,
