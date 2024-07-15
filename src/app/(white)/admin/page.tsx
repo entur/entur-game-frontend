@@ -17,9 +17,9 @@ export default function AdminPage(): JSX.Element {
             <div className="grid grid-cols-2 items-center gap-16 p-12 mr-20">
                 <NavigationCard
                     className="h-full"
-                    title="Opprett rute"
+                    title="Opprett spill"
                     titleIcon={<AdjustmentsIcon />}
-                    href="http://localhost:3000/admin/create-journey"
+                    href="http://localhost:3000/admin/create-game"
                 >
                     Her oppretter du en ny rute. Du velger hvor og når ruten
                     begynner, og hvor den skal ende.

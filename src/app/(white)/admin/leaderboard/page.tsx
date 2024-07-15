@@ -121,7 +121,7 @@ export default function GamePage(): JSX.Element {
                         width="auto"
                         variant="primary"
                         size="medium"
-                        onClick={() => router.push('/admin/create-journey')}
+                        onClick={() => router.push('/admin/create-game')}
                     >
                         Opprett rute
                     </Button>

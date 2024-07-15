@@ -20,10 +20,10 @@ export const AdminNavBar: React.FC = () => {
             </Link>
             <nav className="flex flex-row items-center gap-14">
                 <TopNavigationItem
-                    active={path.endsWith('/create-journey')}
-                    href="/admin/create-journey"
+                    active={path.endsWith('/create-game')}
+                    href="/admin/create-game"
                 >
-                    Opprett rute
+                    Opprett spill
                 </TopNavigationItem>
                 <TopNavigationItem
                     active={path.endsWith('/leaderboard')}
