@@ -16,7 +16,7 @@ import {
 } from '@entur/table'
 import { Button } from '@entur/button'
 import { BannerAlertBox, SmallAlertBox } from '@entur/alert'
-import { PlayerScore, Score } from '@/lib/types/types'
+import { PlayerScore } from '@/lib/types/types'
 import { getActiveScores } from '@/lib/api/playerScoreApi'
 import { getActiveEvent } from '@/lib/api/eventApi'
 import { Badge } from '@entur/layout'
