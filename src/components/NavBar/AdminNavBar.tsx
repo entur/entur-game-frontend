@@ -4,7 +4,7 @@ import { TopNavigationItem } from '@entur/menu'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
-import AdminLogo from '@/lib/assets/images/AdminLogo.png'
+import AdminLogoLight from '@/lib/assets/images/AdminLogoLight.png'
 
 export const AdminNavBar: React.FC = () => {
     const path = usePathname()
@@ -13,7 +13,7 @@ export const AdminNavBar: React.FC = () => {
             <Link href="/admin" className="mr-7">
                 <Image
                     className="cursor-pointer"
-                    src={AdminLogo}
+                    src={AdminLogoLight}
                     alt="entur partner"
                     width={215}
                 />
@@ -27,9 +27,15 @@ export const AdminNavBar: React.FC = () => {
                 </TopNavigationItem>
                 <TopNavigationItem
                     active={path.endsWith('/leaderboard')}
-                    href="/admin/leaderboard"
+                    href="/admin/leaderboard" //TODO: endre til riktig page
                 >
-                    Ledertavle
+                    Aktivt spill
+                </TopNavigationItem>
+                <TopNavigationItem
+                    active={path.endsWith('/leaderboard')}
+                    href="/admin/leaderboard" //TODO: endre til riktig page
+                >
+                    Tidligere spill
                 </TopNavigationItem>
             </nav>
         </div>

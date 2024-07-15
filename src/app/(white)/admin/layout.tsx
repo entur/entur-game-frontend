@@ -1,5 +1,6 @@
 import '@/app/globals.css'
 import NavBar from '@/components/NavBar/NavBar'
+import { Contrast } from '@entur/layout'
 
 export default function WhiteModeLayout({
     children,
