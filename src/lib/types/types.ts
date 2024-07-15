@@ -23,13 +23,13 @@ export type BackendEvent = {
 }
 
 export type PlayerScore = {
-    scoreId?: number
-    scoreValue: number
+    scoreId?: number | null
+    scoreValue: number | null
     totalStepNumber: number
     totalTravelTime: number
     totalPlayTime: number
     player: Player
-    event: Event
+    event: BackendEvent
 }
 
 export type Player = {

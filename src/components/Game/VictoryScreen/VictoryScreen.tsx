@@ -7,9 +7,9 @@ import {
     VictoryArtBoardCookieImage,
     VictoryArtBoardOvalImage,
 } from './VictoryScreenArt'
-import { Event, Player, PlayerScore } from '@/lib/types/types'
+import { BackendEvent, Event, Player, PlayerScore } from '@/lib/types/types'
 import { StopPlace } from '@entur/sdk'
-import { createPlayer, saveScore } from '@/lib/api/playerScoreApi'
+import { saveScore } from '@/lib/api/playerScoreApi'
 import {
     formatIntervalToSeconds,
     formatTimeForEndOfGame,
@@ -61,65 +61,39 @@ export function VictoryScreen({
 
     const timeDescription = formatTimeForEndOfGame(currentTime, startTime)
     const [optimalRouteText, setOptimalRouteText] = useState<string>('')
-    const [player, setPlayer] = useState<Player | null>(null)
 
     async function onSubmit(data: FormValues) {
-        // TODO: savePlayerScore bør endres totalt, difficulty bør bl.a. fjernes
         //TODO: consent må være true
         //TODO: legg til feilhåndtering på getEventByEventName slik som det er gjort på player
-        //TODO: fortsatt en drittfeil i getPlayerByPlayerName
 
-        console.log("onSubmit0")
         const newPlayer: Player = {
             playerName: data.name,
             email: data.email,
             phoneNumber: data.phoneNumber
         }
-        console.log("onSubmit1")
-        console.log(newPlayer)
-        const playerResponse: Player | null = await createPlayer(newPlayer)
-        console.log("onSubmit2")
-        console.log(playerResponse)
 
-        if (!playerResponse) {
-            console.log("ERROR onSubmit2")
-            return
+        const backendEvent: BackendEvent = {
+            eventId: event.eventId,
+            eventName: event.eventName,
+            startLocationId: event.startLocation.id,
+            endLocationId: event.endLocation[0].id,
+            startTime: event.startTime,
+            optimalStepNumber: event.optimalStepNumber,
+            optimalTravelTime: event.optimalTravelTime,
+            isActive: event.isActive
         }
 
-        console.log("onSubmit3")
-
         const playerScore: PlayerScore = {
+            scoreId: null,
             scoreValue: 100,
             totalStepNumber: 100,
             totalTravelTime: 100,
             totalPlayTime: 100,
-            player: playerResponse,
-            event: event
+            player: newPlayer,
+            event: backendEvent
         }
 
-        console.log("onSubmit4")
-        console.log(playerScore)
-
-        // const response = await savePlayerScore({
-        //     ...data,
-        //     difficulty: 'Lett',
-        //     fromDestination: {
-        //         destination: event.startLocation.name,
-        //         id: event.startLocation.id,
-        //     },
-        //     toDestination: {
-        //         destination: endLocation.name,
-        //         id: endLocation.id,
-        //     },
-        //     totalOptions: numLegs,
-        //     totalPlaytime: Math.trunc((Date.now() - startTimer) / 1000),
-        //     totalTravelTime: formatIntervalToSeconds(currentTime, startTime),
-        // })
-
         const response = await saveScore(playerScore)
-
-        console.log("response")
-        console.log(response)
         if (response.status > 199 && response.status < 299) {
             setTimeout(() => {
                 router.push('/')
