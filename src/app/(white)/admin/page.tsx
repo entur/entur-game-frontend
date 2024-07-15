@@ -2,18 +2,25 @@
 
 import { Heading1, Heading4, LeadParagraph } from '@entur/typography'
 import { AdjustmentsIcon, BulletListIcon } from '@entur/icons'
-import { NavigationCard } from '@entur/layout'
+import { Contrast, NavigationCard } from '@entur/layout'
 import { CopyableText } from '@entur/alert'
+import BackgroundAdmin from '@/lib/assets/images/BackgroundAdmin.svg'
+import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 
 export default function AdminPage(): JSX.Element {
     return (
         <div>
-            <div className="flex flex-col items-center justify-center mr-20">
-                <Heading1> Spillets admin-panel</Heading1>
-                <LeadParagraph>
-                    Konfigurer nye ruter og se nåværende leaderboard
-                </LeadParagraph>
+            <div className="flex flex-col items-center justify-center ">
+                <Contrast>
+                    <Heading1> Spillets admin-panel</Heading1>
+                    <LeadParagraph>
+                        Konfigurer nye ruter og se nåværende leaderboard
+                    </LeadParagraph>
+                </Contrast>
             </div>
+            <Image className="w-full" src={BackgroundAdmin} alt="background" />
+
             <div className="grid grid-cols-2 items-center gap-16 p-12 mr-20">
                 <NavigationCard
                     className="h-full"
