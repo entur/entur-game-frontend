@@ -17,7 +17,7 @@ import {
 import { Controller, useForm } from 'react-hook-form'
 import { createOptimalRouteText } from '@/lib/api/eventApi'
 import { useRouter } from 'next/navigation'
-import { useToast } from '@entur/alert'
+import { SmallAlertBox, useToast } from '@entur/alert'
 
 type Props = {
     name: string
@@ -40,11 +40,9 @@ type FormValues = {
 export function VictoryScreen({
     name = '',
     event,
-    endLocation,
     numLegs,
     currentTime,
     startTime,
-    startTimer,
 }: Props): ReactElement {
     const { addToast } = useToast() // Flytt useToast her
 
@@ -61,6 +59,7 @@ export function VictoryScreen({
     })
     const router = useRouter()
     const [isError, setError] = useState<boolean>(false)
+    const [responseStatus, setResponseStatus] = useState<number | null>(null)
 
     const timeDescription = formatTimeForEndOfGame(currentTime, startTime)
     const [optimalRouteText, setOptimalRouteText] = useState<string>('')
@@ -109,6 +108,17 @@ export function VictoryScreen({
             }, 5000)
             return
         }
+        if (response.status === 400) {
+            addToast({
+                title: 'Du slo desverre ikke din forige rekord',
+                content: <>Prøv gjerne igjen!</>,
+            })
+            setTimeout(() => {
+                router.push('/')
+            }, 5000)
+            return
+        }
+        setResponseStatus(response.status)
         setError(true)
     }
 
@@ -127,9 +137,6 @@ export function VictoryScreen({
             <VictoryArtBoardCookieImage className="absolute -bottom-28 -left-52  hidden xl:block" />
             <VictoryArtBoardCircleImage className="absolute bottom-60 -right-72 hidden xl:block" />
             <div className="flex justify-center">
-                {isError && (
-                    <Paragraph className="bg-coral">Noe gikk galt.</Paragraph>
-                )}
                 <form
                     className="flex flex-col max-w-3xl mt-20 pr-4 pl-4 gap-6"
                     onSubmit={handleSubmit(async (data) => {
@@ -253,6 +260,15 @@ export function VictoryScreen({
                             Avslutt reise
                         </SecondaryButton>
                     </div>
+                    {isError && (
+                        <SmallAlertBox variant="negative" width="fit-content">
+                            Noe gikk galt: {
+                                responseStatus === 404 ? 'Event (spill) ble ikke funnet. Tilkall hjelp.' :
+                                    responseStatus === 409 ? 'Spiller med samme brukernavn eksisterer allerede. Bytt navn.' :
+                                        'Ukjent feil oppdaget. Tillkall hjelp.'
+                            }
+                        </SmallAlertBox>
+                    )}
                 </form>
             </div>
         </div>
