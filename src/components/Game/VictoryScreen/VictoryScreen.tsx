@@ -101,8 +101,8 @@ export function VictoryScreen({
         console.log(response)
         if (response.status > 199 && response.status < 299) {
             addToast({
-                title: 'Poengsum registrert!',
-                content: <>Takk for at du spilte</>,
+                title: 'Poengsum registrert',
+                content: <>Takk for at du spilte!</>,
             })
             setTimeout(() => {
                 router.push('/')

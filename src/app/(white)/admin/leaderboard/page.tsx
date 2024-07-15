@@ -73,7 +73,7 @@ export default function GamePage(): JSX.Element {
         results: number,
         array: PlayerScore[],
         index: number,
-        score: Score,
+        score: PlayerScore,
     ) => {
         return (
             (currentPage - 1) * results +
