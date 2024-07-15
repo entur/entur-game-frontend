@@ -142,7 +142,7 @@ export default function AdminCreateJourney() {
             try {
                 if (inputValue.length < 2) return []
                 const response = await fetch(
-                    `https://api.entur.io/geocoder/v1/autocomplete?text=${inputValue}&size=20&lang=no&layer=venue`,
+                    `https://api.entur.io/geocoder/v1/autocomplete?text=${inputValue}&size=20&lang=no&layers=venue`,
                 )
                 const data: TGeoresponse = await response.json()
                 const mappedData = data.features.map((feature) => {
@@ -152,10 +152,7 @@ export default function AdminCreateJourney() {
                         value: id ?? '',
                     }
                 })
-                const filteredData = mappedData.filter(
-                    (item) => !/^NSR:GroupOfStopPlaces:\d+$/.test(item.value),
-                )
-                return filteredData
+                return mappedData
             } catch (error) {
                 if (error === 'AbortError') throw error
                 console.error('Error fetching data:', error)
