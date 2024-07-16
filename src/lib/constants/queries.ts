@@ -22,7 +22,7 @@ query getTripInfo($from: Location!, $to: Location!, $dateTime: DateTime!, $modes
     tripPatterns {
       expectedStartTime
       duration
-      walkDistance
+      expectedStartTime
       legs {
         mode
         distance

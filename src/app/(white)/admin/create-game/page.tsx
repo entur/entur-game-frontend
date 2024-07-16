@@ -2,7 +2,13 @@
 
 import React, { useCallback, useEffect, useState } from 'react'
 import { Button } from '@entur/button'
-import { Heading1, Heading3, LeadParagraph, Paragraph } from '@entur/typography'
+import {
+    Heading1,
+    Heading3,
+    Heading5,
+    LeadParagraph,
+    Paragraph,
+} from '@entur/typography'
 import { MapPinIcon, DestinationIcon } from '@entur/icons'
 import { BlockquoteFooter } from '@entur/typography'
 import { DatePicker, TimePicker, ZonedDateTime } from '@entur/datepicker'
@@ -16,6 +22,7 @@ import { formatDateTime } from '@/lib/utils/dateFnsUtils'
 import { getTripInfo, fetchDropdownItems } from '@/lib/api/journeyPlannerApi'
 import { tripQuery, visualSolutionTripQuery } from '@/lib/constants/queries'
 import useSWR from 'swr'
+import RouteSuggestion from '@/components/RouteSuggestion'
 
 export default function AdminCreateJourney() {
     const router = useRouter()
@@ -212,9 +219,11 @@ export default function AdminCreateJourney() {
                         onChange={setTime}
                     ></TimePicker>
                 </div>
-                <div className="flex flex-col pt-12">
-                    <Heading3>Reiseforslag</Heading3>
-                </div>
+
+                <RouteSuggestion
+                    suggestedTripData={data}
+                    startLocationName={selectedStart?.label}
+                />
                 <div className="pt-12 pb-12">
                     <Button
                         width="auto"
