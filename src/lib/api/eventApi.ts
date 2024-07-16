@@ -69,6 +69,30 @@ async function fetchStopPlaceName(stopPlaceId: string): Promise<string | null> {
     }
 }
 
+async function fetchStopPlaceChildren(
+    stopPlaceId: string,
+): Promise<string[] | null> {
+    try {
+        const response = await fetch(
+            `https://api.entur.io/stop-places/v1/read/stop-places/${stopPlaceId}/children`,
+        )
+
+        if (!response.ok) {
+            throw new Error(
+                `Failed to fetch data. Status code: ${response.status}`,
+            )
+        }
+
+        const data: StopPlace[] = await response.json()
+
+        const ids = data.map((child) => child.id)
+        return ids
+    } catch (error) {
+        console.error('Error fetching stop place children:', error)
+        return null
+    }
+}
+
 export async function getEventByEventName(
     eventName: string,
 ): Promise<Event | null> {
@@ -78,9 +102,21 @@ export async function getEventByEventName(
     const startLocationName = await fetchStopPlaceName(
         baseEvent.startLocationId,
     )
-    const endLocationName = await fetchStopPlaceName(baseEvent.endLocationId)
 
-    if (!startLocationName || !endLocationName) {
+    const endlocationChildrenIds = await fetchStopPlaceChildren(
+        baseEvent.endLocationId,
+    )
+    const endlocationIds = endlocationChildrenIds
+        ? [baseEvent.endLocationId, ...endlocationChildrenIds]
+        : [baseEvent.endLocationId]
+
+    console.log(endlocationIds)
+
+    const endLocationNames = await Promise.all(
+        endlocationIds.map((id) => fetchStopPlaceName(id)),
+    )
+
+    if (!startLocationName || endLocationNames.includes(null)) {
         return null
     }
 
@@ -89,13 +125,12 @@ export async function getEventByEventName(
         name: startLocationName,
     }
 
-    const endLocation: StopPlace[] = [
-        {
-            id: baseEvent.endLocationId,
-            name: endLocationName,
-        },
-    ]
+    const endLocation: StopPlace[] = endlocationIds.map((id, index) => ({
+        id: id,
+        name: endLocationNames[index]!,
+    }))
 
+    console.log(endLocation)
     return {
         eventId: baseEvent.eventId,
         eventName: baseEvent.eventName,

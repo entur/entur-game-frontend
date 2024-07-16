@@ -21,8 +21,7 @@ import { useRouter } from 'next/navigation'
 type Props = {
     name: string
     event: Event
-    endLocation: StopPlace
-    setEndLocation: (endLocation: StopPlace) => void
+    endLocation: StopPlace[]
     numLegs: number
     currentTime: Date
     startTime: Date
@@ -72,8 +71,8 @@ export function VictoryScreen({
                 id: event.startLocation.id,
             },
             toDestination: {
-                destination: endLocation.name,
-                id: endLocation.id,
+                destination: endLocation[0].name,
+                id: endLocation[0].id,
             },
             totalOptions: numLegs,
             totalPlaytime: Math.trunc((Date.now() - startTimer) / 1000),

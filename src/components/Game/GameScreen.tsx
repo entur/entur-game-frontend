@@ -201,10 +201,7 @@ function GameScreen({
                 <VictoryScreen
                     name={name}
                     event={event}
-                    endLocation={endLocation[0]}
-                    setEndLocation={(endLocation) => {
-                        setEndLocation([endLocation])
-                    }}
+                    endLocation={endLocation}
                     numLegs={numLegs}
                     currentTime={currentTime}
                     startTime={startTime}
