@@ -84,9 +84,9 @@ export function VictoryScreen({
             isActive: event.isActive
         }
 
-        const playerScore: PlayerScore = { //TODO: scoreValue, totalStepNumber, totalTraelTime og totalPlayTime bør sjekkes nøye for å se om de gjør det de skal
+        const playerScore: PlayerScore = {
             scoreId: null,
-            scoreValue: (100.00 * (event.optimalStepNumber / numLegs) * (event.optimalTravelTime / formatIntervalToSeconds(currentTime, startTime))), //TODO: bli enig om måten scoreValue kalkuleres (per nå brukes gammel logikk)
+            scoreValue: (100.00 * (event.optimalStepNumber / numLegs) * (event.optimalTravelTime / formatIntervalToSeconds(currentTime, startTime))),
             totalStepNumber: numLegs,
             totalTravelTime: formatIntervalToSeconds(currentTime, startTime),
             totalPlayTime: Math.trunc((Date.now() - startTimer) / 1000),
