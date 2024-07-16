@@ -22,7 +22,7 @@ import {
 import { Button } from '@entur/button'
 import { BannerAlertBox, SmallAlertBox } from '@entur/alert'
 import { PlayerScore } from '@/lib/types/types'
-import { getActiveScores } from '@/lib/api/playerScoreApi'
+import { getActiveScores } from '@/lib/api/scoreApi'
 import { getActiveEvent } from '@/lib/api/eventApi'
 import { Badge } from '@entur/layout'
 import { Pagination } from '@entur/menu'

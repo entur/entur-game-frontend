@@ -17,7 +17,7 @@ import EnInsertTur from '@/components/EnInsertTur'
 import useSWR from 'swr'
 import { sortNumber } from '@/lib/utils/sorters'
 import { PlayerScore } from '@/lib/types/types'
-import { getActiveScores } from '@/lib/api/playerScoreApi'
+import { getActiveScores } from '@/lib/api/scoreApi'
 
 const fetchPlayerScores = async (): Promise<PlayerScore[]> => {
     const scores = await getActiveScores()

@@ -9,7 +9,7 @@ import {
 } from './VictoryScreenArt'
 import { BackendEvent, Event, Player, PlayerScore } from '@/lib/types/types'
 import { StopPlace } from '@entur/sdk'
-import { saveScore } from '@/lib/api/playerScoreApi'
+import { saveScore } from '@/lib/api/scoreApi'
 import {
     formatIntervalToSeconds,
     formatTimeForEndOfGame,
