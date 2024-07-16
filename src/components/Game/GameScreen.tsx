@@ -2,12 +2,11 @@
 
 import React, { ReactElement, useEffect, useState } from 'react'
 import { Heading4, Paragraph } from '@entur/typography'
-import { Departure, QueryMode, StopPlace, StopPlaceDetails } from '@entur/sdk'
+import { Departure, QueryMode, StopPlaceDetails } from '@entur/sdk'
 import { addHours, addMinutes } from 'date-fns'
 import { PrimaryButton, SecondaryButton } from '@entur/button'
 import { useRouter } from 'next/navigation'
-
-import { Event } from '@/lib/types/types'
+import { Event, StopPlace } from '@/lib/types/types'
 import { InvalidTravelModal } from './components/InvalidTravelModal'
 import { useEnturService } from '@/lib/hooks/useEnturService'
 import { formatDate, formatTimeForEndOfGame } from '@/lib/utils/dateFnsUtils'

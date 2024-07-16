@@ -84,7 +84,7 @@ async function fetchStopPlaceChildren(
         }
 
         const data: StopPlace[] = await response.json()
-
+        console.log(data)
         const ids = data.map((child) => child.id)
         return ids
     } catch (error) {
@@ -110,8 +110,6 @@ export async function getEventByEventName(
         ? [baseEvent.endLocationId, ...endlocationChildrenIds]
         : [baseEvent.endLocationId]
 
-    console.log(endlocationIds)
-
     const endLocationNames = await Promise.all(
         endlocationIds.map((id) => fetchStopPlaceName(id)),
     )
@@ -130,7 +128,6 @@ export async function getEventByEventName(
         name: endLocationNames[index]!,
     }))
 
-    console.log(endLocation)
     return {
         eventId: baseEvent.eventId,
         eventName: baseEvent.eventName,

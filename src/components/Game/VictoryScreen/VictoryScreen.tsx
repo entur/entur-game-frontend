@@ -7,8 +7,7 @@ import {
     VictoryArtBoardCookieImage,
     VictoryArtBoardOvalImage,
 } from './VictoryScreenArt'
-import { Event } from '@/lib/types/types'
-import { StopPlace } from '@entur/sdk'
+import { Event, StopPlace } from '@/lib/types/types'
 import { savePlayerScore } from '@/lib/api/playerScoreApi'
 import {
     formatIntervalToSeconds,
