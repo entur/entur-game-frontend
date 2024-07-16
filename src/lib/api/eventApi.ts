@@ -1,5 +1,7 @@
 import { BackendEvent, Event } from '../types/types'
 import { StopPlace } from '../types/types'
+import { fetchStopPlaceName } from './stopPlaceName'
+import { fetchStopPlaceChildren } from './stopPlaceChildren'
 
 const baseUrl = 'http://localhost:8080'
 
@@ -32,65 +34,6 @@ export async function getBackendEventByEventName(
     const response = await fetch(`${baseUrl}/event/${eventName}`)
     if (response.status !== 200) return null
     return response.json()
-}
-
-const query = `
-    query ($id: String!) {
-        stopPlace(
-            id: $id
-        ) {
-            name
-        }
-    }
-`
-
-async function fetchStopPlaceName(stopPlaceId: string): Promise<string | null> {
-    try {
-        const response = await fetch(
-            'https://api.entur.io/journey-planner/v3/graphql',
-            {
-                method: 'POST',
-                headers: {
-                    'ET-Client-Name': 'enturspillet',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ query, variables: { id: stopPlaceId } }),
-            },
-        )
-        const data = await response.json()
-        if (data.errors) {
-            console.error('Error fetching stop place name:', data.errors)
-            return null
-        }
-        return data.data.stopPlace.name
-    } catch (error) {
-        console.error('Error fetching stop place name:', error)
-        return null
-    }
-}
-
-async function fetchStopPlaceChildren(
-    stopPlaceId: string,
-): Promise<string[] | null> {
-    try {
-        const response = await fetch(
-            `https://api.entur.io/stop-places/v1/read/stop-places/${stopPlaceId}/children`,
-        )
-
-        if (!response.ok) {
-            throw new Error(
-                `Failed to fetch data. Status code: ${response.status}`,
-            )
-        }
-
-        const data: StopPlace[] = await response.json()
-        console.log(data)
-        const ids = data.map((child) => child.id)
-        return ids
-    } catch (error) {
-        console.error('Error fetching stop place children:', error)
-        return null
-    }
 }
 
 export async function getEventByEventName(
