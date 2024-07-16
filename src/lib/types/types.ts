@@ -59,3 +59,15 @@ export type StopPlace = {
     longitude?: number
     latitude?: number
 }
+
+export type TripQueryVariables = {
+    from: {
+        name: string
+        place: string
+    }
+    to: {
+        name: string
+        place: string
+    }
+    dateTime: string
+}
