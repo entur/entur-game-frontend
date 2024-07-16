@@ -19,13 +19,13 @@ import { sortNumber } from '@/lib/utils/sorters'
 import { PlayerScore } from '@/lib/types/types'
 import { getActiveScores } from '@/lib/api/scoreApi'
 
-const fetchPlayerScores = async (): Promise<PlayerScore[]> => {
+const getPlayerScores = async (): Promise<PlayerScore[]> => {
     const scores = await getActiveScores()
     return scores || []
 }
 
 export default function EventHighScorePage(): JSX.Element {
-    const { data: playerScores } = useSWR<PlayerScore[]>('/players', fetchPlayerScores)
+    const { data: playerScores } = useSWR<PlayerScore[]>('/players', getPlayerScores)
 
     if (playerScores === undefined) {
         return <p>Laster inn...</p>
@@ -33,7 +33,7 @@ export default function EventHighScorePage(): JSX.Element {
 
     const filteredPlayerScores = playerScores
         .filter((playerScore) => playerScore.scoreValue > 0)
-        .sort((a, b) => sortNumber(a.scoreValue, b.scoreValue))
+        .sort((a, b) => sortNumber(b.scoreValue, a.scoreValue))
 
     return (
         <div
