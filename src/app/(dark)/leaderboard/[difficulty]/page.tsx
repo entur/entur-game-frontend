@@ -20,12 +20,16 @@ import { PlayerScore } from '@/lib/types/types'
 import { getPlayerScoresByActiveEvent } from '@/lib/api/playerScoreApi'
 
 export default function EventHighScorePage(): JSX.Element {
-    let { data: playerScores } = useSWR<PlayerScore[]>('/players', () =>
+    let { data: playerScores } = useSWR<PlayerScore[] | null>('/players', () =>
         getPlayerScoresByActiveEvent(),
     )
 
     if (playerScores === undefined) {
         return <p>Laster inn...</p>
+    }
+
+    if(playerScores === null){
+        return <p>Noe gikk galt</p>
     }
 
     playerScores = playerScores.filter(
