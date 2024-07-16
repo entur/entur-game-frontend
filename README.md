@@ -2,6 +2,7 @@
 
 This game was developed during a hackathon by
 
+
 [@Artur](https://github.com/apkrauze), [@Kenneth](https://github.com/kennetng) and [@Daniel](https://github.com/Daniel-Jansson)
 based on the game [entur-game](https://github.com/entur/entur-game) created by [@Mats](https://github.com/draperunner)
 
@@ -31,3 +32,12 @@ The build is minified and the filenames include the hashes.<br />
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+## Docker
+
+### Run entur-game-frontend with docker locally
+
+```
+docker build -t entur-game-frontend .
+docker run -p 3000:3000 entur-game-frontend
+```

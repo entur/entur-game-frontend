@@ -1,0 +1,17 @@
+apiVersion: v2
+name: entur-game
+version: '0.1.0'
+appVersion: 'release-0.1.0'
+description: entur-game-frontend application
+keywords:
+    - entur-game-frontend
+home: http://{{ .Release.Name }}{{ .Values.domain }}/
+sources:
+    - https://github.com/entur/entur-game-frontend
+maintainers:
+    - name: Team Partner
+      email: teampartner@entur.org
+dependencies:
+    - name: common
+      version: 1.18.3
+      repository: 'https://entur.github.io/helm-charts'

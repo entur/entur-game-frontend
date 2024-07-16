@@ -1,0 +1,34 @@
+name: Docker Build & Publish
+
+on:
+    push:
+        branches: [main]
+
+jobs:
+    docker-build:
+        uses: entur/gha-docker/.github/workflows/build.yml@v1
+
+    docker-push:
+        needs: [docker-build]
+        uses: entur/gha-docker/.github/workflows/push.yml@v1
+
+    post-to-slack:
+        needs: [docker-push]
+        uses: entur/gha-slack/.github/workflows/post.yml@v1
+        with:
+            team: partner
+            channel: 'GGH1Y21N0'
+            image: ${{ needs.docker-push.outputs.image_name }}:${{ needs.docker-push.outputs.image_tag}}
+            mode: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        secrets: inherit
+
+    post-to-slack-if-failure:
+        needs: [docker-push]
+        if: ${{ failure() }}
+        uses: entur/gha-slack/.github/workflows/post.yml@v1
+        with:
+            team: partner
+            channel: 'GGH1Y21N0'
+            image: ${{ needs.docker-push.outputs.image_name }}:${{ needs.docker-push.outputs.image_tag}}
+            mode: "Failure to deploy ${{ github.repository }} \n ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        secrets: inherit
