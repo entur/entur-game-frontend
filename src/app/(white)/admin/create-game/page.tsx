@@ -8,14 +8,14 @@ import { BlockquoteFooter } from '@entur/typography'
 import { DatePicker, TimePicker, ZonedDateTime } from '@entur/datepicker'
 import { NormalizedDropdownItemType, SearchableDropdown } from '@entur/dropdown'
 import { now } from '@internationalized/date'
-import { BackendEvent, TGeoresponse } from '@/lib/types/types'
+import { BackendEvent, isTripInfoVariables } from '@/lib/types/types'
 import { useRouter } from 'next/navigation'
 import { useToast } from '@entur/alert'
 import { createEvent } from '@/lib/api/eventApi'
 import { formatDateTime } from '@/lib/utils/dateFnsUtils'
-import { getTripInfo } from '@/lib/api/journeyPlannerApi'
-import { tripQuery } from '@/lib/constants/queries'
-import { fetchDropdownItems } from '@/lib/api/journeyPlannerApi'
+import { getTripInfo, fetchDropdownItems } from '@/lib/api/journeyPlannerApi'
+import { tripQuery, visualSolutionTripQuery } from '@/lib/constants/queries'
+import useSWR from 'swr'
 
 export default function AdminCreateJourney() {
     const router = useRouter()
@@ -60,6 +60,13 @@ export default function AdminCreateJourney() {
                 place: selectedGoal?.value,
             },
             dateTime: formattedDateTime,
+            modes: [
+                { transportMode: 'bus' },
+                { transportMode: 'tram' },
+                { transportMode: 'rail' },
+                { transportMode: 'metro' },
+                { transportMode: 'water' },
+            ],
         }
 
         const eventName = `${selectedStart?.label} - ${selectedGoal?.label}`
@@ -93,6 +100,41 @@ export default function AdminCreateJourney() {
 
         fetchTripInfo()
     }
+
+    const variables = {
+        from: {
+            name: selectedStart?.label,
+            place: selectedStart?.value,
+        },
+        to: {
+            name: selectedGoal?.label,
+            place: selectedGoal?.value,
+        },
+        dateTime: formattedDateTime,
+        modes: [
+            { transportMode: 'bus' },
+            { transportMode: 'tram' },
+            { transportMode: 'rail' },
+            { transportMode: 'metro' },
+            { transportMode: 'water' },
+        ],
+    }
+
+    const { data, isLoading, error } = useSWR(
+        selectedStart && selectedGoal && formattedDateTime
+            ? [
+                  '/journey-planner',
+                  selectedStart,
+                  selectedGoal,
+                  formattedDateTime,
+              ]
+            : null,
+        () =>
+            isTripInfoVariables(variables) &&
+            getTripInfo(visualSolutionTripQuery, variables),
+    )
+
+    console.log(data)
 
     return (
         <div className="ml-56 p-4 ">

@@ -70,4 +70,21 @@ export type TripQueryVariables = {
         place: string
     }
     dateTime: string
+    modes: { transportMode: string }[]
+}
+
+export function isTripInfoVariables(obj: any): obj is TripQueryVariables {
+    return (
+        obj &&
+        typeof obj === 'object' &&
+        typeof obj.from === 'object' &&
+        typeof obj.from.name === 'string' &&
+        typeof obj.from.place === 'string' &&
+        typeof obj.to === 'object' &&
+        typeof obj.to.name === 'string' &&
+        typeof obj.to.place === 'string' &&
+        typeof obj.dateTime === 'string' &&
+        Array.isArray(obj.modes) &&
+        obj.modes.every((mode: any) => typeof mode.transportMode === 'string')
+    )
 }
