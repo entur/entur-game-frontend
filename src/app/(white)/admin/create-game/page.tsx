@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useState } from 'react'
 import { Button } from '@entur/button'
-import { Heading1, Heading3, LeadParagraph } from '@entur/typography'
+import { Heading1, Heading3, LeadParagraph, Paragraph } from '@entur/typography'
 import { MapPinIcon, DestinationIcon } from '@entur/icons'
 import { BlockquoteFooter } from '@entur/typography'
 import { DatePicker, TimePicker, ZonedDateTime } from '@entur/datepicker'
@@ -66,13 +66,14 @@ export default function AdminCreateJourney() {
     const formattedDateTime = date && time ? formatDateTime(date, time) : ''
 
     const [event, setEvent] = useState<BackendEvent>()
+    const [loading, setLoading] = useState<boolean>(false)
 
     useEffect(() => {
         if (event) {
             createEvent(event)
             router.push(`/admin`)
             addToast({
-                title: 'Ny rute opprettet!',
+                title: 'Nytt spill opprettet!',
                 content: <>Ruten kan spilles av alle med lenken</>,
             })
         }
@@ -80,9 +81,9 @@ export default function AdminCreateJourney() {
 
     const fetchTripInfo = useCallback(async () => {
         if (!selectedStart?.label || !selectedGoal?.label) {
-            console.error('Error: selectedStart.label is required')
             return
         }
+        setLoading(true)
 
         const variables = {
             from: {
@@ -124,14 +125,12 @@ export default function AdminCreateJourney() {
                 }
             })
             .catch((error) => console.error('Error fetching trip info:', error))
+            .finally(() => setLoading(false))
     }, [selectedStart, selectedGoal, formattedDateTime])
 
     const handleOnClick = () => {
         if (!selectedStart || !selectedGoal || !selectedStart.label) {
             setAttemptedSubmit(true)
-            console.error(
-                'Error: selectedStart.label is required for submission',
-            )
             return
         }
 
@@ -143,20 +142,17 @@ export default function AdminCreateJourney() {
             try {
                 if (inputValue.length < 2) return []
                 const response = await fetch(
-                    `https://api.entur.io/geocoder/v1/autocomplete?text=${inputValue}&size=5&lang=no&layer=venue`,
+                    `https://api.entur.io/geocoder/v1/autocomplete?text=${inputValue}&size=20&lang=no&layers=venue`,
                 )
                 const data: TGeoresponse = await response.json()
                 const mappedData = data.features.map((feature) => {
-                    const { id, name } = feature.properties || {}
+                    const { id, label } = feature.properties || {}
                     return {
-                        label: name ?? '',
+                        label: label ?? '',
                         value: id ?? '',
                     }
                 })
-                const filteredData = mappedData.filter(
-                    (item) => !/^NSR:GroupOfStopPlaces:\d+$/.test(item.value),
-                )
-                return filteredData
+                return mappedData
             } catch (error) {
                 if (error === 'AbortError') throw error
                 console.error('Error fetching data:', error)
@@ -167,55 +163,65 @@ export default function AdminCreateJourney() {
     )
 
     return (
-        <div className="max-w-md ml-56 p-4 ">
-            <BlockquoteFooter>Opprett Rute</BlockquoteFooter>
-            <Heading1>Opprett en ny rute</Heading1>
-            <div className="pb-0 mb-0">
-                <LeadParagraph>
+        <div className="ml-56 p-4 ">
+            <div className="flex flex-col">
+                <BlockquoteFooter>Opprett Spill</BlockquoteFooter>
+                <Heading1 margin="none">Opprett et nytt spill</Heading1>
+                <LeadParagraph margin="bottom">
                     Konfigurer ny rute ved å angi start, mål og starttidspunkt
                 </LeadParagraph>
             </div>
-            <div className="space-y-10 pt-6">
+            <div className="flex flex-col pt-6">
                 <Heading3>Velg start og mål</Heading3>
-                <SearchableDropdown
-                    label="Start"
-                    items={fetchItems}
-                    selectedItem={selectedStart}
-                    prepend={<MapPinIcon></MapPinIcon>}
-                    onChange={setSelectedStart}
-                    selectOnTab
-                    variant={
-                        attemptedSubmit && !selectedStart
-                            ? 'negative'
-                            : undefined
-                    }
-                    feedback={
-                        attemptedSubmit && !selectedStart
-                            ? 'Du må velge startsted'
-                            : undefined
-                    }
-                />
-                <SearchableDropdown
-                    label="Mål"
-                    items={fetchItems}
-                    prepend={<DestinationIcon></DestinationIcon>}
-                    selectedItem={selectedGoal}
-                    onChange={setSelectedGoal}
-                    selectOnTab
-                    variant={
-                        attemptedSubmit && !selectedGoal
-                            ? 'negative'
-                            : undefined
-                    }
-                    feedback={
-                        attemptedSubmit && !selectedGoal
-                            ? 'Du må velge endestopp'
-                            : undefined
-                    }
-                />
+                <Paragraph margin="bottom">
+                    Velg hvilke to stoppested ruten til dette spillet skal gå
+                    mellom
+                </Paragraph>
+                <div className="max-w-md space-y-8">
+                    <SearchableDropdown
+                        label="Start"
+                        items={fetchItems}
+                        selectedItem={selectedStart}
+                        prepend={<MapPinIcon></MapPinIcon>}
+                        onChange={setSelectedStart}
+                        selectOnTab
+                        variant={
+                            attemptedSubmit && !selectedStart
+                                ? 'negative'
+                                : undefined
+                        }
+                        feedback={
+                            attemptedSubmit && !selectedStart
+                                ? 'Du må velge startsted'
+                                : undefined
+                        }
+                    />
+                    <SearchableDropdown
+                        label="Mål"
+                        items={fetchItems}
+                        prepend={<DestinationIcon></DestinationIcon>}
+                        selectedItem={selectedGoal}
+                        onChange={setSelectedGoal}
+                        selectOnTab
+                        variant={
+                            attemptedSubmit && !selectedGoal
+                                ? 'negative'
+                                : undefined
+                        }
+                        feedback={
+                            attemptedSubmit && !selectedGoal
+                                ? 'Du må velge endestopp'
+                                : undefined
+                        }
+                    />
+                </div>
             </div>
-            <div className="space-y-10 pt-12">
+            <div className="flex flex-col pt-12">
                 <Heading3>Velg starttidspunkt</Heading3>
+                <Paragraph margin="bottom">
+                    Velg hvilken dag og hvilket tidspunkt spillets reiserute
+                    skal starte på
+                </Paragraph>
                 <div className="flex flex-row">
                     <div className="pr-10">
                         <DatePicker
@@ -232,14 +238,15 @@ export default function AdminCreateJourney() {
                         onChange={setTime}
                     ></TimePicker>
                 </div>
-                <div className="pt-12">
+                <div className="pt-12 pb-12">
                     <Button
                         width="auto"
                         variant="primary"
                         size="medium"
-                        onClick={() => handleOnClick()}
+                        onClick={handleOnClick}
+                        loading={loading}
                     >
-                        Opprett rute
+                        Opprett spill
                     </Button>
                 </div>
             </div>
