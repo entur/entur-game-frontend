@@ -1,5 +1,5 @@
 import { BackendEvent, Event } from '../types/types'
-import { StopPlace } from '@entur/sdk/lib/fields/StopPlace'
+import { StopPlace } from '../types/types'
 
 const baseUrl = 'http://localhost:8080'
 
