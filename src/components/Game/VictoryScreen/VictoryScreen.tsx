@@ -7,8 +7,13 @@ import {
     VictoryArtBoardCookieImage,
     VictoryArtBoardOvalImage,
 } from './VictoryScreenArt'
-import { BackendEvent, Event, Player, PlayerScore } from '@/lib/types/types'
-import { StopPlace } from '@entur/sdk'
+import {
+    BackendEvent,
+    Event,
+    Player,
+    PlayerScore,
+    StopPlace,
+} from '@/lib/types/types'
 import { saveScore } from '@/lib/api/scoreApi'
 import {
     formatIntervalToSeconds,
@@ -22,8 +27,7 @@ import { SmallAlertBox, useToast } from '@entur/alert'
 type Props = {
     name: string
     event: Event
-    endLocation: StopPlace
-    setEndLocation: (endLocation: StopPlace) => void
+    endLocation: StopPlace[]
     numLegs: number
     currentTime: Date
     startTime: Date
@@ -66,11 +70,10 @@ export function VictoryScreen({
     const [optimalRouteText, setOptimalRouteText] = useState<string>('')
 
     async function onSubmit(data: FormValues) {
-
         const newPlayer: Player = {
             playerName: data.name,
             email: data.email,
-            phoneNumber: data.phoneNumber
+            phoneNumber: data.phoneNumber,
         }
 
         const backendEvent: BackendEvent = {
@@ -81,21 +84,25 @@ export function VictoryScreen({
             startTime: event.startTime,
             optimalStepNumber: event.optimalStepNumber,
             optimalTravelTime: event.optimalTravelTime,
-            isActive: event.isActive
+            isActive: event.isActive,
         }
 
         const playerScore: PlayerScore = {
             scoreId: null,
-            scoreValue: (100.00 * (event.optimalStepNumber / numLegs) * (event.optimalTravelTime / formatIntervalToSeconds(currentTime, startTime))),
+            scoreValue:
+                100.0 *
+                (event.optimalStepNumber / numLegs) *
+                (event.optimalTravelTime /
+                    formatIntervalToSeconds(currentTime, startTime)),
             totalStepNumber: numLegs,
             totalTravelTime: formatIntervalToSeconds(currentTime, startTime),
             totalPlayTime: Math.trunc((Date.now() - startTimer) / 1000),
             player: newPlayer,
-            event: backendEvent
+            event: backendEvent,
         }
 
         const response = await saveScore(playerScore)
-        console.log("response")
+        console.log('response')
         console.log(response)
         setError(false)
         if (response.status > 199 && response.status < 299) {
@@ -213,8 +220,9 @@ export function VictoryScreen({
                         )}
                     />
                     <div
-                        className={`border-2 ${errors.consent ? 'border-coral' : 'border-blue-60'
-                            } rounded border-solid w-full h-28 cursor-pointer`}
+                        className={`border-2 ${
+                            errors.consent ? 'border-coral' : 'border-blue-60'
+                        } rounded border-solid w-full h-28 cursor-pointer`}
                         {...register('consent', { required: true })}
                         onClick={() =>
                             setValue('consent', !getValues('consent'))
@@ -243,8 +251,9 @@ export function VictoryScreen({
 
                     <div className="flex flex-row mt-4 gap-4">
                         <PrimaryButton
-                            className={`select-none ${watch('consent') && 'bg-blue-main'
-                                }`}
+                            className={`select-none ${
+                                watch('consent') && 'bg-blue-main'
+                            }`}
                             loading={isSubmitting || isLoading}
                             disabled={!watch('consent') && !isValid}
                             type="submit"
@@ -262,11 +271,12 @@ export function VictoryScreen({
                     </div>
                     {isError && (
                         <SmallAlertBox variant="negative" width="fit-content">
-                            Noe gikk galt: {
-                                responseStatus === 404 ? 'Event (spill) ble ikke funnet. Tilkall hjelp.' :
-                                    responseStatus === 409 ? 'Spiller med samme brukernavn eksisterer allerede. Bytt navn.' :
-                                        'Ukjent feil oppdaget. Tillkall hjelp.'
-                            }
+                            Noe gikk galt:{' '}
+                            {responseStatus === 404
+                                ? 'Event (spill) ble ikke funnet. Tilkall hjelp.'
+                                : responseStatus === 409
+                                  ? 'Spiller med samme brukernavn eksisterer allerede. Bytt navn.'
+                                  : 'Ukjent feil oppdaget. Tillkall hjelp.'}
                         </SmallAlertBox>
                     )}
                 </form>

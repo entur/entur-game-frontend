@@ -1,9 +1,9 @@
 import React, { ReactElement } from 'react'
 import { ChoiceChip, ChoiceChipGroup } from '@entur/chip'
 import { SleepIcon } from '@entur/icons'
-import { QueryMode, StopPlace } from '@entur/sdk'
+import { QueryMode } from '@entur/sdk'
 import { Heading2, Heading4 } from '@entur/typography'
-
+import { StopPlace } from '@/lib/types/types'
 import { getModeIcon, getModeTranslation } from '@/lib/utils/transportMapper'
 import { ALL_MODES } from '@/lib/constants/queryMode'
 

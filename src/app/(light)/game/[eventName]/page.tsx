@@ -2,10 +2,8 @@
 
 import React, { useState } from 'react'
 import { useParams } from 'next/navigation'
-
 import { Heading1 } from '@entur/typography'
 import { Loader } from '@entur/loader'
-
 import Game from '@/components/Game/GameScreen'
 import GameNavBar from '@/components/NavBar/GameNavBar'
 import { getEventByEventName, Result } from '@/lib/api/eventApi'
