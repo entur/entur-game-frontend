@@ -1,7 +1,6 @@
 import { BackendEvent, Event } from '../types/types'
 import { StopPlace } from '../types/types'
-import { fetchStopPlaceName } from './stopPlaceName'
-import { fetchStopPlaceChildren } from './stopPlaceChildren'
+import { fetchStopPlaceName, fetchStopPlaceChildren } from './stopPlaceApi'
 
 const baseUrl = 'http://localhost:8080'
 
