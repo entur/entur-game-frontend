@@ -2,6 +2,7 @@
 
 This game was developed during a hackathon by
 
+
 [@Artur](https://github.com/apkrauze), [@Kenneth](https://github.com/kennetng) and [@Daniel](https://github.com/Daniel-Jansson)
 based on the game [entur-game](https://github.com/entur/entur-game) created by [@Mats](https://github.com/draperunner)
 
@@ -35,3 +36,12 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 ### Login admin page
 
 The login client secret is generated in Azure and will expire 17.7.2026. The login secrets are stored in lastpass in the folder shared-entur-spillet.
+
+## Docker
+
+### Run entur-game-frontend with docker locally
+
+```
+docker build -t entur-game-frontend .
+docker run -p 3000:3000 entur-game-frontend
+```
