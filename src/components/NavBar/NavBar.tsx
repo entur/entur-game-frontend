@@ -1,4 +1,3 @@
-
 import { AdminNavBar } from '@/components/NavBar/AdminNavBar'
 
 export default function NavBar({ admin = false }: { admin: boolean }) {

@@ -2,7 +2,6 @@
 
 This game was developed during a hackathon by
 
-
 [@Artur](https://github.com/apkrauze), [@Kenneth](https://github.com/kennetng) and [@Daniel](https://github.com/Daniel-Jansson)
 based on the game [entur-game](https://github.com/entur/entur-game) created by [@Mats](https://github.com/draperunner)
 

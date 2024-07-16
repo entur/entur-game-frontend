@@ -28,7 +28,7 @@ export default function EventHighScorePage(): JSX.Element {
         return <p>Laster inn...</p>
     }
 
-    if(playerScores === null){
+    if (playerScores === null) {
         return <p>Noe gikk galt</p>
     }
 
