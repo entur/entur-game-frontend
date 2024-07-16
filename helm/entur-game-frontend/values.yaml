@@ -14,11 +14,11 @@ common:
         replicas: 2
         probes:
             liveness:
-                path: '/health'
+                path: '/api/health'
             readiness:
-                path: '/health'
+                path: '/api/health'
             startup:
-                path: '/health'
+                path: '/api/health'
     # secrets:
     #     auth0-credentials:
     #         - MNG_AUTH0_INT_CLIENT_SECRET
