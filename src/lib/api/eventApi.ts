@@ -3,6 +3,9 @@ import { StopPlace } from '@entur/sdk/lib/fields/StopPlace'
 
 const baseUrl = 'http://localhost:8080'
 
+export type Result<T> = { success: true; data: T } | { success: false; error: string }
+
+
 export async function getAllEvents(): Promise<BackendEvent[] | null> {
     const response = await fetch(`${baseUrl}/event/all`)
     if (response.status !== 200) return null
@@ -28,10 +31,17 @@ export async function updateActiveEvent(gameId: number): Promise<Event> {
 
 export async function getBackendEventByEventName(
     eventName: string,
-): Promise<BackendEvent | null> {
-    const response = await fetch(`${baseUrl}/event/${eventName}`)
-    if (response.status !== 200) return null
-    return response.json()
+): Promise<Result<BackendEvent>> {
+    try {
+        const response = await fetch(`${baseUrl}/event/${eventName}`)
+        if (response.status !== 200) {
+            return { success: false, error: 'Failed to fetch event' }
+        }
+        const data = await response.json()
+        return { success: true, data }
+    } catch (error) {
+        return { success: false, error: 'Network error' }
+    }
 }
 
 const query = `
@@ -71,9 +81,12 @@ async function fetchStopPlaceName(stopPlaceId: string): Promise<string | null> {
 
 export async function getEventByEventName(
     eventName: string,
-): Promise<Event | null> {
-    const baseEvent = await getBackendEventByEventName(eventName)
-    if (!baseEvent) return null
+): Promise<Result<Event>> {
+    const baseEventResult = await getBackendEventByEventName(eventName)
+    if (!baseEventResult.success) {
+        return { success: false, error: baseEventResult.error }
+    }
+    const baseEvent = baseEventResult.data
 
     const startLocationName = await fetchStopPlaceName(
         baseEvent.startLocationId,
@@ -81,7 +94,7 @@ export async function getEventByEventName(
     const endLocationName = await fetchStopPlaceName(baseEvent.endLocationId)
 
     if (!startLocationName || !endLocationName) {
-        return null
+        return { success: false, error: 'Failed to fetch stop place names' }
     }
 
     const startLocation: StopPlace = {
@@ -97,15 +110,18 @@ export async function getEventByEventName(
     ]
 
     return {
-        eventId: baseEvent.eventId,
-        eventName: baseEvent.eventName,
-        startLocation: startLocation,
-        endLocation: endLocation,
-        startTime: baseEvent.startTime,
-        optimalStepNumber: baseEvent.optimalStepNumber,
-        optimalTravelTime: baseEvent.optimalTravelTime,
-        isActive: baseEvent.isActive,
-    } as Event
+        success: true,
+        data: {
+            eventId: baseEvent.eventId,
+            eventName: baseEvent.eventName,
+            startLocation: startLocation,
+            endLocation: endLocation,
+            startTime: baseEvent.startTime,
+            optimalStepNumber: baseEvent.optimalStepNumber,
+            optimalTravelTime: baseEvent.optimalTravelTime,
+            isActive: baseEvent.isActive,
+        } as Event
+    }
 }
 
 export async function createOptimalRouteText(event: Event): Promise<string> {
