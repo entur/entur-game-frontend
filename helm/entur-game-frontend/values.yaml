@@ -1,6 +1,6 @@
 common:
-    app: entur-game
-    shortname: game
+    app: entur-game-frontend
+    shortname: gamefront
     team: partner
     ingress:
         enabled: true
@@ -19,7 +19,3 @@ common:
                 path: '/api/health'
             startup:
                 path: '/api/health'
-    # secrets:
-    #     auth0-credentials:
-    #         - MNG_AUTH0_INT_CLIENT_SECRET
-    #         - MNG_AUTH0_INT_CLIENT_ID

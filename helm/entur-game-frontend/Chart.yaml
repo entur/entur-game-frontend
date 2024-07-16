@@ -1,5 +1,5 @@
 apiVersion: v2
-name: entur-game
+name: entur-game-frontend
 version: '0.1.0'
 appVersion: 'release-0.1.0'
 description: entur-game-frontend application
