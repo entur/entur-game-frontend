@@ -56,7 +56,7 @@ function GameScreen({
     )
     const [endLocation, setEndLocation] = useState<StopPlace[]>(
         event.endLocation,
-    ) //TODO: end-location burde ideelt sett ikke være en liste
+    )
     const [mode, setMode] = useState<QueryMode | null>(null)
     const [departures, setDepartures] = useState<Departure[]>([])
     const [stopsOnLine, setStopsOnLine] = useState<StopAndTime[]>([])
@@ -68,7 +68,16 @@ function GameScreen({
     const [usedMode, setUsedMode] = useState<QueryMode[]>([])
     const { getWalkableStopPlaces, getDepartures, getStopsOnLine } =
         useEnturService()
-    const [startTime, setStartTime] = useState<Date>(new Date())
+
+    const eventStartDate = new Date(
+        Number(event.startTime[0]),
+        Number(event.startTime[1]) - 1,
+        Number(event.startTime[2]),
+        Number(event.startTime[3]),
+        Number(event.startTime[4]),
+    )
+
+    const [startTime, setStartTime] = useState<Date>(eventStartDate)
     const [currentTime, setCurrentTime] = useState<Date>(startTime)
     // TravelLegStart states
     const [travelLegsMode, setTravelLegsMode] = useState<QueryMode[]>([])
@@ -81,7 +90,7 @@ function GameScreen({
         setStartLocation(event.startLocation)
         setTravelLegs([event.startLocation])
         setEndLocation(event.endLocation)
-        setStartTime(new Date())
+        setStartTime(eventStartDate)
     }, [event])
 
     useEffect(() => {
@@ -158,7 +167,7 @@ function GameScreen({
                             if (
                                 !stop ||
                                 d.expectedDepartureTime <=
-                                    departure.expectedDepartureTime
+                                departure.expectedDepartureTime
                             )
                                 return undefined
                             const nextDep = departures[index + 1]
