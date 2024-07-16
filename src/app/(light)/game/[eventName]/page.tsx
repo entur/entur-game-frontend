@@ -8,7 +8,7 @@ import { Loader } from '@entur/loader'
 
 import Game from '@/components/Game/GameScreen'
 import GameNavBar from '@/components/NavBar/GameNavBar'
-import { getEventByEventName } from '@/lib/api/eventApi'
+import { getEventByEventName, Result } from '@/lib/api/eventApi'
 import { Event } from '@/lib/types/types'
 import useSWR from 'swr'
 
@@ -21,18 +21,21 @@ export default function GamePage(): JSX.Element {
     const { eventName }: { eventName: string } = useParams()
 
     const {
-        data: event,
+        data: eventResult,
         isLoading,
         error: eventError,
-    } = useSWR<Event | null>(['/events', eventName], () =>
+    } = useSWR<Result<Event>>(['/events', eventName], () =>
         getEventByEventName(eventName),
     )
+
+
+    const event = eventResult?.success ? eventResult.data : null
 
     return (
         <>
             {isLoading ? (
                 <Loader>Laster spill</Loader>
-            ) : eventError ? (
+            ) : (eventError || !event) ? (
                 <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
                     <Heading1>Spill ikke funnet</Heading1>
                 </div>
@@ -52,7 +55,7 @@ export default function GamePage(): JSX.Element {
                                 event={event}
                                 startTimer={startTimer}
                                 // eslint-disable-next-line @typescript-eslint/no-empty-function
-                                handleWinner={() => {}}
+                                handleWinner={() => { }}
                                 totalHp={totalHp}
                                 setTotalHp={setTotalHp}
                                 numLegs={numLegs}

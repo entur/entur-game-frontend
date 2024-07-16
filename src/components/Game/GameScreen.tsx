@@ -57,7 +57,7 @@ function GameScreen({
     )
     const [endLocation, setEndLocation] = useState<StopPlace[]>(
         event.endLocation,
-    ) //TODO: end-location burde ideelt sett ikke være en liste
+    )
     const [mode, setMode] = useState<QueryMode | null>(null)
     const [departures, setDepartures] = useState<Departure[]>([])
     const [stopsOnLine, setStopsOnLine] = useState<StopAndTime[]>([])
@@ -168,7 +168,7 @@ function GameScreen({
                             if (
                                 !stop ||
                                 d.expectedDepartureTime <=
-                                    departure.expectedDepartureTime
+                                departure.expectedDepartureTime
                             )
                                 return undefined
                             const nextDep = departures[index + 1]
