@@ -5,7 +5,6 @@ import { QueryMode, StopPlace } from '@entur/sdk'
 import { Heading2, Heading4 } from '@entur/typography'
 
 import { getModeIcon, getModeTranslation } from '@/lib/utils/transportMapper'
-import { ALL_MODES } from '@/lib/constants/queryMode'
 
 type Props = {
     currentTime: Date
@@ -16,6 +15,7 @@ type Props = {
     wait: () => void
     stopPlace: StopPlace
     firstMove: boolean
+    availableModes: QueryMode[]
 }
 
 function TransportTypePicker({
@@ -27,6 +27,7 @@ function TransportTypePicker({
     wait,
     stopPlace,
     firstMove,
+    availableModes,
 }: Props): ReactElement {
     return (
         <div className="bg-white border-4 border-white shadow-sm rounded-sm pl-10 pb-8 pr-10">
@@ -51,7 +52,7 @@ function TransportTypePicker({
                 name="Transport mode"
             >
                 <>
-                    {ALL_MODES.map((mode) => {
+                    {availableModes.map((mode) => {
                         const disabled = usedMode.includes(mode)
                         return (
                             <ChoiceChip
