@@ -95,7 +95,7 @@ export async function getEventByEventName(
             optimalStepNumber: baseEvent.optimalStepNumber,
             optimalTravelTime: baseEvent.optimalTravelTime,
             isActive: baseEvent.isActive,
-        } as Event,
+        } as Event
     }
 }
 
