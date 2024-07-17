@@ -29,8 +29,6 @@ type Props = {
     event: Event
     startTimer: number
     handleWinner: () => void
-    totalHp: number
-    setTotalHp: React.Dispatch<React.SetStateAction<number>>
     numLegs: number
     setNumLegs: React.Dispatch<React.SetStateAction<number>>
     setTimeDescription: React.Dispatch<React.SetStateAction<string>>
@@ -38,8 +36,6 @@ type Props = {
 
 function GameScreen({
     event,
-    totalHp,
-    setTotalHp,
     numLegs,
     setNumLegs,
     setTimeDescription,
@@ -98,6 +94,14 @@ function GameScreen({
         window.scrollTo(0, document.body.scrollHeight)
     }, [currentTime])
 
+    //TODO: endre på plassering
+    console.log((currentTime.getTime() - startTime.getTime()))
+    useEffect(() => {
+        if ((currentTime.getTime() - startTime.getTime()) > 3 * event.optimalTravelTime * 1000) {
+            setDead(true)
+        }
+    }, [currentTime, startTime, event.optimalTravelTime])
+
     const fetchAvailableModes = async (location: StopPlace) => {
         const modes: QueryMode[] = [
             QueryMode.BUS,
@@ -122,8 +126,6 @@ function GameScreen({
 
         setAvailableModes(validModes)
     }
-
-
 
     const selectMode = (newMode: QueryMode) => {
         setMode(newMode)
