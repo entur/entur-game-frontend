@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext'
 
 const ProtectedComponents = ({ children }: { children: ReactNode }) => {
     const { isAuthenticated, loading, login } = useAuth()
+    console.log('her', isAuthenticated)
 
     useEffect(() => {
         if (!loading && !isAuthenticated) {
