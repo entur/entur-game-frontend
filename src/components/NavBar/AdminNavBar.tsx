@@ -7,6 +7,8 @@ import Image from 'next/image'
 import AdminLogoLight from '@/lib/assets/images/AdminLogoLight.png'
 import AdminLogoDark from '@/lib/assets/images/AdminLogoDark.png'
 import { Contrast } from '@entur/layout'
+import { Heading5 } from '@entur/typography'
+import { UserIcon } from '@entur/icons'
 
 export const AdminNavBar: React.FC = () => {
     const path = usePathname()
