@@ -1,6 +1,6 @@
 import React from 'react'
 import { Heading5, Label } from '@entur/typography'
-import { ClockIcon, TrackIcon } from '@entur/icons'
+import { ClockIcon, TimeglassIcon, TrackIcon } from '@entur/icons'
 import { Loader } from '@entur/loader'
 
 type Props = {
@@ -42,7 +42,7 @@ function GameStatus({
                                     className="pt-1 text-coral"
                                     margin="none"
                                 >
-                                    {numLegs}
+                                    Steg: {numLegs}
                                 </Heading5>
                             </div>
                             <div className="flex flex-row gap-2 content-center">
@@ -51,18 +51,22 @@ function GameStatus({
                                     className="pt-1 text-coral"
                                     margin="none"
                                 >
-                                    {timeDescriptionUsed}
+                                    Reisetid: {timeDescriptionUsed}
                                 </Heading5>
                             </div>
                         </div>
                     </span>
                 </div>
                 <div className="flex flex-row pt-5 pr-5 pl-8 pb-5">
-                    <Label className="text-blue-50">Gjenstående tid: {formattedTimeLeft}</Label>
+                    <TimeglassIcon className="w-6 h-6 pt-1" />
+                    <Heading5
+                        className="pt-1 text-coral"
+                        margin="none"
+                    >
+                        Gjenstående tid: {timeDescriptionUsed}
+                    </Heading5>
                 </div>
-                <span>
-                    <Loader progress={Math.max(0, Math.ceil((maxTime - usedTime) / maxTime * 100))}></Loader>
-                </span>
+                <Loader progress={Math.max(0, Math.ceil((maxTime - usedTime) / maxTime * 100))}></Loader>
             </div>
         </div>
     )
