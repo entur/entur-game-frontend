@@ -24,6 +24,8 @@ query getTripInfo($from: Location!, $to: Location!, $dateTime: DateTime!, $modes
       duration
       expectedStartTime
       legs {
+        expectedStartTime
+        duration
         mode
         distance
         line {

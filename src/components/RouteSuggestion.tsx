@@ -1,10 +1,22 @@
-import { Maybe, Trip, isTrip } from '@/lib/types/types'
+import { Maybe, Trip } from '@/lib/types/types'
+import {
+    formatPlannerDuration,
+    formatTimePlanner,
+} from '@/lib/utils/dateFnsUtils'
+import { TransportIconPicker } from '@/lib/utils/transportMapper'
 import { BannerAlertBox } from '@entur/alert'
-import { ClockIcon } from '@entur/icons'
-import { Heading3, Heading5, Heading6, Paragraph } from '@entur/typography'
+import { ClockIcon, WalkIcon } from '@entur/icons'
+import { TravelTag } from '@entur/travel'
+import {
+    Heading3,
+    Heading5,
+    Heading6,
+    Paragraph,
+    SubParagraph,
+} from '@entur/typography'
 
 type Props = {
-    suggestedTripData: Trip
+    suggestedTripData: Maybe<Trip>
     startLocationName: Maybe<String>
 }
 
@@ -14,7 +26,7 @@ export default function RouteSuggestion({
 }: Props) {
     console.log('suggeste trip', suggestedTripData)
     console.log('start', startLocationName)
-    console.log('is trip', isTrip(suggestedTripData))
+    console.log('sjekk doodelidoo', suggestedTripData?.tripPatterns)
     return (
         <div>
             <div className="flex flex-col pt-12">
@@ -24,16 +36,53 @@ export default function RouteSuggestion({
                     poeng{' '}
                 </Paragraph>
             </div>
-            {suggestedTripData && startLocationName ? (
+            {suggestedTripData?.tripPatterns && startLocationName ? (
                 <div className="bg-blue-90 flex flex-col max-w-lg rounded-md p-6 gap-2">
                     <div className="flex justify-between">
-                        <Heading5>Fra {startLocationName}</Heading5>
-                        <div className="flex">
+                        <Heading5 margin="none">
+                            Fra {startLocationName}
+                        </Heading5>
+                        <div className="flex items-center gap-2">
                             <ClockIcon />
-                            <Heading6>
+                            <Heading6 margin="none">
                                 Reisetid:{' '}
-                                {suggestedTripData.tripPatterns[0].duration}
+                                {formatPlannerDuration(
+                                    suggestedTripData.tripPatterns[0]?.duration,
+                                )}
                             </Heading6>
+                        </div>
+                    </div>
+                    <div className="relative">
+                        <div className="absolute top-1/2 left-0 right-0 h-1 -z-10 $fill-background-subdued-light" />
+                        <div className="flex gap-6 space-x-4">
+                            {suggestedTripData.tripPatterns[0].legs.map(
+                                (leg) => (
+                                    <div className="flex flex-col">
+                                        {leg.line ? (
+                                            <div>
+                                                <TravelTag
+                                                    alert="none"
+                                                    transport={leg.mode}
+                                                >
+                                                    <TransportIconPicker
+                                                        transportType={leg.mode}
+                                                    />
+                                                    {leg.line?.publicCode}
+                                                </TravelTag>
+                                                <SubParagraph>
+                                                    {formatTimePlanner(
+                                                        leg.expectedStartTime,
+                                                    )}
+                                                </SubParagraph>
+                                            </div>
+                                        ) : (
+                                            <div className="flex items-center justify-center">
+                                                <WalkIcon />
+                                            </div>
+                                        )}
+                                    </div>
+                                ),
+                            )}
                         </div>
                     </div>
                 </div>

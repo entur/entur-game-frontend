@@ -7,6 +7,21 @@ function pad(number: number, length: number): string {
     return number.toString().padStart(length, '0')
 }
 
+export function formatTimePlanner(dateTimeString: string): string {
+    const date = new Date(dateTimeString)
+    return date.toLocaleTimeString('nb-NO', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+    })
+}
+
+export function formatPlannerDuration(seconds: number): string {
+    const hours = Math.floor(seconds / 3600)
+    const minutes = Math.floor((seconds % 3600) / 60)
+    return `${hours}t ${minutes}min`
+}
+
 export function formatDateTime(
     dateObj: ZonedDateTime,
     timeObj: ZonedDateTime,

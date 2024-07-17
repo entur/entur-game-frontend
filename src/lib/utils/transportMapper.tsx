@@ -8,6 +8,7 @@ import {
     TramIcon,
     WalkIcon,
 } from '@entur/icons'
+import { TransportIconPickerProps } from '../types/types'
 
 export function getModeIcon(mode: QueryMode): JSX.Element | null {
     switch (mode) {
@@ -44,5 +45,24 @@ export function getModeTranslation(mode: QueryMode): string {
             return 'Ferje'
         default:
             return 'Ukjent'
+    }
+}
+
+export function TransportIconPicker({
+    transportType,
+}: TransportIconPickerProps): JSX.Element {
+    switch (transportType) {
+        case 'bus':
+            return <BusIcon color="white" />
+        case 'tram':
+            return <TramIcon color="white" />
+        case 'metro':
+            return <MetroIcon color="white" />
+        case 'rail':
+            return <TrainIcon color="white" />
+        case 'water':
+            return <FerryIcon color="white" />
+        default:
+            return <BusIcon color="white" />
     }
 }

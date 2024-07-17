@@ -80,8 +80,10 @@ type Line = {
 
 type Leg = {
     distance: number
+    expectedStartTime: string
+    duration: number
     line: Line | null
-    mode: 'rail' | 'foot' | 'bus' | 'tram' | 'metro' | 'water'
+    mode: 'rail' | 'bus' | 'tram' | 'metro' | 'water'
 }
 
 type TripPattern = {
@@ -96,6 +98,10 @@ export type Trip = {
 
 export type Maybe<T> = T | undefined | null
 
+export type TransportIconPickerProps = {
+    transportType: string | undefined
+}
+
 export function isTripInfoVariables(obj: any): obj is TripQueryVariables {
     return (
         obj &&
@@ -109,40 +115,5 @@ export function isTripInfoVariables(obj: any): obj is TripQueryVariables {
         typeof obj.dateTime === 'string' &&
         Array.isArray(obj.modes) &&
         obj.modes.every((mode: any) => typeof mode.transportMode === 'string')
-    )
-}
-
-function isLine(obj: any): obj is Line {
-    return (
-        typeof obj === 'object' &&
-        typeof obj.id === 'string' &&
-        typeof obj.publicCode === 'string'
-    )
-}
-
-function isLeg(obj: any): obj is Leg {
-    return (
-        typeof obj === 'object' &&
-        typeof obj.distance === 'number' &&
-        (obj.line === null || isLine(obj.line)) &&
-        ['rail', 'foot', 'bus', 'tram', 'metro', 'water'].includes(obj.mode)
-    )
-}
-
-function isTripPattern(obj: any): obj is TripPattern {
-    return (
-        typeof obj === 'object' &&
-        typeof obj.duration === 'number' &&
-        typeof obj.expectedStartTime === 'string' &&
-        Array.isArray(obj.legs) &&
-        obj.legs.every(isLeg)
-    )
-}
-
-export function isTrip(obj: any): obj is Trip {
-    return (
-        typeof obj === 'object' &&
-        Array.isArray(obj.tripPatterns) &&
-        obj.tripPatterns.every(isTripPattern)
     )
 }
