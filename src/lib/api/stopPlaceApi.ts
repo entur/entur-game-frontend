@@ -6,13 +6,15 @@ const query = `
             id: $id
         ) {
             name
+            latitude
+        	longitude	
         }
-    }
+}
 `
 
-export async function fetchStopPlaceName(
+export async function fetchStopPlace(
     stopPlaceId: string,
-): Promise<string | null> {
+): Promise<{ name: string; latitude: number; longitude: number } | null> {
     try {
         const response = await fetch(
             'https://api.entur.io/journey-planner/v3/graphql',
@@ -24,16 +26,27 @@ export async function fetchStopPlaceName(
                 },
                 body: JSON.stringify({ query, variables: { id: stopPlaceId } }),
             },
-        )
-        const data = await response.json()
+        );
+
+        const data = await response.json();
+
         if (data.errors) {
-            console.error('Error fetching stop place name:', data.errors)
-            return null
+            console.error('Error fetching stop place:', data.errors);
+            return null;
         }
-        return data.data.stopPlace.name
+
+        const stopPlace = data.data.stopPlace;
+        if (!stopPlace) {
+            console.error('Stop place not found');
+            return null;
+        }
+
+        const { name, latitude, longitude } = stopPlace;
+        return { name, latitude, longitude };
+
     } catch (error) {
-        console.error('Error fetching stop place name:', error)
-        return null
+        console.error('Error fetching stop place:', error);
+        return null;
     }
 }
 
@@ -52,7 +65,6 @@ export async function fetchStopPlaceChildren(
         }
 
         const data: StopPlace[] = await response.json()
-        console.log(data)
         const ids = data.map((child) => child.id)
         return ids
     } catch (error) {
