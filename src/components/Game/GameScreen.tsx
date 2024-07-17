@@ -100,7 +100,6 @@ function GameScreen({
     }, [currentTime])
 
     const fetchAvailableModes = async (location: StopPlace) => {
-        console.log("AvailableModes")
         const modes: QueryMode[] = [
             QueryMode.BUS,
             QueryMode.METRO,
@@ -124,7 +123,6 @@ function GameScreen({
         }
 
         setAvailableModes(validModes)
-        console.log("test2")
         console.log(validModes)
     }
 
