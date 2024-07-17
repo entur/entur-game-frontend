@@ -3,14 +3,12 @@ import GameStatus from '../GameStatus'
 
 type Props = {
     numLegs: number
-    timeDescription: string
     usedTime: number
     maxTime: number
 }
 
 function GameNavBar({
     numLegs,
-    timeDescription,
     usedTime,
     maxTime
 }: Props): ReactElement {
@@ -20,7 +18,6 @@ function GameNavBar({
             <GameStatus
                 className="mr-4 mt-[-70px]"
                 numLegs={numLegs}
-                timeDescriptionUsed={timeDescription}
                 usedTime={usedTime}
                 maxTime={maxTime}
             />

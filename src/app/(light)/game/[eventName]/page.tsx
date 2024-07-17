@@ -44,7 +44,6 @@ export default function GamePage(): JSX.Element {
                         <div className="sm:sticky top-20">
                             <GameNavBar
                                 numLegs={numLegs}
-                                timeDescription={timeDescription}
                                 usedTime={usedTime}
                                 maxTime={maxTime}
                             />

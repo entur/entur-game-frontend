@@ -5,7 +5,6 @@ import { Loader } from '@entur/loader'
 
 type Props = {
     className?: string
-    timeDescriptionUsed: string
     numLegs: number
     usedTime: number
     maxTime: number
@@ -22,11 +21,11 @@ function formatTime(milliseconds: number) {
 
 function GameStatus({
     className = '',
-    timeDescriptionUsed,
     numLegs,
     usedTime,
     maxTime,
 }: Props): React.ReactElement {
+    const formattedUsedTime = formatTime(usedTime);
     const formattedTimeLeft = formatTime(Math.max(0, maxTime - usedTime));
 
     return (
@@ -51,7 +50,7 @@ function GameStatus({
                                     className="pt-1 text-coral"
                                     margin="none"
                                 >
-                                    Reisetid: {timeDescriptionUsed}
+                                    Reisetid: {formattedUsedTime}
                                 </Heading5>
                             </div>
                         </div>
@@ -63,7 +62,7 @@ function GameStatus({
                         className="pt-1 text-coral"
                         margin="none"
                     >
-                        Gjenstående tid: {timeDescriptionUsed}
+                        Gjenstående tid: {formattedTimeLeft}
                     </Heading5>
                 </div>
                 <Loader progress={Math.max(0, Math.ceil((maxTime - usedTime) / maxTime * 100))}></Loader>
