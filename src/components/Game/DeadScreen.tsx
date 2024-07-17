@@ -17,9 +17,7 @@ function DeadScreen({ mode, stopPlace }: Props): JSX.Element {
         <>
             <Heading2>Du døde!</Heading2>
             <Paragraph>
-                {`Det går ingen avganger med ${getModeTranslation(
-                    mode,
-                ).toLowerCase()} fra ${stopPlace.name} i nær fremtid.`}
+                {`Du brukte desverre for lang tid.`}
             </Paragraph>
             <PrimaryButton onClick={() => window.location.reload()}>
                 Prøv igjen

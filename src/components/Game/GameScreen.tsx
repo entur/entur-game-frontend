@@ -100,9 +100,9 @@ function GameScreen({
         window.scrollTo(0, document.body.scrollHeight)
     }, [currentTime])
 
-    //TODO: endre på plassering
-    //TODO: sjekk om usedTime kan brukes rett etter setUsedTime
+    //TODO: tid må IKKE oppdatere seg etter at man har valgt rute, kun etter at man har valgt stoppested!!!
     //TODO: feilteste!!!!!
+    //TODO: litt lame at man ikke vet om en rute gjør at man dør! Det må man finne ut av hva vi gjør med!
     setUsedTime((currentTime.getTime() - startTime.getTime()))
 
     useEffect(() => {
