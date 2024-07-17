@@ -29,6 +29,9 @@ type Props = {
     event: Event
     startTimer: number
     handleWinner: () => void
+    maxTime: number
+    usedTime: number
+    setUsedTime: React.Dispatch<React.SetStateAction<number>>
     numLegs: number
     setNumLegs: React.Dispatch<React.SetStateAction<number>>
     setTimeDescription: React.Dispatch<React.SetStateAction<string>>
@@ -41,6 +44,9 @@ function GameScreen({
     setTimeDescription,
     startTimer,
     handleWinner,
+    maxTime,
+    usedTime,
+    setUsedTime,
     name,
 }: Props): ReactElement {
     const router = useRouter()
@@ -95,12 +101,15 @@ function GameScreen({
     }, [currentTime])
 
     //TODO: endre på plassering
-    console.log((currentTime.getTime() - startTime.getTime()))
+    //TODO: sjekk om usedTime kan brukes rett etter setUsedTime
+    //TODO: feilteste!!!!!
+    setUsedTime((currentTime.getTime() - startTime.getTime()))
+
     useEffect(() => {
-        if ((currentTime.getTime() - startTime.getTime()) > 3 * event.optimalTravelTime * 1000) {
+        if ((usedTime) > maxTime) {
             setDead(true)
         }
-    }, [currentTime, startTime, event.optimalTravelTime])
+    }, [usedTime])
 
     const fetchAvailableModes = async (location: StopPlace) => {
         const modes: QueryMode[] = [
