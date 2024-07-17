@@ -8,8 +8,13 @@ import {
     Heading5,
     LeadParagraph,
     Paragraph,
+    SmallText,
 } from '@entur/typography'
-import { MapPinIcon, DestinationIcon } from '@entur/icons'
+import {
+    MapPinIcon,
+    DestinationIcon,
+    ValidationInfoFilledIcon,
+} from '@entur/icons'
 import { BlockquoteFooter } from '@entur/typography'
 import { DatePicker, TimePicker, ZonedDateTime } from '@entur/datepicker'
 import { NormalizedDropdownItemType, SearchableDropdown } from '@entur/dropdown'
@@ -219,9 +224,16 @@ export default function AdminCreateJourney() {
                         onChange={setTime}
                     ></TimePicker>
                 </div>
+                <div className="flex gap-2 pt-2">
+                    <ValidationInfoFilledIcon></ValidationInfoFilledIcon>
+                    <SmallText>
+                        Spillet kan ikke ha starttidspunkt mer enn tre dager før
+                        dagens dato
+                    </SmallText>
+                </div>
 
                 <RouteSuggestion
-                    suggestedTripData={data}
+                    suggestedTripData={data?.data?.trip}
                     startLocationName={selectedStart?.label}
                 />
                 <div className="pt-12 pb-12">
