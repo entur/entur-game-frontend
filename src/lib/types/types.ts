@@ -1,5 +1,3 @@
-import { StopPlace } from '@entur/sdk/lib/fields/StopPlace'
-
 export type Event = {
     eventId: number
     eventName: string
@@ -53,4 +51,9 @@ export type TGeoresponse = {
             label?: string
         }
     }>
+}
+
+export type StopPlace = {
+    id: string
+    name: string
 }

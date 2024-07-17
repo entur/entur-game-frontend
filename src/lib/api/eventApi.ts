@@ -1,10 +1,12 @@
 import { BackendEvent, Event } from '../types/types'
-import { StopPlace } from '@entur/sdk/lib/fields/StopPlace'
+import { StopPlace } from '../types/types'
+import { fetchStopPlaceName, fetchStopPlaceChildren } from './stopPlaceApi'
 
 const baseUrl = 'http://localhost:8080'
 
-export type Result<T> = { success: true; data: T } | { success: false; error: string }
-
+export type Result<T> =
+    | { success: true; data: T }
+    | { success: false; error: string }
 
 export async function getAllEvents(): Promise<BackendEvent[] | null> {
     const response = await fetch(`${baseUrl}/event/all`)
@@ -44,41 +46,6 @@ export async function getBackendEventByEventName(
     }
 }
 
-const query = `
-    query ($id: String!) {
-        stopPlace(
-            id: $id
-        ) {
-            name
-        }
-    }
-`
-
-async function fetchStopPlaceName(stopPlaceId: string): Promise<string | null> {
-    try {
-        const response = await fetch(
-            'https://api.entur.io/journey-planner/v3/graphql',
-            {
-                method: 'POST',
-                headers: {
-                    'ET-Client-Name': 'enturspillet',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ query, variables: { id: stopPlaceId } }),
-            },
-        )
-        const data = await response.json()
-        if (data.errors) {
-            console.error('Error fetching stop place name:', data.errors)
-            return null
-        }
-        return data.data.stopPlace.name
-    } catch (error) {
-        console.error('Error fetching stop place name:', error)
-        return null
-    }
-}
-
 export async function getEventByEventName(
     eventName: string,
 ): Promise<Result<Event>> {
@@ -91,9 +58,19 @@ export async function getEventByEventName(
     const startLocationName = await fetchStopPlaceName(
         baseEvent.startLocationId,
     )
-    const endLocationName = await fetchStopPlaceName(baseEvent.endLocationId)
 
-    if (!startLocationName || !endLocationName) {
+    const endlocationChildrenIds = await fetchStopPlaceChildren(
+        baseEvent.endLocationId,
+    )
+    const endlocationIds = endlocationChildrenIds
+        ? [baseEvent.endLocationId, ...endlocationChildrenIds]
+        : [baseEvent.endLocationId]
+
+    const endLocationNames = await Promise.all(
+        endlocationIds.map((id) => fetchStopPlaceName(id)),
+    )
+
+    if (!startLocationName || endLocationNames.includes(null)) {
         return { success: false, error: 'Failed to fetch stop place names' }
     }
 
@@ -102,12 +79,10 @@ export async function getEventByEventName(
         name: startLocationName,
     }
 
-    const endLocation: StopPlace[] = [
-        {
-            id: baseEvent.endLocationId,
-            name: endLocationName,
-        },
-    ]
+    const endLocation: StopPlace[] = endlocationIds.map((id, index) => ({
+        id: id,
+        name: endLocationNames[index]!,
+    }))
 
     return {
         success: true,

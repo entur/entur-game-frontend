@@ -7,8 +7,13 @@ import {
     VictoryArtBoardCookieImage,
     VictoryArtBoardOvalImage,
 } from './VictoryScreenArt'
-import { BackendEvent, Event, Player, PlayerScore } from '@/lib/types/types'
-import { StopPlace } from '@entur/sdk'
+import {
+    BackendEvent,
+    Event,
+    Player,
+    PlayerScore,
+    StopPlace,
+} from '@/lib/types/types'
 import { saveScore } from '@/lib/api/scoreApi'
 import {
     formatIntervalToSeconds,
@@ -22,8 +27,7 @@ import { SmallAlertBox, useToast } from '@entur/alert'
 type Props = {
     name: string
     event: Event
-    endLocation: StopPlace
-    setEndLocation: (endLocation: StopPlace) => void
+    endLocation: StopPlace[]
     numLegs: number
     currentTime: Date
     startTime: Date
@@ -86,7 +90,11 @@ export function VictoryScreen({
 
         const playerScore: PlayerScore = {
             scoreId: null,
-            scoreValue: (100.00 * (event.optimalStepNumber / numLegs) * (event.optimalTravelTime / formatIntervalToSeconds(currentTime, startTime))),
+            scoreValue:
+                100.0 *
+                (event.optimalStepNumber / numLegs) *
+                (event.optimalTravelTime /
+                    formatIntervalToSeconds(currentTime, startTime)),
             totalStepNumber: numLegs,
             totalTravelTime: formatIntervalToSeconds(currentTime, startTime),
             totalPlayTime: Math.trunc((Date.now() - startTimer) / 1000),
@@ -262,15 +270,17 @@ export function VictoryScreen({
                     </div>
                     {isError && (
                         <SmallAlertBox variant="negative" width="fit-content">
-                            Noe gikk galt: {
-                                responseStatus === 404 ? 'Event (spill) ble ikke funnet. Tilkall hjelp.' :
-                                    responseStatus === 409 ? 'Spiller med samme brukernavn eksisterer allerede. Bytt navn.' :
-                                        'Ukjent feil oppdaget. Tillkall hjelp.'
-                            }
-                        </SmallAlertBox>
-                    )}
-                </form>
-            </div>
-        </div>
+                            Noe gikk galt:{' '}
+                            {responseStatus === 404
+                                ? 'Event (spill) ble ikke funnet. Tilkall hjelp.'
+                                : responseStatus === 409
+                                    ? 'Spiller med samme brukernavn eksisterer allerede. Bytt navn.'
+                                    : 'Ukjent feil oppdaget. Tillkall hjelp.'}
+                        </SmallAlertBox >
+                    )
+                    }
+                </form >
+            </div >
+        </div >
     )
 }

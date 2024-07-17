@@ -2,12 +2,11 @@
 
 import React, { ReactElement, useEffect, useState } from 'react'
 import { Heading4, Paragraph } from '@entur/typography'
-import { Departure, QueryMode, StopPlace, StopPlaceDetails } from '@entur/sdk'
+import { Departure, QueryMode, StopPlaceDetails } from '@entur/sdk'
 import { addHours, addMinutes } from 'date-fns'
 import { PrimaryButton, SecondaryButton } from '@entur/button'
 import { useRouter } from 'next/navigation'
-
-import { Event } from '@/lib/types/types'
+import { Event, StopPlace } from '@/lib/types/types'
 import { useEnturService } from '@/lib/hooks/useEnturService'
 import { formatDate, formatTimeForEndOfGame } from '@/lib/utils/dateFnsUtils'
 import FromAndToTitle from './components/FromAndToTitle'
@@ -158,22 +157,30 @@ function GameScreen({
     const selectDeparture = (departure: Departure) => {
         setDepartures([])
         setCurrentTime(new Date(departure.expectedDepartureTime))
-        getStopsOnLine(departure.serviceJourney.id, departure.date).then((departures) => {
-            setStopsOnLine(
-                departures
-                    .map((d, index) => {
-                        const stop = d.quay?.stopPlace
-                        if (!stop || d.expectedDepartureTime <= departure.expectedDepartureTime)
-                            return undefined
-                        const nextDep = departures[index + 1]
-                        return {
-                            stopPlace: stop,
-                            time: new Date((nextDep || d).expectedArrivalTime),
-                        }
-                    })
-                    .filter(isTruthy),
-            )
-        })
+        getStopsOnLine(departure.serviceJourney.id, departure.date).then(
+            (departures) => {
+                setStopsOnLine(
+                    departures
+                        .map((d, index) => {
+                            const stop = d.quay?.stopPlace
+                            if (
+                                !stop ||
+                                d.expectedDepartureTime <=
+                                departure.expectedDepartureTime
+                            )
+                                return undefined
+                            const nextDep = departures[index + 1]
+                            return {
+                                stopPlace: stop,
+                                time: new Date(
+                                    (nextDep || d).expectedArrivalTime,
+                                ),
+                            }
+                        })
+                        .filter(isTruthy),
+                )
+            },
+        )
     }
 
     const selectStopOnLine = (stopAndTime: StopAndTime) => {
@@ -202,10 +209,7 @@ function GameScreen({
                 <VictoryScreen
                     name={name}
                     event={event}
-                    endLocation={endLocation[0]}
-                    setEndLocation={(endLocation) => {
-                        setEndLocation([endLocation])
-                    }}
+                    endLocation={endLocation}
                     numLegs={numLegs}
                     currentTime={currentTime}
                     startTime={startTime}
