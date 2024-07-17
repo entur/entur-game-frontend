@@ -106,7 +106,6 @@ function GameScreen({
             QueryMode.RAIL,
             QueryMode.WATER
         ]
-        console.log(modes)
 
         const departurePromises = modes.map(mode => getDepartures(location.id, mode, currentTime))
         const walkableStopsPromise = getWalkableStopPlaces(location)
@@ -122,7 +121,6 @@ function GameScreen({
         }
 
         setAvailableModes(validModes)
-        console.log(validModes)
     }
 
 

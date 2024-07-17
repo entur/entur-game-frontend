@@ -103,8 +103,6 @@ export function VictoryScreen({
         }
 
         const response = await saveScore(playerScore)
-        console.log("response")
-        console.log(response)
         setError(false)
         if (response.status > 199 && response.status < 299) {
             addToast({

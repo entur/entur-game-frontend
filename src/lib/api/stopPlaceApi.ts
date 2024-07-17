@@ -65,7 +65,6 @@ export async function fetchStopPlaceChildren(
         }
 
         const data: StopPlace[] = await response.json()
-        console.log(data)
         const ids = data.map((child) => child.id)
         return ids
     } catch (error) {
