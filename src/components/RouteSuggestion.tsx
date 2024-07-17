@@ -5,8 +5,8 @@ import {
 } from '@/lib/utils/dateFnsUtils'
 import { TransportIconPicker } from '@/lib/utils/transportMapper'
 import { BannerAlertBox } from '@entur/alert'
-import { ClockIcon, WalkIcon } from '@entur/icons'
-import { TravelTag } from '@entur/travel'
+import { ClockIcon, DestinationIcon, GoalIcon, WalkIcon } from '@entur/icons'
+import { LegLine, TravelTag } from '@entur/travel'
 import {
     Heading3,
     Heading5,
@@ -37,7 +37,7 @@ export default function RouteSuggestion({
                 </Paragraph>
             </div>
             {suggestedTripData?.tripPatterns && startLocationName ? (
-                <div className="bg-blue-90 flex flex-col max-w-lg rounded-md p-6 gap-2">
+                <div className="bg-blue-90 flex flex-col rounded-md p-6 gap-2">
                     <div className="flex justify-between">
                         <Heading5 margin="none">
                             Fra {startLocationName}
@@ -52,11 +52,10 @@ export default function RouteSuggestion({
                             </Heading6>
                         </div>
                     </div>
-                    <div className="relative">
-                        <div className="absolute top-1/2 left-0 right-0 h-1 -z-10 $fill-background-subdued-light" />
-                        <div className="flex gap-6 space-x-4">
+                    <div className="flex pt-2 justify-between">
+                        <div className="flex justify-start flex-1">
                             {suggestedTripData.tripPatterns[0].legs.map(
-                                (leg) => (
+                                (leg, index, array) => (
                                     <div className="flex flex-col">
                                         {leg.line ? (
                                             <div>
@@ -69,6 +68,21 @@ export default function RouteSuggestion({
                                                     />
                                                     {leg.line?.publicCode}
                                                 </TravelTag>
+
+                                                <div
+                                                    className={`inline-block ${
+                                                        index ===
+                                                        array.length - 1
+                                                            ? 'w-full'
+                                                            : 'w-[27px]'
+                                                    }`}
+                                                >
+                                                    <LegLine
+                                                        direction="horizontal"
+                                                        pattern="line"
+                                                        color="#E3E6E8"
+                                                    ></LegLine>
+                                                </div>
                                                 <SubParagraph>
                                                     {formatTimePlanner(
                                                         leg.expectedStartTime,
@@ -76,14 +90,26 @@ export default function RouteSuggestion({
                                                 </SubParagraph>
                                             </div>
                                         ) : (
-                                            <div className="flex items-center justify-center">
-                                                <WalkIcon />
+                                            <div>
+                                                <TravelTag>
+                                                    <WalkIcon color="#8d8e9c" />
+                                                </TravelTag>
+                                                <div className="inline-block w-[27px] overflow-hidden">
+                                                    <LegLine
+                                                        direction="horizontal"
+                                                        pattern="dotted"
+                                                        color="#E3E6E8"
+                                                    ></LegLine>
+                                                </div>
                                             </div>
                                         )}
                                     </div>
                                 ),
                             )}
                         </div>
+                        <TravelTag>
+                            <DestinationIcon />
+                        </TravelTag>
                     </div>
                 </div>
             ) : (
