@@ -193,7 +193,7 @@ function GameScreen({
             setStartLocation(stopAndTime.stopPlace)
             setTravelLegs((prev) => [...prev, stopAndTime.stopPlace])
             setNumLegs((prev) => prev + 1)
-            fetchAvailableModes(stopAndTime.stopPlace) //TODO: hva skjer her???
+            fetchAvailableModes(stopAndTime.stopPlace)
         }
     }
 
