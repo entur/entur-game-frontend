@@ -11,14 +11,13 @@ import { usePathname } from 'next/navigation'
 export default function AdminPage(): JSX.Element {
     return (
         <div>
-            <div className="flex flex-col items-center justify-center ">
-                <Contrast>
-                    <Heading1> Spillets admin-panel</Heading1>
-                    <LeadParagraph>
-                        Konfigurer nye ruter og se nåværende leaderboard
-                    </LeadParagraph>
-                </Contrast>
-            </div>
+            <Contrast>
+                <div className="flex flex-col pt-12 pl-44 pb-12">
+                    <Heading1 margin="top">
+                        Sett opp og kontrollér spillet herfra
+                    </Heading1>
+                </div>
+            </Contrast>
             <Image className="w-full" src={BackgroundAdmin} alt="background" />
 
             <div className="grid grid-cols-2 items-center gap-16 p-12 mr-20">

@@ -163,7 +163,7 @@ export default function AdminCreateJourney() {
     )
 
     return (
-        <div className="ml-56 p-4 ">
+        <div className="ml-56 p-4 pt-20">
             <div className="flex flex-col">
                 <BlockquoteFooter>Opprett Spill</BlockquoteFooter>
                 <Heading1 margin="none">Opprett et nytt spill</Heading1>
