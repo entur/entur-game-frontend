@@ -1,6 +1,6 @@
 import { BackendEvent, Event } from '../types/types'
 import { StopPlace } from '../types/types'
-import { fetchStopPlaceName, fetchStopPlaceChildren } from './stopPlaceApi'
+import { fetchStopPlace, fetchStopPlaceChildren } from './stopPlaceApi'
 
 const baseUrl = 'http://localhost:8080'
 
@@ -55,7 +55,7 @@ export async function getEventByEventName(
     }
     const baseEvent = baseEventResult.data
 
-    const startLocationName = await fetchStopPlaceName(
+    const startLocationItem = await fetchStopPlace(
         baseEvent.startLocationId,
     )
 
@@ -66,22 +66,26 @@ export async function getEventByEventName(
         ? [baseEvent.endLocationId, ...endlocationChildrenIds]
         : [baseEvent.endLocationId]
 
-    const endLocationNames = await Promise.all(
-        endlocationIds.map((id) => fetchStopPlaceName(id)),
+    const endLocationItem = await Promise.all(
+        endlocationIds.map((id) => fetchStopPlace(id)),
     )
 
-    if (!startLocationName || endLocationNames.includes(null)) {
+    if (!startLocationItem || endLocationItem.includes(null)) {
         return { success: false, error: 'Failed to fetch stop place names' }
     }
 
     const startLocation: StopPlace = {
         id: baseEvent.startLocationId,
-        name: startLocationName,
+        name: startLocationItem.name,
+        longitude: startLocationItem.longitude,
+        latitude: startLocationItem.latitude
     }
 
     const endLocation: StopPlace[] = endlocationIds.map((id, index) => ({
         id: id,
-        name: endLocationNames[index]!,
+        name: endLocationItem[index]!.name,
+        longitude: endLocationItem[index]!.longitude,
+        latitude: endLocationItem[index]!.latitude
     }))
 
     return {

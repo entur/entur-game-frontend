@@ -56,4 +56,6 @@ export type TGeoresponse = {
 export type StopPlace = {
     id: string
     name: string
+    longitude?: number
+    latitude?: number
 }
