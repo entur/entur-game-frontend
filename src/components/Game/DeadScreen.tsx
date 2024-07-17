@@ -7,11 +7,7 @@ import React from 'react'
 import { QueryMode } from '@entur/sdk'
 import { StopPlace } from '@/lib/types/types'
 
-type Props = {
-    mode: QueryMode
-    stopPlace: StopPlace
-}
-function DeadScreen({ mode, stopPlace }: Props): JSX.Element {
+function DeadScreen(): JSX.Element {
     window.scrollTo(0, 0) // Scroll to top of the screen
     return (
         <>

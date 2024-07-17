@@ -51,7 +51,7 @@ function GameScreen({
 }: Props): ReactElement {
     const router = useRouter()
     const [isLoading, setLoading] = useState<boolean>(false)
-    const [dead, setDead] = useState<boolean>(false)
+    const [isDead, setDead] = useState<boolean>(false)
     const [startLocation, setStartLocation] = useState<StopPlace>(
         event.startLocation,
     )
@@ -100,16 +100,16 @@ function GameScreen({
         window.scrollTo(0, document.body.scrollHeight)
     }, [currentTime])
 
-    //TODO: tid må IKKE oppdatere seg etter at man har valgt rute, kun etter at man har valgt stoppested!!!
     //TODO: feilteste!!!!!
-    //TODO: litt lame at man ikke vet om en rute gjør at man dør! Det må man finne ut av hva vi gjør med!
-    setUsedTime((currentTime.getTime() - startTime.getTime()))
+    //TODO: litt teit at man ikke vet om en rute gjør at man dør! Det må man finne ut av hva vi gjør med!
 
     useEffect(() => {
-        if ((usedTime) > maxTime) {
+        const newUsedTime = currentTime.getTime() - startTime.getTime()
+        setUsedTime(newUsedTime)
+        if ((currentTime.getTime() - startTime.getTime()) > maxTime) {
             setDead(true)
         }
-    }, [usedTime])
+    }, [currentTime, setUsedTime, maxTime, startTime])
 
     const fetchAvailableModes = async (location: StopPlace) => {
         const modes: QueryMode[] = [
@@ -165,7 +165,6 @@ function GameScreen({
 
     const selectDeparture = (departure: Departure) => {
         setDepartures([])
-        setCurrentTime(new Date(departure.expectedDepartureTime))
         getStopsOnLine(departure.serviceJourney.id, departure.date).then(
             (departures) => {
                 setStopsOnLine(
@@ -228,10 +227,10 @@ function GameScreen({
         )
     }
 
-    if (dead && mode) {
+    if (isDead) {
         return (
             <div className="app" style={{ maxWidth: '800px' }}>
-                <DeadScreen mode={mode} stopPlace={startLocation} />
+                <DeadScreen />
             </div>
         )
     }
