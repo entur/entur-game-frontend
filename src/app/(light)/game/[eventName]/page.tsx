@@ -12,8 +12,6 @@ import useSWR from 'swr'
 
 export default function GamePage(): JSX.Element {
     const [startTimer] = useState<number>(Date.now())
-    //TODO: bytte ut med usedTime etterhvert!!!
-    const [timeDescription, setTimeDescription] = useState<string>('')
     const [numLegs, setNumLegs] = useState<number>(0)
     const [usedTime, setUsedTime] = useState<number>(0)
     const { eventName }: { eventName: string } = useParams()
@@ -28,7 +26,7 @@ export default function GamePage(): JSX.Element {
 
 
     const event = eventResult?.success ? eventResult.data : null
-    const maxTime = event?.optimalTravelTime ? 3 * event.optimalTravelTime * 1000 : null
+    const maxTime = event?.optimalTravelTime ? Math.ceil(3 * event.optimalTravelTime / (60 * 60)) * 1000 * 60 * 60 : null
 
     return (
         <>
@@ -56,11 +54,9 @@ export default function GamePage(): JSX.Element {
                                 // eslint-disable-next-line @typescript-eslint/no-empty-function
                                 handleWinner={() => { }}
                                 maxTime={maxTime}
-                                usedTime={usedTime}
                                 setUsedTime={setUsedTime}
                                 numLegs={numLegs}
                                 setNumLegs={setNumLegs}
-                                setTimeDescription={setTimeDescription}
                             />
                         </div>
                     </main>

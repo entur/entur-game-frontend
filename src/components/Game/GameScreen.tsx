@@ -30,22 +30,18 @@ type Props = {
     startTimer: number
     handleWinner: () => void
     maxTime: number
-    usedTime: number
     setUsedTime: React.Dispatch<React.SetStateAction<number>>
     numLegs: number
     setNumLegs: React.Dispatch<React.SetStateAction<number>>
-    setTimeDescription: React.Dispatch<React.SetStateAction<string>>
 }
 
 function GameScreen({
     event,
     numLegs,
     setNumLegs,
-    setTimeDescription,
     startTimer,
     handleWinner,
     maxTime,
-    usedTime,
     setUsedTime,
     name,
 }: Props): ReactElement {
@@ -96,7 +92,6 @@ function GameScreen({
     }, [event])
 
     useEffect(() => {
-        setTimeDescription(formatTimeForEndOfGame(currentTime, startTime))
         window.scrollTo(0, document.body.scrollHeight)
     }, [currentTime])
 

@@ -70,7 +70,9 @@ export function formatDate(date: Date): string {
     const dayOfWeek = weekdays[date.getDay()]
     const dayOfMonth = date.getDate()
     const month = months[date.getMonth()]
-    return `${dayOfWeek} ${dayOfMonth}. ${month}`
+    const hour = date.getHours()
+    const minute = date.getMinutes()
+    return `${dayOfWeek} ${dayOfMonth}. ${month} kl. ${hour}:${minute}`
 }
 
 export function formatDateAndTime(value: Date | string): string {
