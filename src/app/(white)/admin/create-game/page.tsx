@@ -1,7 +1,12 @@
 'use client'
 
 import React, { useCallback, useEffect, useState } from 'react'
-import { Button } from '@entur/button'
+import {
+    Button,
+    ButtonGroup,
+    SecondaryButton,
+    SuccessButton,
+} from '@entur/button'
 import {
     Heading1,
     Heading3,
@@ -14,6 +19,9 @@ import {
     MapPinIcon,
     DestinationIcon,
     ValidationInfoFilledIcon,
+    AddIcon,
+    BackArrowIcon,
+    ForwardIcon,
 } from '@entur/icons'
 import { BlockquoteFooter } from '@entur/typography'
 import { DatePicker, TimePicker, ZonedDateTime } from '@entur/datepicker'
@@ -148,6 +156,10 @@ export default function AdminCreateJourney() {
 
     console.log(data)
 
+    const handleBackClick = () => {
+        router.push(`/admin`)
+    }
+
     return (
         <div className="ml-56 p-4 ">
             <div className="flex flex-col">
@@ -236,7 +248,16 @@ export default function AdminCreateJourney() {
                     suggestedTripData={data?.data?.trip}
                     startLocationName={selectedStart?.label}
                 />
-                <div className="pt-12 pb-12">
+                <ButtonGroup className="flex mt-20">
+                    <SecondaryButton
+                        onClick={handleBackClick}
+                        className="flex items-center min-w-20"
+                    >
+                        <div className="h-full pt-2.5">
+                            <BackArrowIcon />
+                        </div>
+                        Tilbake
+                    </SecondaryButton>
                     <Button
                         width="auto"
                         variant="primary"
@@ -246,7 +267,7 @@ export default function AdminCreateJourney() {
                     >
                         Opprett spill
                     </Button>
-                </div>
+                </ButtonGroup>
             </div>
         </div>
     )
