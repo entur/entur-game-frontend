@@ -255,6 +255,7 @@ function GameScreen({
                     stopPlace={startLocation}
                     firstMove={travelLegs.length === 1}
                     availableModes={availableModes}
+                    availableModesError={availableModesError}
                 />
             </div>
             <div className="mt-5 xl:mt-14">
