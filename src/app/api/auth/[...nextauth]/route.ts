@@ -48,9 +48,6 @@ export const authOptions: NextAuthOptions = {
         },
     },
     secret: NEXTAUTH_SECRET,
-    pages: {
-        signIn: 'src/app/auth/signin.tsx',
-    },
     debug: true,
 }
 

@@ -1,10 +1,20 @@
-import React, { ReactNode } from 'react'
+'use client'
+
+import React, { ReactNode, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
+import { useSession } from 'next-auth/react'
 
 const ProtectedComponents = ({ children }: { children: ReactNode }) => {
-    const { isAuthenticated, loading } = useAuth()
+    const { isAuthenticated, loading, login } = useAuth()
+    const { status } = useSession()
 
-    if (loading) {
+    useEffect(() => {
+        if (!loading && !isAuthenticated && status === 'unauthenticated') {
+            login()
+        }
+    }, [loading, isAuthenticated, status])
+
+    if (loading || status === 'loading') {
         return <div>Loading...</div>
     }
 
