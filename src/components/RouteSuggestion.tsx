@@ -5,7 +5,7 @@ import {
 } from '@/lib/utils/dateFnsUtils'
 import { TransportIconPicker } from '@/lib/utils/transportMapper'
 import { BannerAlertBox } from '@entur/alert'
-import { ClockIcon, DestinationIcon, GoalIcon, WalkIcon } from '@entur/icons'
+import { ClockIcon, DestinationIcon, WalkIcon } from '@entur/icons'
 import { LegLine, TravelTag } from '@entur/travel'
 import {
     Heading3,
@@ -14,10 +14,11 @@ import {
     Paragraph,
     SubParagraph,
 } from '@entur/typography'
+import { Badge } from '@entur/layout'
 
 type Props = {
     suggestedTripData: Maybe<Trip>
-    startLocationName: Maybe<String>
+    startLocationName: Maybe<string>
 }
 
 export default function RouteSuggestion({
@@ -29,15 +30,15 @@ export default function RouteSuggestion({
     console.log('sjekk doodelidoo', suggestedTripData?.tripPatterns)
     return (
         <div>
-            <div className="flex flex-col pt-12">
-                <Heading3>Optimal Fremkomstmåte</Heading3>
-                <Paragraph>
-                    Dette er fremkomstmåten spillerne må ta for å få mest mulig
-                    poeng{' '}
+            <div className="flex flex-col pt-12 mb-4">
+                <Heading3>Optimal fremkomstmåte for valgt rute</Heading3>
+                <Paragraph margin="none">
+                    Dette er fremkomstmåten spillerne må ta for å få maksimal
+                    poengsum
                 </Paragraph>
             </div>
             {suggestedTripData?.tripPatterns && startLocationName ? (
-                <div className="bg-blue-90 flex flex-col rounded-md p-6 gap-2">
+                <div className="bg-blue-90 flex flex-col max-w-fit min-w-[500px] rounded-md p-6 gap-2">
                     <div className="flex justify-between">
                         <Heading5 margin="none">
                             Fra {startLocationName}
@@ -53,74 +54,156 @@ export default function RouteSuggestion({
                         </div>
                     </div>
                     <div className="flex pt-2 justify-between">
-                        <div className="flex justify-start flex-1">
+                        <ul className="flex flex-grow">
                             {suggestedTripData.tripPatterns[0].legs.map(
                                 (leg, index, array) => (
-                                    <div className="flex flex-col">
-                                        {leg.line ? (
-                                            <div>
-                                                <TravelTag
-                                                    alert="none"
-                                                    transport={leg.mode}
-                                                >
-                                                    <TransportIconPicker
-                                                        transportType={leg.mode}
-                                                    />
-                                                    {leg.line?.publicCode}
-                                                </TravelTag>
-
-                                                <div
-                                                    className={`inline-block ${
-                                                        index ===
-                                                        array.length - 1
-                                                            ? 'w-full'
-                                                            : 'w-[27px]'
-                                                    }`}
-                                                >
-                                                    <LegLine
-                                                        direction="horizontal"
-                                                        pattern="line"
-                                                        color="#E3E6E8"
-                                                    ></LegLine>
-                                                </div>
-                                                <SubParagraph>
-                                                    {formatTimePlanner(
-                                                        leg.expectedStartTime,
-                                                    )}
-                                                </SubParagraph>
-                                            </div>
+                                    <>
+                                        {index === array.length - 1 ? (
+                                            <li className="flex-grow">
+                                                {leg.line ? (
+                                                    <>
+                                                        <div className="flex items-center">
+                                                            <TravelTag
+                                                                alert="none"
+                                                                transport={
+                                                                    leg.mode
+                                                                }
+                                                            >
+                                                                <TransportIconPicker
+                                                                    transportType={
+                                                                        leg.mode
+                                                                    }
+                                                                />
+                                                                {
+                                                                    leg.line
+                                                                        ?.publicCode
+                                                                }
+                                                            </TravelTag>
+                                                            <LegLine
+                                                                style={{
+                                                                    backgroundColor:
+                                                                        '#E3E6E8',
+                                                                }}
+                                                                direction="horizontal"
+                                                                pattern="line"
+                                                                color="#E3E6E8"
+                                                            ></LegLine>
+                                                        </div>
+                                                        <SubParagraph>
+                                                            {formatTimePlanner(
+                                                                leg.expectedStartTime,
+                                                            )}
+                                                        </SubParagraph>
+                                                    </>
+                                                ) : (
+                                                    <div className="flex items-center flex-grow">
+                                                        <TravelTag>
+                                                            <WalkIcon color="#8d8e9c" />
+                                                        </TravelTag>
+                                                        <div className="inline-block overflow-hidden">
+                                                            <LegLine
+                                                                style={{
+                                                                    minWidth:
+                                                                        '1rem',
+                                                                    backgroundColor:
+                                                                        '#E3E6E8',
+                                                                    flexGrow: 1,
+                                                                }}
+                                                                direction="horizontal"
+                                                                pattern="dotted"
+                                                                color="#E3E6E8"
+                                                            ></LegLine>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </li>
                                         ) : (
-                                            <div>
-                                                <TravelTag>
-                                                    <WalkIcon color="#8d8e9c" />
-                                                </TravelTag>
-                                                <div className="inline-block w-[27px] overflow-hidden">
-                                                    <LegLine
-                                                        direction="horizontal"
-                                                        pattern="dotted"
-                                                        color="#E3E6E8"
-                                                    ></LegLine>
-                                                </div>
-                                            </div>
+                                            <li>
+                                                {leg.line ? (
+                                                    <>
+                                                        <div className="flex items-center">
+                                                            <TravelTag
+                                                                alert="none"
+                                                                transport={
+                                                                    leg.mode
+                                                                }
+                                                            >
+                                                                <TransportIconPicker
+                                                                    transportType={
+                                                                        leg.mode
+                                                                    }
+                                                                />
+                                                                {
+                                                                    leg.line
+                                                                        ?.publicCode
+                                                                }
+                                                            </TravelTag>
+
+                                                            <LegLine
+                                                                style={{
+                                                                    minWidth:
+                                                                        '1rem',
+                                                                    backgroundColor:
+                                                                        '#E3E6E8',
+                                                                }}
+                                                                direction="horizontal"
+                                                                pattern="line"
+                                                                color="#E3E6E8"
+                                                            ></LegLine>
+                                                        </div>
+                                                        <SubParagraph>
+                                                            {formatTimePlanner(
+                                                                leg.expectedStartTime,
+                                                            )}
+                                                        </SubParagraph>
+                                                    </>
+                                                ) : (
+                                                    <div className="flex items-center flex-grow">
+                                                        <TravelTag>
+                                                            <WalkIcon color="#8d8e9c" />
+                                                        </TravelTag>
+                                                        <div className="inline-block overflow-hidden">
+                                                            <LegLine
+                                                                style={{
+                                                                    minWidth:
+                                                                        '1rem',
+                                                                    backgroundColor:
+                                                                        '#E3E6E8',
+                                                                    flexGrow: 1,
+                                                                }}
+                                                                direction="horizontal"
+                                                                pattern="dotted"
+                                                                color="#E3E6E8"
+                                                            ></LegLine>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </li>
                                         )}
-                                    </div>
+                                    </>
                                 ),
                             )}
-                        </div>
+                            {/*<li className="flex-grow">*/}
+                            {/*    <LegLine*/}
+                            {/*        style={{*/}
+                            {/*            minWidth: '1rem',*/}
+                            {/*            backgroundColor: '#E3E6E8',*/}
+                            {/*        }}*/}
+                            {/*        direction="horizontal"*/}
+                            {/*        pattern="dotted"*/}
+                            {/*        color="#E3E6E8"*/}
+                            {/*    ></LegLine>*/}
+                            {/*</li>*/}
+                        </ul>
                         <TravelTag>
                             <DestinationIcon />
                         </TravelTag>
                     </div>
                 </div>
             ) : (
-                <BannerAlertBox
-                    title="Ingen fremkomstmåte å vise "
-                    variant="information"
-                    className="max-w-3xl"
-                >
-                    Velg start, mål, startdato og -klokkeslett for å se optimal
-                    fremkomstmåte.
-                </BannerAlertBox>
+                <Badge variant="neutral" type="status">
+                    Ingen rute valgt
+                </Badge>
             )}
         </div>
     )
