@@ -1,9 +1,10 @@
 import React, { ReactElement } from 'react'
-import { Departure, QueryMode, StopPlace } from '@entur/sdk'
+import { Departure, QueryMode } from '@entur/sdk'
 import { TravelLeg, TravelLegProps } from '@entur/travel'
 import { Heading5 } from '@entur/typography'
 import { generateKey } from '@/lib/utils/generateUniqueKey'
 import { TravelLegTag } from './TravelLegTag'
+import { StopPlace } from '@/lib/types/types'
 
 type Props = {
     travelLegs: StopPlace[]

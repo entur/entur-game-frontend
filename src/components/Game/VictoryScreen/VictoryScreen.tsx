@@ -7,9 +7,14 @@ import {
     VictoryArtBoardCookieImage,
     VictoryArtBoardOvalImage,
 } from './VictoryScreenArt'
-import { Event } from '@/lib/types/types'
-import { StopPlace } from '@entur/sdk'
-import { savePlayerScore } from '@/lib/api/playerScoreApi'
+import {
+    BackendEvent,
+    Event,
+    Player,
+    PlayerScore,
+    StopPlace,
+} from '@/lib/types/types'
+import { saveScore } from '@/lib/api/scoreApi'
 import {
     formatIntervalToSeconds,
     formatTimeForEndOfGame,
@@ -17,12 +22,12 @@ import {
 import { Controller, useForm } from 'react-hook-form'
 import { createOptimalRouteText } from '@/lib/api/eventApi'
 import { useRouter } from 'next/navigation'
+import { SmallAlertBox, useToast } from '@entur/alert'
 
 type Props = {
     name: string
     event: Event
-    endLocation: StopPlace
-    setEndLocation: (endLocation: StopPlace) => void
+    endLocation: StopPlace[]
     numLegs: number
     currentTime: Date
     startTime: Date
@@ -39,12 +44,13 @@ type FormValues = {
 export function VictoryScreen({
     name = '',
     event,
-    endLocation,
     numLegs,
     currentTime,
     startTime,
     startTimer,
 }: Props): ReactElement {
+    const { addToast } = useToast()
+
     const {
         formState: { errors, isLoading, isSubmitting, isValid },
         control,
@@ -58,33 +64,67 @@ export function VictoryScreen({
     })
     const router = useRouter()
     const [isError, setError] = useState<boolean>(false)
+    const [responseStatus, setResponseStatus] = useState<number | null>(null)
 
     const timeDescription = formatTimeForEndOfGame(currentTime, startTime)
     const [optimalRouteText, setOptimalRouteText] = useState<string>('')
 
     async function onSubmit(data: FormValues) {
-        // TODO: savePlayerScore bør endres totalt, difficulty bør bl.a. fjernes
-        const response = await savePlayerScore({
-            ...data,
-            difficulty: 'Lett',
-            fromDestination: {
-                destination: event.startLocation.name,
-                id: event.startLocation.id,
-            },
-            toDestination: {
-                destination: endLocation.name,
-                id: endLocation.id,
-            },
-            totalOptions: numLegs,
-            totalPlaytime: Math.trunc((Date.now() - startTimer) / 1000),
+
+        const newPlayer: Player = {
+            playerName: data.name,
+            email: data.email,
+            phoneNumber: data.phoneNumber
+        }
+
+        const backendEvent: BackendEvent = {
+            eventId: event.eventId,
+            eventName: event.eventName,
+            startLocationId: event.startLocation.id,
+            endLocationId: event.endLocation[0].id,
+            startTime: event.startTime,
+            optimalStepNumber: event.optimalStepNumber,
+            optimalTravelTime: event.optimalTravelTime,
+            isActive: event.isActive
+        }
+
+        const playerScore: PlayerScore = {
+            scoreId: null,
+            scoreValue:
+                100.0 *
+                (event.optimalStepNumber / numLegs) *
+                (event.optimalTravelTime /
+                    formatIntervalToSeconds(currentTime, startTime)),
+            totalStepNumber: numLegs,
             totalTravelTime: formatIntervalToSeconds(currentTime, startTime),
-        })
+            totalPlayTime: Math.trunc((Date.now() - startTimer) / 1000),
+            player: newPlayer,
+            event: backendEvent
+        }
+
+        const response = await saveScore(playerScore)
+        setError(false)
         if (response.status > 199 && response.status < 299) {
+            addToast({
+                title: 'Poengsum registrert',
+                content: <>Takk for at du spilte!</>,
+            })
             setTimeout(() => {
                 router.push('/')
             }, 5000)
             return
         }
+        if (response.status === 400) {
+            addToast({
+                title: 'Du slo desverre ikke din forige rekord',
+                content: <>Prøv gjerne igjen!</>,
+            })
+            setTimeout(() => {
+                router.push('/')
+            }, 5000)
+            return
+        }
+        setResponseStatus(response.status)
         setError(true)
     }
 
@@ -103,9 +143,6 @@ export function VictoryScreen({
             <VictoryArtBoardCookieImage className="absolute -bottom-28 -left-52  hidden xl:block" />
             <VictoryArtBoardCircleImage className="absolute bottom-60 -right-72 hidden xl:block" />
             <div className="flex justify-center">
-                {isError && (
-                    <Paragraph className="bg-coral">Noe gikk galt.</Paragraph>
-                )}
                 <form
                     className="flex flex-col max-w-3xl mt-20 pr-4 pl-4 gap-6"
                     onSubmit={handleSubmit(async (data) => {
@@ -182,9 +219,8 @@ export function VictoryScreen({
                         )}
                     />
                     <div
-                        className={`border-2 ${
-                            errors.consent ? 'border-coral' : 'border-blue-60'
-                        } rounded border-solid w-full h-28 cursor-pointer`}
+                        className={`border-2 ${errors.consent ? 'border-coral' : 'border-blue-60'
+                            } rounded border-solid w-full h-28 cursor-pointer`}
                         {...register('consent', { required: true })}
                         onClick={() =>
                             setValue('consent', !getValues('consent'))
@@ -213,9 +249,8 @@ export function VictoryScreen({
 
                     <div className="flex flex-row mt-4 gap-4">
                         <PrimaryButton
-                            className={`select-none ${
-                                watch('consent') && 'bg-blue-main'
-                            }`}
+                            className={`select-none ${watch('consent') && 'bg-blue-main'
+                                }`}
                             loading={isSubmitting || isLoading}
                             disabled={!watch('consent') && !isValid}
                             type="submit"
@@ -231,8 +266,19 @@ export function VictoryScreen({
                             Avslutt reise
                         </SecondaryButton>
                     </div>
-                </form>
-            </div>
-        </div>
+                    {isError && (
+                        <SmallAlertBox variant="negative" width="fit-content">
+                            Noe gikk galt:{' '}
+                            {responseStatus === 404
+                                ? 'Event (spill) ble ikke funnet. Tilkall hjelp.'
+                                : responseStatus === 409
+                                    ? 'Spiller med samme brukernavn eksisterer allerede. Bytt navn.'
+                                    : 'Ukjent feil oppdaget. Tillkall hjelp.'}
+                        </SmallAlertBox >
+                    )
+                    }
+                </form >
+            </div >
+        </div >
     )
 }

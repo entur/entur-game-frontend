@@ -15,7 +15,7 @@ import Image from 'next/image'
 import { Button } from '@entur/button'
 import CompactLeaderboardPage from '@/components/CompactLeaderboard'
 
-export default function AdminPage(): JSX.Element {
+export default function AdminPage(): JSX.Element | null {
     return (
         <div>
             <Contrast>

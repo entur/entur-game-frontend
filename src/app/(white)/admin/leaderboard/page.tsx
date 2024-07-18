@@ -13,8 +13,8 @@ import { Loader } from '@entur/loader'
 import { Modal } from '@entur/modal'
 import { Button } from '@entur/button'
 import { BannerAlertBox, SmallAlertBox } from '@entur/alert'
-import { PlayerScore, Score } from '@/lib/types/types'
-import { getPlayerScoresByActiveEvent } from '@/lib/api/playerScoreApi'
+import { PlayerScore } from '@/lib/types/types'
+import { getActiveScores } from '@/lib/api/scoreApi'
 import { getActiveEvent } from '@/lib/api/eventApi'
 import { useEventName } from '@/lib/hooks/useEventName'
 import { Pagination } from '@entur/menu'
@@ -37,7 +37,7 @@ const GamePage: React.FC = (): JSX.Element => {
 
     useEffect(() => {
         const getScores = async () => {
-            const scores = await getPlayerScoresByActiveEvent()
+            const scores = await getActiveScores()
             if (scores && scores.length > 0) {
                 const sortedScores = scores.sort(
                     (a, b) =>

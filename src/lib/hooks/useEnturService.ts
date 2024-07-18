@@ -27,6 +27,7 @@ export function useEnturService(): Props {
     }
 }
 
+//TODO: current way finding locations, maybe move away from sdk in the future
 function getDepartures(
     stopPlaceId: string,
     mode: QueryMode,

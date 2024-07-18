@@ -7,13 +7,14 @@ import Image from 'next/image'
 import AdminLogoLight from '@/lib/assets/images/AdminLogoLight.png'
 import AdminLogoDark from '@/lib/assets/images/AdminLogoDark.png'
 import { Contrast } from '@entur/layout'
-import { Heading5 } from '@entur/typography'
+import { Button } from '@entur/button'
+import { useAuth } from '@/context/AuthContext'
 import { UserIcon } from '@entur/icons'
 
 export const AdminNavBar: React.FC = () => {
     const path = usePathname()
     const isLandingPage = path.endsWith('/admin')
-
+    const { logout } = useAuth()
     const navigationBar = (
         <>
             <TopNavigationItem
@@ -56,6 +57,12 @@ export const AdminNavBar: React.FC = () => {
                         navigationBar
                     )}
                 </nav>
+                <div className="ml-auto pr-5">
+                    <Button variant={'primary'} onClick={logout}>
+                        <UserIcon className="inline align-baseline" />
+                        Logg ut
+                    </Button>
+                </div>
             </div>
         </div>
     )

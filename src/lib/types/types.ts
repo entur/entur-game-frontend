@@ -1,5 +1,3 @@
-import { StopPlace } from '@entur/sdk/lib/fields/StopPlace'
-
 export type Event = {
     eventId: number
     eventName: string
@@ -23,28 +21,24 @@ export type BackendEvent = {
 }
 
 export type PlayerScore = {
-    scoreId: number
+    scoreId?: number | null
     scoreValue: number
     totalStepNumber: number
     totalTravelTime: number
     totalPlayTime: number
     player: Player
-    event: Event
+    event: BackendEvent
 }
 
 export type Player = {
-    playerId: number
+    playerId?: number
     playerName: string
     email: string
-    score: number
     phoneNumber: number
-    totalStepNumber: number
-    totalTravelTime: string
-    totalPlayTime: string
 }
 
 export type Score = {
-    scoreId: number
+    scoreId?: number | null
     scoreValue: number
     player?: Player
     event?: Event
@@ -57,4 +51,72 @@ export type TGeoresponse = {
             label?: string
         }
     }>
+}
+
+export type StopPlace = {
+    id: string
+    name: string
+    longitude?: number
+    latitude?: number
+}
+
+export type TripQueryVariables = {
+    from: {
+        name: string
+        place: string
+    }
+    to: {
+        name: string
+        place: string
+    }
+    dateTime: string
+    modes: { transportMode: string }[]
+}
+
+type Line = {
+    id: string
+    publicCode: string
+}
+
+export type Mode = 'rail' | 'bus' | 'tram' | 'metro' | 'water'
+
+export type Leg = {
+    id: string
+    distance: number
+    expectedStartTime: string
+    duration: number
+    line: Line | null
+    mode: Mode
+}
+
+type TripPattern = {
+    duration: number
+    expectedStartTime: string
+    legs: Leg[]
+}
+
+export type Trip = {
+    tripPatterns: TripPattern[]
+}
+
+export type Maybe<T> = T | undefined | null
+
+export type TransportIconPickerProps = {
+    transportType: string | undefined
+}
+
+export function isTripInfoVariables(obj: any): obj is TripQueryVariables {
+    return (
+        obj &&
+        typeof obj === 'object' &&
+        typeof obj.from === 'object' &&
+        typeof obj.from.name === 'string' &&
+        typeof obj.from.place === 'string' &&
+        typeof obj.to === 'object' &&
+        typeof obj.to.name === 'string' &&
+        typeof obj.to.place === 'string' &&
+        typeof obj.dateTime === 'string' &&
+        Array.isArray(obj.modes) &&
+        obj.modes.every((mode: any) => typeof mode.transportMode === 'string')
+    )
 }
