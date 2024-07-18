@@ -1,7 +1,8 @@
-import { QueryMode, StopPlace } from '@entur/sdk'
+import { QueryMode } from '@entur/sdk'
 import { TravelLeg, TravelLegProps } from '@entur/travel'
 import React from 'react'
 import { Heading3, Paragraph } from '@entur/typography'
+import { StopPlace } from '@/lib/types/types'
 
 type Props = {
     travelLegs: StopPlace[]

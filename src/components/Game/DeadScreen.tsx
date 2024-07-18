@@ -4,7 +4,8 @@ import { Heading2, Paragraph } from '@entur/typography'
 import { getModeTranslation } from '@/lib/utils/transportMapper'
 import { PrimaryButton } from '@entur/button'
 import React from 'react'
-import { QueryMode, StopPlace } from '@entur/sdk'
+import { QueryMode } from '@entur/sdk'
+import { StopPlace } from '@/lib/types/types'
 
 type Props = {
     mode: QueryMode

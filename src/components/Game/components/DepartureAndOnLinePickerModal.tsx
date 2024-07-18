@@ -48,7 +48,7 @@ export const DepartureAndOnLinePickerModal = ({
                             <Heading2>Velg avgang</Heading2>
                             <ChoiceChipGroup
                                 value="none"
-                                onChange={() => {}}
+                                onChange={() => { }}
                                 name="Departure"
                             >
                                 {departures
@@ -108,7 +108,7 @@ export const DepartureAndOnLinePickerModal = ({
 
                         <ChoiceChipGroup
                             value="none"
-                            onChange={() => {}}
+                            onChange={() => { }}
                             name="Stop on line"
                         >
                             {stopsOnLine.map((stop) => (

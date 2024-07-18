@@ -1,7 +1,12 @@
 import { BackendEvent, Event } from '../types/types'
-import { StopPlace } from '@entur/sdk/lib/fields/StopPlace'
+import { StopPlace } from '../types/types'
+import { fetchStopPlace, fetchStopPlaceChildren } from './stopPlaceApi'
 
 const baseUrl = 'http://localhost:8080'
+
+export type Result<T> =
+    | { success: true; data: T }
+    | { success: false; error: string }
 
 export async function getAllEvents(): Promise<BackendEvent[] | null> {
     const response = await fetch(`${baseUrl}/event/all`)
@@ -28,84 +33,74 @@ export async function updateActiveEvent(gameId: number): Promise<Event> {
 
 export async function getBackendEventByEventName(
     eventName: string,
-): Promise<BackendEvent | null> {
-    const response = await fetch(`${baseUrl}/event/${eventName}`)
-    if (response.status !== 200) return null
-    return response.json()
-}
-
-const query = `
-    query ($id: String!) {
-        stopPlace(
-            id: $id
-        ) {
-            name
-        }
-    }
-`
-
-async function fetchStopPlaceName(stopPlaceId: string): Promise<string | null> {
+): Promise<Result<BackendEvent>> {
     try {
-        const response = await fetch(
-            'https://api.entur.io/journey-planner/v3/graphql',
-            {
-                method: 'POST',
-                headers: {
-                    'ET-Client-Name': 'enturspillet',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ query, variables: { id: stopPlaceId } }),
-            },
-        )
-        const data = await response.json()
-        if (data.errors) {
-            console.error('Error fetching stop place name:', data.errors)
-            return null
+        const response = await fetch(`${baseUrl}/event/${eventName}`)
+        if (response.status !== 200) {
+            return { success: false, error: 'Failed to fetch event' }
         }
-        return data.data.stopPlace.name
+        const data = await response.json()
+        return { success: true, data }
     } catch (error) {
-        console.error('Error fetching stop place name:', error)
-        return null
+        return { success: false, error: 'Network error' }
     }
 }
 
 export async function getEventByEventName(
     eventName: string,
-): Promise<Event | null> {
-    const baseEvent = await getBackendEventByEventName(eventName)
-    if (!baseEvent) return null
+): Promise<Result<Event>> {
+    const baseEventResult = await getBackendEventByEventName(eventName)
+    if (!baseEventResult.success) {
+        return { success: false, error: baseEventResult.error }
+    }
+    const baseEvent = baseEventResult.data
 
-    const startLocationName = await fetchStopPlaceName(
+    const startLocationItem = await fetchStopPlace(
         baseEvent.startLocationId,
     )
-    const endLocationName = await fetchStopPlaceName(baseEvent.endLocationId)
 
-    if (!startLocationName || !endLocationName) {
-        return null
+    const endlocationChildrenIds = await fetchStopPlaceChildren(
+        baseEvent.endLocationId,
+    )
+    const endlocationIds = endlocationChildrenIds
+        ? [baseEvent.endLocationId, ...endlocationChildrenIds]
+        : [baseEvent.endLocationId]
+
+    const endLocationItem = await Promise.all(
+        endlocationIds.map((id) => fetchStopPlace(id)),
+    )
+
+    if (!startLocationItem || endLocationItem.includes(null)) {
+        return { success: false, error: 'Failed to fetch stop place names' }
     }
 
     const startLocation: StopPlace = {
         id: baseEvent.startLocationId,
-        name: startLocationName,
+        name: startLocationItem.name,
+        longitude: startLocationItem.longitude,
+        latitude: startLocationItem.latitude
     }
 
-    const endLocation: StopPlace[] = [
-        {
-            id: baseEvent.endLocationId,
-            name: endLocationName,
-        },
-    ]
+    const endLocation: StopPlace[] = endlocationIds.map((id, index) => ({
+        id: id,
+        name: endLocationItem[index]!.name,
+        longitude: endLocationItem[index]!.longitude,
+        latitude: endLocationItem[index]!.latitude
+    }))
 
     return {
-        eventId: baseEvent.eventId,
-        eventName: baseEvent.eventName,
-        startLocation: startLocation,
-        endLocation: endLocation,
-        startTime: baseEvent.startTime,
-        optimalStepNumber: baseEvent.optimalStepNumber,
-        optimalTravelTime: baseEvent.optimalTravelTime,
-        isActive: baseEvent.isActive,
-    } as Event
+        success: true,
+        data: {
+            eventId: baseEvent.eventId,
+            eventName: baseEvent.eventName,
+            startLocation: startLocation,
+            endLocation: endLocation,
+            startTime: baseEvent.startTime,
+            optimalStepNumber: baseEvent.optimalStepNumber,
+            optimalTravelTime: baseEvent.optimalTravelTime,
+            isActive: baseEvent.isActive,
+        } as Event
+    }
 }
 
 export async function createOptimalRouteText(event: Event): Promise<string> {

@@ -21,8 +21,8 @@ import {
 } from '@entur/table'
 import { Button } from '@entur/button'
 import { BannerAlertBox, SmallAlertBox } from '@entur/alert'
-import { PlayerScore, Score } from '@/lib/types/types'
-import { getPlayerScoresByActiveEvent } from '@/lib/api/playerScoreApi'
+import { PlayerScore } from '@/lib/types/types'
+import { getActiveScores } from '@/lib/api/scoreApi'
 import { getActiveEvent } from '@/lib/api/eventApi'
 import { Badge } from '@entur/layout'
 import { Pagination } from '@entur/menu'
@@ -58,7 +58,7 @@ export default function GamePage(): JSX.Element {
 
     useEffect(() => {
         const getScores = async () => {
-            const scores = await getPlayerScoresByActiveEvent()
+            const scores = await getActiveScores()
             if (scores && scores.length > 0) {
                 const sortedScores = scores.sort(
                     (a, b) =>
@@ -78,7 +78,7 @@ export default function GamePage(): JSX.Element {
         results: number,
         array: PlayerScore[],
         index: number,
-        score: Score,
+        score: PlayerScore,
     ) => {
         return (
             (currentPage - 1) * results +

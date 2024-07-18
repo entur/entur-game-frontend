@@ -19,6 +19,7 @@ module.exports = {
     rules: {
         'prettier/prettier': 'warn',
         'react/react-in-jsx-scope': 'off',
+        'no-console': ['error', { allow: ['warn', 'error'] }],
     },
     settings: {
         react: {
