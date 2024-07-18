@@ -1,0 +1,11 @@
+.mapContainer {
+    width: 100%; 
+    height: 100%; 
+  }
+  
+  .mapboxgl-ctrl-logo {
+    position: absolute;
+    bottom: 10px; /* juster denne verdien etter behov */
+    left: 10px; /* juster denne verdien etter behov */
+    z-index: 10; /* sørg for at logoen vises over andre elementer */
+  }
