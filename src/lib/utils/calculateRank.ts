@@ -5,7 +5,7 @@ export const calculateRank = (
     results: number,
     array: PlayerScore[],
     index: number,
-    score: Score,
+    score: PlayerScore,
 ): number => {
     return (
         (currentPage - 1) * results +

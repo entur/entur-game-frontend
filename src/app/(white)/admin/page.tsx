@@ -13,7 +13,7 @@ import { CopyableText } from '@entur/alert'
 import BackgroundAdmin from '@/lib/assets/images/BackgroundAdmin.svg'
 import Image from 'next/image'
 import { Button } from '@entur/button'
-import CompactLeaderboardPage from '@/components/CompactLeaderboard'
+import CompactLeaderboardPage from './components/CompactLeaderboard'
 
 export default function AdminPage(): JSX.Element | null {
     return (

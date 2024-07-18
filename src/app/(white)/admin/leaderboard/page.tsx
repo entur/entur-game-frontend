@@ -15,10 +15,9 @@ import { Button } from '@entur/button'
 import { BannerAlertBox, SmallAlertBox } from '@entur/alert'
 import { PlayerScore } from '@/lib/types/types'
 import { getActiveScores } from '@/lib/api/scoreApi'
-import { getActiveEvent } from '@/lib/api/eventApi'
 import { useEventName } from '@/lib/hooks/useEventName'
 import { Pagination } from '@entur/menu'
-import Leaderboard from '@/components/Leaderboard'
+import Leaderboard from '../components/Leaderboard'
 
 const GamePage: React.FC = (): JSX.Element => {
     const { eventName, isEventNameError } = useEventName()

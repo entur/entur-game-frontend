@@ -1,5 +1,3 @@
-// components/Leaderboard.tsx
-
 import React from 'react'
 import {
     DataCell,

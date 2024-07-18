@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { PlayerScore } from '@/lib/types/types'
-import { getPlayerScoresByActiveEvent } from '@/lib/api/playerScoreApi'
-import { Button } from '@entur/button'
+import { getActiveScores } from '@/lib/api/scoreApi'
 import Leaderboard from './Leaderboard'
-import { RightArrowIcon } from '@entur/icons'
 import { Heading2 } from '@entur/typography'
 import { useEventName } from '@/lib/hooks/useEventName'
 import { BreadcrumbItem } from '@entur/menu'
@@ -15,7 +13,7 @@ const CompactLeaderboardPage: React.FC = (): JSX.Element => {
 
     useEffect(() => {
         const fetchScores = async () => {
-            const scores = await getPlayerScoresByActiveEvent()
+            const scores = await getActiveScores()
             if (scores && scores.length > 0) {
                 const sortedScores = scores.sort(
                     (a, b) =>
