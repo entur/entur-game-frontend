@@ -11,26 +11,18 @@ import {
 } from '@entur/typography'
 import { Loader } from '@entur/loader'
 import { Modal } from '@entur/modal'
-import {
-    DataCell,
-    HeaderCell,
-    Table,
-    TableBody,
-    TableHead,
-    TableRow,
-} from '@entur/table'
 import { Button } from '@entur/button'
 import { BannerAlertBox, SmallAlertBox } from '@entur/alert'
 import { PlayerScore, Score } from '@/lib/types/types'
 import { getPlayerScoresByActiveEvent } from '@/lib/api/playerScoreApi'
 import { getActiveEvent } from '@/lib/api/eventApi'
-import { Badge } from '@entur/layout'
+import { useEventName } from '@/lib/hooks/useEventName'
 import { Pagination } from '@entur/menu'
+import Leaderboard from '@/components/Leaderboard'
 
-export default function GamePage(): JSX.Element {
-    const [eventName, setEventName] = useState<string | null>(null)
+const GamePage: React.FC = (): JSX.Element => {
+    const { eventName, isEventNameError } = useEventName()
     const [scores, setScores] = useState<PlayerScore[]>([])
-    const [isEventNameError, setEventNameError] = useState<boolean>(false)
     const [leader, setLeader] = useState<PlayerScore | null>(null)
     const [isOpen, setOpen] = useState<boolean>(false)
     const [showAlert, setShowAlert] = useState<boolean>(false)
@@ -42,19 +34,6 @@ export default function GamePage(): JSX.Element {
     const pageCount = Math.ceil(numberOfResults / results)
 
     //TODO: side oppdateres hver gang ny spiller legges til i db
-
-    useEffect(() => {
-        const getEventName = async () => {
-            const event = await getActiveEvent()
-            if (event) {
-                setEventName(event.eventName)
-                setEventNameError(false)
-            } else {
-                setEventNameError(true)
-            }
-        }
-        getEventName()
-    }, [])
 
     useEffect(() => {
         const getScores = async () => {
@@ -72,25 +51,6 @@ export default function GamePage(): JSX.Element {
         }
         getScores()
     }, [])
-
-    const calculateRank = (
-        currentPage: number,
-        results: number,
-        array: PlayerScore[],
-        index: number,
-        score: Score,
-    ) => {
-        return (
-            (currentPage - 1) * results +
-            array
-                .slice(0, index)
-                .filter(
-                    (item: { scoreValue: number }) =>
-                        item.scoreValue > score.scoreValue,
-                ).length +
-            1
-        )
-    }
 
     const handleDrawWinner = () => {
         if (scores.length === 0) {
@@ -167,52 +127,11 @@ export default function GamePage(): JSX.Element {
             )}
             <br />
             <br />
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <HeaderCell>Plassering</HeaderCell>
-                        <HeaderCell>Spiller</HeaderCell>
-                        <HeaderCell>Reisetid</HeaderCell>
-                        <HeaderCell>Poengsum</HeaderCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {scores.length === 0 ? (
-                        <DataCell colSpan={4}>
-                            <Badge variant="information" type="status">
-                                Ingen spillere ennå
-                            </Badge>
-                        </DataCell>
-                    ) : (
-                        scores
-                            .slice(
-                                (currentPage - 1) * results,
-                                currentPage * results,
-                            )
-                            .map((score, index, array) => {
-                                const rank = calculateRank(
-                                    currentPage,
-                                    results,
-                                    array,
-                                    index,
-                                    score,
-                                )
-                                return (
-                                    <TableRow key={index}>
-                                        <DataCell>{rank}</DataCell>
-                                        <DataCell>
-                                            {score.player.playerName}
-                                        </DataCell>
-                                        <DataCell>
-                                            {score.totalTravelTime}
-                                        </DataCell>
-                                        <DataCell>{score.scoreValue}</DataCell>
-                                    </TableRow>
-                                )
-                            })
-                    )}
-                </TableBody>
-            </Table>
+            <Leaderboard
+                scores={scores}
+                currentPage={currentPage}
+                results={results}
+            />
             <div className="pt-12">
                 <Pagination
                     pageCount={pageCount}
@@ -235,3 +154,5 @@ export default function GamePage(): JSX.Element {
         </div>
     )
 }
+
+export default GamePage
