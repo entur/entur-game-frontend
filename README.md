@@ -32,6 +32,6 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-
 ### Login admin page
-The login client secret is generated in Azure and will expire 7/15/2026. 
+
+The login client secret is generated in Azure and will expire 17.7.2026.
