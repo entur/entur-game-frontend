@@ -96,9 +96,6 @@ function GameScreen({
         window.scrollTo(0, document.body.scrollHeight)
     }, [currentTime])
 
-    //TODO: feilteste!!!!!
-    //TODO: litt teit at man ikke vet om en rute gjør at man dør! Det må man finne ut av hva vi gjør med!
-
     useEffect(() => {
         const newUsedTime = currentTime.getTime() - startTime.getTime()
         setUsedTime(newUsedTime)
