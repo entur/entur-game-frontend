@@ -243,7 +243,6 @@ export default function AdminCreateJourney() {
                         dagens dato
                     </SmallText>
                 </div>
-
                 <RouteSuggestion
                     suggestedTripData={data?.data?.trip}
                     startLocationName={selectedStart?.label}

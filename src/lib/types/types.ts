@@ -78,7 +78,8 @@ type Line = {
     publicCode: string
 }
 
-type Leg = {
+export type Leg = {
+    id: string
     distance: number
     expectedStartTime: string
     duration: number
