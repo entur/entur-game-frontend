@@ -38,7 +38,7 @@ export const AdminNavBar: React.FC = () => {
             </nav>
             <div className="ml-auto pr-5">
                 <Button variant={'primary'} onClick={logout}>
-                    <UserIcon />
+                    <UserIcon className="inline align-baseline" />
                     Logg ut
                 </Button>
             </div>
