@@ -19,7 +19,7 @@ export function formatTimePlanner(dateTimeString: string): string {
 export function formatPlannerDuration(seconds: number): string {
     const hours = Math.floor(seconds / 3600)
     const minutes = Math.floor((seconds % 3600) / 60)
-    return `${hours}t ${minutes}min`
+    return `${hours} t ${minutes} min`
 }
 
 export function formatDateTime(
