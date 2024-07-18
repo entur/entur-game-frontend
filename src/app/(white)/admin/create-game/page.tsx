@@ -146,8 +146,6 @@ export default function AdminCreateJourney() {
             getTripInfo(visualSolutionTripQuery, variables),
     )
 
-    console.log(data)
-
     const handleBackClick = () => {
         router.push(`/admin`)
     }

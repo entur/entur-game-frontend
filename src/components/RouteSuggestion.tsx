@@ -1,5 +1,4 @@
 import { Maybe, Trip } from '@/lib/types/types'
-import { formatTimePlanner } from '@/lib/utils/dateFnsUtils'
 import { Heading3, Paragraph } from '@entur/typography'
 import { Badge } from '@entur/layout'
 import Route from '@/components/Admin/Route'
@@ -13,16 +12,6 @@ export default function RouteSuggestion({
     suggestedTripData,
     startLocationName,
 }: Props) {
-    console.log('suggeste trip', suggestedTripData)
-    console.log('start', startLocationName)
-    console.log('sjekk doodelidoo', suggestedTripData?.tripPatterns)
-    console.log(
-        'expected',
-        suggestedTripData?.tripPatterns[0]?.legs[2]?.expectedStartTime &&
-            formatTimePlanner(
-                suggestedTripData?.tripPatterns[0]?.legs[2]?.expectedStartTime,
-            ),
-    )
     return (
         <div>
             <div className="flex flex-col pt-12 mb-4">
