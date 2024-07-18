@@ -8,7 +8,7 @@ import { PrimaryButton, SecondaryButton } from '@entur/button'
 import { useRouter } from 'next/navigation'
 import { Event, StopPlace } from '@/lib/types/types'
 import { useEnturService } from '@/lib/hooks/useEnturService'
-import { formatDate, formatTimeForEndOfGame } from '@/lib/utils/dateFnsUtils'
+
 import FromAndToTitle from './components/FromAndToTitle'
 import TransportTypePicker from './components/TransportTypePicker'
 import TravelLegStart from './components/TravelLegStart/TravelLegStart'
@@ -231,9 +231,7 @@ function GameScreen({
     }
     return (
         <div className="flex flex-col mb-4">
-            <FromAndToTitle className="mt-10 xl:mt-28" event={event} />
-            <Heading4 margin="none">{formatDate(startTime)}</Heading4>
-            <Heading4 margin="none">Hvordan vil du starte?</Heading4>
+            <FromAndToTitle className="mt-10 xl:mt-28" event={event} startTime={startTime} />
             <div className="mt-5 xl:mt-14">
                 <TravelLegStart
                     travelLegs={travelLegs}
