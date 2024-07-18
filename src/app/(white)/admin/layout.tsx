@@ -1,5 +1,4 @@
 import '@/app/globals.css'
-
 import ProtectedComponents from '@/components/ProtectedComponents'
 import { AdminNavBar } from './components/AdminNavBar'
 
