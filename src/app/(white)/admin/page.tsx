@@ -14,6 +14,7 @@ import BackgroundAdmin from '@/lib/assets/images/BackgroundAdmin.svg'
 import Image from 'next/image'
 import { Button } from '@entur/button'
 import CompactLeaderboardPage from './components/CompactLeaderboard'
+import InactiveEvent from './components/InactiveEvents'
 
 export default function AdminPage(): JSX.Element | null {
     return (
@@ -26,7 +27,7 @@ export default function AdminPage(): JSX.Element | null {
                 </div>
             </Contrast>
             <Image className="w-full" src={BackgroundAdmin} alt="background" />
-            <div className="flex flex-col p-12">
+            <div className="flex flex-col p-12 ml-20">
                 <NavigationCard
                     className="flex flex-row max-w-lg max-h-20"
                     title="Opprett spill"
@@ -54,10 +55,13 @@ export default function AdminPage(): JSX.Element | null {
                         blant spillerne med høyest poengsum.
                     </Paragraph>
                 </div>
-                <div className="mt-8"></div>
+                <div className="mt-8">
+                    <CompactLeaderboardPage />
+                </div>
                 <div className="flex flex-col mt-20">
                     <Heading2>Tidligere spill</Heading2>
-                    <CompactLeaderboardPage />
+                    <InactiveEvent />
+                    <InactiveEvent />
                 </div>
             </div>
         </div>
