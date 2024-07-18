@@ -1,16 +1,10 @@
 'use client'
 
 import React, { useCallback, useEffect, useState } from 'react'
-import {
-    Button,
-    ButtonGroup,
-    SecondaryButton,
-    SuccessButton,
-} from '@entur/button'
+import { Button, ButtonGroup, SecondaryButton } from '@entur/button'
 import {
     Heading1,
     Heading3,
-    Heading5,
     LeadParagraph,
     Paragraph,
     SmallText,
@@ -19,9 +13,7 @@ import {
     MapPinIcon,
     DestinationIcon,
     ValidationInfoFilledIcon,
-    AddIcon,
     BackArrowIcon,
-    ForwardIcon,
 } from '@entur/icons'
 import { BlockquoteFooter } from '@entur/typography'
 import { DatePicker, TimePicker, ZonedDateTime } from '@entur/datepicker'

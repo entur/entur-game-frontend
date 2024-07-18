@@ -78,13 +78,15 @@ type Line = {
     publicCode: string
 }
 
+export type Mode = 'rail' | 'bus' | 'tram' | 'metro' | 'water'
+
 export type Leg = {
     id: string
     distance: number
     expectedStartTime: string
     duration: number
     line: Line | null
-    mode: 'rail' | 'bus' | 'tram' | 'metro' | 'water'
+    mode: Mode
 }
 
 type TripPattern = {

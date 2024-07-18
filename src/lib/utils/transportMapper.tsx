@@ -8,7 +8,8 @@ import {
     TramIcon,
     WalkIcon,
 } from '@entur/icons'
-import { TransportIconPickerProps } from '../types/types'
+import { Mode, TransportIconPickerProps } from '../types/types'
+import { LegLine } from '@entur/travel'
 
 export function getModeIcon(mode: QueryMode): JSX.Element | null {
     switch (mode) {
@@ -64,5 +65,68 @@ export function TransportIconPicker({
             return <FerryIcon color="white" />
         default:
             return <BusIcon color="white" />
+    }
+}
+
+export function LegLinePicker({ mode }: { mode?: Mode }) {
+    const style = {
+        minWidth: '1.5rem',
+        backgroundColor: '#E3E6E8',
+    }
+    switch (mode) {
+        case 'bus':
+            return (
+                <LegLine
+                    style={style}
+                    direction="horizontal"
+                    pattern="dashed"
+                    color="#E3E6E8"
+                ></LegLine>
+            )
+        case 'rail':
+            return (
+                <LegLine
+                    style={style}
+                    direction="horizontal"
+                    pattern="line"
+                    color="#E3E6E8"
+                ></LegLine>
+            )
+        case 'tram':
+            return (
+                <LegLine
+                    style={style}
+                    direction="horizontal"
+                    pattern="line"
+                    color="#E3E6E8"
+                ></LegLine>
+            )
+        case 'metro':
+            return (
+                <LegLine
+                    style={style}
+                    direction="horizontal"
+                    pattern="line"
+                    color="#E3E6E8"
+                ></LegLine>
+            )
+        case 'water':
+            return (
+                <LegLine
+                    style={style}
+                    direction="horizontal"
+                    pattern="wave"
+                    color="#E3E6E8"
+                ></LegLine>
+            )
+        default:
+            return (
+                <LegLine
+                    style={style}
+                    direction="horizontal"
+                    pattern="dotted"
+                    color="#E3E6E8"
+                ></LegLine>
+            )
     }
 }
