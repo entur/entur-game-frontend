@@ -47,38 +47,6 @@ export default function AdminPage(): JSX.Element | null {
                             localhost:3000
                         </CopyableText>
                     </div>
-                    <div className="grid grid-cols-2 items-center gap-16 p-12 mr-20">
-                        <NavigationCard
-                            className="h-full"
-                            title="Opprett rute"
-                            titleIcon={<AdjustmentsIcon />}
-                            href="http://localhost:3000/admin/create-journey"
-                        >
-                            Her oppretter du en ny rute. Du velger hvor og når
-                            ruten begynner, og hvor den skal ende.
-                        </NavigationCard>
-                        <NavigationCard
-                            className="h-full"
-                            title="Ledertavle"
-                            titleIcon={<BulletListIcon />}
-                            href="http://localhost:3000/admin/leaderboard"
-                        >
-                            Her har du oversikt over alle lagrede poengsummer og
-                            mulighet til å trekke en vinner blandt de beste
-                            poengsummene.
-                        </NavigationCard>
-                    </div>
-                    <div className="flex flex-col items-center justify-center mr-20 p-12">
-                        <Heading4>Lenke til aktivt spill</Heading4>
-                        <div className="mt-2">
-                            <CopyableText
-                                successHeading="Lenke kopiert!"
-                                successMessage=" "
-                            >
-                                localhost:3000
-                            </CopyableText>
-                        </div>
-                    </div>
                 </div>
             </ProtectedComponents>
         </div>

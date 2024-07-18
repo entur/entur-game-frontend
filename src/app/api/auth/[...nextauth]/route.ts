@@ -43,7 +43,6 @@ export const authOptions: NextAuthOptions = {
                 session = Object.assign({}, session, {
                     access_token: token.access_token,
                 })
-                console.log('session2', session)
             }
             return session
         },

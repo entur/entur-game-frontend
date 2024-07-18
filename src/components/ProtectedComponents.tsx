@@ -1,18 +1,15 @@
-import React, { ReactNode, useEffect } from 'react'
+import React, { ReactNode } from 'react'
 import { useAuth } from '../context/AuthContext'
 
 const ProtectedComponents = ({ children }: { children: ReactNode }) => {
-    const { isAuthenticated, loading, login } = useAuth()
-    console.log('her', isAuthenticated)
+    const { isAuthenticated, loading } = useAuth()
 
-    useEffect(() => {
-        if (!loading && !isAuthenticated) {
-            login()
-        }
-    }, [isAuthenticated, loading])
-
-    if (loading || !isAuthenticated) {
+    if (loading) {
         return <div>Loading...</div>
+    }
+
+    if (!isAuthenticated) {
+        return <div>You are not authorized to view this content.</div>
     }
 
     return <>{children}</>

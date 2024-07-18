@@ -54,9 +54,7 @@ const SignIn = ({ providers }: SignInProps) => {
 
 export async function getServerSideProps() {
     const providers = await getProviders()
-    return {
-        props: { providers },
-    }
+    return { props: { providers } }
 }
 
 export default SignIn
