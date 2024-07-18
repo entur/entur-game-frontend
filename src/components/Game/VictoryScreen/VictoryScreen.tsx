@@ -17,7 +17,7 @@ import {
 import { saveScore } from '@/lib/api/scoreApi'
 import {
     formatIntervalToSeconds,
-    formatTimeForEndOfGame,
+    formatMilliseconds
 } from '@/lib/utils/dateFnsUtils'
 import { Controller, useForm } from 'react-hook-form'
 import { createOptimalRouteText } from '@/lib/api/eventApi'
@@ -66,7 +66,7 @@ export function VictoryScreen({
     const [isError, setError] = useState<boolean>(false)
     const [responseStatus, setResponseStatus] = useState<number | null>(null)
 
-    const timeDescription = formatTimeForEndOfGame(currentTime, startTime)
+    const timeDescription = formatMilliseconds(currentTime.getTime() - startTime.getTime())
     const [optimalRouteText, setOptimalRouteText] = useState<string>('')
 
     async function onSubmit(data: FormValues) {

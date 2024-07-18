@@ -2,6 +2,7 @@ import React from 'react'
 import { Heading5, Label } from '@entur/typography'
 import { ClockIcon, TimeglassIcon, TrackIcon } from '@entur/icons'
 import { Loader } from '@entur/loader'
+import { formatMilliseconds } from '@/lib/utils/dateFnsUtils'
 
 type Props = {
     className?: string
@@ -10,23 +11,14 @@ type Props = {
     maxTime: number
 }
 
-function formatTime(milliseconds: number) {
-    let totalSeconds = Math.ceil(milliseconds / 1000);
-    let hours = Math.floor(totalSeconds / 3600);
-    let minutes = Math.floor((totalSeconds % 3600) / 60);
-    let seconds = totalSeconds % 60;
-
-    return `${hours} timer ${minutes} minutter ${seconds} sekunder`;
-}
-
 function GameStatus({
     className = '',
     numLegs,
     usedTime,
     maxTime,
 }: Props): React.ReactElement {
-    const usedTimeFormatted = formatTime(usedTime);
-    const timeLeftFormatted = formatTime(Math.max(0, maxTime - usedTime));
+    const usedTimeFormatted = formatMilliseconds(usedTime);
+    const timeLeftFormatted = formatMilliseconds(Math.max(0, maxTime - usedTime));
 
     return (
         <div className={className}>

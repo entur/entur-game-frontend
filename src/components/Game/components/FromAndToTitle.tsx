@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { formatDate, formatTimeForEndOfGame } from '@/lib/utils/dateFnsUtils'
+import { formatDate } from '@/lib/utils/dateFnsUtils'
 
 import { Event } from '@/lib/types/types'
 import { Heading4 } from '@entur/typography'

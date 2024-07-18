@@ -11,24 +11,13 @@ export function formatInterval(currentTime: Date, startTime: Date): string {
     )
 }
 
-export function formatTimeForEndOfGame(
-    currentTime: Date,
-    startTime: Date,
-): string {
-    const totalSecondsPlayed =
-        (currentTime.getTime() - startTime.getTime()) / 1000
-    const totalSeconds = Math.floor((totalSecondsPlayed + 1) % 60)
-    const totalMinutesPlayed = Math.floor((totalSecondsPlayed + 1) / 60)
-    const totalHoursPlayed = Math.floor((totalMinutesPlayed + 1) / 60)
+export function formatMilliseconds(milliseconds: number) {
+    let totalSeconds = Math.ceil(milliseconds / 1000);
+    let hours = Math.floor(totalSeconds / 3600);
+    let minutes = Math.floor((totalSeconds % 3600) / 60);
+    let seconds = totalSeconds % 60;
 
-    return (
-        totalHoursPlayed.toString() +
-        ' timer ' +
-        (totalMinutesPlayed % 60).toString() +
-        ' minutter ' +
-        totalSeconds.toString() +
-        ' sekunder'
-    )
+    return `${hours} timer ${minutes} minutter ${seconds} sekunder`;
 }
 
 export function formatIntervalToSeconds(
