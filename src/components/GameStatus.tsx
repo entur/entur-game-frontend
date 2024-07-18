@@ -25,8 +25,8 @@ function GameStatus({
     usedTime,
     maxTime,
 }: Props): React.ReactElement {
-    const formattedUsedTime = formatTime(usedTime);
-    const formattedTimeLeft = formatTime(Math.max(0, maxTime - usedTime));
+    const usedTimeFormatted = formatTime(usedTime);
+    const timeLeftFormatted = formatTime(Math.max(0, maxTime - usedTime));
 
     return (
         <div className={className}>
@@ -50,7 +50,7 @@ function GameStatus({
                                     className="pt-1 text-coral"
                                     margin="none"
                                 >
-                                    Reisetid: {formattedUsedTime}
+                                    Reisetid: {usedTimeFormatted}
                                 </Heading5>
                             </div>
                         </div>
@@ -62,7 +62,7 @@ function GameStatus({
                         className="pt-1 text-coral"
                         margin="none"
                     >
-                        Gjenstående tid: {formattedTimeLeft}
+                        Gjenstående tid: {timeLeftFormatted}
                     </Heading5>
                 </div>
                 <Loader progress={Math.max(0, Math.ceil((maxTime - usedTime) / maxTime * 100))}></Loader>

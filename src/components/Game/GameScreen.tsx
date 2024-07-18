@@ -1,7 +1,7 @@
 'use client'
 
 import React, { ReactElement, useEffect, useState } from 'react'
-import { Heading4, Paragraph } from '@entur/typography'
+import { Paragraph } from '@entur/typography'
 import { Departure, QueryMode, StopPlaceDetails } from '@entur/sdk'
 import { addHours, addMinutes } from 'date-fns'
 import { PrimaryButton, SecondaryButton } from '@entur/button'
@@ -227,10 +227,11 @@ function GameScreen({
     if (isDead) {
         return (
             <div className="app" style={{ maxWidth: '800px' }}>
-                <DeadScreen />
+                <DeadScreen endLocationName={endLocation[0].name} />
             </div>
         )
     }
+
     return (
         <div className="flex flex-col mb-4">
             <FromAndToTitle className="mt-10 xl:mt-28" event={event} startTime={startTime} />
