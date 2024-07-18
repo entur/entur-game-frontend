@@ -63,6 +63,7 @@ function GameScreen({
     ])
     const [usedMode, setUsedMode] = useState<QueryMode[]>([])
     const [availableModes, setAvailableModes] = useState<QueryMode[]>([])
+    const [availableModesError, setAvailableModesError] = useState<boolean>(false)
     const { getWalkableStopPlaces, getDepartures, getStopsOnLine } =
         useEnturService()
 
@@ -127,7 +128,11 @@ function GameScreen({
         if (walkableStops.length > 0) {
             validModes.unshift(QueryMode.FOOT)
         }
-
+        if (validModes.length < 1) {
+            setAvailableModesError(true)
+            return
+        }
+        setAvailableModesError(false)
         setAvailableModes(validModes)
     }
 

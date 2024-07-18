@@ -5,6 +5,8 @@ import { QueryMode } from '@entur/sdk'
 import { Heading2, Heading4 } from '@entur/typography'
 import { StopPlace } from '@/lib/types/types'
 import { getModeIcon, getModeTranslation } from '@/lib/utils/transportMapper'
+import { Loader } from '@entur/loader'
+import { SmallAlertBox } from '@entur/alert'
 
 type Props = {
     currentTime: Date
@@ -16,6 +18,7 @@ type Props = {
     stopPlace: StopPlace
     firstMove: boolean
     availableModes: QueryMode[]
+    availableModesError: boolean
 }
 
 function TransportTypePicker({
@@ -28,6 +31,7 @@ function TransportTypePicker({
     stopPlace,
     firstMove,
     availableModes,
+    availableModesError
 }: Props): ReactElement {
     return (
         <div className="bg-white border-4 border-white shadow-sm rounded-sm pl-10 pb-8 pr-10">
@@ -44,43 +48,53 @@ function TransportTypePicker({
                     })}
                 </span>
             </Heading4>
-            <ChoiceChipGroup
-                value={mode ?? 'none'}
-                onChange={() => {
-                    /* Do nothing */
-                }}
-                name="Transport mode"
-            >
-                <>
-                    {availableModes.map((mode) => {
-                        const disabled = usedMode.includes(mode)
-                        return (
+            {availableModesError ? (
+                <div className="text-red-500">
+                    <SmallAlertBox variant="negative" width="fit-content">
+                        Beklager, vi kunne ikke finne noen reiseruter på dette stoppestedet! Vennligst start spillet på nytt.
+                    </SmallAlertBox>
+                </div>
+            ) : availableModes.length < 1 ? (
+                <Loader>Laster inn transportmidler...</Loader>
+            ) : (
+                <ChoiceChipGroup
+                    value={mode ?? 'none'}
+                    onChange={() => {
+                        /* Do nothing */
+                    }}
+                    name="Transport mode"
+                >
+                    <>
+                        {availableModes.map((mode) => {
+                            const disabled = usedMode.includes(mode)
+                            return (
+                                <ChoiceChip
+                                    className="border-2 ml-1 mr-2 mt-3 w-38 h-10 rounded-3xl sm:text-lg select-none"
+                                    key={mode}
+                                    value={mode}
+                                    onClick={() => selectMode(mode)}
+                                    disabled={disabled || isLoading}
+                                >
+                                    {getModeIcon(mode)}
+                                    {getModeTranslation(mode)}
+                                </ChoiceChip>
+                            )
+                        })}
+                        {!firstMove && (
                             <ChoiceChip
                                 className="border-2 ml-1 mr-2 mt-3 w-38 h-10 rounded-3xl sm:text-lg select-none"
-                                key={mode}
-                                value={mode}
-                                onClick={() => selectMode(mode)}
-                                disabled={disabled || isLoading}
+                                key="wait"
+                                value="wait"
+                                onClick={() => wait()}
+                                disabled={isLoading}
                             >
-                                {getModeIcon(mode)}
-                                {getModeTranslation(mode)}
+                                <SleepIcon />
+                                Vent 6 timer
                             </ChoiceChip>
-                        )
-                    })}
-                    {!firstMove && (
-                        <ChoiceChip
-                            className="border-2 ml-1 mr-2 mt-3 w-38 h-10 rounded-3xl sm:text-lg select-none"
-                            key="wait"
-                            value="wait"
-                            onClick={() => wait()}
-                            disabled={isLoading}
-                        >
-                            <SleepIcon />
-                            Vent 6 timer
-                        </ChoiceChip>
-                    )}
-                </>
-            </ChoiceChipGroup>
+                        )}
+                    </>
+                </ChoiceChipGroup>
+            )}
         </div>
     )
 }
