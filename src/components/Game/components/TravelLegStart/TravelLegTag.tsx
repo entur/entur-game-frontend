@@ -1,12 +1,5 @@
 import React from 'react'
-import {
-    BusIcon,
-    FerryIcon,
-    MetroIcon,
-    TrainIcon,
-    TramIcon,
-    WalkIcon,
-} from '@entur/icons'
+import { WalkIcon } from '@entur/icons'
 import { TravelLegProps, TravelTag } from '@entur/travel'
 import { Departure } from '@entur/sdk'
 import { Label } from '@entur/typography'
