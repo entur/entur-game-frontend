@@ -5,7 +5,7 @@ import { AdjustmentsIcon, BulletListIcon } from '@entur/icons'
 import { NavigationCard } from '@entur/layout'
 import { CopyableText } from '@entur/alert'
 
-export default function AdminPage(): JSX.Element {
+export default function AdminPage(): JSX.Element | null {
     return (
         <div>
             <div className="flex flex-col items-center justify-center mr-20">
