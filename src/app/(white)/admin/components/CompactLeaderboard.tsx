@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { PlayerScore } from '@/lib/types/types'
+import { BackendEvent, PlayerScore, TGeoresponse } from '@/lib/types/types'
 import { getActiveScores } from '@/lib/api/scoreApi'
 import Leaderboard from './Leaderboard'
-import { Heading2 } from '@entur/typography'
+import { Heading2, Heading3 } from '@entur/typography'
 import { useEventName } from '@/lib/hooks/useEventName'
 import { BreadcrumbItem } from '@entur/menu'
 import Link from 'next/link'
+import { getActiveEvent } from '@/lib/api/eventApi'
 
 const CompactLeaderboardPage: React.FC = (): JSX.Element => {
     const [scores, setScores] = useState<PlayerScore[]>([])
     const { eventName, isEventNameError } = useEventName()
+    const [startName, setStartName] = useState<string | null>(null)
+    const [goalName, setGoalName] = useState<string | null>(null)
 
     useEffect(() => {
         const fetchScores = async () => {
@@ -23,17 +26,18 @@ const CompactLeaderboardPage: React.FC = (): JSX.Element => {
                 setScores(sortedScores)
             }
         }
+
         fetchScores()
     }, [])
 
     return (
-        <div className="max-w-screen mx-56 p-4">
+        <div className="max-w-xl">
             <div className="flex flex-col pb-4">
                 <div className="bg-white rounded shadow-md p-6">
                     {isEventNameError ? (
-                        <Heading2 margin="bottom">Ingen aktive spill</Heading2>
+                        <Heading3 margin="bottom">Ingen aktive spill</Heading3>
                     ) : (
-                        <Heading2 margin="bottom">{eventName}</Heading2>
+                        <Heading3 margin="bottom">{eventName}</Heading3>
                     )}
                     <Leaderboard
                         scores={scores}
