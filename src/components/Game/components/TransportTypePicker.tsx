@@ -31,7 +31,7 @@ function TransportTypePicker({
     stopPlace,
     firstMove,
     availableModes,
-    availableModesError
+    availableModesError,
 }: Props): ReactElement {
     return (
         <div className="bg-white border-4 border-white shadow-sm rounded-sm pl-10 pb-8 pr-10">
@@ -51,7 +51,8 @@ function TransportTypePicker({
             {availableModesError ? (
                 <div className="text-red-500">
                     <SmallAlertBox variant="negative" width="fit-content">
-                        Beklager, vi kunne ikke finne noen reiseruter på dette stoppestedet! Vennligst start spillet på nytt.
+                        Beklager, vi kunne ikke finne noen reiseruter på dette
+                        stoppestedet! Vennligst start spillet på nytt.
                     </SmallAlertBox>
                 </div>
             ) : availableModes.length < 1 ? (

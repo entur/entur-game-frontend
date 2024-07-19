@@ -24,15 +24,16 @@ export default function GamePage(): JSX.Element {
         getEventByEventName(eventName),
     )
 
-
     const event = eventResult?.success ? eventResult.data : null
-    const maxTime = event?.optimalTravelTime ? Math.ceil(3 * event.optimalTravelTime / (60 * 60)) * 1000 * 60 * 60 : null
+    const maxTime = event?.optimalTravelTime
+        ? Math.ceil((3 * event.optimalTravelTime) / (60 * 60)) * 1000 * 60 * 60
+        : null
 
     return (
         <>
             {isLoading ? (
                 <Loader>Laster inn spill...</Loader>
-            ) : (eventError || !event || !maxTime) ? (
+            ) : eventError || !event || !maxTime ? (
                 <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
                     <Heading1>Spill ikke funnet</Heading1>
                 </div>
@@ -52,7 +53,7 @@ export default function GamePage(): JSX.Element {
                                 event={event}
                                 startTimer={startTimer}
                                 // eslint-disable-next-line @typescript-eslint/no-empty-function
-                                handleWinner={() => { }}
+                                handleWinner={() => {}}
                                 maxTime={maxTime}
                                 setUsedTime={setUsedTime}
                                 numLegs={numLegs}

@@ -13,7 +13,9 @@ type Props = {
 function FromAndToTitle({ className, event, startTime }: Props): ReactElement {
     return (
         <div>
-            <div className={`flex xl:flex-row flex-wrap space-x-1 ${className}`}>
+            <div
+                className={`flex xl:flex-row flex-wrap space-x-1 ${className}`}
+            >
                 <Heading4 margin="none">Du skal reise fra</Heading4>
                 <Heading4 margin="none" className="text-coral">
                     {event.startLocation.name}

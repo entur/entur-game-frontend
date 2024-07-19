@@ -49,12 +49,12 @@ export function formatInterval(currentTime: Date, startTime: Date): string {
 }
 
 export function formatMilliseconds(milliseconds: number) {
-    let totalSeconds = Math.ceil(milliseconds / 1000);
-    let hours = Math.floor(totalSeconds / 3600);
-    let minutes = Math.floor((totalSeconds % 3600) / 60);
-    let seconds = totalSeconds % 60;
+    let totalSeconds = Math.ceil(milliseconds / 1000)
+    let hours = Math.floor(totalSeconds / 3600)
+    let minutes = Math.floor((totalSeconds % 3600) / 60)
+    let seconds = totalSeconds % 60
 
-    return `${hours} timer ${minutes} minutter ${seconds} sekunder`;
+    return `${hours} timer ${minutes} minutter ${seconds} sekunder`
 }
 
 export function formatIntervalToSeconds(

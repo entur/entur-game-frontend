@@ -4,7 +4,7 @@ import { Heading2, Paragraph } from '@entur/typography'
 import { PrimaryButton } from '@entur/button'
 import React from 'react'
 interface DeadScreenProps {
-    endLocationName: string;
+    endLocationName: string
 }
 
 function DeadScreen({ endLocationName }: DeadScreenProps): JSX.Element {

@@ -17,8 +17,10 @@ function GameStatus({
     usedTime,
     maxTime,
 }: Props): React.ReactElement {
-    const usedTimeFormatted = formatMilliseconds(usedTime);
-    const timeLeftFormatted = formatMilliseconds(Math.max(0, maxTime - usedTime));
+    const usedTimeFormatted = formatMilliseconds(usedTime)
+    const timeLeftFormatted = formatMilliseconds(
+        Math.max(0, maxTime - usedTime),
+    )
 
     return (
         <div className={className}>
@@ -50,14 +52,16 @@ function GameStatus({
                 </div>
                 <div className="flex flex-row pt-5 pr-5 pl-8 pb-5">
                     <TimeglassIcon className="w-6 h-6 pt-1" />
-                    <Heading5
-                        className="pt-1 text-coral"
-                        margin="none"
-                    >
+                    <Heading5 className="pt-1 text-coral" margin="none">
                         Gjenstående tid: {timeLeftFormatted}
                     </Heading5>
                 </div>
-                <Loader progress={Math.max(0, Math.ceil((maxTime - usedTime) / maxTime * 100))}></Loader>
+                <Loader
+                    progress={Math.max(
+                        0,
+                        Math.ceil(((maxTime - usedTime) / maxTime) * 100),
+                    )}
+                ></Loader>
             </div>
         </div>
     )
