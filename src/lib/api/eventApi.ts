@@ -20,6 +20,24 @@ export async function getActiveEvent(): Promise<BackendEvent | null> {
     return response.json()
 }
 
+export async function getInactiveEvents(): Promise<BackendEvent[] | null> {
+    try {
+        const response = await fetch(`${baseUrl}/event/inactive`)
+
+        if (!response.ok) {
+            console.error(
+                `Failed to fetch inactive events: ${response.status} ${response.statusText}`,
+            )
+            return null
+        }
+
+        const data = await response.json()
+        return data
+    } catch (error) {
+        return null
+    }
+}
+
 export async function updateActiveEvent(gameId: number): Promise<Event> {
     const response = await fetch(`${baseUrl}/event/active/${gameId}`, {
         method: 'PUT',
@@ -131,5 +149,38 @@ export async function createEvent(
     } catch (error) {
         console.error('Error creating new event:', error)
         return null
+    }
+}
+
+export async function getTripLocations(
+    eventName: string,
+): Promise<Result<{ startLocationName: string; endLocationNames: string[] }>> {
+    const eventResult = await getEventByEventName(eventName)
+
+    if (!eventResult.success) {
+        return { success: false, error: eventResult.error }
+    }
+
+    const event = eventResult.data
+
+    const startLocationName = event.startLocation.name
+    const endLocationNames = event.endLocation.map((location) => location.name)
+
+    return {
+        success: true,
+        data: {
+            startLocationName,
+            endLocationNames,
+        },
+    }
+}
+
+export async function deleteEvent(eventId: number): Promise<void> {
+    const response = await fetch(`${baseUrl}/event/${eventId}`, {
+        method: 'DELETE',
+    })
+
+    if (!response.ok) {
+        throw new Error(`Failed to delete event: ${response.statusText}`)
     }
 }
