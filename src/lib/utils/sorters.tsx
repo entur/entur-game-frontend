@@ -1,4 +1,4 @@
-type Maybe<T> = T | undefined | null
+import { Maybe } from '../types/types'
 
 export function sortNumber(a: Maybe<number>, b: Maybe<number>) {
     if (typeof a !== 'number' && typeof b !== 'number') {

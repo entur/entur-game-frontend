@@ -1,6 +1,43 @@
 import { format, formatDuration, parseISO } from 'date-fns'
 import { intervalToDuration } from 'date-fns'
 import { nb } from 'date-fns/locale'
+import { ZonedDateTime } from '@internationalized/date'
+
+function pad(number: number, length: number): string {
+    return number.toString().padStart(length, '0')
+}
+
+export function formatTimePlanner(dateTimeString: string): string {
+    const date = new Date(dateTimeString)
+    return date.toLocaleTimeString('nb-NO', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+    })
+}
+
+export function formatPlannerDuration(seconds: number): string {
+    const hours = Math.floor(seconds / 3600)
+    const minutes = Math.floor((seconds % 3600) / 60)
+    return `${hours} t ${minutes} min`
+}
+
+export function formatDateTime(
+    dateObj: ZonedDateTime,
+    timeObj: ZonedDateTime,
+): string {
+    const year = dateObj.year
+    const month = pad(dateObj.month, 2)
+    const day = pad(dateObj.day, 2)
+
+    const hour = pad(timeObj.hour, 2)
+    const minute = pad(timeObj.minute, 2)
+    const second = pad(timeObj.second, 2)
+
+    const formattedDate = `${year}-${month}-${day}T${hour}:${minute}:${second}`
+
+    return formattedDate
+}
 
 export function formatInterval(currentTime: Date, startTime: Date): string {
     return (

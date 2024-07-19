@@ -59,3 +59,64 @@ export type StopPlace = {
     longitude?: number
     latitude?: number
 }
+
+export type TripQueryVariables = {
+    from: {
+        name: string
+        place: string
+    }
+    to: {
+        name: string
+        place: string
+    }
+    dateTime: string
+    modes: { transportMode: string }[]
+}
+
+type Line = {
+    id: string
+    publicCode: string
+}
+
+export type Mode = 'rail' | 'bus' | 'tram' | 'metro' | 'water'
+
+export type Leg = {
+    id: string
+    distance: number
+    expectedStartTime: string
+    duration: number
+    line: Line | null
+    mode: Mode
+}
+
+type TripPattern = {
+    duration: number
+    expectedStartTime: string
+    legs: Leg[]
+}
+
+export type Trip = {
+    tripPatterns: TripPattern[]
+}
+
+export type Maybe<T> = T | undefined | null
+
+export type TransportIconPickerProps = {
+    transportType: string | undefined
+}
+
+export function isTripInfoVariables(obj: any): obj is TripQueryVariables {
+    return (
+        obj &&
+        typeof obj === 'object' &&
+        typeof obj.from === 'object' &&
+        typeof obj.from.name === 'string' &&
+        typeof obj.from.place === 'string' &&
+        typeof obj.to === 'object' &&
+        typeof obj.to.name === 'string' &&
+        typeof obj.to.place === 'string' &&
+        typeof obj.dateTime === 'string' &&
+        Array.isArray(obj.modes) &&
+        obj.modes.every((mode: any) => typeof mode.transportMode === 'string')
+    )
+}
