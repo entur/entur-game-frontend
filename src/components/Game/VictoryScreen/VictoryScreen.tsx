@@ -17,7 +17,7 @@ import {
 import { saveScore } from '@/lib/api/scoreApi'
 import {
     formatIntervalToSeconds,
-    formatTimeForEndOfGame,
+    formatMilliseconds,
 } from '@/lib/utils/dateFnsUtils'
 import { Controller, useForm } from 'react-hook-form'
 import { createOptimalRouteText } from '@/lib/api/eventApi'
@@ -66,15 +66,16 @@ export function VictoryScreen({
     const [isError, setError] = useState<boolean>(false)
     const [responseStatus, setResponseStatus] = useState<number | null>(null)
 
-    const timeDescription = formatTimeForEndOfGame(currentTime, startTime)
+    const timeDescription = formatMilliseconds(
+        currentTime.getTime() - startTime.getTime(),
+    )
     const [optimalRouteText, setOptimalRouteText] = useState<string>('')
 
     async function onSubmit(data: FormValues) {
-
         const newPlayer: Player = {
             playerName: data.name,
             email: data.email,
-            phoneNumber: data.phoneNumber
+            phoneNumber: data.phoneNumber,
         }
 
         const backendEvent: BackendEvent = {
@@ -85,7 +86,7 @@ export function VictoryScreen({
             startTime: event.startTime,
             optimalStepNumber: event.optimalStepNumber,
             optimalTravelTime: event.optimalTravelTime,
-            isActive: event.isActive
+            isActive: event.isActive,
         }
 
         const playerScore: PlayerScore = {
@@ -99,7 +100,7 @@ export function VictoryScreen({
             totalTravelTime: formatIntervalToSeconds(currentTime, startTime),
             totalPlayTime: Math.trunc((Date.now() - startTimer) / 1000),
             player: newPlayer,
-            event: backendEvent
+            event: backendEvent,
         }
 
         const response = await saveScore(playerScore)
@@ -116,7 +117,7 @@ export function VictoryScreen({
         }
         if (response.status === 400) {
             addToast({
-                title: 'Du slo desverre ikke din forige rekord',
+                title: 'Du slo dessverre ikke din forrige rekord',
                 content: <>Prøv gjerne igjen!</>,
             })
             setTimeout(() => {
@@ -219,8 +220,9 @@ export function VictoryScreen({
                         )}
                     />
                     <div
-                        className={`border-2 ${errors.consent ? 'border-coral' : 'border-blue-60'
-                            } rounded border-solid w-full h-28 cursor-pointer`}
+                        className={`border-2 ${
+                            errors.consent ? 'border-coral' : 'border-blue-60'
+                        } rounded border-solid w-full h-28 cursor-pointer`}
                         {...register('consent', { required: true })}
                         onClick={() =>
                             setValue('consent', !getValues('consent'))
@@ -249,8 +251,9 @@ export function VictoryScreen({
 
                     <div className="flex flex-row mt-4 gap-4">
                         <PrimaryButton
-                            className={`select-none ${watch('consent') && 'bg-blue-main'
-                                }`}
+                            className={`select-none ${
+                                watch('consent') && 'bg-blue-main'
+                            }`}
                             loading={isSubmitting || isLoading}
                             disabled={!watch('consent') && !isValid}
                             type="submit"
@@ -272,13 +275,12 @@ export function VictoryScreen({
                             {responseStatus === 404
                                 ? 'Event (spill) ble ikke funnet. Tilkall hjelp.'
                                 : responseStatus === 409
-                                    ? 'Spiller med samme brukernavn eksisterer allerede. Bytt navn.'
-                                    : 'Ukjent feil oppdaget. Tillkall hjelp.'}
-                        </SmallAlertBox >
-                    )
-                    }
-                </form >
-            </div >
-        </div >
+                                  ? 'Spiller med samme brukernavn eksisterer allerede. Bytt navn.'
+                                  : 'Ukjent feil oppdaget. Tillkall hjelp.'}
+                        </SmallAlertBox>
+                    )}
+                </form>
+            </div>
+        </div>
     )
 }

@@ -1,25 +1,19 @@
 'use client'
 
 import { Heading2, Paragraph } from '@entur/typography'
-import { getModeTranslation } from '@/lib/utils/transportMapper'
 import { PrimaryButton } from '@entur/button'
 import React from 'react'
-import { QueryMode } from '@entur/sdk'
-import { StopPlace } from '@/lib/types/types'
-
-type Props = {
-    mode: QueryMode
-    stopPlace: StopPlace
+interface DeadScreenProps {
+    endLocationName: string
 }
-function DeadScreen({ mode, stopPlace }: Props): JSX.Element {
-    window.scrollTo(0, 0) // Scroll to top of the screen
+
+function DeadScreen({ endLocationName }: DeadScreenProps): JSX.Element {
+    window.scrollTo(0, 0)
     return (
         <>
-            <Heading2>Du døde!</Heading2>
+            <Heading2>Billetten din har utløpt!</Heading2>
             <Paragraph>
-                {`Det går ingen avganger med ${getModeTranslation(
-                    mode,
-                ).toLowerCase()} fra ${stopPlace.name} i nær fremtid.`}
+                Du rakk dessverre ikke å komme deg til {endLocationName} i tide.
             </Paragraph>
             <PrimaryButton onClick={() => window.location.reload()}>
                 Prøv igjen
