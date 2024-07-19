@@ -3,6 +3,7 @@
 import React, { ReactNode, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { useSession } from 'next-auth/react'
+import { Loader } from '@entur/loader'
 
 const ProtectedComponents = ({ children }: { children: ReactNode }) => {
     const { isAuthenticated, loading, login } = useAuth()
@@ -15,7 +16,7 @@ const ProtectedComponents = ({ children }: { children: ReactNode }) => {
     }, [loading, isAuthenticated, status])
 
     if (loading || status === 'loading') {
-        return <div>Loading...</div>
+        return <Loader className="m-auto">Laster...</Loader>
     }
 
     if (!isAuthenticated) {
