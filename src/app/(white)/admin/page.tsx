@@ -1,22 +1,22 @@
 'use client'
 
-import {
-    Heading1,
-    Heading2,
-    Heading4,
-    LeadParagraph,
-    Paragraph,
-} from '@entur/typography'
-import { AddIcon } from '@entur/icons'
+import { Heading1, Heading2, Paragraph } from '@entur/typography'
+import { AddIcon, ExternalIcon } from '@entur/icons'
 import { Contrast, NavigationCard } from '@entur/layout'
-import { CopyableText } from '@entur/alert'
 import BackgroundAdmin from '@/lib/assets/images/BackgroundAdmin.svg'
 import Image from 'next/image'
-import { Button } from '@entur/button'
+import { Button, SecondaryButton } from '@entur/button'
 import CompactLeaderboardPage from './components/CompactLeaderboard'
-import InactiveEvent from './components/InactiveEvents'
+import { useRouter } from 'next/navigation'
+import InactiveEventsList from './components/InactiveEventsList'
 
 export default function AdminPage(): JSX.Element | null {
+    const router = useRouter()
+
+    const handleOnClick = () => {
+        router.push('/')
+    }
+
     return (
         <div>
             <Contrast>
@@ -35,18 +35,20 @@ export default function AdminPage(): JSX.Element | null {
                     href="http://localhost:3000/admin/create-game"
                     compact
                 ></NavigationCard>
-                <div className="flex mt-20 gap-6">
+                <div className="flex mt-20 gap-4 ">
                     <Heading2 margin="none">Aktivt spill</Heading2>
-                    <CopyableText
-                        className="max-w-96"
-                        successHeading="Lenke kopiert!"
-                        successMessage=" "
-                        textToCopy="localhost:3000"
+                    <SecondaryButton
+                        className="max-w-60 inline align-baseline"
+                        width="auto"
+                        size="small"
+                        onClick={handleOnClick}
                     >
-                        Trykk her for å kopiere lenken!
-                    </CopyableText>
+                        <div className="flex gap-2 justify-center">
+                            Til spillet! <ExternalIcon />
+                        </div>
+                    </SecondaryButton>
                 </div>
-                <div className="flex flex-col max-w-md mt-10">
+                <div className="flex flex-col max-w-md mt-10 gap-2">
                     <Button variant={'primary'} className="max-w-60">
                         Trekk vinner og avslutt spill
                     </Button>
@@ -60,8 +62,7 @@ export default function AdminPage(): JSX.Element | null {
                 </div>
                 <div className="flex flex-col mt-20">
                     <Heading2>Tidligere spill</Heading2>
-                    <InactiveEvent />
-                    <InactiveEvent />
+                    <InactiveEventsList />
                 </div>
             </div>
         </div>
