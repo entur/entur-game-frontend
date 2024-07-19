@@ -7,6 +7,7 @@ import { StopPlace } from '@/lib/types/types'
 import { getModeIcon, getModeTranslation } from '@/lib/utils/transportMapper'
 import { Loader } from '@entur/loader'
 import { SmallAlertBox } from '@entur/alert'
+import { FloatingButton } from '@entur/button'
 
 type Props = {
     currentTime: Date
@@ -34,12 +35,12 @@ function TransportTypePicker({
     availableModesError
 }: Props): ReactElement {
     return (
-        <div className="bg-white border-4 border-white shadow-sm rounded-sm pl-10 pb-8 pr-10">
-            <Heading2>
+        <div className="bg-blue-20 text-white border-4 border-white shadow-sm rounded-sm pl-10 pb-8 pr-10">
+            <Heading2 className="text-white">
                 Velg transportmåte fra{' '}
                 <span className="text-coral">{stopPlace.name}</span>
             </Heading2>
-            <Heading4 margin="none" className="select-none">
+            <Heading4 margin="none" className="text-white select-none">
                 Klokken er:{' '}
                 <span className="text-coral">
                     {currentTime.toLocaleTimeString('nb-NO', {
@@ -68,16 +69,20 @@ function TransportTypePicker({
                         {availableModes.map((mode) => {
                             const disabled = usedMode.includes(mode)
                             return (
-                                <ChoiceChip
-                                    className="border-2 ml-1 mr-2 mt-3 w-38 h-10 rounded-3xl sm:text-lg select-none"
-                                    key={mode}
-                                    value={mode}
-                                    onClick={() => selectMode(mode)}
-                                    disabled={disabled || isLoading}
-                                >
-                                    {getModeIcon(mode)}
-                                    {getModeTranslation(mode)}
-                                </ChoiceChip>
+                                <div className="bg-blue-20 border-0 ml-1 mr-2 mt-3 w-38 h-10 rounded-3xl sm:text-lg select-none">
+                                    <div className="bg-blue-20 border-0">
+                                        <FloatingButton
+                                            size="medium"
+                                            className="bg-blue-80 text-blue-main hover:bg-white"
+                                            aria-label={getModeTranslation(mode)}
+                                            onClick={() => selectMode(mode)}
+                                            disabled={disabled || isLoading}
+                                        >
+                                            {getModeIcon(mode)}
+                                            {getModeTranslation(mode)}
+                                        </FloatingButton>
+                                    </div>
+                                </div>
                             )
                         })}
                         {!firstMove && (
