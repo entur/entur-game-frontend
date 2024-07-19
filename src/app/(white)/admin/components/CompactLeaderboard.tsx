@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { BackendEvent, PlayerScore, TGeoresponse } from '@/lib/types/types'
+import { PlayerScore } from '@/lib/types/types'
 import { getActiveScores } from '@/lib/api/scoreApi'
 import Leaderboard from './Leaderboard'
-import { Heading2, Heading3 } from '@entur/typography'
+import { Heading3 } from '@entur/typography'
 import { useEventName } from '@/lib/hooks/useEventName'
 import { BreadcrumbItem } from '@entur/menu'
 import Link from 'next/link'
-import { getActiveEvent } from '@/lib/api/eventApi'
+import { useStopPlaceNames } from '@/lib/hooks/useStopPlaceName'
+import { TravelHeader } from '@entur/travel'
 
 const CompactLeaderboardPage: React.FC = (): JSX.Element => {
     const [scores, setScores] = useState<PlayerScore[]>([])
-    const { eventName, isEventNameError } = useEventName()
-    const [startName, setStartName] = useState<string | null>(null)
-    const [goalName, setGoalName] = useState<string | null>(null)
+    const { isEventNameError } = useEventName()
+    const { startLocationName, endLocationName } = useStopPlaceNames()
 
     useEffect(() => {
         const fetchScores = async () => {
@@ -31,13 +31,18 @@ const CompactLeaderboardPage: React.FC = (): JSX.Element => {
     }, [])
 
     return (
-        <div className="max-w-xl">
+        <div className="max-w-4xl">
             <div className="flex flex-col pb-4">
                 <div className="bg-white rounded shadow-md p-6">
                     {isEventNameError ? (
                         <Heading3 margin="bottom">Ingen aktive spill</Heading3>
                     ) : (
-                        <Heading3 margin="bottom">{eventName}</Heading3>
+                        <TravelHeader
+                            size="large"
+                            from={startLocationName}
+                            to={endLocationName}
+                            noWrap={true}
+                        ></TravelHeader>
                     )}
                     <Leaderboard
                         scores={scores}
@@ -49,7 +54,7 @@ const CompactLeaderboardPage: React.FC = (): JSX.Element => {
                         <BreadcrumbItem
                             className="inline align-baseline"
                             as={Link}
-                            href="/leaderboard"
+                            href="/admin/leaderboard"
                         >
                             Se fullstendig ledertavle
                         </BreadcrumbItem>
