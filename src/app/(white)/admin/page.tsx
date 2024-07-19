@@ -1,12 +1,6 @@
 'use client'
 
-import {
-    Heading1,
-    Heading2,
-    Heading4,
-    LeadParagraph,
-    Paragraph,
-} from '@entur/typography'
+import { Heading1, Heading2, Paragraph } from '@entur/typography'
 import { AddIcon } from '@entur/icons'
 import { Contrast, NavigationCard } from '@entur/layout'
 import { CopyableText } from '@entur/alert'
