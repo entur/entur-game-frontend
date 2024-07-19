@@ -8,6 +8,7 @@ import Game from '@/components/Game/GameScreen'
 import GameNavBar from '@/components/NavBar/GameNavBar'
 import { getEventByEventName, Result } from '@/lib/api/eventApi'
 import { Event } from '@/lib/types/types'
+import { GridContainer, GridItem } from '@entur/grid'
 import useSWR from 'swr'
 import Map from '../components/Map'
 
@@ -49,17 +50,24 @@ export default function GamePage(): JSX.Element {
                             />
                         </div>
                         <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
-                            <Game
-                                name={''}
-                                event={event}
-                                startTimer={startTimer}
-                                // eslint-disable-next-line @typescript-eslint/no-empty-function
-                                handleWinner={() => {}}
-                                maxTime={maxTime}
-                                setUsedTime={setUsedTime}
-                                numLegs={numLegs}
-                                setNumLegs={setNumLegs}
-                            />
+                            <GridContainer spacing="large">
+                                <GridItem small={8} className="grid-demo-item">
+                                    <Game
+                                        name={''}
+                                        event={event}
+                                        startTimer={startTimer}
+                                        // eslint-disable-next-line @typescript-eslint/no-empty-function
+                                        handleWinner={() => {}}
+                                        maxTime={maxTime}
+                                        setUsedTime={setUsedTime}
+                                        numLegs={numLegs}
+                                        setNumLegs={setNumLegs}
+                                    />
+                                </GridItem>
+                                <GridItem small={4} className="grid-demo-item">
+                                    <Map />
+                                </GridItem>
+                            </GridContainer>
                         </div>
                     </main>
                 )
