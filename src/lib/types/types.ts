@@ -107,6 +107,15 @@ export type TransportIconPickerProps = {
 
 //TODO: find how to change any, so that we can remove eslint-disabled
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function isEmptyTrip(obj: any): obj is Trip {
+    return (
+        obj !== null &&
+        typeof obj === 'object' &&
+        Array.isArray(obj.tripPatterns) // This checks for an array, empty or not
+    )
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function isTripInfoVariables(obj: any): obj is TripQueryVariables {
     return (
         obj &&

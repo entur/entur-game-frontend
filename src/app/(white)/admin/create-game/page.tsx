@@ -132,7 +132,7 @@ export default function AdminCreateJourney() {
         ],
     }
 
-    const { data } = useSWR(
+    const { data, isLoading, error } = useSWR(
         selectedStart && selectedGoal && formattedDateTime
             ? [
                   '/journey-planner',
@@ -236,6 +236,8 @@ export default function AdminCreateJourney() {
                 <RouteSuggestion
                     suggestedTripData={data?.data?.trip}
                     startLocationName={selectedStart?.label}
+                    isLoading={isLoading}
+                    error={error}
                 />
                 <ButtonGroup className="flex mt-20">
                     <SecondaryButton
