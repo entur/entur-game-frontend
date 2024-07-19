@@ -26,27 +26,26 @@ export async function fetchStopPlace(
                 },
                 body: JSON.stringify({ query, variables: { id: stopPlaceId } }),
             },
-        );
+        )
 
-        const data = await response.json();
+        const data = await response.json()
 
         if (data.errors) {
-            console.error('Error fetching stop place:', data.errors);
-            return null;
+            console.error('Error fetching stop place:', data.errors)
+            return null
         }
 
-        const stopPlace = data.data.stopPlace;
+        const stopPlace = data.data.stopPlace
         if (!stopPlace) {
-            console.error('Stop place not found');
-            return null;
+            console.error('Stop place not found')
+            return null
         }
 
-        const { name, latitude, longitude } = stopPlace;
-        return { name, latitude, longitude };
-
+        const { name, latitude, longitude } = stopPlace
+        return { name, latitude, longitude }
     } catch (error) {
-        console.error('Error fetching stop place:', error);
-        return null;
+        console.error('Error fetching stop place:', error)
+        return null
     }
 }
 

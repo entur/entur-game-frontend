@@ -1,14 +1,14 @@
 'use client'
 
 import React, { ReactElement, useEffect, useState } from 'react'
-import { Heading4, Paragraph } from '@entur/typography'
+import { Paragraph } from '@entur/typography'
 import { Departure, QueryMode, StopPlaceDetails } from '@entur/sdk'
 import { addHours, addMinutes } from 'date-fns'
 import { PrimaryButton, SecondaryButton } from '@entur/button'
 import { useRouter } from 'next/navigation'
 import { Event, StopPlace } from '@/lib/types/types'
 import { useEnturService } from '@/lib/hooks/useEnturService'
-import { formatDate, formatTimeForEndOfGame } from '@/lib/utils/dateFnsUtils'
+
 import FromAndToTitle from './components/FromAndToTitle'
 import TransportTypePicker from './components/TransportTypePicker'
 import TravelLegStart from './components/TravelLegStart/TravelLegStart'
@@ -29,27 +29,25 @@ type Props = {
     event: Event
     startTimer: number
     handleWinner: () => void
-    totalHp: number
-    setTotalHp: React.Dispatch<React.SetStateAction<number>>
+    maxTime: number
+    setUsedTime: React.Dispatch<React.SetStateAction<number>>
     numLegs: number
     setNumLegs: React.Dispatch<React.SetStateAction<number>>
-    setTimeDescription: React.Dispatch<React.SetStateAction<string>>
 }
 
 function GameScreen({
     event,
-    totalHp,
-    setTotalHp,
     numLegs,
     setNumLegs,
-    setTimeDescription,
     startTimer,
     handleWinner,
+    maxTime,
+    setUsedTime,
     name,
 }: Props): ReactElement {
     const router = useRouter()
     const [isLoading, setLoading] = useState<boolean>(false)
-    const [dead, setDead] = useState<boolean>(false)
+    const [isDead, setDead] = useState<boolean>(false)
     const [startLocation, setStartLocation] = useState<StopPlace>(
         event.startLocation,
     )
@@ -65,6 +63,8 @@ function GameScreen({
     ])
     const [usedMode, setUsedMode] = useState<QueryMode[]>([])
     const [availableModes, setAvailableModes] = useState<QueryMode[]>([])
+    const [availableModesError, setAvailableModesError] =
+        useState<boolean>(false)
     const { getWalkableStopPlaces, getDepartures, getStopsOnLine } =
         useEnturService()
 
@@ -94,9 +94,16 @@ function GameScreen({
     }, [event])
 
     useEffect(() => {
-        setTimeDescription(formatTimeForEndOfGame(currentTime, startTime))
         window.scrollTo(0, document.body.scrollHeight)
     }, [currentTime])
+
+    useEffect(() => {
+        const newUsedTime = currentTime.getTime() - startTime.getTime()
+        setUsedTime(newUsedTime)
+        if (currentTime.getTime() - startTime.getTime() > maxTime) {
+            setDead(true)
+        }
+    }, [currentTime, setUsedTime, maxTime, startTime])
 
     const fetchAvailableModes = async (location: StopPlace) => {
         const modes: QueryMode[] = [
@@ -104,26 +111,35 @@ function GameScreen({
             QueryMode.METRO,
             QueryMode.TRAM,
             QueryMode.RAIL,
-            QueryMode.WATER
+            QueryMode.WATER,
         ]
 
-        const departurePromises = modes.map(mode => getDepartures(location.id, mode, currentTime))
+        const departurePromises = modes.map((mode) =>
+            getDepartures(location.id, mode, currentTime),
+        )
         const walkableStopsPromise = getWalkableStopPlaces(location)
-        const results = await Promise.all([...departurePromises, walkableStopsPromise])
+        const results = await Promise.all([
+            ...departurePromises,
+            walkableStopsPromise,
+        ])
         const walkableStops = results.pop() as StopPlace[]
 
         const validModes = results
-            .map((deps, index) => (deps as Departure[]).length > 0 ? modes[index] : null)
+            .map((deps, index) =>
+                (deps as Departure[]).length > 0 ? modes[index] : null,
+            )
             .filter(isTruthy)
 
         if (walkableStops.length > 0) {
             validModes.unshift(QueryMode.FOOT)
         }
-
+        if (validModes.length < 1) {
+            setAvailableModesError(true)
+            return
+        }
+        setAvailableModesError(false)
         setAvailableModes(validModes)
     }
-
-
 
     const selectMode = (newMode: QueryMode) => {
         setMode(newMode)
@@ -142,19 +158,20 @@ function GameScreen({
                 setLoading(false)
             })
         } else {
-            getDepartures(startLocation.id, newMode, currentTime).then((deps) => {
-                setStopsOnLine([]) // Reset walkable stops before showing departures
-                setDepartures(deps)
-                setModalOpen(true)
-                setTravelLegsMode((prev) => [...prev, newMode])
-                setLoading(false)
-            })
+            getDepartures(startLocation.id, newMode, currentTime).then(
+                (deps) => {
+                    setStopsOnLine([]) // Reset walkable stops before showing departures
+                    setDepartures(deps)
+                    setModalOpen(true)
+                    setTravelLegsMode((prev) => [...prev, newMode])
+                    setLoading(false)
+                },
+            )
         }
     }
 
     const selectDeparture = (departure: Departure) => {
         setDepartures([])
-        setCurrentTime(new Date(departure.expectedDepartureTime))
         getStopsOnLine(departure.serviceJourney.id, departure.date).then(
             (departures) => {
                 setStopsOnLine(
@@ -164,7 +181,7 @@ function GameScreen({
                             if (
                                 !stop ||
                                 d.expectedDepartureTime <=
-                                departure.expectedDepartureTime
+                                    departure.expectedDepartureTime
                             )
                                 return undefined
                             const nextDep = departures[index + 1]
@@ -217,18 +234,21 @@ function GameScreen({
         )
     }
 
-    if (dead && mode) {
+    if (isDead) {
         return (
             <div className="app" style={{ maxWidth: '800px' }}>
-                <DeadScreen mode={mode} stopPlace={startLocation} />
+                <DeadScreen endLocationName={endLocation[0].name} />
             </div>
         )
     }
+
     return (
         <div className="flex flex-col mb-4">
-            <FromAndToTitle className="mt-10 xl:mt-28" event={event} />
-            <Heading4 margin="none">{formatDate(startTime)}</Heading4>
-            <Heading4 margin="none">Hvordan vil du starte?</Heading4>
+            <FromAndToTitle
+                className="mt-10 xl:mt-28"
+                event={event}
+                startTime={startTime}
+            />
             <div className="mt-5 xl:mt-14">
                 <TravelLegStart
                     travelLegs={travelLegs}
@@ -247,6 +267,7 @@ function GameScreen({
                     stopPlace={startLocation}
                     firstMove={travelLegs.length === 1}
                     availableModes={availableModes}
+                    availableModesError={availableModesError}
                 />
             </div>
             <div className="mt-5 xl:mt-14">

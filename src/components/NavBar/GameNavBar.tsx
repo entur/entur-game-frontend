@@ -2,24 +2,20 @@ import React, { ReactElement } from 'react'
 import GameStatus from '../GameStatus'
 
 type Props = {
-    healthLeft: number
     numLegs: number
-    timeDescription: string
+    usedTime: number
+    maxTime: number
 }
 
-function GameNavBar({
-    healthLeft,
-    numLegs,
-    timeDescription,
-}: Props): ReactElement {
+function GameNavBar({ numLegs, usedTime, maxTime }: Props): ReactElement {
     return (
         <div className="flex flex-row pt-4 justify-between ">
             <div className="flex-grow " />
             <GameStatus
                 className="mr-4 mt-[-70px]"
                 numLegs={numLegs}
-                timeDescriptionUsed={timeDescription}
-                healthLeft={healthLeft}
+                usedTime={usedTime}
+                maxTime={maxTime}
             />
         </div>
     )

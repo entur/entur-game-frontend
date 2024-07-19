@@ -13,10 +13,8 @@ import Map from '../components/Map'
 
 export default function GamePage(): JSX.Element {
     const [startTimer] = useState<number>(Date.now())
-    const [timeDescription, setTimeDescription] = useState<string>('')
     const [numLegs, setNumLegs] = useState<number>(0)
-    const [totalHp, setTotalHp] = useState<number>(2)
-
+    const [usedTime, setUsedTime] = useState<number>(0)
     const { eventName }: { eventName: string } = useParams()
 
     const {
@@ -28,45 +26,40 @@ export default function GamePage(): JSX.Element {
     )
 
     const event = eventResult?.success ? eventResult.data : null
+    const maxTime = event?.optimalTravelTime
+        ? Math.ceil((3 * event.optimalTravelTime) / (60 * 60)) * 1000 * 60 * 60
+        : null
 
     return (
         <>
             {isLoading ? (
-                <Loader>Laster spill</Loader>
-            ) : eventError || !event ? (
+                <Loader>Laster inn spill...</Loader>
+            ) : eventError || !event || !maxTime ? (
                 <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
                     <Heading1>Spill ikke funnet</Heading1>
                 </div>
             ) : (
                 event && (
-                    <main className="flex h-screen overflow-hidden">
-                        <div className="flex flex-col w-1/2 p-10 bg-blue-900 text-white">
-                            <div className="sticky top-20">
-                                <GameNavBar
-                                    healthLeft={totalHp + 1}
-                                    numLegs={numLegs}
-                                    timeDescription={timeDescription}
-                                />
-                            </div>
-                            <div className="flex-grow">
-                                <Game
-                                    name={''}
-                                    event={event}
-                                    startTimer={startTimer}
-                                    // eslint-disable-next-line @typescript-eslint/no-empty-function
-                                    handleWinner={() => {}}
-                                    totalHp={totalHp}
-                                    setTotalHp={setTotalHp}
-                                    numLegs={numLegs}
-                                    setNumLegs={setNumLegs}
-                                    setTimeDescription={setTimeDescription}
-                                />
-                            </div>
+                    <main className="flex flex-col">
+                        <div className="sm:sticky top-20">
+                            <GameNavBar
+                                numLegs={numLegs}
+                                usedTime={usedTime}
+                                maxTime={maxTime}
+                            />
                         </div>
-                        <div className="w-1/2 h-1/2 flex items-center justify-center">
-                            <div className="map-wrapper">
-                                <Map />
-                            </div>
+                        <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
+                            <Game
+                                name={''}
+                                event={event}
+                                startTimer={startTimer}
+                                // eslint-disable-next-line @typescript-eslint/no-empty-function
+                                handleWinner={() => {}}
+                                maxTime={maxTime}
+                                setUsedTime={setUsedTime}
+                                numLegs={numLegs}
+                                setNumLegs={setNumLegs}
+                            />
                         </div>
                     </main>
                 )
