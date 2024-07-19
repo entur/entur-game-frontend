@@ -22,7 +22,7 @@ function GameStatus({
 
     return (
         <div className={className}>
-            <div className="max-w-3xl mx-auto border-2 border-blue-70 rounded bg-blue-90 shadow-md">
+            <div className="max-w-3xl mx-auto border-2 border-white rounded bg-blue-90 shadow-md">
                 <div className="bg-blue-20 text-white flex flex-row pt-5 pr-5 pl-8 pb-5">
                     <span>
                         <Label className="text-blue-80">Din reise</Label>

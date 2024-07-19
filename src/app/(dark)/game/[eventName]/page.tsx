@@ -9,7 +9,6 @@ import GameNavBar from '@/components/NavBar/GameNavBar'
 import { getEventByEventName, Result } from '@/lib/api/eventApi'
 import { Event } from '@/lib/types/types'
 import useSWR from 'swr'
-import { Contrast } from '@entur/layout'
 
 export default function GamePage(): JSX.Element {
     const [startTimer] = useState<number>(Date.now())
@@ -39,30 +38,28 @@ export default function GamePage(): JSX.Element {
                 </div>
             ) : (
                 event && (
-                    <Contrast>
-                        <main className="flex flex-col">
-                            <div className="sm:sticky top-20">
-                                <GameNavBar
-                                    numLegs={numLegs}
-                                    usedTime={usedTime}
-                                    maxTime={maxTime}
-                                />
-                            </div>
-                            <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
-                                <Game
-                                    name={''}
-                                    event={event}
-                                    startTimer={startTimer}
-                                    // eslint-disable-next-line @typescript-eslint/no-empty-function
-                                    handleWinner={() => { }}
-                                    maxTime={maxTime}
-                                    setUsedTime={setUsedTime}
-                                    numLegs={numLegs}
-                                    setNumLegs={setNumLegs}
-                                />
-                            </div>
-                        </main>
-                    </Contrast>
+                    <main className="flex flex-col">
+                        <div className="sm:sticky top-20">
+                            <GameNavBar
+                                numLegs={numLegs}
+                                usedTime={usedTime}
+                                maxTime={maxTime}
+                            />
+                        </div>
+                        <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
+                            <Game
+                                name={''}
+                                event={event}
+                                startTimer={startTimer}
+                                // eslint-disable-next-line @typescript-eslint/no-empty-function
+                                handleWinner={() => { }}
+                                maxTime={maxTime}
+                                setUsedTime={setUsedTime}
+                                numLegs={numLegs}
+                                setNumLegs={setNumLegs}
+                            />
+                        </div>
+                    </main>
                 )
             )}
         </>

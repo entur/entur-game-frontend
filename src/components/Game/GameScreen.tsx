@@ -18,6 +18,7 @@ import { TravelLegFinished } from './components/TravelLegFinished'
 import DeadScreen from './DeadScreen'
 import { VictoryScreen } from './VictoryScreen/VictoryScreen'
 import { Modal } from '@entur/modal'
+import { Contrast } from '@entur/layout'
 
 export interface StopAndTime {
     stopPlace: StopPlace | StopPlaceDetails
@@ -234,14 +235,16 @@ function GameScreen({
 
     return (
         <div className="flex flex-col mb-4">
-            <FromAndToTitle className="mt-10 xl:mt-28" event={event} startTime={startTime} />
-            <div className="mt-5 xl:mt-14">
-                <TravelLegStart
-                    travelLegs={travelLegs}
-                    travelLegsMode={travelLegsMode}
-                    usedDepartures={usedDepartures}
-                />
-            </div>
+            <Contrast>
+                <FromAndToTitle className="mt-10 xl:mt-28" event={event} startTime={startTime} />
+                <div className="mt-5 xl:mt-14">
+                    <TravelLegStart
+                        travelLegs={travelLegs}
+                        travelLegsMode={travelLegsMode}
+                        usedDepartures={usedDepartures}
+                    />
+                </div>
+            </Contrast>
             <div className="mt-5 ml-9 xl:mr-4 xl:ml-12">
                 <TransportTypePicker
                     currentTime={currentTime}
@@ -256,38 +259,40 @@ function GameScreen({
                     availableModesError={availableModesError}
                 />
             </div>
-            <div className="mt-5 xl:mt-14">
-                <TravelLegFinished endLocation={endLocation} />
-            </div>
-            <SecondaryButton
-                className="bg-lavender hover:bg-blue-80 sm:mt-28 mt-10 mb-10 sm:place-self-start place-self-center"
-                onClick={() => router.push('/')}
-            >
-                Avslutt reise
-            </SecondaryButton>
-            <Modal
-                open={waitModalIsOpen}
-                onDismiss={() => setWaitModalIsOpen(false)}
-                title="Du har ventet i seks timer"
-                size="medium"
-            >
-                <Paragraph>
-                    Du har ventet i seks timer, og kan nå fortsette reisen.
-                </Paragraph>
-                <PrimaryButton onClick={() => setWaitModalIsOpen(false)}>
-                    OK
-                </PrimaryButton>
-            </Modal>
-            <DepartureAndOnLinePickerModal
-                isOpenModal={isModalOpen}
-                departures={departures}
-                stopsOnLine={stopsOnLine}
-                selectDeparture={selectDeparture}
-                mode={mode}
-                selectStopOnLine={selectStopOnLine}
-                setModalOpen={setModalOpen}
-                setUsedDepartures={setUsedDepartures}
-            />
+            <Contrast>
+                <div className="mt-5 xl:mt-14">
+                    <TravelLegFinished endLocation={endLocation} />
+                </div>
+                <SecondaryButton
+                    className="bg-lavender hover:bg-blue-80 sm:mt-28 mt-10 mb-10 sm:place-self-start place-self-center"
+                    onClick={() => router.push('/')}
+                >
+                    Avslutt reise
+                </SecondaryButton>
+                <Modal
+                    open={waitModalIsOpen}
+                    onDismiss={() => setWaitModalIsOpen(false)}
+                    title="Du har ventet i seks timer"
+                    size="medium"
+                >
+                    <Paragraph>
+                        Du har ventet i seks timer, og kan nå fortsette reisen.
+                    </Paragraph>
+                    <PrimaryButton onClick={() => setWaitModalIsOpen(false)}>
+                        OK
+                    </PrimaryButton>
+                </Modal>
+                <DepartureAndOnLinePickerModal
+                    isOpenModal={isModalOpen}
+                    departures={departures}
+                    stopsOnLine={stopsOnLine}
+                    selectDeparture={selectDeparture}
+                    mode={mode}
+                    selectStopOnLine={selectStopOnLine}
+                    setModalOpen={setModalOpen}
+                    setUsedDepartures={setUsedDepartures}
+                />
+            </Contrast>
         </div>
     )
 }
