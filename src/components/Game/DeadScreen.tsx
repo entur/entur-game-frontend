@@ -13,7 +13,7 @@ function DeadScreen({ endLocationName }: DeadScreenProps): JSX.Element {
         <>
             <Heading2>Billetten din har utløpt!</Heading2>
             <Paragraph>
-                {`Du rakk dessverre ikke å komme deg til ${endLocationName} i tide.`}
+                Du rakk dessverre ikke å komme deg til {endLocationName} i tide.
             </Paragraph>
             <PrimaryButton onClick={() => window.location.reload()}>
                 Prøv igjen

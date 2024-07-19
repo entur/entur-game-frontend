@@ -116,7 +116,7 @@ export function VictoryScreen({
         }
         if (response.status === 400) {
             addToast({
-                title: 'Du slo dessverre ikke din forige rekord',
+                title: 'Du slo dessverre ikke din forrige rekord',
                 content: <>Prøv gjerne igjen!</>,
             })
             setTimeout(() => {
