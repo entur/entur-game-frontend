@@ -1,6 +1,6 @@
 import { PlayerScore } from '@/lib/types/types'
 
-const baseUrl = 'http://localhost:8080'
+const baseUrl = 'https://api.staging.entur.io/entur-game-backend/v1'
 
 export async function saveScore(playerScore: PlayerScore): Promise<Response> {
     const response = await fetch(`${baseUrl}/score/save`, {

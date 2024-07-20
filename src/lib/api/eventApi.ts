@@ -2,7 +2,7 @@ import { BackendEvent, Event } from '../types/types'
 import { StopPlace } from '../types/types'
 import { fetchStopPlace, fetchStopPlaceChildren } from './stopPlaceApi'
 
-const baseUrl = 'http://localhost:8080'
+const baseUrl = 'https://api.staging.entur.io/entur-game-backend/v1'
 
 export type Result<T> =
     | { success: true; data: T }
