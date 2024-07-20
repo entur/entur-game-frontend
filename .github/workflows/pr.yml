@@ -12,3 +12,10 @@ jobs:
         with:
             environment: dev
             chart: helm/entur-game-frontend
+
+    docker-build:
+        uses: entur/gha-docker/.github/workflows/build.yml@v1
+
+    docker-push:
+        needs: [docker-build]
+        uses: entur/gha-docker/.github/workflows/push.yml@v1
