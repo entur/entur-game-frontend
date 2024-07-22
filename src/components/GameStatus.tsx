@@ -52,7 +52,7 @@ function GameStatus({
                 </div>
                 <div className="bg-blue-main text-white flex flex-row pt-5 pr-5 pl-8 pb-5">
                     <ValidTicketIcon className="w-6 h-6 pt-1" />
-                    <Heading5 className="pt-1 text-white" margin="none">
+                    <Heading5 className="pt-1 text-white ml-2" margin="none">
                         Billetten din utløper om: {timeLeftFormatted}
                     </Heading5>
                 </div>
