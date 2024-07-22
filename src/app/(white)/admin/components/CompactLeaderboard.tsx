@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { BackendEvent, PlayerScore, TGeoresponse } from '@/lib/types/types'
+import { PlayerScore } from '@/lib/types/types'
 import { getActiveScores } from '@/lib/api/scoreApi'
 import Leaderboard from './Leaderboard'
-import { Heading2, Heading3 } from '@entur/typography'
+import { Heading3 } from '@entur/typography'
 import { useEventName } from '@/lib/hooks/useEventName'
 import { BreadcrumbItem } from '@entur/menu'
 import Link from 'next/link'
-import { getActiveEvent } from '@/lib/api/eventApi'
 
 const CompactLeaderboardPage: React.FC = (): JSX.Element => {
     const [scores, setScores] = useState<PlayerScore[]>([])
     const { eventName, isEventNameError } = useEventName()
-    const [startName, setStartName] = useState<string | null>(null)
-    const [goalName, setGoalName] = useState<string | null>(null)
 
     useEffect(() => {
         const fetchScores = async () => {

@@ -1,12 +1,14 @@
 import React, { ReactElement } from 'react'
-import { ChoiceChip, ChoiceChipGroup } from '@entur/chip'
+import { ChoiceChipGroup } from '@entur/chip'
 import { SleepIcon } from '@entur/icons'
 import { QueryMode } from '@entur/sdk'
-import { Heading2, Heading4 } from '@entur/typography'
+import { Heading2, Heading4, Paragraph } from '@entur/typography'
 import { StopPlace } from '@/lib/types/types'
 import { getModeIcon, getModeTranslation } from '@/lib/utils/transportMapper'
 import { Loader } from '@entur/loader'
 import { SmallAlertBox } from '@entur/alert'
+import { FloatingButton } from '@entur/button'
+import { generateKey } from '@/lib/utils/generateUniqueKey'
 
 type Props = {
     currentTime: Date
@@ -34,12 +36,12 @@ function TransportTypePicker({
     availableModesError,
 }: Props): ReactElement {
     return (
-        <div className="bg-white border-4 border-white shadow-sm rounded-sm pl-10 pb-8 pr-10">
-            <Heading2>
+        <div className="bg-blue-20 text-white border-2 border-blue-20 shadow-sm rounded-sm pl-10 pb-8 pr-10">
+            <Heading2 className="text-white">
                 Velg transportmåte fra{' '}
                 <span className="text-coral">{stopPlace.name}</span>
             </Heading2>
-            <Heading4 margin="none" className="select-none">
+            <Heading4 margin="none" className="text-white select-none">
                 Klokken er:{' '}
                 <span className="text-coral">
                     {currentTime.toLocaleTimeString('nb-NO', {
@@ -56,7 +58,11 @@ function TransportTypePicker({
                     </SmallAlertBox>
                 </div>
             ) : availableModes.length < 1 ? (
-                <Loader>Laster inn transportmidler...</Loader>
+                <Loader>
+                    <Paragraph className="text-white">
+                        Laster inn transportmidler...
+                    </Paragraph>
+                </Loader>
             ) : (
                 <ChoiceChipGroup
                     value={mode ?? 'none'}
@@ -69,29 +75,46 @@ function TransportTypePicker({
                         {availableModes.map((mode) => {
                             const disabled = usedMode.includes(mode)
                             return (
-                                <ChoiceChip
-                                    className="border-2 ml-1 mr-2 mt-3 w-38 h-10 rounded-3xl sm:text-lg select-none"
-                                    key={mode}
-                                    value={mode}
-                                    onClick={() => selectMode(mode)}
-                                    disabled={disabled || isLoading}
+                                <div
+                                    key={generateKey(getModeTranslation(mode))}
+                                    className="bg-blue-20 border-0 ml-1 mr-2 mt-3 w-38 h-10 rounded-3xl sm:text-lg select-none"
                                 >
-                                    {getModeIcon(mode)}
-                                    {getModeTranslation(mode)}
-                                </ChoiceChip>
+                                    <div className="bg-blue-20 border-0">
+                                        <FloatingButton
+                                            size="medium"
+                                            className="bg-blue-80 text-blue-main hover:bg-white"
+                                            aria-label={getModeTranslation(
+                                                mode,
+                                            )}
+                                            onClick={() => selectMode(mode)}
+                                            disabled={disabled || isLoading}
+                                        >
+                                            {getModeIcon(mode)}
+                                            <Paragraph className="pt-1 pb-0">
+                                                {getModeTranslation(mode)}
+                                            </Paragraph>
+                                        </FloatingButton>
+                                    </div>
+                                </div>
                             )
                         })}
                         {!firstMove && (
-                            <ChoiceChip
-                                className="border-2 ml-1 mr-2 mt-3 w-38 h-10 rounded-3xl sm:text-lg select-none"
-                                key="wait"
-                                value="wait"
-                                onClick={() => wait()}
-                                disabled={isLoading}
-                            >
-                                <SleepIcon />
-                                Vent 6 timer
-                            </ChoiceChip>
+                            <div className="bg-blue-20 border-0 ml-1 mr-2 mt-3 w-38 h-10 rounded-3xl sm:text-lg select-none">
+                                <div className="bg-blue-20 border-0">
+                                    <FloatingButton
+                                        size="medium"
+                                        className="bg-blue-80 text-blue-main hover:bg-white"
+                                        aria-label="Vent 6 timer"
+                                        onClick={() => wait()}
+                                        disabled={isLoading} //TODO: sjekk når sleep skal være disabled, og de andre også for den sagt skyld
+                                    >
+                                        <SleepIcon size={20} />
+                                        <Paragraph className="pt-1 pb-0">
+                                            Vent 6 timer
+                                        </Paragraph>
+                                    </FloatingButton>
+                                </div>
+                            </div>
                         )}
                     </>
                 </ChoiceChipGroup>

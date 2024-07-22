@@ -132,7 +132,7 @@ export default function AdminCreateJourney() {
         ],
     }
 
-    const { data, isLoading, error } = useSWR(
+    const { data } = useSWR(
         selectedStart && selectedGoal && formattedDateTime
             ? [
                   '/journey-planner',
