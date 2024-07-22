@@ -2,8 +2,8 @@ import { useEffect, useRef } from 'react'
 import mapboxgl from 'mapbox-gl'
 import styles from './Map.module.css'
 import { Event } from '@/lib/types/types'
-import { renderToStaticMarkup } from 'react-dom/server'
-import { MapPinIcon, DestinationIcon } from '@entur/icons'
+import MapPin from '!!raw-loader!@/lib/assets/icons/MapPin.svg'
+import Destination from '!!raw-loader!@/lib/assets/icons/Destination.svg'
 
 const NEXT_PUBLIC_MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
 
@@ -21,24 +21,18 @@ const Map = ({ event }: { event: Event }) => {
             const map = new mapboxgl.Map({
                 container: mapContainerRef.current,
                 style: 'mapbox://styles/mapbox/streets-v12',
-                center: [10.7522, 59.9139], // Example coordinates for Oslo
+                center: [10.7522, 59.9139],
                 zoom: 5,
-                attributionControl: false,
             })
 
             if (event.startLocation.longitude && event.startLocation.latitude) {
-                const iconHTML = renderToStaticMarkup(
-                    <div style={{ width: '50px', height: '50px' }}>
-                        <MapPinIcon
-                            className="text-coral"
-                            style={{ width: '100%', height: '100%' }}
-                        />
-                    </div>,
-                )
-
                 const el = document.createElement('div')
-                el.innerHTML = iconHTML
-                el.className = 'custom-marker'
+                el.innerHTML = MapPin
+                el.style.width = '70px'
+                el.style.height = '70px'
+                el.style.display = 'flex'
+                el.style.alignItems = 'flex-end'
+                el.style.justifyContent = 'center'
 
                 new mapboxgl.Marker(el, { anchor: 'bottom' })
                     .setLngLat([
@@ -46,15 +40,38 @@ const Map = ({ event }: { event: Event }) => {
                         event.startLocation.latitude,
                     ])
                     .addTo(map)
+            }
 
-                return () => {
-                    if (map) {
-                        map.remove()
-                    }
-                }
+            if (
+                event.endLocation &&
+                event.endLocation[0].longitude &&
+                event.endLocation[0].latitude
+            ) {
+                const endEl = document.createElement('div')
+                endEl.innerHTML = Destination
+                endEl.style.width = '70px'
+                endEl.style.height = '70px'
+                endEl.style.display = 'flex'
+                endEl.style.alignItems = 'flex-end'
+                endEl.style.justifyContent = 'center'
+
+                new mapboxgl.Marker(endEl, { anchor: 'bottom' })
+                    .setLngLat([
+                        event.endLocation[0].longitude,
+                        event.endLocation[0].latitude,
+                    ])
+                    .addTo(map)
+            }
+
+            return () => {
+                map.remove()
             }
         }
-    }, [event.startLocation.latitude, event.startLocation.longitude])
+    }, [
+        event.startLocation.latitude,
+        event.startLocation.longitude,
+        event.endLocation,
+    ])
 
     return <div ref={mapContainerRef} className={styles.mapContainer} />
 }
