@@ -7,11 +7,7 @@ type Props = {
     maxTime: number
 }
 
-function GameNavBar({
-    numLegs,
-    usedTime,
-    maxTime
-}: Props): ReactElement {
+function GameNavBar({ numLegs, usedTime, maxTime }: Props): ReactElement {
     return (
         <div className="flex flex-row pt-4 justify-between ">
             <div className="flex-grow " />

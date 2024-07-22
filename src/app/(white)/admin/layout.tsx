@@ -1,5 +1,6 @@
 import '@/app/globals.css'
-import NavBar from '@/components/NavBar/NavBar'
+import ProtectedComponents from '@/components/ProtectedComponents'
+import { AdminNavBar } from './components/AdminNavBar'
 
 export default function WhiteModeLayout({
     children,
@@ -8,8 +9,10 @@ export default function WhiteModeLayout({
 }>) {
     return (
         <div className="bg-white flex flex-col w-screen min-h-screen">
-            <NavBar admin={true} />
-            {children}
+            <ProtectedComponents>
+                <AdminNavBar />
+                {children}
+            </ProtectedComponents>
         </div>
     )
 }

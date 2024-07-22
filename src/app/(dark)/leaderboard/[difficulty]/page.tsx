@@ -25,7 +25,10 @@ const getPlayerScores = async (): Promise<PlayerScore[]> => {
 }
 
 export default function EventHighScorePage(): JSX.Element {
-    const { data: playerScores } = useSWR<PlayerScore[]>('/players', getPlayerScores)
+    const { data: playerScores } = useSWR<PlayerScore[]>(
+        '/players',
+        getPlayerScores,
+    )
 
     if (playerScores === undefined) {
         return <p>Laster inn...</p>

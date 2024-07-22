@@ -55,9 +55,7 @@ export async function getEventByEventName(
     }
     const baseEvent = baseEventResult.data
 
-    const startLocationItem = await fetchStopPlace(
-        baseEvent.startLocationId,
-    )
+    const startLocationItem = await fetchStopPlace(baseEvent.startLocationId)
 
     const endlocationChildrenIds = await fetchStopPlaceChildren(
         baseEvent.endLocationId,
@@ -78,14 +76,14 @@ export async function getEventByEventName(
         id: baseEvent.startLocationId,
         name: startLocationItem.name,
         longitude: startLocationItem.longitude,
-        latitude: startLocationItem.latitude
+        latitude: startLocationItem.latitude,
     }
 
     const endLocation: StopPlace[] = endlocationIds.map((id, index) => ({
         id: id,
         name: endLocationItem[index]!.name,
         longitude: endLocationItem[index]!.longitude,
-        latitude: endLocationItem[index]!.latitude
+        latitude: endLocationItem[index]!.latitude,
     }))
 
     return {
@@ -99,7 +97,7 @@ export async function getEventByEventName(
             optimalStepNumber: baseEvent.optimalStepNumber,
             optimalTravelTime: baseEvent.optimalTravelTime,
             isActive: baseEvent.isActive,
-        } as Event
+        } as Event,
     }
 }
 

@@ -17,13 +17,12 @@ import {
 import { saveScore } from '@/lib/api/scoreApi'
 import {
     formatIntervalToSeconds,
-    formatMilliseconds
+    formatMilliseconds,
 } from '@/lib/utils/dateFnsUtils'
 import { Controller, useForm } from 'react-hook-form'
 import { createOptimalRouteText } from '@/lib/api/eventApi'
 import { useRouter } from 'next/navigation'
 import { SmallAlertBox, useToast } from '@entur/alert'
-import { Contrast } from '@entur/layout'
 
 type Props = {
     name: string
@@ -67,15 +66,16 @@ export function VictoryScreen({
     const [isError, setError] = useState<boolean>(false)
     const [responseStatus, setResponseStatus] = useState<number | null>(null)
 
-    const timeDescription = formatMilliseconds(currentTime.getTime() - startTime.getTime())
+    const timeDescription = formatMilliseconds(
+        currentTime.getTime() - startTime.getTime(),
+    )
     const [optimalRouteText, setOptimalRouteText] = useState<string>('')
 
     async function onSubmit(data: FormValues) {
-
         const newPlayer: Player = {
             playerName: data.name,
             email: data.email,
-            phoneNumber: data.phoneNumber
+            phoneNumber: data.phoneNumber,
         }
 
         const backendEvent: BackendEvent = {
@@ -86,7 +86,7 @@ export function VictoryScreen({
             startTime: event.startTime,
             optimalStepNumber: event.optimalStepNumber,
             optimalTravelTime: event.optimalTravelTime,
-            isActive: event.isActive
+            isActive: event.isActive,
         }
 
         const playerScore: PlayerScore = {
@@ -100,7 +100,7 @@ export function VictoryScreen({
             totalTravelTime: formatIntervalToSeconds(currentTime, startTime),
             totalPlayTime: Math.trunc((Date.now() - startTimer) / 1000),
             player: newPlayer,
-            event: backendEvent
+            event: backendEvent,
         }
 
         const response = await saveScore(playerScore)
@@ -117,7 +117,7 @@ export function VictoryScreen({
         }
         if (response.status === 400) {
             addToast({
-                title: 'Du slo dessverre ikke din forige rekord',
+                title: 'Du slo dessverre ikke din forrige rekord',
                 content: <>Prøv gjerne igjen!</>,
             })
             setTimeout(() => {
@@ -139,19 +139,98 @@ export function VictoryScreen({
     }, [])
 
     return (
-        <Contrast>
-            <div className="bg-blue-20 border-2 border-white min-h-screen min-w-screen">
-                <VictoryArtBoardOvalImage className="absolute -top-20 -left-32 hidden xl:block" />
-                <VictoryArtBoardCookieImage className="absolute -bottom-28 -left-52  hidden xl:block" />
-                <VictoryArtBoardCircleImage className="absolute bottom-60 -right-72 hidden xl:block" />
-                <div className="flex justify-center">
-                    <form
-                        className="flex flex-col max-w-3xl mt-20 pr-4 pl-4 gap-6"
-                        onSubmit={handleSubmit(async (data) => {
-                            await onSubmit(data)
-                        })}
+        <div className="bg-blue-90 min-h-screen min-w-screen">
+            <VictoryArtBoardOvalImage className="absolute -top-20 -left-32 hidden xl:block" />
+            <VictoryArtBoardCookieImage className="absolute -bottom-28 -left-52  hidden xl:block" />
+            <VictoryArtBoardCircleImage className="absolute bottom-60 -right-72 hidden xl:block" />
+            <div className="flex justify-center">
+                <form
+                    className="flex flex-col max-w-3xl mt-20 pr-4 pl-4 gap-6"
+                    onSubmit={handleSubmit(async (data) => {
+                        await onSubmit(data)
+                    })}
+                >
+                    <Heading3 className="font-semibold">Du er fremme!</Heading3>
+                    <Paragraph>
+                        {`Du kom deg fra ${event.startLocation.name} til ${event.endLocation[0].name} på ${numLegs} etapper og ${timeDescription}`}
+                        <br />
+                        <br />
+                        {optimalRouteText}
+                    </Paragraph>
+                    <Controller
+                        name="name"
+                        control={control}
+                        rules={{
+                            required: 'Dette feltet er påkrevet.',
+                            maxLength: {
+                                value: 50,
+                                message: 'Maks 50 tegn.',
+                            },
+                        }}
+                        render={({ field, fieldState }) => (
+                            <TextField
+                                label="Navn"
+                                placeholder=""
+                                {...field}
+                                variant={fieldState.error ? 'error' : 'info'}
+                                feedback={fieldState.error?.message}
+                            />
+                        )}
+                    />
+                    <Controller
+                        name="email"
+                        control={control}
+                        rules={{
+                            required: 'Dette feltet er påkrevet.',
+                            pattern: {
+                                value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g,
+                                message: 'Ugyldig e-postadresse.',
+                            },
+                        }}
+                        render={({ field, fieldState }) => (
+                            <TextField
+                                label="E-postadresse"
+                                placeholder=""
+                                {...field}
+                                variant={fieldState.error ? 'error' : 'info'}
+                                feedback={fieldState.error?.message}
+                            />
+                        )}
+                    />
+                    <Controller
+                        name="phoneNumber"
+                        control={control}
+                        rules={{
+                            required: 'Dette feltet er påkrevet.',
+                            pattern: {
+                                value: /^[0-9]{8}$/g,
+                                message:
+                                    'Ugyldig mobilnummer. Den må være 8 siffer.',
+                            },
+                        }}
+                        render={({ field, fieldState }) => (
+                            <TextField
+                                label="Mobilnummer"
+                                placeholder=""
+                                {...field}
+                                type="number"
+                                variant={fieldState.error ? 'error' : 'info'}
+                                feedback={fieldState.error?.message}
+                            />
+                        )}
+                    />
+                    <div
+                        className={`border-2 ${
+                            errors.consent ? 'border-coral' : 'border-blue-60'
+                        } rounded border-solid w-full h-28 cursor-pointer`}
+                        {...register('consent', { required: true })}
+                        onClick={() =>
+                            setValue('consent', !getValues('consent'))
+                        }
                     >
-                        <Heading3 className="font-semibold">Du er fremme!</Heading3>
+                        <Heading3 className="font-semibold">
+                            Du er fremme!
+                        </Heading3>
                         <Paragraph>
                             {`Du kom deg fra ${event.startLocation.name} til ${event.endLocation[0].name} på ${numLegs} etapper og ${timeDescription}`}
                             <br />
@@ -173,7 +252,9 @@ export function VictoryScreen({
                                     label="Navn"
                                     placeholder=""
                                     {...field}
-                                    variant={fieldState.error ? 'error' : 'info'}
+                                    variant={
+                                        fieldState.error ? 'error' : 'info'
+                                    }
                                     feedback={fieldState.error?.message}
                                 />
                             )}
@@ -193,7 +274,9 @@ export function VictoryScreen({
                                     label="E-postadresse"
                                     placeholder=""
                                     {...field}
-                                    variant={fieldState.error ? 'error' : 'info'}
+                                    variant={
+                                        fieldState.error ? 'error' : 'info'
+                                    }
                                     feedback={fieldState.error?.message}
                                 />
                             )}
@@ -215,14 +298,19 @@ export function VictoryScreen({
                                     placeholder=""
                                     {...field}
                                     type="number"
-                                    variant={fieldState.error ? 'error' : 'info'}
+                                    variant={
+                                        fieldState.error ? 'error' : 'info'
+                                    }
                                     feedback={fieldState.error?.message}
                                 />
                             )}
                         />
                         <div
-                            className={`border-2 ${errors.consent ? 'border-coral' : 'border-blue-60'
-                                } rounded border-solid w-full h-28 cursor-pointer`}
+                            className={`border-2 ${
+                                errors.consent
+                                    ? 'border-coral'
+                                    : 'border-blue-60'
+                            } rounded border-solid w-full h-28 cursor-pointer`}
                             {...register('consent', { required: true })}
                             onClick={() =>
                                 setValue('consent', !getValues('consent'))
@@ -239,20 +327,24 @@ export function VictoryScreen({
                                     className="sm:place-self-end sm:row-span-1 m-0 mr-0 row-span-2 place-self-center"
                                     {...register('consent', { required: true })}
                                     onClick={() =>
-                                        setValue('consent', !getValues('consent'))
+                                        setValue(
+                                            'consent',
+                                            !getValues('consent'),
+                                        )
                                     }
                                 />
                                 <Label className=" col-span-5 cursor-pointer select-none">
-                                    Jeg samtykker til at Entur kan kontakte meg på
-                                    e-post i forbindelse med konkurransen.
+                                    Jeg samtykker til at Entur kan kontakte meg
+                                    på e-post i forbindelse med konkurransen.
                                 </Label>
                             </div>
                         </div>
 
                         <div className="flex flex-row mt-4 gap-4">
                             <PrimaryButton
-                                className={`select-none ${watch('consent') && 'bg-blue-main'
-                                    }`}
+                                className={`select-none ${
+                                    watch('consent') && 'bg-blue-main'
+                                }`}
                                 loading={isSubmitting || isLoading}
                                 disabled={!watch('consent') && !isValid}
                                 type="submit"
@@ -269,19 +361,21 @@ export function VictoryScreen({
                             </SecondaryButton>
                         </div>
                         {isError && (
-                            <SmallAlertBox variant="negative" width="fit-content">
+                            <SmallAlertBox
+                                variant="negative"
+                                width="fit-content"
+                            >
                                 Noe gikk galt:{' '}
                                 {responseStatus === 404
                                     ? 'Event (spill) ble ikke funnet. Tilkall hjelp.'
                                     : responseStatus === 409
-                                        ? 'Spiller med samme brukernavn eksisterer allerede. Bytt navn.'
-                                        : 'Ukjent feil oppdaget. Tillkall hjelp.'}
-                            </SmallAlertBox >
-                        )
-                        }
-                    </form >
-                </div >
-            </div >
-        </Contrast>
+                                      ? 'Spiller med samme brukernavn eksisterer allerede. Bytt navn.'
+                                      : 'Ukjent feil oppdaget. Tillkall hjelp.'}
+                            </SmallAlertBox>
+                        )}
+                    </div>
+                </form>
+            </div>
+        </div>
     )
 }

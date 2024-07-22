@@ -1,49 +1,61 @@
 'use client'
 
-import { Heading1, Heading4, LeadParagraph } from '@entur/typography'
-import { AdjustmentsIcon, BulletListIcon } from '@entur/icons'
-import { NavigationCard } from '@entur/layout'
+import { Heading1, Heading2, Paragraph } from '@entur/typography'
+import { AddIcon } from '@entur/icons'
+import { Contrast, NavigationCard } from '@entur/layout'
 import { CopyableText } from '@entur/alert'
+import BackgroundAdmin from '@/lib/assets/images/BackgroundAdmin.svg'
+import Image from 'next/image'
+import { Button } from '@entur/button'
+import CompactLeaderboardPage from './components/CompactLeaderboard'
+import InactiveEvent from './components/InactiveEvents'
 
-export default function AdminPage(): JSX.Element {
+export default function AdminPage(): JSX.Element | null {
     return (
         <div>
-            <div className="flex flex-col items-center justify-center mr-20">
-                <Heading1> Spillets admin-panel</Heading1>
-                <LeadParagraph>
-                    Konfigurer nye ruter og se nåværende leaderboard
-                </LeadParagraph>
-            </div>
-            <div className="grid grid-cols-2 items-center gap-16 p-12 mr-20">
+            <Contrast>
+                <div className="flex flex-col pt-12 pl-44 pb-12">
+                    <Heading1 margin="top">
+                        Sett opp og kontrollér spillet herfra
+                    </Heading1>
+                </div>
+            </Contrast>
+            <Image className="w-full" src={BackgroundAdmin} alt="background" />
+            <div className="flex flex-col p-12 ml-20">
                 <NavigationCard
-                    className="h-full"
+                    className="flex flex-row max-w-lg max-h-20"
                     title="Opprett spill"
-                    titleIcon={<AdjustmentsIcon />}
+                    titleIcon={<AddIcon className="inline align-baseline" />}
                     href="http://localhost:3000/admin/create-game"
-                >
-                    Her oppretter du en ny rute. Du velger hvor og når ruten
-                    begynner, og hvor den skal ende.
-                </NavigationCard>
-                <NavigationCard
-                    className="h-full"
-                    title="Ledertavle"
-                    titleIcon={<BulletListIcon />}
-                    href="http://localhost:3000/admin/leaderboard"
-                >
-                    Her har du oversikt over alle lagrede poengsummer og
-                    mulighet til å trekke en vinner blandt de beste
-                    poengsummene.
-                </NavigationCard>
-            </div>
-            <div className="flex flex-col items-center justify-center mr-20 p-12">
-                <Heading4>Lenke til aktivt spill</Heading4>
-                <div className="mt-2">
+                    compact
+                ></NavigationCard>
+                <div className="flex mt-20 gap-6">
+                    <Heading2 margin="none">Aktivt spill</Heading2>
                     <CopyableText
+                        className="max-w-96"
                         successHeading="Lenke kopiert!"
                         successMessage=" "
+                        textToCopy="localhost:3000"
                     >
-                        localhost:3000
+                        Trykk her for å kopiere lenken!
                     </CopyableText>
+                </div>
+                <div className="flex flex-col max-w-md mt-10">
+                    <Button variant={'primary'} className="max-w-60">
+                        Trekk vinner og avslutt spill
+                    </Button>
+                    <Paragraph className="mt-2">
+                        Når du trykker på knappen, trekkes en tilfeldig vinner
+                        blant spillerne med høyest poengsum.
+                    </Paragraph>
+                </div>
+                <div className="mt-8">
+                    <CompactLeaderboardPage />
+                </div>
+                <div className="flex flex-col mt-20">
+                    <Heading2>Tidligere spill</Heading2>
+                    <InactiveEvent />
+                    <InactiveEvent />
                 </div>
             </div>
         </div>

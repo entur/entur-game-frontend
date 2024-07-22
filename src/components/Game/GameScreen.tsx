@@ -64,7 +64,8 @@ function GameScreen({
     ])
     const [usedMode, setUsedMode] = useState<QueryMode[]>([])
     const [availableModes, setAvailableModes] = useState<QueryMode[]>([])
-    const [availableModesError, setAvailableModesError] = useState<boolean>(false)
+    const [availableModesError, setAvailableModesError] =
+        useState<boolean>(false)
     const { getWalkableStopPlaces, getDepartures, getStopsOnLine } =
         useEnturService()
 
@@ -100,7 +101,7 @@ function GameScreen({
     useEffect(() => {
         const newUsedTime = currentTime.getTime() - startTime.getTime()
         setUsedTime(newUsedTime)
-        if ((currentTime.getTime() - startTime.getTime()) > maxTime) {
+        if (currentTime.getTime() - startTime.getTime() > maxTime) {
             setDead(true)
         }
     }, [currentTime, setUsedTime, maxTime, startTime])
@@ -111,16 +112,23 @@ function GameScreen({
             QueryMode.METRO,
             QueryMode.TRAM,
             QueryMode.RAIL,
-            QueryMode.WATER
+            QueryMode.WATER,
         ]
 
-        const departurePromises = modes.map(mode => getDepartures(location.id, mode, currentTime))
+        const departurePromises = modes.map((mode) =>
+            getDepartures(location.id, mode, currentTime),
+        )
         const walkableStopsPromise = getWalkableStopPlaces(location)
-        const results = await Promise.all([...departurePromises, walkableStopsPromise])
+        const results = await Promise.all([
+            ...departurePromises,
+            walkableStopsPromise,
+        ])
         const walkableStops = results.pop() as StopPlace[]
 
         const validModes = results
-            .map((deps, index) => (deps as Departure[]).length > 0 ? modes[index] : null)
+            .map((deps, index) =>
+                (deps as Departure[]).length > 0 ? modes[index] : null,
+            )
             .filter(isTruthy)
 
         if (walkableStops.length > 0) {
@@ -151,13 +159,15 @@ function GameScreen({
                 setLoading(false)
             })
         } else {
-            getDepartures(startLocation.id, newMode, currentTime).then((deps) => {
-                setStopsOnLine([]) // Reset walkable stops before showing departures
-                setDepartures(deps)
-                setModalOpen(true)
-                setTravelLegsMode((prev) => [...prev, newMode])
-                setLoading(false)
-            })
+            getDepartures(startLocation.id, newMode, currentTime).then(
+                (deps) => {
+                    setStopsOnLine([]) // Reset walkable stops before showing departures
+                    setDepartures(deps)
+                    setModalOpen(true)
+                    setTravelLegsMode((prev) => [...prev, newMode])
+                    setLoading(false)
+                },
+            )
         }
     }
 
@@ -172,7 +182,7 @@ function GameScreen({
                             if (
                                 !stop ||
                                 d.expectedDepartureTime <=
-                                departure.expectedDepartureTime
+                                    departure.expectedDepartureTime
                             )
                                 return undefined
                             const nextDep = departures[index + 1]
@@ -236,7 +246,11 @@ function GameScreen({
     return (
         <div className="flex flex-col mb-4">
             <Contrast>
-                <FromAndToTitle className="mt-10 xl:mt-28" event={event} startTime={startTime} />
+                <FromAndToTitle
+                    className="mt-10 xl:mt-28"
+                    event={event}
+                    startTime={startTime}
+                />
                 <div className="mt-5 xl:mt-14">
                     <TravelLegStart
                         travelLegs={travelLegs}

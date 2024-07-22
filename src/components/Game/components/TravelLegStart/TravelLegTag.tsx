@@ -1,15 +1,9 @@
 import React from 'react'
-import {
-    BusIcon,
-    FerryIcon,
-    MetroIcon,
-    TrainIcon,
-    TramIcon,
-    WalkIcon,
-} from '@entur/icons'
+import { WalkIcon } from '@entur/icons'
 import { TravelLegProps, TravelTag } from '@entur/travel'
 import { Departure } from '@entur/sdk'
 import { Label } from '@entur/typography'
+import { TransportIconPicker } from '@/lib/utils/transportMapper'
 
 type Props = {
     usedDeparture: Departure | undefined
@@ -46,27 +40,4 @@ export function TravelLegTag({
             </TravelTag>
         </div>
     )
-}
-
-type TransportIconPickerProps = {
-    transportType: string | undefined
-}
-
-function TransportIconPicker({
-    transportType,
-}: TransportIconPickerProps): JSX.Element {
-    switch (transportType) {
-        case 'bus':
-            return <BusIcon color="white" />
-        case 'tram':
-            return <TramIcon color="white" />
-        case 'metro':
-            return <MetroIcon color="white" />
-        case 'rail':
-            return <TrainIcon color="white" />
-        case 'water':
-            return <FerryIcon color="white" />
-        default:
-            return <BusIcon color="white" />
-    }
 }

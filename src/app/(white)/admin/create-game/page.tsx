@@ -1,56 +1,33 @@
 'use client'
 
 import React, { useCallback, useEffect, useState } from 'react'
-import { Button } from '@entur/button'
-import { Heading1, Heading3, LeadParagraph, Paragraph } from '@entur/typography'
-import { MapPinIcon, DestinationIcon } from '@entur/icons'
+import { Button, ButtonGroup, SecondaryButton } from '@entur/button'
+import {
+    Heading1,
+    Heading3,
+    LeadParagraph,
+    Paragraph,
+    SmallText,
+} from '@entur/typography'
+import {
+    MapPinIcon,
+    DestinationIcon,
+    ValidationInfoFilledIcon,
+    BackArrowIcon,
+} from '@entur/icons'
 import { BlockquoteFooter } from '@entur/typography'
 import { DatePicker, TimePicker, ZonedDateTime } from '@entur/datepicker'
 import { NormalizedDropdownItemType, SearchableDropdown } from '@entur/dropdown'
 import { now } from '@internationalized/date'
-import { BackendEvent, TGeoresponse } from '@/lib/types/types'
+import { BackendEvent, isTripInfoVariables } from '@/lib/types/types'
 import { useRouter } from 'next/navigation'
 import { useToast } from '@entur/alert'
 import { createEvent } from '@/lib/api/eventApi'
-
-const query = `
-query getTripInfo($from: Location!, $to: Location!, $dateTime: DateTime!) {
-  trip(from: $from, to: $to, numTripPatterns: 1, dateTime: $dateTime) {
-    tripPatterns {
-      duration
-      legs {
-        fromPlace {
-          name
-        }
-        toPlace {
-          name
-        }
-      }
-    }
-  }
-}
-`
-
-function pad(number: number, length: number): string {
-    return number.toString().padStart(length, '0')
-}
-
-function formatDateTime(
-    dateObj: ZonedDateTime,
-    timeObj: ZonedDateTime,
-): string {
-    const year = dateObj.year
-    const month = pad(dateObj.month, 2)
-    const day = pad(dateObj.day, 2)
-
-    const hour = pad(timeObj.hour, 2)
-    const minute = pad(timeObj.minute, 2)
-    const second = pad(timeObj.second, 2)
-
-    const formattedDate = `${year}-${month}-${day}T${hour}:${minute}:${second}`
-
-    return formattedDate
-}
+import { formatDateTime } from '@/lib/utils/dateFnsUtils'
+import { getTripInfo, fetchDropdownItems } from '@/lib/api/journeyPlannerApi'
+import { tripQuery, visualSolutionTripQuery } from '@/lib/constants/queries'
+import useSWR from 'swr'
+import RouteSuggestion from '@/components/RouteSuggestion'
 
 export default function AdminCreateJourney() {
     const router = useRouter()
@@ -95,22 +72,21 @@ export default function AdminCreateJourney() {
                 place: selectedGoal?.value,
             },
             dateTime: formattedDateTime,
+            modes: [
+                { transportMode: 'bus' },
+                { transportMode: 'tram' },
+                { transportMode: 'rail' },
+                { transportMode: 'metro' },
+                { transportMode: 'water' },
+            ],
         }
 
         const eventName = `${selectedStart?.label} - ${selectedGoal?.label}`
 
-        fetch('https://api.entur.io/journey-planner/v3/graphql', {
-            method: 'POST',
-            headers: {
-                'ET-Client-Name': 'enturspillet',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ query, variables }),
-        })
-            .then((res) => res.json())
-            .then((getTripInfo) => {
-                if (getTripInfo.data?.trip?.tripPatterns?.length > 0) {
-                    const tripPattern = getTripInfo.data.trip.tripPatterns[0]
+        getTripInfo(tripQuery, variables)
+            .then((trip) => {
+                if (trip.data?.trip?.tripPatterns?.length > 0) {
+                    const tripPattern = trip.data.trip.tripPatterns[0]
 
                     const newEvent: BackendEvent = {
                         eventName: eventName,
@@ -137,33 +113,45 @@ export default function AdminCreateJourney() {
         fetchTripInfo()
     }
 
-    const fetchItems = useCallback(
-        async (inputValue: string): Promise<NormalizedDropdownItemType[]> => {
-            try {
-                if (inputValue.length < 2) return []
-                const response = await fetch(
-                    `https://api.entur.io/geocoder/v1/autocomplete?text=${inputValue}&size=20&lang=no&layers=venue`,
-                )
-                const data: TGeoresponse = await response.json()
-                const mappedData = data.features.map((feature) => {
-                    const { id, label } = feature.properties || {}
-                    return {
-                        label: label ?? '',
-                        value: id ?? '',
-                    }
-                })
-                return mappedData
-            } catch (error) {
-                if (error === 'AbortError') throw error
-                console.error('Error fetching data:', error)
-                return []
-            }
+    const variables = {
+        from: {
+            name: selectedStart?.label,
+            place: selectedStart?.value,
         },
-        [],
+        to: {
+            name: selectedGoal?.label,
+            place: selectedGoal?.value,
+        },
+        dateTime: formattedDateTime,
+        modes: [
+            { transportMode: 'bus' },
+            { transportMode: 'tram' },
+            { transportMode: 'rail' },
+            { transportMode: 'metro' },
+            { transportMode: 'water' },
+        ],
+    }
+
+    const { data } = useSWR(
+        selectedStart && selectedGoal && formattedDateTime
+            ? [
+                  '/journey-planner',
+                  selectedStart,
+                  selectedGoal,
+                  formattedDateTime,
+              ]
+            : null,
+        () =>
+            isTripInfoVariables(variables) &&
+            getTripInfo(visualSolutionTripQuery, variables),
     )
 
+    const handleBackClick = () => {
+        router.push(`/admin`)
+    }
+
     return (
-        <div className="ml-56 p-4 ">
+        <div className="ml-56 p-4 pt-20">
             <div className="flex flex-col">
                 <BlockquoteFooter>Opprett Spill</BlockquoteFooter>
                 <Heading1 margin="none">Opprett et nytt spill</Heading1>
@@ -180,7 +168,7 @@ export default function AdminCreateJourney() {
                 <div className="max-w-md space-y-8">
                     <SearchableDropdown
                         label="Start"
-                        items={fetchItems}
+                        items={fetchDropdownItems}
                         selectedItem={selectedStart}
                         prepend={<MapPinIcon></MapPinIcon>}
                         onChange={setSelectedStart}
@@ -198,7 +186,7 @@ export default function AdminCreateJourney() {
                     />
                     <SearchableDropdown
                         label="Mål"
-                        items={fetchItems}
+                        items={fetchDropdownItems}
                         prepend={<DestinationIcon></DestinationIcon>}
                         selectedItem={selectedGoal}
                         onChange={setSelectedGoal}
@@ -238,7 +226,27 @@ export default function AdminCreateJourney() {
                         onChange={setTime}
                     ></TimePicker>
                 </div>
-                <div className="pt-12 pb-12">
+                <div className="flex gap-2 pt-2">
+                    <ValidationInfoFilledIcon></ValidationInfoFilledIcon>
+                    <SmallText>
+                        Spillet kan ikke ha starttidspunkt mer enn tre dager før
+                        dagens dato
+                    </SmallText>
+                </div>
+                <RouteSuggestion
+                    suggestedTripData={data?.data?.trip}
+                    startLocationName={selectedStart?.label}
+                />
+                <ButtonGroup className="flex mt-20">
+                    <SecondaryButton
+                        onClick={handleBackClick}
+                        className="flex items-center min-w-20"
+                    >
+                        <div className="h-full pt-2.5">
+                            <BackArrowIcon />
+                        </div>
+                        Tilbake
+                    </SecondaryButton>
                     <Button
                         width="auto"
                         variant="primary"
@@ -248,7 +256,7 @@ export default function AdminCreateJourney() {
                     >
                         Opprett spill
                     </Button>
-                </div>
+                </ButtonGroup>
             </div>
         </div>
     )
