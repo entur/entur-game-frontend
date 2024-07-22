@@ -105,6 +105,7 @@ export type TransportIconPickerProps = {
     transportType: string | undefined
 }
 
+//TODO: find out how we fix
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function isTripInfoVariables(obj: any): obj is TripQueryVariables {
     return (
