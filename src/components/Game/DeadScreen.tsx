@@ -3,9 +3,9 @@
 import { Heading2, Paragraph } from '@entur/typography'
 import { PrimaryButton } from '@entur/button'
 import React from 'react'
-import { Contrast } from '@entur/layout';
+import { Contrast } from '@entur/layout'
 interface DeadScreenProps {
-    endLocationName: string;
+    endLocationName: string
 }
 
 function DeadScreen({ endLocationName }: DeadScreenProps): JSX.Element {

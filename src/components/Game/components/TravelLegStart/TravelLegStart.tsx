@@ -43,7 +43,7 @@ function TravelLegStart({
                             className="mt-1 mr-6 sm:mr-8 h-24"
                             transport={
                                 travelLegsMode[
-                                index
+                                    index
                                 ] as TravelLegProps['transport']
                             }
                             direction="vertical"
@@ -78,7 +78,7 @@ function TravelLegStart({
                             className="mt-1 mr-6 sm:mr-8"
                             transport={
                                 travelLegsMode[
-                                index - 1
+                                    index - 1
                                 ] as TravelLegProps['transport']
                             }
                             direction="vertical"
