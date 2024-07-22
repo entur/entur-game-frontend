@@ -35,7 +35,7 @@ function TransportTypePicker({
     availableModesError
 }: Props): ReactElement {
     return (
-        <div className="bg-blue-20 text-white border-2 border-white shadow-sm rounded-sm pl-10 pb-8 pr-10">
+        <div className="bg-blue-20 text-white border-2 border-blue-20 shadow-sm rounded-sm pl-10 pb-8 pr-10">
             <Heading2 className="text-white">
                 Velg transportmåte fra{' '}
                 <span className="text-coral">{stopPlace.name}</span>
@@ -86,16 +86,20 @@ function TransportTypePicker({
                             )
                         })}
                         {!firstMove && (
-                            <ChoiceChip
-                                className="border-2 ml-1 mr-2 mt-3 w-38 h-10 rounded-3xl sm:text-lg select-none"
-                                key="wait"
-                                value="wait"
-                                onClick={() => wait()}
-                                disabled={isLoading}
-                            >
-                                <SleepIcon />
-                                Vent 6 timer
-                            </ChoiceChip>
+                            <div className="bg-blue-20 border-0 ml-1 mr-2 mt-3 w-38 h-10 rounded-3xl sm:text-lg select-none">
+                                <div className="bg-blue-20 border-0">
+                                    <FloatingButton
+                                        size="medium"
+                                        className="bg-blue-80 text-blue-main hover:bg-white"
+                                        aria-label="Vent 6 timer"
+                                        onClick={() => wait()}
+                                        disabled={isLoading} //TODO: sjekk når sleep skal være disabled, og de andre også for den sagt skyld
+                                    >
+                                        <SleepIcon />
+                                        Vent 6 timer
+                                    </FloatingButton>
+                                </div>
+                            </div>
                         )}
                     </>
                 </ChoiceChipGroup>
