@@ -105,6 +105,8 @@ export type TransportIconPickerProps = {
     transportType: string | undefined
 }
 
+//TODO: find how to change any, so that we can remove eslint-disabled
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function isTripInfoVariables(obj: any): obj is TripQueryVariables {
     return (
         obj &&
@@ -117,6 +119,7 @@ export function isTripInfoVariables(obj: any): obj is TripQueryVariables {
         typeof obj.to.place === 'string' &&
         typeof obj.dateTime === 'string' &&
         Array.isArray(obj.modes) &&
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         obj.modes.every((mode: any) => typeof mode.transportMode === 'string')
     )
 }
