@@ -58,7 +58,11 @@ function TransportTypePicker({
                     </SmallAlertBox>
                 </div>
             ) : availableModes.length < 1 ? (
-                <Loader>Laster inn transportmidler...</Loader>
+                <Loader>
+                    <Paragraph className="text-white">
+                        Laster inn transportmidler...
+                    </Paragraph>
+                </Loader>
             ) : (
                 <ChoiceChipGroup
                     value={mode ?? 'none'}
