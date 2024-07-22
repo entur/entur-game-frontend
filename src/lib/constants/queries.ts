@@ -1,6 +1,6 @@
 export const tripQuery = `
-query getTripInfo($from: Location!, $to: Location!, $dateTime: DateTime!, $modes: [TransportModes!]) {
-  trip(from: $from, to: $to, numTripPatterns: 1, dateTime: $dateTime, modes: { transportModes: $modes }) {
+query getTripInfo($from: Location!, $to: Location!, $dateTime: DateTime!, $modes: Modes!) {
+  trip(from: $from, to: $to, numTripPatterns: 1, dateTime: $dateTime, modes: $modes) {
     tripPatterns {
       duration
       legs {
@@ -17,8 +17,8 @@ query getTripInfo($from: Location!, $to: Location!, $dateTime: DateTime!, $modes
 `
 
 export const visualSolutionTripQuery = `
-query getTripInfo($from: Location!, $to: Location!, $dateTime: DateTime!, $modes: [TransportModes!]) {
-  trip(from: $from, to: $to, numTripPatterns: 1, dateTime: $dateTime, modes: { transportModes: $modes }) {
+query getTripInfo($from: Location!, $to: Location!, $dateTime: DateTime!, $modes: Modes!) {
+  trip(from: $from, to: $to, numTripPatterns: 1, dateTime: $dateTime, modes: $modes) {
     tripPatterns {
       expectedStartTime
       duration
