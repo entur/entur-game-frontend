@@ -23,6 +23,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { createOptimalRouteText } from '@/lib/api/eventApi'
 import { useRouter } from 'next/navigation'
 import { SmallAlertBox, useToast } from '@entur/alert'
+import { Contrast } from '@entur/layout'
 
 type Props = {
     name: string
@@ -139,94 +140,17 @@ export function VictoryScreen({
     }, [])
 
     return (
-        <div className="bg-blue-90 min-h-screen min-w-screen">
-            <VictoryArtBoardOvalImage className="absolute -top-20 -left-32 hidden xl:block" />
-            <VictoryArtBoardCookieImage className="absolute -bottom-28 -left-52  hidden xl:block" />
-            <VictoryArtBoardCircleImage className="absolute bottom-60 -right-72 hidden xl:block" />
-            <div className="flex justify-center">
-                <form
-                    className="flex flex-col max-w-3xl mt-20 pr-4 pl-4 gap-6"
-                    onSubmit={handleSubmit(async (data) => {
-                        await onSubmit(data)
-                    })}
-                >
-                    <Heading3 className="font-semibold">Du er fremme!</Heading3>
-                    <Paragraph>
-                        {`Du kom deg fra ${event.startLocation.name} til ${event.endLocation[0].name} på ${numLegs} etapper og ${timeDescription}`}
-                        <br />
-                        <br />
-                        {optimalRouteText}
-                    </Paragraph>
-                    <Controller
-                        name="name"
-                        control={control}
-                        rules={{
-                            required: 'Dette feltet er påkrevet.',
-                            maxLength: {
-                                value: 50,
-                                message: 'Maks 50 tegn.',
-                            },
-                        }}
-                        render={({ field, fieldState }) => (
-                            <TextField
-                                label="Navn"
-                                placeholder=""
-                                {...field}
-                                variant={fieldState.error ? 'error' : 'info'}
-                                feedback={fieldState.error?.message}
-                            />
-                        )}
-                    />
-                    <Controller
-                        name="email"
-                        control={control}
-                        rules={{
-                            required: 'Dette feltet er påkrevet.',
-                            pattern: {
-                                value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g,
-                                message: 'Ugyldig e-postadresse.',
-                            },
-                        }}
-                        render={({ field, fieldState }) => (
-                            <TextField
-                                label="E-postadresse"
-                                placeholder=""
-                                {...field}
-                                variant={fieldState.error ? 'error' : 'info'}
-                                feedback={fieldState.error?.message}
-                            />
-                        )}
-                    />
-                    <Controller
-                        name="phoneNumber"
-                        control={control}
-                        rules={{
-                            required: 'Dette feltet er påkrevet.',
-                            pattern: {
-                                value: /^[0-9]{8}$/g,
-                                message:
-                                    'Ugyldig mobilnummer. Den må være 8 siffer.',
-                            },
-                        }}
-                        render={({ field, fieldState }) => (
-                            <TextField
-                                label="Mobilnummer"
-                                placeholder=""
-                                {...field}
-                                type="number"
-                                variant={fieldState.error ? 'error' : 'info'}
-                                feedback={fieldState.error?.message}
-                            />
-                        )}
-                    />
-                    <div
-                        className={`border-2 ${
-                            errors.consent ? 'border-coral' : 'border-blue-60'
-                        } rounded border-solid w-full h-28 cursor-pointer`}
-                        {...register('consent', { required: true })}
-                        onClick={() =>
-                            setValue('consent', !getValues('consent'))
-                        }
+        <Contrast>
+            <div className="min-h-screen min-w-screen">
+                <VictoryArtBoardOvalImage className="absolute -top-20 -left-32 hidden xl:block" />
+                <VictoryArtBoardCookieImage className="absolute -bottom-28 -left-52  hidden xl:block" />
+                <VictoryArtBoardCircleImage className="absolute bottom-60 -right-72 hidden xl:block" />
+                <div className="flex justify-center">
+                    <form
+                        className="flex flex-col max-w-3xl mt-20 pr-4 pl-4 gap-6"
+                        onSubmit={handleSubmit(async (data) => {
+                            await onSubmit(data)
+                        })}
                     >
                         <Heading3 className="font-semibold">
                             Du er fremme!
@@ -373,9 +297,9 @@ export function VictoryScreen({
                                       : 'Ukjent feil oppdaget. Tillkall hjelp.'}
                             </SmallAlertBox>
                         )}
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
-        </div>
+        </Contrast>
     )
 }
