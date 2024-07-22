@@ -23,7 +23,7 @@ function GameStatus({
     return (
         <div className={className}>
             <div className="max-w-3xl mx-auto border-2 border-white rounded bg-blue-90 shadow-md">
-                <div className="bg-blue-20 text-white flex flex-row pt-5 pr-5 pl-8 pb-5">
+                <div className="bg-blue-main text-white flex flex-row pt-5 pr-5 pl-8 pb-5">
                     <span>
                         <Label className="text-blue-80">Din reise</Label>
                         <div className="flex flex-row gap-5">
@@ -48,7 +48,7 @@ function GameStatus({
                         </div>
                     </span>
                 </div>
-                <div className="bg-blue-20 text-white flex flex-row pt-5 pr-5 pl-8 pb-5">
+                <div className="bg-blue-main text-white flex flex-row pt-5 pr-5 pl-8 pb-5">
                     <TimeglassIcon className="w-6 h-6 pt-1" />
                     <Heading5
                         className="pt-1 text-white"
@@ -57,7 +57,7 @@ function GameStatus({
                         Gjenstående tid: {timeLeftFormatted}
                     </Heading5>
                 </div>
-                <div className='bg-blue-20 text-white'><Loader progress={Math.max(0, Math.ceil((maxTime - usedTime) / maxTime * 100))}></Loader></div>
+                <div className='bg-blue-main text-white'><Loader progress={Math.max(0, Math.ceil((maxTime - usedTime) / maxTime * 100))}></Loader></div>
             </div>
         </div>
     )

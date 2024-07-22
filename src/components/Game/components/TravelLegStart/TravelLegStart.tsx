@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import { Departure, QueryMode } from '@entur/sdk'
 import { TravelLeg, TravelLegProps } from '@entur/travel'
-import { Heading5 } from '@entur/typography'
+import { Heading4, Heading5 } from '@entur/typography'
 import { generateKey } from '@/lib/utils/generateUniqueKey'
 import { TravelLegTag } from './TravelLegTag'
 import { StopPlace } from '@/lib/types/types'
@@ -26,7 +26,7 @@ function TravelLegStart({
                     transport="foot"
                     direction="vertical"
                 />
-                <Heading5 margin="none">{travelLegs[0].name}</Heading5>
+                <Heading4 margin="none">{travelLegs[0].name}</Heading4>
             </div>
         )
     }
@@ -43,7 +43,7 @@ function TravelLegStart({
                             className="mt-1 mr-6 sm:mr-8 h-24"
                             transport={
                                 travelLegsMode[
-                                    index
+                                index
                                 ] as TravelLegProps['transport']
                             }
                             direction="vertical"
@@ -78,7 +78,7 @@ function TravelLegStart({
                             className="mt-1 mr-6 sm:mr-8"
                             transport={
                                 travelLegsMode[
-                                    index - 1
+                                index - 1
                                 ] as TravelLegProps['transport']
                             }
                             direction="vertical"

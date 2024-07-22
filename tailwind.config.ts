@@ -40,6 +40,7 @@ const config: Config = {
             'mint-contrast': colors.validation.mintContrast,
         },
         borderColor: {
+            'blue-20': colors.blues.blue20,
             'blue-60': colors.blues.blue60,
             white: colors.brand.white,
             coral: colors.brand.coral,
