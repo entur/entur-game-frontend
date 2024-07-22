@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react'
-import { ChoiceChip, ChoiceChipGroup } from '@entur/chip'
+import { ChoiceChipGroup } from '@entur/chip'
 import { SleepIcon } from '@entur/icons'
 import { QueryMode } from '@entur/sdk'
-import { Heading2, Heading4 } from '@entur/typography'
+import { Heading2, Heading4, Paragraph } from '@entur/typography'
 import { StopPlace } from '@/lib/types/types'
 import { getModeIcon, getModeTranslation } from '@/lib/utils/transportMapper'
 import { Loader } from '@entur/loader'
@@ -79,7 +79,7 @@ function TransportTypePicker({
                                             disabled={disabled || isLoading}
                                         >
                                             {getModeIcon(mode)}
-                                            {getModeTranslation(mode)}
+                                            <Paragraph>{getModeTranslation(mode)}</Paragraph>
                                         </FloatingButton>
                                     </div>
                                 </div>
