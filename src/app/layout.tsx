@@ -1,4 +1,5 @@
 import '@/app/globals.css'
+import 'mapbox-gl/dist/mapbox-gl.css'
 import { EnturToastProvider } from './providers/toastProvider'
 import { LoginProvider } from './providers/loginProvider'
 

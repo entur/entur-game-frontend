@@ -65,7 +65,7 @@ export default function GamePage(): JSX.Element {
                                     />
                                 </GridItem>
                                 <GridItem small={4} className="grid-demo-item">
-                                    <Map />
+                                    <Map event={event} />
                                 </GridItem>
                             </GridContainer>
                         </div>
