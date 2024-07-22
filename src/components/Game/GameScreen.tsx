@@ -264,7 +264,7 @@ function GameScreen({
                     <TravelLegFinished endLocation={endLocation} />
                 </div>
                 <SecondaryButton
-                    className="bg-lavender hover:bg-blue-80 sm:mt-28 mt-10 mb-10 sm:place-self-start place-self-center"
+                    className="bg-blue-20 hover:bg-blue-80 sm:mt-28 mt-10 mb-10 sm:place-self-start place-self-center"
                     onClick={() => router.push('/')}
                 >
                     Avslutt reise
