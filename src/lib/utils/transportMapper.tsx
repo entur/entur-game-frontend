@@ -14,17 +14,17 @@ import { LegLine } from '@entur/travel'
 export function getModeIcon(mode: QueryMode): JSX.Element | null {
     switch (mode) {
         case 'foot':
-            return <WalkIcon />
+            return <WalkIcon size={20} />
         case 'bus':
-            return <BusIcon />
+            return <BusIcon size={24} />
         case 'tram':
-            return <TramIcon />
+            return <TramIcon size={24} />
         case 'rail':
-            return <TrainIcon />
+            return <TrainIcon size={24} />
         case 'metro':
-            return <MetroIcon />
+            return <MetroIcon size={24} />
         case 'water':
-            return <FerryIcon />
+            return <FerryIcon size={24} />
         default:
             return null
     }

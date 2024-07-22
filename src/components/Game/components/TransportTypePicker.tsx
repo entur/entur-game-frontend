@@ -90,7 +90,7 @@ function TransportTypePicker({
                                             disabled={disabled || isLoading}
                                         >
                                             {getModeIcon(mode)}
-                                            <Paragraph>
+                                            <Paragraph className="pt-1 pb-0">
                                                 {getModeTranslation(mode)}
                                             </Paragraph>
                                         </FloatingButton>
@@ -108,8 +108,10 @@ function TransportTypePicker({
                                         onClick={() => wait()}
                                         disabled={isLoading} //TODO: sjekk når sleep skal være disabled, og de andre også for den sagt skyld
                                     >
-                                        <SleepIcon />
-                                        Vent 6 timer
+                                        <SleepIcon size={20} />
+                                        <Paragraph className="pt-1 pb-0">
+                                            Vent 6 timer
+                                        </Paragraph>
                                     </FloatingButton>
                                 </div>
                             </div>
