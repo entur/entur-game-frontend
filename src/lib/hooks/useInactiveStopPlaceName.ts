@@ -16,7 +16,6 @@ export const useInactiveStopPlaces = () => {
         const fetchEvents = async () => {
             try {
                 const inactiveEvents = await getInactiveEvents()
-                console.log('Inactive events fetched:', inactiveEvents)
                 if (!inactiveEvents) {
                     setError('Failed to fetch inactive events')
                     return
