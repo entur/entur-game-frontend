@@ -26,7 +26,6 @@ function FromAndToTitle({ className, event, startTime }: Props): ReactElement {
                 </Heading2>
             </div>
             <Heading3 margin="none">{formatDate(startTime)}</Heading3>
-            <Heading3 margin="none">Hvordan vil du starte?</Heading3>
         </div>
     )
 }

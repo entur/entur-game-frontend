@@ -167,6 +167,26 @@ export async function createEvent(
     }
 }
 
+export async function deleteEvent(eventId: number): Promise<Result<string>> {
+    try {
+        const response = await fetch(`${baseUrl}/${eventId}`, {
+            method: 'DELETE',
+        })
+
+        if (!response.ok) {
+            return {
+                success: false,
+                error: `Error: ${response.status} - ${response.statusText}`,
+            }
+        }
+
+        const data = await response.text()
+        return { success: true, data }
+    } catch (error) {
+        return { success: false, error: 'Network error' }
+    }
+}
+
 export async function getTripLocations(
     eventName: string,
 ): Promise<Result<{ startLocationName: string; endLocationNames: string[] }>> {
