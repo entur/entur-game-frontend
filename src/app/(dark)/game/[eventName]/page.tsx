@@ -10,7 +10,7 @@ import { getEventByEventName, Result } from '@/lib/api/eventApi'
 import { Event } from '@/lib/types/types'
 import useSWR from 'swr'
 import { Contrast } from '@entur/layout'
-import { VictoryScreen } from '@/components/Game/VictoryScreen/VictoryScreen'
+import CongratulationsScreen from '@/components/Game/VictoryScreen/CongratulationsScreen'
 
 export default function GamePage(): JSX.Element {
     const [numLegs, setNumLegs] = useState<number>(0)
@@ -64,13 +64,14 @@ export default function GamePage(): JSX.Element {
                     </div>
                 </Contrast>
             ) : isVictory ? (
-                <div className="app" style={{ maxWidth: '800px' }}>
-                    <VictoryScreen
+                <div className="app">
+                    <CongratulationsScreen></CongratulationsScreen>
+                    {/* <VictoryScreen
                         event={event}
                         numLegs={numLegs}
                         currentTime={currentTime}
                         startTime={startTime}
-                    />
+                    /> */}
                 </div>
             ) : (
                 event && (
