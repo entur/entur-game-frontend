@@ -35,15 +35,11 @@ export const AdminNavBar: React.FC = () => {
             >
                 Tidligere spill
             </TopNavigationItem>
-            <IconButton className="flex gap-2" onClick={logout}>
-                <UserIcon className="inline align-baseline" />
-                Logg ut
-            </IconButton>
         </>
     )
     return (
         <div className={`${isLandingPage ? 'bg-blue-main' : 'bg-white'}`}>
-            <div className="flex min-w-full items-center pt-10 pl-5 ">
+            <div className="flex items-center pt-10 pl-5 ">
                 <Link href="/admin" className="mr-7">
                     <Image
                         className="cursor-pointer"
@@ -59,6 +55,12 @@ export const AdminNavBar: React.FC = () => {
                         navigationBar
                     )}
                 </nav>
+                <div className="ml-auto pr-5">
+                    <Button variant={'primary'} onClick={logout}>
+                        <UserIcon className="inline align-baseline" />
+                        Logg ut
+                    </Button>
+                </div>
             </div>
         </div>
     )
