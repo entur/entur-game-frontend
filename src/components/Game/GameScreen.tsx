@@ -16,7 +16,6 @@ import { DepartureAndOnLinePickerModal } from './components/DepartureAndOnLinePi
 import { isTruthy } from '@/lib/utils/isTruthy'
 import { TravelLegFinished } from './components/TravelLegFinished'
 import DeadScreen from './DeadScreen'
-import { VictoryScreen } from './VictoryScreen/VictoryScreen'
 import { Modal } from '@entur/modal'
 import { Contrast } from '@entur/layout'
 
@@ -32,7 +31,6 @@ type Props = {
     setCurrentTime: React.Dispatch<React.SetStateAction<Date>>
     maxTime: number
     setUsedTime: React.Dispatch<React.SetStateAction<number>>
-    numLegs: number
     setNumLegs: React.Dispatch<React.SetStateAction<number>>
     setVictory: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -43,7 +41,6 @@ function GameScreen({
     startTime,
     currentTime,
     setCurrentTime,
-    numLegs,
     setNumLegs,
     setUsedTime,
     setVictory,
@@ -211,16 +208,6 @@ function GameScreen({
 
     if (endLocation.some((sp) => sp.id === startLocation.id)) {
         setVictory(true)
-        return (
-            <div className="app" style={{ maxWidth: '800px' }}>
-                <VictoryScreen
-                    event={event}
-                    numLegs={numLegs}
-                    currentTime={currentTime}
-                    startTime={startTime}
-                />
-            </div>
-        )
     }
 
     if (isDead) {

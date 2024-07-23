@@ -90,7 +90,6 @@ export default function GamePage(): JSX.Element {
                                 setCurrentTime={setCurrentTime}
                                 maxTime={maxTime}
                                 setUsedTime={setUsedTime}
-                                numLegs={numLegs}
                                 setNumLegs={setNumLegs}
                                 setVictory={setVictory}
                             />
