@@ -54,8 +54,8 @@ export default function AdminPage(): JSX.Element | null {
                 </div>
                 <div className="flex flex-col mt-20">
                     <Heading2>Tidligere spill</Heading2>
-                    <InactiveEvent />
-                    <InactiveEvent />
+                    <InactiveEvent eventName="Hei" />
+                    <InactiveEvent eventName="På deg" />
                 </div>
             </div>
         </div>
