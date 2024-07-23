@@ -146,11 +146,6 @@ function GameScreen({
     }
 
     const selectMode = (newMode: QueryMode) => {
-        if (!startLocation) {
-            console.error('startLocation is null')
-            return
-        }
-
         setMode(newMode)
         setLoading(true)
 

@@ -33,9 +33,7 @@ export default function GamePage(): JSX.Element {
         ? Math.ceil((3 * event.optimalTravelTime) / (60 * 60)) * 1000 * 60 * 60
         : null
 
-    const [startLocation, setStartLocation] = useState<StopPlace | undefined>(
-        undefined,
-    )
+    const [startLocation, setStartLocation] = useState<StopPlace | undefined>()
 
     useEffect(() => {
         if (event?.startLocation) {
