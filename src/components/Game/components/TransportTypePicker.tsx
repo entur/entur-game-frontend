@@ -18,7 +18,6 @@ type Props = {
     selectMode: (mode: QueryMode) => void
     wait: () => void
     stopPlace: StopPlace
-    firstMove: boolean
     availableModes: QueryMode[]
     availableModesError: boolean
 }
@@ -31,7 +30,6 @@ function TransportTypePicker({
     selectMode,
     wait,
     stopPlace,
-    firstMove,
     availableModes,
     availableModesError,
 }: Props): ReactElement {
@@ -98,24 +96,22 @@ function TransportTypePicker({
                                 </div>
                             )
                         })}
-                        {!firstMove && (
-                            <div className="bg-blue-20 border-0 ml-1 mr-2 mt-3 w-38 h-10 rounded-3xl sm:text-lg select-none">
-                                <div className="bg-blue-20 border-0">
-                                    <FloatingButton
-                                        size="medium"
-                                        className="bg-blue-80 text-blue-main hover:bg-white"
-                                        aria-label="Vent 6 timer"
-                                        onClick={() => wait()}
-                                        disabled={isLoading} //TODO: sjekk når sleep skal være disabled, og de andre også for den sagt skyld
-                                    >
-                                        <SleepIcon size={20} />
-                                        <Paragraph className="pt-1 pb-0">
-                                            Vent 6 timer
-                                        </Paragraph>
-                                    </FloatingButton>
-                                </div>
+                        <div className="bg-blue-20 border-0 ml-1 mr-2 mt-3 w-38 h-10 rounded-3xl sm:text-lg select-none">
+                            <div className="bg-blue-20 border-0">
+                                <FloatingButton
+                                    size="medium"
+                                    className="bg-blue-80 text-blue-main hover:bg-white"
+                                    aria-label="Vent 6 timer"
+                                    onClick={() => wait()}
+                                    disabled={isLoading} //TODO: sjekk når sleep skal være disabled, og de andre også for den sagt skyld
+                                >
+                                    <SleepIcon size={20} />
+                                    <Paragraph className="pt-1 pb-0">
+                                        Vent 6 timer
+                                    </Paragraph>
+                                </FloatingButton>
                             </div>
-                        )}
+                        </div>
                     </>
                 </ChoiceChipGroup>
             )}
