@@ -12,9 +12,10 @@ type Props = {
 }
 
 export default function TravelLeg({ leg, index, array }: Props) {
+    const isLastLeg = index === array.length - 1
     return (
-        <li className="flex-grow">
-            {index === array.length - 1 ? (
+        <li className={isLastLeg ? `flex-grow` : ''}>
+            {isLastLeg ? (
                 <>
                     {leg.line ? (
                         <div className="flex items-center">
