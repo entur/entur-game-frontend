@@ -11,7 +11,7 @@ import { Button, SecondaryButton } from '@entur/button'
 import { DeleteIcon } from '@entur/icons'
 import { useRouter } from 'next/navigation'
 import { Modal } from '@entur/modal'
-import { getEventByEventName } from '@/lib/api/eventApi'
+import { getEventByEventName, getEventById } from '@/lib/api/eventApi'
 import { TravelHeader } from '@entur/travel'
 import { useInactiveStopPlaces } from '@/lib/hooks/useInactiveStopPlaceName'
 
@@ -29,6 +29,7 @@ const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
     const [scores, setScores] = useState<PlayerScore[]>([])
     const [leader, setLeader] = useState<PlayerScore | null>(null)
     const [showAlert, setShowAlert] = useState<boolean>(false)
+    const [eventName, setEventName] = useState<string | null>(null)
     const [currentPage, setPage] = useState(1)
     const [isOpen, setOpen] = useState<boolean>(false)
     const [results, setResults] = useState(10)
@@ -54,6 +55,12 @@ const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
                 setLeader(sortedScores[0])
                 setShowAlert(false)
             }
+            const eventResponse = await getEventById(eventIdNumber)
+            if (eventResponse.success && eventResponse.data) {
+                setEventName(eventResponse.data.eventName)
+            } else {
+                console.error('Failed to fetch event details')
+            }
         } catch (error) {
             console.error('Error fetching scores:', error)
         }
@@ -65,24 +72,24 @@ const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
         }
     }, [eventId])
 
-    // if (eventName === null) {
-    //     return (
-    //         <div className="max-w-screen mx-56 p-4">
-    //             <BlockquoteFooter>Ledertavle</BlockquoteFooter>
-    //             <Loader>Laster...</Loader>
-    //         </div>
-    //     )
-    // }
+    if (eventName === null) {
+        return (
+            <div className="max-w-screen mx-56 p-4">
+                <BlockquoteFooter>Ledertavle</BlockquoteFooter>
+                <Loader>Laster...</Loader>
+            </div>
+        )
+    }
 
     return (
         <div className="flex flex-col mx-40">
             <div className="flex flex-col pb-4 mt-16">
                 <BlockquoteFooter>Ledertavle</BlockquoteFooter>
-                <Heading1>Reise</Heading1>
+                <Heading1>{eventName}</Heading1>
                 <LeadParagraph margin="bottom">
                     Se resultater fra avsluttet spill
                 </LeadParagraph>
-                <div className="flex gap-6 mb-32">
+                <div className="flex gap-6 mb-20">
                     <Button variant="negative">
                         <DeleteIcon className="inline align-baseline" />
                         Slett spill
@@ -95,7 +102,7 @@ const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
                 currentPage={currentPage}
                 results={results}
             ></Leaderboard>
-            <div className="pt-12">
+            <div className="pt-12 mb-12">
                 <Pagination
                     pageCount={pageCount}
                     currentPage={currentPage}

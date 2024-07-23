@@ -1,11 +1,6 @@
 'use client'
 import { Heading1, LeadParagraph } from '@entur/typography'
 import InactiveEventsList from '../components/InactiveEventsList'
-import { useEffect, useState } from 'react'
-import { PlayerScore } from '@/lib/types/types'
-import { getScoresEventId } from '@/lib/api/scoreApi'
-import { useEventName } from '@/lib/hooks/useEventName'
-import { getEventByEventName } from '@/lib/api/eventApi'
 
 const InactiveEventsPage: React.FC = (): JSX.Element => {
     return (
