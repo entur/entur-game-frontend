@@ -19,7 +19,11 @@ import { BlockquoteFooter } from '@entur/typography'
 import { DatePicker, TimePicker, ZonedDateTime } from '@entur/datepicker'
 import { NormalizedDropdownItemType, SearchableDropdown } from '@entur/dropdown'
 import { now } from '@internationalized/date'
-import { BackendEvent, isTripInfoVariables } from '@/lib/types/types'
+import {
+    BackendEvent,
+    isTripInfoVariables,
+    TripQueryVariables,
+} from '@/lib/types/types'
 import { useRouter } from 'next/navigation'
 import { useToast } from '@entur/alert'
 import { createEvent } from '@/lib/api/eventApi'
@@ -62,7 +66,7 @@ export default function AdminCreateJourney() {
         }
         setLoading(true)
 
-        const variables = {
+        const variables: TripQueryVariables = {
             from: {
                 name: selectedStart?.label,
                 place: selectedStart?.value,
@@ -72,13 +76,18 @@ export default function AdminCreateJourney() {
                 place: selectedGoal?.value,
             },
             dateTime: formattedDateTime,
-            modes: [
-                { transportMode: 'bus' },
-                { transportMode: 'tram' },
-                { transportMode: 'rail' },
-                { transportMode: 'metro' },
-                { transportMode: 'water' },
-            ],
+            numTripPatterns: 1,
+            modes: {
+                accessMode: 'foot',
+                egressMode: 'foot',
+                transportModes: [
+                    { transportMode: 'bus' },
+                    { transportMode: 'tram' },
+                    { transportMode: 'rail' },
+                    { transportMode: 'metro' },
+                    { transportMode: 'water' },
+                ],
+            },
         }
 
         const eventName = `${selectedStart?.label} - ${selectedGoal?.label}`
@@ -123,16 +132,21 @@ export default function AdminCreateJourney() {
             place: selectedGoal?.value,
         },
         dateTime: formattedDateTime,
-        modes: [
-            { transportMode: 'bus' },
-            { transportMode: 'tram' },
-            { transportMode: 'rail' },
-            { transportMode: 'metro' },
-            { transportMode: 'water' },
-        ],
+        numTripPatterns: 1,
+        modes: {
+            accessMode: 'foot',
+            egressMode: 'foot',
+            transportModes: [
+                { transportMode: 'bus' },
+                { transportMode: 'tram' },
+                { transportMode: 'rail' },
+                { transportMode: 'metro' },
+                { transportMode: 'water' },
+            ],
+        },
     }
 
-    const { data } = useSWR(
+    const { data, isLoading, error } = useSWR(
         selectedStart && selectedGoal && formattedDateTime
             ? [
                   '/journey-planner',
@@ -236,6 +250,8 @@ export default function AdminCreateJourney() {
                 <RouteSuggestion
                     suggestedTripData={data?.data?.trip}
                     startLocationName={selectedStart?.label}
+                    isLoading={isLoading}
+                    error={error}
                 />
                 <ButtonGroup className="flex mt-20">
                     <SecondaryButton
