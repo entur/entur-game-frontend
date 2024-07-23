@@ -27,6 +27,7 @@ export interface StopAndTime {
 
 type Props = {
     event: Event
+    startTime: Date
     maxTime: number
     setUsedTime: React.Dispatch<React.SetStateAction<number>>
     numLegs: number
@@ -38,6 +39,7 @@ function GameScreen({
     event,
     numLegs,
     setNumLegs,
+    startTime,
     maxTime,
     setUsedTime,
     setVictory,
@@ -65,15 +67,6 @@ function GameScreen({
     const { getWalkableStopPlaces, getDepartures, getStopsOnLine } =
         useEnturService()
 
-    const eventStartDate = new Date(
-        Number(event.startTime[0]),
-        Number(event.startTime[1]) - 1,
-        Number(event.startTime[2]),
-        Number(event.startTime[3]),
-        Number(event.startTime[4]),
-    )
-
-    const [startTime, setStartTime] = useState<Date>(eventStartDate)
     const [currentTime, setCurrentTime] = useState<Date>(startTime)
     // TravelLegStart states
     const [travelLegsMode, setTravelLegsMode] = useState<QueryMode[]>([])
@@ -86,7 +79,6 @@ function GameScreen({
         setStartLocation(event.startLocation)
         setTravelLegs([event.startLocation])
         setEndLocation(event.endLocation)
-        setStartTime(eventStartDate)
         fetchAvailableModes(event.startLocation)
     }, [event])
 
