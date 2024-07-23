@@ -26,14 +26,13 @@ export interface StopAndTime {
 }
 
 type Props = {
-    name: string
     event: Event
     startTimer: number
-    handleWinner: () => void
     maxTime: number
     setUsedTime: React.Dispatch<React.SetStateAction<number>>
     numLegs: number
     setNumLegs: React.Dispatch<React.SetStateAction<number>>
+    setVictory: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 function GameScreen({
@@ -41,10 +40,9 @@ function GameScreen({
     numLegs,
     setNumLegs,
     startTimer,
-    handleWinner,
     maxTime,
     setUsedTime,
-    name,
+    setVictory,
 }: Props): ReactElement {
     const router = useRouter()
     const [isLoading, setLoading] = useState<boolean>(false)
@@ -219,11 +217,10 @@ function GameScreen({
     }
 
     if (endLocation.some((sp) => sp.id === startLocation.id)) {
-        handleWinner()
+        setVictory(true)
         return (
             <div className="app" style={{ maxWidth: '800px' }}>
                 <VictoryScreen
-                    name={name}
                     event={event}
                     endLocation={endLocation}
                     numLegs={numLegs}

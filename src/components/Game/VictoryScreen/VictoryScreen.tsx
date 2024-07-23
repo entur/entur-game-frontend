@@ -21,7 +21,6 @@ import { SmallAlertBox, useToast } from '@entur/alert'
 import { Contrast } from '@entur/layout'
 
 type Props = {
-    name: string
     event: Event
     endLocation: StopPlace[]
     numLegs: number
@@ -38,7 +37,6 @@ type FormValues = {
 }
 
 export function VictoryScreen({
-    name = '',
     event,
     numLegs,
     currentTime,
@@ -56,7 +54,7 @@ export function VictoryScreen({
         setValue,
         getValues,
     } = useForm<FormValues>({
-        defaultValues: { name: name, email: '', consent: false },
+        defaultValues: { name: '', email: '', consent: false },
     })
     const router = useRouter()
     const [isError, setError] = useState<boolean>(false)

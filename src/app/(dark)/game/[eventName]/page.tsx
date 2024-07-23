@@ -9,12 +9,14 @@ import GameNavBar from '@/components/NavBar/GameNavBar'
 import { getEventByEventName, Result } from '@/lib/api/eventApi'
 import { Event } from '@/lib/types/types'
 import useSWR from 'swr'
+import { Contrast } from '@entur/layout'
 
 export default function GamePage(): JSX.Element {
     const [startTimer] = useState<number>(Date.now())
     const [numLegs, setNumLegs] = useState<number>(0)
     const [usedTime, setUsedTime] = useState<number>(0)
     const { eventName }: { eventName: string } = useParams()
+    const [isVictory, setVictory] = useState<boolean>(false)
 
     const {
         data: eventResult,
@@ -32,11 +34,19 @@ export default function GamePage(): JSX.Element {
     return (
         <>
             {isLoading ? (
-                <Loader>Laster inn spill...</Loader>
+                <Contrast>
+                    <Loader>Laster inn spill...</Loader>
+                </Contrast>
             ) : eventError || !event || !maxTime ? (
-                <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
-                    <Heading1>Spill ikke funnet</Heading1>
-                </div>
+                <Contrast>
+                    <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
+                        <Heading1>Spill ikke funnet</Heading1>
+                    </div>
+                </Contrast>
+            ) : isVictory ? (
+                <Contrast>
+                    <Heading1>Vinner</Heading1>
+                </Contrast>
             ) : (
                 event && (
                     <main className="flex flex-col">
@@ -49,15 +59,13 @@ export default function GamePage(): JSX.Element {
                         </div>
                         <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
                             <Game
-                                name={''}
                                 event={event}
                                 startTimer={startTimer}
-                                // eslint-disable-next-line @typescript-eslint/no-empty-function
-                                handleWinner={() => {}}
                                 maxTime={maxTime}
                                 setUsedTime={setUsedTime}
                                 numLegs={numLegs}
                                 setNumLegs={setNumLegs}
+                                setVictory={setVictory}
                             />
                         </div>
                     </main>
