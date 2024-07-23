@@ -1,7 +1,7 @@
 'use client'
 
 import { Heading1, Heading2, Paragraph } from '@entur/typography'
-import { AddIcon, ExternalIcon } from '@entur/icons'
+import { AddIcon, ExternalIcon, ValidationInfoFilledIcon } from '@entur/icons'
 import { Contrast, NavigationCard } from '@entur/layout'
 import BackgroundAdmin from '@/lib/assets/images/BackgroundAdmin.svg'
 import Image from 'next/image'
@@ -20,11 +20,9 @@ export default function AdminPage(): JSX.Element | null {
     return (
         <div>
             <Contrast>
-                <div className="flex flex-col pt-12 pl-44 pb-12">
-                    <Heading1 margin="top">
-                        Sett opp og kontrollér spillet herfra
-                    </Heading1>
-                </div>
+                <Heading1 margin="top" className="pt-12 pl-44 pb-12">
+                    Sett opp og kontrollér spillet herfra
+                </Heading1>
             </Contrast>
             <Image className="w-full" src={BackgroundAdmin} alt="background" />
             <div className="flex flex-col p-12 ml-20">
@@ -48,17 +46,30 @@ export default function AdminPage(): JSX.Element | null {
                         </div>
                     </SecondaryButton>
                 </div>
-                <div className="flex flex-col max-w-md mt-10 gap-2">
-                    <Button variant={'primary'} className="max-w-60">
-                        Trekk vinner og avslutt spill
-                    </Button>
-                    <Paragraph className="mt-2">
-                        Når du trykker på knappen, trekkes en tilfeldig vinner
-                        blant spillerne med høyest poengsum.
-                    </Paragraph>
-                </div>
-                <div className="mt-8">
-                    <CompactLeaderboardPage />
+                <div className="flex mt-10 gap-16">
+                    <div className="min-w-[848px]">
+                        <CompactLeaderboardPage />
+                    </div>
+                    <div className="flex flex-col max-w-md justify-items-end">
+                        <Button
+                            variant={'success'}
+                            size="large"
+                            className="max-w-[250px]"
+                        >
+                            Trekk vinner og avslutt spill
+                        </Button>
+                        <Paragraph margin="none" className="mt-2">
+                            Vinneren trekkes tilfeldig blant spillerne med
+                            høyest poengsum.
+                        </Paragraph>
+                        <Button
+                            variant="secondary"
+                            size="large"
+                            className="max-w-[250px] mt-6"
+                        >
+                            Avslutt spill
+                        </Button>
+                    </div>
                 </div>
                 <div className="flex flex-col mt-20">
                     <Heading2>Tidligere spill</Heading2>
