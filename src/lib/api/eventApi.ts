@@ -20,6 +20,39 @@ export async function getActiveEvent(): Promise<BackendEvent | null> {
     return response.json()
 }
 
+export async function getInactiveEvents(): Promise<BackendEvent[] | null> {
+    try {
+        const response = await fetch(`${baseUrl}/event/inactive`)
+
+        if (!response.ok) {
+            console.error(
+                `Failed to fetch inactive events: ${response.status} ${response.statusText}`,
+            )
+            return null
+        }
+
+        const data = await response.json()
+        return data
+    } catch (error) {
+        return null
+    }
+}
+
+export async function getEventById(
+    eventId: number,
+): Promise<Result<BackendEvent | null>> {
+    try {
+        const response = await fetch(`${baseUrl}/event/inactive/${eventId}`)
+        if (response.status !== 200) {
+            return { success: false, error: 'Failed to fetch event' }
+        }
+        const data = await response.json()
+        return { success: true, data }
+    } catch (error) {
+        return { success: false, error: 'Network error' }
+    }
+}
+
 export async function updateActiveEvent(gameId: number): Promise<Event> {
     const response = await fetch(`${baseUrl}/event/active/${gameId}`, {
         method: 'PUT',
@@ -151,5 +184,28 @@ export async function deleteEvent(eventId: number): Promise<Result<string>> {
         return { success: true, data }
     } catch (error) {
         return { success: false, error: 'Network error' }
+    }
+}
+
+export async function getTripLocations(
+    eventName: string,
+): Promise<Result<{ startLocationName: string; endLocationNames: string[] }>> {
+    const eventResult = await getEventByEventName(eventName)
+
+    if (!eventResult.success) {
+        return { success: false, error: eventResult.error }
+    }
+
+    const event = eventResult.data
+
+    const startLocationName = event.startLocation.name
+    const endLocationNames = event.endLocation.map((location) => location.name)
+
+    return {
+        success: true,
+        data: {
+            startLocationName,
+            endLocationNames,
+        },
     }
 }

@@ -1,24 +1,28 @@
 'use client'
 
 import { Heading1, Heading2, Paragraph } from '@entur/typography'
-import { AddIcon } from '@entur/icons'
+import { AddIcon, ExternalIcon, ValidationInfoFilledIcon } from '@entur/icons'
 import { Contrast, NavigationCard } from '@entur/layout'
-import { CopyableText } from '@entur/alert'
 import BackgroundAdmin from '@/lib/assets/images/BackgroundAdmin.svg'
 import Image from 'next/image'
-import { Button } from '@entur/button'
+import { Button, SecondaryButton } from '@entur/button'
 import CompactLeaderboardPage from './components/CompactLeaderboard'
-import InactiveEvent from './components/InactiveEvents'
+import { useRouter } from 'next/navigation'
+import InactiveEventsList from './components/InactiveEventsList'
 
 export default function AdminPage(): JSX.Element | null {
+    const router = useRouter()
+
+    const handleOnClick = () => {
+        router.push('/')
+    }
+
     return (
         <div>
             <Contrast>
-                <div className="flex flex-col pt-12 pl-44 pb-12">
-                    <Heading1 margin="top">
-                        Sett opp og kontrollér spillet herfra
-                    </Heading1>
-                </div>
+                <Heading1 margin="top" className="pt-12 pl-44 pb-12">
+                    Sett opp og kontrollér spillet herfra
+                </Heading1>
             </Contrast>
             <Image className="w-full" src={BackgroundAdmin} alt="background" />
             <div className="flex flex-col p-12 ml-20">
@@ -29,33 +33,47 @@ export default function AdminPage(): JSX.Element | null {
                     href="http://localhost:3000/admin/create-game"
                     compact
                 ></NavigationCard>
-                <div className="flex mt-20 gap-6">
+                <div className="flex mt-20 gap-4 ">
                     <Heading2 margin="none">Aktivt spill</Heading2>
-                    <CopyableText
-                        className="max-w-96"
-                        successHeading="Lenke kopiert!"
-                        successMessage=" "
-                        textToCopy="localhost:3000"
+                    <SecondaryButton
+                        className="max-w-60 inline align-baseline"
+                        width="auto"
+                        size="small"
+                        onClick={handleOnClick}
                     >
-                        Trykk her for å kopiere lenken!
-                    </CopyableText>
+                        <div className="flex gap-2 justify-center">
+                            Til spillet! <ExternalIcon />
+                        </div>
+                    </SecondaryButton>
                 </div>
-                <div className="flex flex-col max-w-md mt-10">
-                    <Button variant={'primary'} className="max-w-60">
-                        Trekk vinner og avslutt spill
-                    </Button>
-                    <Paragraph className="mt-2">
-                        Når du trykker på knappen, trekkes en tilfeldig vinner
-                        blant spillerne med høyest poengsum.
-                    </Paragraph>
-                </div>
-                <div className="mt-8">
-                    <CompactLeaderboardPage />
+                <div className="flex mt-10 gap-16">
+                    <div className="min-w-[848px]">
+                        <CompactLeaderboardPage />
+                    </div>
+                    <div className="flex flex-col max-w-md justify-items-end">
+                        <Button
+                            variant={'success'}
+                            size="large"
+                            className="max-w-[250px]"
+                        >
+                            Trekk vinner og avslutt spill
+                        </Button>
+                        <Paragraph margin="none" className="mt-2">
+                            Vinneren trekkes tilfeldig blant spillerne med
+                            høyest poengsum.
+                        </Paragraph>
+                        <Button
+                            variant="secondary"
+                            size="large"
+                            className="max-w-[250px] mt-6"
+                        >
+                            Avslutt spill
+                        </Button>
+                    </div>
                 </div>
                 <div className="flex flex-col mt-20">
                     <Heading2>Tidligere spill</Heading2>
-                    <InactiveEvent />
-                    <InactiveEvent />
+                    <InactiveEventsList />
                 </div>
             </div>
         </div>
