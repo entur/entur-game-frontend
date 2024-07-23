@@ -30,7 +30,7 @@ export const AdminNavBar: React.FC = () => {
                 Aktivt spill
             </TopNavigationItem>
             <TopNavigationItem
-                active={path.endsWith('/leaderboard')}
+                active={path.endsWith('/previous-events')}
                 href="/admin/previous-events"
             >
                 Tidligere spill
