@@ -31,7 +31,7 @@ const CompactLeaderboardPage: React.FC = (): JSX.Element => {
     }, [])
 
     return (
-        <div className="max-w-4xl">
+        <div>
             <div className="flex flex-col pb-4">
                 <div className="bg-white rounded shadow-md p-6">
                     {isEventNameError ? (
