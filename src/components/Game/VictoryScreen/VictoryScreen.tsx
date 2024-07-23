@@ -26,7 +26,6 @@ type Props = {
     numLegs: number
     currentTime: Date
     startTime: Date
-    startTimer: number
 }
 
 type FormValues = {
@@ -41,7 +40,6 @@ export function VictoryScreen({
     numLegs,
     currentTime,
     startTime,
-    startTimer,
 }: Props): ReactElement {
     const { addToast } = useToast()
 
@@ -92,7 +90,7 @@ export function VictoryScreen({
                     formatIntervalToSeconds(currentTime, startTime)),
             totalStepNumber: numLegs,
             totalTravelTime: formatIntervalToSeconds(currentTime, startTime),
-            totalPlayTime: Math.trunc((Date.now() - startTimer) / 1000),
+            totalPlayTime: 0,
             player: newPlayer,
             event: backendEvent,
         }
