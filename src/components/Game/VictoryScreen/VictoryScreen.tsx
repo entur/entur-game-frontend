@@ -37,11 +37,10 @@ export function VictoryScreen({
     const { addToast } = useToast()
 
     const {
-        formState: { errors, isLoading, isSubmitting, isValid },
+        formState: { errors, isLoading, isSubmitting },
         control,
         register,
         handleSubmit,
-        watch,
         setValue,
         getValues,
     } = useForm<FormValues>({
@@ -244,26 +243,19 @@ export function VictoryScreen({
                                 </Label>
                             </div>
                         </div>
-
                         <div className="flex flex-row mt-4 gap-4">
-                            <PrimaryButton
-                                className={`select-none ${
-                                    watch('consent') && 'bg-blue-main'
-                                }`}
+                            <SecondaryButton
                                 loading={isSubmitting || isLoading}
-                                disabled={!watch('consent') && !isValid}
+                                onClick={() => router.push('/')}
+                            >
+                                Avbryt
+                            </SecondaryButton>
+                            <PrimaryButton
+                                loading={isSubmitting || isLoading}
                                 type="submit"
                             >
                                 Lagre poengsum
                             </PrimaryButton>
-                            <SecondaryButton
-                                className="bg-lavender select-none"
-                                loading={isSubmitting || isLoading}
-                                disabled={watch('consent')}
-                                onClick={() => router.push('/')}
-                            >
-                                Avslutt reise
-                            </SecondaryButton>
                         </div>
                         {isError && (
                             <SmallAlertBox

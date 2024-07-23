@@ -26,10 +26,10 @@ export interface StopAndTime {
 
 type Props = {
     event: Event
+    maxTime: number
     startTime: Date
     currentTime: Date
     setCurrentTime: React.Dispatch<React.SetStateAction<Date>>
-    maxTime: number
     setUsedTime: React.Dispatch<React.SetStateAction<number>>
     setNumLegs: React.Dispatch<React.SetStateAction<number>>
     setVictory: React.Dispatch<React.SetStateAction<boolean>>

@@ -85,10 +85,10 @@ export default function GamePage(): JSX.Element {
                         <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
                             <Game
                                 event={event}
+                                maxTime={maxTime}
                                 startTime={startTime}
                                 currentTime={currentTime}
                                 setCurrentTime={setCurrentTime}
-                                maxTime={maxTime}
                                 setUsedTime={setUsedTime}
                                 setNumLegs={setNumLegs}
                                 setVictory={setVictory}
