@@ -2,18 +2,14 @@
 import { useEffect, useState } from 'react'
 import Leaderboard from '../../components/Leaderboard'
 import { PlayerScore } from '@/lib/types/types'
-import { useEventName } from '@/lib/hooks/useEventName'
 import { getScoresEventId } from '@/lib/api/scoreApi'
 import { Loader } from '@entur/loader'
 import { BlockquoteFooter, Heading1, LeadParagraph } from '@entur/typography'
 import { Pagination } from '@entur/menu'
 import { Button, SecondaryButton } from '@entur/button'
 import { DeleteIcon } from '@entur/icons'
-import { useRouter } from 'next/navigation'
 import { Modal } from '@entur/modal'
-import { getEventByEventName, getEventById } from '@/lib/api/eventApi'
-import { TravelHeader } from '@entur/travel'
-import { useInactiveStopPlaces } from '@/lib/hooks/useInactiveStopPlaceName'
+import { getEventById } from '@/lib/api/eventApi'
 
 interface LeaderboardPageProps {
     params: {
