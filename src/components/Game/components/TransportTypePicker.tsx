@@ -35,19 +35,23 @@ function TransportTypePicker({
 }: Props): ReactElement {
     return (
         <div className="bg-blue-20 text-white border-2 border-blue-20 shadow-sm rounded-sm pl-10 pb-8 pr-10">
-            <Heading2 className="text-white">
-                Velg transportmåte fra{' '}
-                <span className="text-coral">{stopPlace.name}</span>
-            </Heading2>
-            <Heading4 margin="none" className="text-white select-none">
-                Klokken er:{' '}
-                <span className="text-coral">
-                    {currentTime.toLocaleTimeString('nb-NO', {
-                        hour: '2-digit',
-                        minute: '2-digit',
-                    })}
-                </span>
-            </Heading4>
+            {stopPlace && (
+                <>
+                    <Heading2 className="text-white">
+                        Velg transportmåte fra{' '}
+                        <span className="text-coral">{stopPlace.name}</span>
+                    </Heading2>
+                    <Heading4 margin="none" className="text-white select-none">
+                        Klokken er:{' '}
+                        <span className="text-coral">
+                            {currentTime.toLocaleTimeString('nb-NO', {
+                                hour: '2-digit',
+                                minute: '2-digit',
+                            })}
+                        </span>
+                    </Heading4>
+                </>
+            )}
             {availableModesError ? (
                 <div className="text-red-500">
                     <SmallAlertBox variant="negative" width="fit-content">
@@ -103,7 +107,7 @@ function TransportTypePicker({
                                     className="bg-blue-80 text-blue-main hover:bg-white"
                                     aria-label="Vent 6 timer"
                                     onClick={() => wait()}
-                                    disabled={isLoading} //TODO: sjekk når sleep skal være disabled, og de andre også for den sagt skyld
+                                    disabled={isLoading}
                                 >
                                     <SleepIcon size={20} />
                                     <Paragraph className="pt-1 pb-0">

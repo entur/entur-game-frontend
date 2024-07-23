@@ -1,16 +1,22 @@
-import { Maybe, Trip } from '@/lib/types/types'
+import { isEmptyTrip, Maybe, Trip } from '@/lib/types/types'
 import { Heading3, Paragraph } from '@entur/typography'
 import { Badge } from '@entur/layout'
 import Route from '@/components/Admin/Route'
+import { Loader } from '@entur/loader'
+import { BannerAlertBox } from '@entur/alert'
 
 type Props = {
     suggestedTripData: Maybe<Trip>
     startLocationName: Maybe<string>
+    isLoading: boolean
+    error: Maybe<Error>
 }
 
 export default function RouteSuggestion({
     suggestedTripData,
     startLocationName,
+    isLoading,
+    error,
 }: Props) {
     return (
         <div>
@@ -21,11 +27,32 @@ export default function RouteSuggestion({
                     poengsum
                 </Paragraph>
             </div>
-            {suggestedTripData?.tripPatterns && startLocationName ? (
+            {isLoading ? (
+                <Loader>Laster inn rute...</Loader>
+            ) : error ? (
+                <BannerAlertBox
+                    className="w-fit"
+                    title="Error"
+                    variant="negative"
+                >
+                    En ukjent feil har oppstått
+                </BannerAlertBox>
+            ) : suggestedTripData &&
+              suggestedTripData?.tripPatterns?.length > 0 &&
+              startLocationName ? (
                 <Route
                     startLocationName={startLocationName}
                     suggestedTripData={suggestedTripData}
                 />
+            ) : isEmptyTrip(suggestedTripData) ? (
+                <BannerAlertBox
+                    className="w-fit"
+                    title="Ingen rute funnet"
+                    variant="negative"
+                >
+                    Ingen rute ble funnet i dette tidsrommet. Velg et annet
+                    tidspunkt for å opprette spill.
+                </BannerAlertBox>
             ) : (
                 <Badge variant="neutral" type="status">
                     Ingen rute valgt

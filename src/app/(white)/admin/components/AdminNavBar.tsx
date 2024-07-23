@@ -25,22 +25,20 @@ export const AdminNavBar: React.FC = () => {
             </TopNavigationItem>
             <TopNavigationItem
                 active={path.endsWith('/leaderboard')}
-                href="/admin/leaderboard" //TODO: endre til riktig page
+                href="/admin/leaderboard"
             >
                 Aktivt spill
             </TopNavigationItem>
             <TopNavigationItem
-                active={path.endsWith('/leaderboard')}
-                href="/admin/leaderboard" //TODO: endre til riktig page
+                active={path.endsWith('/previous-events')}
+                href="/admin/previous-events"
             >
                 Tidligere spill
             </TopNavigationItem>
         </>
     )
     return (
-        <div
-            className={`w-full ${isLandingPage ? 'bg-blue-main' : 'bg-white'}`}
-        >
+        <div className={`${isLandingPage ? 'bg-blue-main' : 'bg-white'}`}>
             <div className="flex items-center pt-10 pl-5 ">
                 <Link href="/admin" className="mr-7">
                     <Image

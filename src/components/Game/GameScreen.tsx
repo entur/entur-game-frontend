@@ -29,10 +29,14 @@ type Props = {
     maxTime: number
     startTime: Date
     currentTime: Date
+    startLocation: StopPlace
     setCurrentTime: React.Dispatch<React.SetStateAction<Date>>
     setUsedTime: React.Dispatch<React.SetStateAction<number>>
     setNumLegs: React.Dispatch<React.SetStateAction<number>>
     setVictory: React.Dispatch<React.SetStateAction<boolean>>
+    setStartLocation: React.Dispatch<
+        React.SetStateAction<StopPlace | undefined>
+    >
 }
 
 function GameScreen({
@@ -40,17 +44,16 @@ function GameScreen({
     maxTime,
     startTime,
     currentTime,
+    startLocation,
     setCurrentTime,
     setNumLegs,
     setUsedTime,
     setVictory,
+    setStartLocation,
 }: Props): ReactElement {
     const router = useRouter()
     const [isLoading, setLoading] = useState<boolean>(false)
     const [isDead, setDead] = useState<boolean>(false)
-    const [startLocation, setStartLocation] = useState<StopPlace>(
-        event.startLocation,
-    )
     const [endLocation, setEndLocation] = useState<StopPlace[]>(
         event.endLocation,
     )
@@ -133,29 +136,38 @@ function GameScreen({
     const selectMode = (newMode: QueryMode) => {
         setMode(newMode)
         setLoading(true)
+
         if (newMode === 'foot') {
-            setDepartures([]) // Reset departures before showing walkable stops
-            getWalkableStopPlaces(startLocation).then((stops) => {
-                setStopsOnLine(
-                    stops.map((stop) => ({
-                        stopPlace: stop,
-                        time: addMinutes(currentTime, 2),
-                    })),
-                )
-                setModalOpen(true)
-                setTravelLegsMode((prev) => [...prev, newMode])
-                setLoading(false)
-            })
+            setDepartures([])
+            getWalkableStopPlaces(startLocation)
+                .then((stops) => {
+                    setStopsOnLine(
+                        stops.map((stop) => ({
+                            stopPlace: stop,
+                            time: addMinutes(currentTime, 2),
+                        })),
+                    )
+                    setModalOpen(true)
+                    setTravelLegsMode((prev) => [...prev, newMode])
+                    setLoading(false)
+                })
+                .catch((error) => {
+                    console.error('Failed to get walkable stops:', error)
+                    setLoading(false)
+                })
         } else {
-            getDepartures(startLocation.id, newMode, currentTime).then(
-                (deps) => {
-                    setStopsOnLine([]) // Reset walkable stops before showing departures
+            getDepartures(startLocation.id, newMode, currentTime)
+                .then((deps) => {
+                    setStopsOnLine([])
                     setDepartures(deps)
                     setModalOpen(true)
                     setTravelLegsMode((prev) => [...prev, newMode])
                     setLoading(false)
-                },
-            )
+                })
+                .catch((error) => {
+                    console.error('Failed to get departures:', error)
+                    setLoading(false)
+                })
         }
     }
 
@@ -206,7 +218,7 @@ function GameScreen({
         setWaitModalIsOpen(true)
     }
 
-    if (endLocation.some((sp) => sp.id === startLocation.id)) {
+    if (startLocation && endLocation.some((sp) => sp.id === startLocation.id)) {
         setVictory(true)
     }
 
