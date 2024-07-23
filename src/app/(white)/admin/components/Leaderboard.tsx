@@ -36,11 +36,13 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
             </TableHead>
             <TableBody>
                 {scores.length === 0 ? (
-                    <DataCell colSpan={4}>
-                        <Badge variant="information" type="status">
-                            Ingen spillere ennå
-                        </Badge>
-                    </DataCell>
+                    <TableRow>
+                        <DataCell colSpan={4}>
+                            <Badge variant="information" type="status">
+                                Ingen spillere ennå
+                            </Badge>
+                        </DataCell>
+                    </TableRow>
                 ) : (
                     scores
                         .slice(

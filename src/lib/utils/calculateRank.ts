@@ -1,4 +1,4 @@
-import { PlayerScore, Score } from '@/lib/types/types'
+import { PlayerScore } from '@/lib/types/types'
 
 export const calculateRank = (
     currentPage: number,

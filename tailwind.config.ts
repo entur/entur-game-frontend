@@ -14,7 +14,9 @@ const config: Config = {
             'blue-40': colors.blues.blue40,
             'blue-50': colors.blues.blue50,
             'blue-60': colors.blues.blue60,
+            'blue-70': colors.blues.blue70,
             'blue-80': colors.blues.blue80,
+            'blue-90': colors.blues.blue90,
             white: colors.brand.white,
             black: colors.misc.black,
             coral: colors.brand.coral,
@@ -38,6 +40,7 @@ const config: Config = {
             'mint-contrast': colors.validation.mintContrast,
         },
         borderColor: {
+            'blue-20': colors.blues.blue20,
             'blue-60': colors.blues.blue60,
             white: colors.brand.white,
             coral: colors.brand.coral,

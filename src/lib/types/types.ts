@@ -70,7 +70,12 @@ export type TripQueryVariables = {
         place: string
     }
     dateTime: string
-    modes: { transportMode: string }[]
+    numTripPatterns: number
+    modes: {
+        accessMode: string
+        egressMode: string
+        transportModes: { transportMode: Mode }[]
+    }
 }
 
 type Line = {
@@ -105,6 +110,17 @@ export type TransportIconPickerProps = {
     transportType: string | undefined
 }
 
+// TODO: find how to change any, so that we can remove eslint-disabled
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function isEmptyTrip(obj: any): obj is Trip {
+    return (
+        obj !== null &&
+        typeof obj === 'object' &&
+        Array.isArray(obj.tripPatterns) // This checks for an array, empty or not
+    )
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function isTripInfoVariables(obj: any): obj is TripQueryVariables {
     return (
         obj &&
@@ -116,7 +132,16 @@ export function isTripInfoVariables(obj: any): obj is TripQueryVariables {
         typeof obj.to.name === 'string' &&
         typeof obj.to.place === 'string' &&
         typeof obj.dateTime === 'string' &&
-        Array.isArray(obj.modes) &&
-        obj.modes.every((mode: any) => typeof mode.transportMode === 'string')
+        typeof obj.numTripPatterns === 'number' &&
+        typeof obj.modes === 'object' &&
+        typeof obj.modes.accessMode === 'string' &&
+        typeof obj.modes.egressMode === 'string' &&
+        Array.isArray(obj.modes.transportModes) &&
+        obj.modes.transportModes.every(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (mode: any) =>
+                typeof mode === 'object' &&
+                typeof mode.transportMode === 'string',
+        )
     )
 }

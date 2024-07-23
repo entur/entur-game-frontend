@@ -2,7 +2,7 @@ import React from 'react'
 import { WalkIcon } from '@entur/icons'
 import { TravelLegProps, TravelTag } from '@entur/travel'
 import { Departure } from '@entur/sdk'
-import { Label } from '@entur/typography'
+import { Label, SubParagraph } from '@entur/typography'
 import { TransportIconPicker } from '@/lib/utils/transportMapper'
 
 type Props = {
@@ -36,7 +36,12 @@ export function TravelLegTag({
                             .transportMode
                     }
                 />
-                {usedDeparture?.serviceJourney.journeyPattern?.line.publicCode}
+                <SubParagraph className="pt-0.5 pb-0">
+                    {
+                        usedDeparture?.serviceJourney.journeyPattern?.line
+                            .publicCode
+                    }
+                </SubParagraph>
             </TravelTag>
         </div>
     )
