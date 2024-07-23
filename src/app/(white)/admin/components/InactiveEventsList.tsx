@@ -1,7 +1,6 @@
 'use client'
 import { getScoresEventId } from '@/lib/api/scoreApi'
 import { useInactiveStopPlaces } from '@/lib/hooks/useInactiveStopPlaceName'
-import { generateKey } from '@/lib/utils/generateUniqueKey'
 import { Button } from '@entur/button'
 import { DeleteIcon } from '@entur/icons'
 import { BaseCard } from '@entur/layout'
@@ -13,15 +12,15 @@ const InactiveEventsList: React.FC = (): JSX.Element => {
     const { events, error } = useInactiveStopPlaces()
     const router = useRouter()
 
-    if (error) {
-        return <div>Error: {error}</div>
-    }
-
     useEffect(() => {
         if (!router) {
             console.error('Router instance not found')
         }
     }, [router])
+
+    if (error) {
+        return <div>Error: {error}</div>
+    }
 
     const handleNavigateLeaderboard = (eventId: number | undefined) => {
         if (router && eventId !== undefined) {
@@ -34,7 +33,7 @@ const InactiveEventsList: React.FC = (): JSX.Element => {
         <div>
             {events.map((event) => (
                 <div
-                    key={generateKey(String(event.eventId))}
+                    key={event.eventId}
                     className="flex pb-4 gap-4 align-baseline"
                 >
                     <BaseCard
