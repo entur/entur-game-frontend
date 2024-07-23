@@ -3,6 +3,7 @@
 //TODO: hele fil renames: [difficulty] -> [eventName] etterhvert
 import React from 'react'
 import { Heading1, Heading3 } from '@entur/typography'
+import { Contrast } from '@entur/layout'
 import {
     Table,
     TableHead,
@@ -11,39 +12,57 @@ import {
     DataCell,
     HeaderCell,
 } from '@entur/table'
-import '@entur/table/dist/styles.css'
-import EnInsertTur from '@/components/EnInsertTur'
 
 import useSWR from 'swr'
 import { sortNumber } from '@/lib/utils/sorters'
 import { PlayerScore } from '@/lib/types/types'
 import { getActiveScores } from '@/lib/api/scoreApi'
-
-const getPlayerScores = async (): Promise<PlayerScore[]> => {
-    const scores = await getActiveScores()
-    return scores || []
-}
+import { BannerAlertBox } from '@entur/alert'
+import { Loader } from '@entur/loader'
 
 export default function EventHighScorePage(): JSX.Element {
-    const { data: playerScores } = useSWR<PlayerScore[]>(
-        '/players',
-        getPlayerScores,
-    )
+    const {
+        data: playerScores,
+        isLoading,
+        error,
+    } = useSWR<PlayerScore[] | null>('/players', getActiveScores)
 
-    if (playerScores === undefined) {
-        return <p>Laster inn...</p>
+    if (isLoading) {
+        return (
+            <Contrast>
+                <Loader>Laster inn ledertavle</Loader>
+            </Contrast>
+        )
+    }
+
+    if (playerScores === undefined || playerScores === null || error) {
+        return (
+            <Contrast>
+                <BannerAlertBox
+                    className="w-fit mx-auto"
+                    title="Ukjent feil"
+                    variant="negative"
+                >
+                    Noe gikk galt under henting av ledertavle.
+                </BannerAlertBox>
+            </Contrast>
+        )
     }
 
     const filteredPlayerScores = playerScores
         .filter((playerScore) => playerScore.scoreValue > 0)
-        .sort((a, b) => sortNumber(b.scoreValue, a.scoreValue))
+        .sort((a, b) => sortNumber(a.scoreValue, b.scoreValue))
 
     return (
         <div
             className="h-full w-full scrollbar-hide"
             style={{ cursor: 'none' }}
         >
-            <EnInsertTur />
+            <Contrast className="relative flex flex-row place-items-center space-x-5 justify-center items-center">
+                <Heading1 className="text-white sm:text-6xl text-3xl shrink">
+                    Ledertavle
+                </Heading1>
+            </Contrast>
             <Table className="text-white" spacing="small">
                 <TableHead>
                     <TableRow>
