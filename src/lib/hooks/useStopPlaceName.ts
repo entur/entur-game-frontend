@@ -25,7 +25,7 @@ export const useStopPlaceNames = () => {
         if (eventName) {
             fetchLocations(eventName)
         } else {
-            console.log('Event name is not set')
+            return console.error('error:', error)
         }
     }, [eventName])
 
