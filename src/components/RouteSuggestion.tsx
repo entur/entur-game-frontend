@@ -50,8 +50,8 @@ export default function RouteSuggestion({
                     title="Ingen rute funnet"
                     variant="negative"
                 >
-                    Ingen rute ble funnet. Velg et annet tidspunkt for å
-                    opprette spill.
+                    Ingen rute ble funnet i dette tidsrommet. Velg et annet
+                    tidspunkt for å opprette spill.
                 </BannerAlertBox>
             ) : (
                 <Badge variant="neutral" type="status">
