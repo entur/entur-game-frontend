@@ -12,6 +12,7 @@ import useSWR from 'swr'
 import { Contrast } from '@entur/layout'
 
 export default function GamePage(): JSX.Element {
+    const [startTimer] = useState<number>(Date.now())
     const [numLegs, setNumLegs] = useState<number>(0)
     const [usedTime, setUsedTime] = useState<number>(0)
     const { eventName }: { eventName: string } = useParams()
@@ -59,6 +60,7 @@ export default function GamePage(): JSX.Element {
                         <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
                             <Game
                                 event={event}
+                                startTimer={startTimer}
                                 maxTime={maxTime}
                                 setUsedTime={setUsedTime}
                                 numLegs={numLegs}
