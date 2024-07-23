@@ -27,7 +27,6 @@ export interface StopAndTime {
 
 type Props = {
     event: Event
-    startTimer: number
     maxTime: number
     setUsedTime: React.Dispatch<React.SetStateAction<number>>
     numLegs: number
@@ -39,7 +38,6 @@ function GameScreen({
     event,
     numLegs,
     setNumLegs,
-    startTimer,
     maxTime,
     setUsedTime,
     setVictory,
@@ -226,7 +224,6 @@ function GameScreen({
                     numLegs={numLegs}
                     currentTime={currentTime}
                     startTime={startTime}
-                    startTimer={startTimer}
                 />
             </div>
         )
