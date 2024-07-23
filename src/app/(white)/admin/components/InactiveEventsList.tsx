@@ -1,5 +1,4 @@
 'use client'
-import { deleteEvent } from '@/lib/api/eventApi'
 import { getScoresEventId } from '@/lib/api/scoreApi'
 import { useInactiveStopPlaces } from '@/lib/hooks/useInactiveStopPlaceName'
 import { Button } from '@entur/button'
@@ -49,10 +48,12 @@ const InactiveEventsList: React.FC = (): JSX.Element => {
                             }
                         />
                     </BaseCard>
-                    <Button variant="negative" size="small">
-                        <DeleteIcon className="inline align-baseline" />
-                        Slett spill
-                    </Button>
+                    <div className="flex flex-col justify-center items-center">
+                        <Button variant="negative" size="small">
+                            <DeleteIcon className="inline align-baseline" />
+                            Slett spill
+                        </Button>
+                    </div>
                 </div>
             ))}
         </div>
