@@ -103,7 +103,7 @@ function TransportTypePicker({
                                     className="bg-blue-80 text-blue-main hover:bg-white"
                                     aria-label="Vent 6 timer"
                                     onClick={() => wait()}
-                                    disabled={isLoading} //TODO: sjekk når sleep skal være disabled, og de andre også for den sagt skyld
+                                    disabled={isLoading}
                                 >
                                     <SleepIcon size={20} />
                                     <Paragraph className="pt-1 pb-0">
