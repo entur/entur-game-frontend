@@ -13,11 +13,11 @@ function CongratulationsScreen(): JSX.Element {
     return (
         <Contrast className="text-center">
             <Heading1>Gratulerer, du er fremme!</Heading1>
-            <div className="relative w-full">
-                <Heading1 className="absolute inset-x-0 top-0 text-9xl text-coral transform rotate-6">
+            <div className="relative w-full mt-8">
+                <Heading1 className="absolute inset-x-0 top-28 text-6xl text-coral transform rotate-6">
                     75
                 </Heading1>
-                <Heading1 className="absolute inset-x-0 top-0 text-9xl text-coral transform rotate-6">
+                <Heading1 className="absolute inset-x-0 top-40 text-5xl text-coral transform rotate-6">
                     poeng
                 </Heading1>
                 <Image
@@ -29,7 +29,7 @@ function CongratulationsScreen(): JSX.Element {
             </div>
             <PrimaryButton onClick={() => window.location.reload()}>
                 <span className="flex items-center">
-                    Resultater
+                    6 Resultater
                     <ForwardIcon className="ml-2 mb-1.5 relative" />
                 </span>
             </PrimaryButton>
