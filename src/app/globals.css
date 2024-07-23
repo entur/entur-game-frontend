@@ -16,6 +16,7 @@
 @import '@entur/dropdown/dist/styles.css';
 @import '@entur/datepicker/dist/styles.css';
 @import '@entur/menu/dist/styles.css';
+@import '@entur/grid/dist/styles.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -88,4 +89,45 @@ fieldset {
     .text-balance {
         text-wrap: balance;
     }
+}
+
+
+.icon-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 2rem;
+    align-items: center;
+}
+
+.icon-item {
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+.icon-item img, .icon-item svg {
+    width: 24px;
+    height: auto;
+    margin-right: 8px;
+    vertical-align: bottom;
+}
+
+.map-text{
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0
+}
+
+
+.map-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 50vh;
+    margin: auto;
+    margin-top: 10vh;
+    position: sticky;
+    top: 20px;
+    border-radius: 2%;
 }
