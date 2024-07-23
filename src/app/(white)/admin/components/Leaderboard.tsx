@@ -28,7 +28,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
         <Table>
             <TableHead>
                 <TableRow className="">
-                    {!compact && <HeaderCell>Plassering</HeaderCell>}
+                    <HeaderCell>Plassering</HeaderCell>
                     <HeaderCell>Spiller</HeaderCell>
                     {!compact && <HeaderCell>Reisetid</HeaderCell>}
                     <HeaderCell>Poengsum</HeaderCell>
@@ -57,7 +57,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
                             )
                             return (
                                 <TableRow key={index}>
-                                    {!compact && <DataCell>{rank}</DataCell>}
+                                    <DataCell>{rank}</DataCell>
                                     <DataCell>
                                         {score.player.playerName}
                                     </DataCell>
