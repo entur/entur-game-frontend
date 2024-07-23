@@ -11,9 +11,14 @@ import Image from 'next/image'
 function CongratulationsScreen(): JSX.Element {
     window.scrollTo(0, 0)
     return (
-        <Contrast>
+        <Contrast className="text-center">
             <Heading1>Gratulerer, du er fremme!</Heading1>
-            <Image src={Gratulerer} alt="entur partner" width={2000} />
+            <Image
+                src={Gratulerer}
+                alt="entur partner"
+                width={2000}
+                className="my-4"
+            />
             <PrimaryButton onClick={() => window.location.reload()}>
                 <span className="flex items-center">
                     Resultater
