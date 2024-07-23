@@ -220,7 +220,6 @@ function GameScreen({
             <div className="app" style={{ maxWidth: '800px' }}>
                 <VictoryScreen
                     event={event}
-                    endLocation={endLocation}
                     numLegs={numLegs}
                     currentTime={currentTime}
                     startTime={startTime}

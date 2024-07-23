@@ -2,13 +2,7 @@ import React, { ReactElement, useEffect, useState } from 'react'
 import { Heading3, Heading5, Label, Paragraph } from '@entur/typography'
 import { Checkbox, TextField } from '@entur/form'
 import { PrimaryButton, SecondaryButton } from '@entur/button'
-import {
-    BackendEvent,
-    Event,
-    Player,
-    PlayerScore,
-    StopPlace,
-} from '@/lib/types/types'
+import { BackendEvent, Event, Player, PlayerScore } from '@/lib/types/types'
 import { saveScore } from '@/lib/api/scoreApi'
 import {
     formatIntervalToSeconds,
@@ -22,7 +16,6 @@ import { Contrast } from '@entur/layout'
 
 type Props = {
     event: Event
-    endLocation: StopPlace[]
     numLegs: number
     currentTime: Date
     startTime: Date
