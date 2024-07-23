@@ -1,6 +1,5 @@
 'use client'
 
-//TODO: hele fil renames: [difficulty] -> [eventName] etterhvert
 import React from 'react'
 import { Heading1, Heading3 } from '@entur/typography'
 import { Contrast } from '@entur/layout'
@@ -74,11 +73,6 @@ export default function EventHighScorePage(): JSX.Element {
                         </HeaderCell>
                         <HeaderCell>
                             <Heading1 className="text-white/25">
-                                Poengsum
-                            </Heading1>
-                        </HeaderCell>
-                        <HeaderCell>
-                            <Heading1 className="text-white/25">
                                 Spillertrekk
                             </Heading1>
                         </HeaderCell>
@@ -89,7 +83,7 @@ export default function EventHighScorePage(): JSX.Element {
                         </HeaderCell>
                         <HeaderCell>
                             <Heading1 className="text-white/25">
-                                Total spilletid
+                                Poengsum
                             </Heading1>
                         </HeaderCell>
                     </TableRow>
@@ -109,11 +103,6 @@ export default function EventHighScorePage(): JSX.Element {
                             </DataCell>
                             <DataCell>
                                 <Heading3 className="text-white">
-                                    {playerScore.scoreValue}
-                                </Heading3>
-                            </DataCell>
-                            <DataCell>
-                                <Heading3 className="text-white">
                                     {playerScore.totalStepNumber}
                                 </Heading3>
                             </DataCell>
@@ -124,7 +113,7 @@ export default function EventHighScorePage(): JSX.Element {
                             </DataCell>
                             <DataCell>
                                 <Heading3 className="text-white">
-                                    {playerScore.totalPlayTime}
+                                    {playerScore.scoreValue}
                                 </Heading3>
                             </DataCell>
                         </TableRow>
