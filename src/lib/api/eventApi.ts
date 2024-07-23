@@ -209,13 +209,3 @@ export async function getTripLocations(
         },
     }
 }
-
-export async function deleteEvent(eventId: number): Promise<void> {
-    const response = await fetch(`${baseUrl}/event/${eventId}`, {
-        method: 'DELETE',
-    })
-
-    if (!response.ok) {
-        throw new Error(`Failed to delete event: ${response.statusText}`)
-    }
-}
