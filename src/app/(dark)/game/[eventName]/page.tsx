@@ -18,7 +18,7 @@ export default function GamePage(): JSX.Element {
     const { eventName }: { eventName: string } = useParams()
     const [isVictory, setVictory] = useState<boolean>(false)
     const [startTime, setStartTime] = useState<Date | null>(null)
-    const [currentTime, setCurrentTime] = useState<Date | null>(null)
+    const [currentTime, setCurrentTime] = useState<Date>(new Date())
 
     const {
         data: eventResult,
@@ -85,8 +85,10 @@ export default function GamePage(): JSX.Element {
                         <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
                             <Game
                                 event={event}
-                                maxTime={maxTime}
                                 startTime={startTime}
+                                currentTime={currentTime}
+                                setCurrentTime={setCurrentTime}
+                                maxTime={maxTime}
                                 setUsedTime={setUsedTime}
                                 numLegs={numLegs}
                                 setNumLegs={setNumLegs}
