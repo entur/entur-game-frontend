@@ -3,11 +3,6 @@ import { Heading3, Heading5, Label, Paragraph } from '@entur/typography'
 import { Checkbox, TextField } from '@entur/form'
 import { PrimaryButton, SecondaryButton } from '@entur/button'
 import {
-    VictoryArtBoardCircleImage,
-    VictoryArtBoardCookieImage,
-    VictoryArtBoardOvalImage,
-} from './VictoryScreenArt'
-import {
     BackendEvent,
     Event,
     Player,
@@ -142,9 +137,6 @@ export function VictoryScreen({
     return (
         <Contrast>
             <div className="min-h-screen min-w-screen">
-                <VictoryArtBoardOvalImage className="absolute -top-20 -left-32 hidden xl:block" />
-                <VictoryArtBoardCookieImage className="absolute -bottom-28 -left-52  hidden xl:block" />
-                <VictoryArtBoardCircleImage className="absolute bottom-60 -right-72 hidden xl:block" />
                 <div className="flex justify-center">
                     <form
                         className="flex flex-col max-w-3xl mt-20 pr-4 pl-4 gap-6"

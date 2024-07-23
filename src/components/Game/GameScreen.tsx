@@ -268,7 +268,6 @@ function GameScreen({
                     selectMode={selectMode}
                     wait={wait}
                     stopPlace={startLocation}
-                    firstMove={travelLegs.length === 1}
                     availableModes={availableModes}
                     availableModesError={availableModesError}
                 />

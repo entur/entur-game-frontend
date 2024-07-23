@@ -16,5 +16,4 @@ const InactiveEvent: React.FC = () => {
         </div>
     )
 }
-
 export default InactiveEvent
