@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react'
 import mapboxgl from 'mapbox-gl'
-import styles from './Map.module.css'
-import { Event } from '@/lib/types/types'
+import { Event, StopPlace } from '@/lib/types/types'
 import MapPin from '!!raw-loader!@/lib/assets/icons/MapPin.svg'
 import Destination from '!!raw-loader!@/lib/assets/icons/Destination.svg'
+import Standing from '!!raw-loader!@/lib/assets/icons/Standing.svg'
 
 const NEXT_PUBLIC_MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
 
@@ -13,17 +13,29 @@ if (!NEXT_PUBLIC_MAPBOX_TOKEN) {
 
 mapboxgl.accessToken = NEXT_PUBLIC_MAPBOX_TOKEN
 
-const Map = ({ event }: { event: Event }) => {
+type Props = {
+    event: Event
+    currentPosition: StopPlace
+}
+
+const Map = ({ event, currentPosition }: Props) => {
     const mapContainerRef = useRef<HTMLDivElement | null>(null)
+    const mapRef = useRef<mapboxgl.Map | null>(null)
 
     useEffect(() => {
-        if (mapContainerRef.current) {
+        if (
+            mapContainerRef.current &&
+            currentPosition?.longitude &&
+            currentPosition.latitude
+        ) {
             const map = new mapboxgl.Map({
                 container: mapContainerRef.current,
                 style: 'mapbox://styles/mapbox/streets-v12',
-                center: [10.7522, 59.9139],
-                zoom: 5,
+                center: [currentPosition.longitude, currentPosition.latitude],
+                zoom: 4,
             })
+
+            mapRef.current = map
 
             if (event.startLocation.longitude && event.startLocation.latitude) {
                 const el = document.createElement('div')
@@ -63,17 +75,41 @@ const Map = ({ event }: { event: Event }) => {
                     .addTo(map)
             }
 
+            if (
+                currentPosition &&
+                currentPosition.latitude &&
+                currentPosition.longitude
+            ) {
+                const currentEl = document.createElement('div')
+                currentEl.innerHTML = Standing
+                currentEl.style.width = '70px'
+                currentEl.style.height = '70px'
+                currentEl.style.display = 'flex'
+                currentEl.style.alignItems = 'flex-end'
+                currentEl.style.justifyContent = 'center'
+
+                new mapboxgl.Marker(currentEl, { anchor: 'bottom' })
+                    .setLngLat([
+                        currentPosition.longitude,
+                        currentPosition.latitude,
+                    ])
+                    .addTo(map)
+            }
+
             return () => {
-                map.remove()
+                if (mapRef.current) {
+                    mapRef.current.remove()
+                }
             }
         }
     }, [
         event.startLocation.latitude,
         event.startLocation.longitude,
         event.endLocation,
+        currentPosition,
     ])
 
-    return <div ref={mapContainerRef} className={styles.mapContainer} />
+    return <div ref={mapContainerRef} className="map-container" />
 }
 
 export default Map
