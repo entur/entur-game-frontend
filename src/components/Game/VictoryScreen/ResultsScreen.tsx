@@ -49,10 +49,13 @@ function ResultsScreen({
                 <Heading1 className="absolute inset-x-0 right-12 top-20 text-4xl text-coral transform rotate-6">
                     poeng
                 </Heading1>
+                <Heading3>
+                    Din Plassering: <span className="text-coral">12</span>
+                </Heading3>
             </div>
             <div>
                 <Heading3>Oppsummering</Heading3>
-                <div className="min-h-screen min-w-screen flex justify-center">
+                <div className="min-w-screen flex justify-center">
                     <div className="w-1/2">
                         <Table>
                             <TableHead>

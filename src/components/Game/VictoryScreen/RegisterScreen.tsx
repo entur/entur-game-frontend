@@ -127,7 +127,7 @@ export function RegisterScreen({
 
     return (
         <Contrast>
-            <div className="min-h-screen min-w-screen">
+            <div className="min-w-screen">
                 <div className="flex justify-center">
                     <form
                         className="flex flex-col max-w-3xl mt-20 pr-4 pl-4 gap-6"
