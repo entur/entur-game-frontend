@@ -17,6 +17,7 @@ import Image from 'next/image'
 import { Screen } from './VictoryScreen'
 import { PrimaryButton, SecondaryButton } from '@entur/button'
 import { useRouter } from 'next/navigation'
+import { formatMilliseconds } from '@/lib/utils/dateFnsUtils'
 
 interface ResultsScreenProps {
     event: Event
@@ -35,6 +36,13 @@ function ResultsScreen({
 }: ResultsScreenProps): JSX.Element {
     window.scrollTo(0, 0)
     const router = useRouter()
+
+    const totalTravelTimeDescription = formatMilliseconds(
+        totalTravelTime * 1000,
+    )
+    const optimalravelTimeDescription = formatMilliseconds(
+        event.optimalTravelTime * 1000,
+    )
     return (
         <Contrast className="text-center">
             <Heading1>Resultater</Heading1>
@@ -81,10 +89,10 @@ function ResultsScreen({
                                         Reisetid
                                     </DataCell>
                                     <DataCell className="text-left">
-                                        {totalTravelTime}
+                                        {totalTravelTimeDescription}
                                     </DataCell>
                                     <DataCell className="text-left">
-                                        {event.optimalTravelTime}
+                                        {optimalravelTimeDescription}
                                     </DataCell>
                                 </TableRow>
                                 <TableRow>
