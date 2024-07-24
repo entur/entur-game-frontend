@@ -12,6 +12,7 @@ import { Modal } from '@entur/modal'
 import { Paragraph } from '@entur/typography'
 import { Button, SecondaryButton } from '@entur/button'
 import { useRouter } from 'next/navigation'
+import { getActiveScores } from '@/lib/api/scoreApi'
 
 const CompactLeaderboardPage: React.FC = (): JSX.Element => {
     const { isEventNameError, setEventNameError } = useEventName()
@@ -22,6 +23,22 @@ const CompactLeaderboardPage: React.FC = (): JSX.Element => {
     const [isWinnerEndOpen, setWinnerEndOpen] = useState(false)
     const [isWinnerOpen, setWinnerOpen] = useState(false)
     const [isActiveEvent, setIsActiveEvent] = useState<boolean>(false)
+    const [hasPlayers, setHasPlayers] = useState<boolean | undefined>(false)
+
+    const checkHasPlayers = async (): Promise<boolean | undefined> => {
+        const score = await getActiveScores()
+        if (score?.length == 0) {
+            return false
+        }
+    }
+
+    useEffect(() => {
+        const fetchActiveEvent = async () => {
+            const players = await checkHasPlayers()
+            setHasPlayers(players)
+        }
+        fetchActiveEvent()
+    })
 
     const checkActiveEvent = async (): Promise<boolean> => {
         const result = await getActiveEvent()
@@ -34,7 +51,7 @@ const CompactLeaderboardPage: React.FC = (): JSX.Element => {
             setIsActiveEvent(isActive)
         }
         fetchActiveEvent()
-    }, [])
+    })
 
     const handleDrawWinnerAndEndGame = async () => {
         if (scores.length === 0) {
@@ -80,7 +97,6 @@ const CompactLeaderboardPage: React.FC = (): JSX.Element => {
                             to={endLocationName}
                             noWrap={true}
                         ></TravelHeader>
-
                         <Leaderboard
                             scores={scores}
                             compact
@@ -114,6 +130,7 @@ const CompactLeaderboardPage: React.FC = (): JSX.Element => {
                                     variant={'primary'}
                                     className="max-w-[250px]"
                                     onClick={handleDrawWinnerAndEndGame}
+                                    disabled={!hasPlayers}
                                     type="button"
                                 >
                                     Trekk vinner og avslutt

@@ -31,13 +31,11 @@ export async function getActiveEvent(): Promise<BackendEvent | null> {
 }
 
 export async function getInactiveEvents(): Promise<BackendEvent[] | null> {
-    try {
-        const response = await fetch(`${baseUrl}/event/inactive`)
-        const data = await response.json()
-        return data
-    } catch (error) {
-        return null
+    const response = await fetch(`${baseUrl}/event/inactive`)
+    if (!response.ok) {
+        throw new Error('Failed to fetch inactive events')
     }
+    return response.json()
 }
 
 export async function getEventById(

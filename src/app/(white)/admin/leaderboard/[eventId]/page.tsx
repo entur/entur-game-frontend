@@ -22,7 +22,6 @@ const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
     params,
 }): JSX.Element => {
     const { eventId } = params
-
     const [scores, setScores] = useState<PlayerScore[]>([])
     const [leader, setLeader] = useState<PlayerScore | null>(null)
     const [eventName, setEventName] = useState<string | null>(null)

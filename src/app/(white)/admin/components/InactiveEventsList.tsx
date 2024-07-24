@@ -30,9 +30,12 @@ const InactiveEventsList: React.FC = (): JSX.Element => {
         }
     }
 
-    const handleDeleteGame = (eventId: number | undefined) => {
+    const handleDelete = async (eventId: number | undefined) => {
         if (eventId !== undefined) {
-            deleteEvent(eventId)
+            const result = await deleteEvent(eventId)
+            if (result.success) {
+                events.map((event) => event.eventId !== eventId)
+            }
         }
     }
 
@@ -59,11 +62,12 @@ const InactiveEventsList: React.FC = (): JSX.Element => {
                         />
                     </BaseCard>
                     <div className="flex flex-col justify-center items-center">
-                        <Button variant="negative" size="small">
-                            <DeleteIcon
-                                className="inline align-baseline"
-                                onClick={() => handleDeleteGame}
-                            />
+                        <Button
+                            variant="negative"
+                            size="small"
+                            onClick={() => handleDelete(event.eventId)}
+                        >
+                            <DeleteIcon className="inline align-baseline" />
                             Slett spill
                         </Button>
                     </div>
