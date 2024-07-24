@@ -16,6 +16,8 @@ export default function DarkModeLayout({
                     src={LightLogo}
                     alt="entur partner"
                     width={215}
+                    style={{ height: 'auto' }}
+                    priority={true}
                 />
             </Link>
             {children}

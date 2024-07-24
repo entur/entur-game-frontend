@@ -28,6 +28,7 @@ export function SplashScreen(): JSX.Element {
                 setEventNameError(false)
             } else {
                 setEventNameError(true)
+                console.error(isEventNameError)
             }
         }
         getActiveEventName()
@@ -41,6 +42,8 @@ export function SplashScreen(): JSX.Element {
                     src={LightLogo}
                     alt="entur partner"
                     width={215}
+                    style={{ height: 'auto' }}
+                    priority={true}
                 />
             </Link>
             <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">

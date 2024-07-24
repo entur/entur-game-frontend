@@ -7,7 +7,7 @@ import Image from 'next/image'
 import AdminLogoLight from '@/lib/assets/images/AdminLogoLight.png'
 import AdminLogoDark from '@/lib/assets/images/AdminLogoDark.png'
 import { Contrast } from '@entur/layout'
-import { Button, IconButton } from '@entur/button'
+import { Button } from '@entur/button'
 import { useAuth } from '@/context/AuthContext'
 import { UserIcon } from '@entur/icons'
 
@@ -46,6 +46,8 @@ export const AdminNavBar: React.FC = () => {
                         src={isLandingPage ? AdminLogoLight : AdminLogoDark}
                         alt="entur partner"
                         width={215}
+                        style={{ height: 'auto' }}
+                        priority={true}
                     />
                 </Link>
                 <nav className="flex flex-row items-center gap-14">
