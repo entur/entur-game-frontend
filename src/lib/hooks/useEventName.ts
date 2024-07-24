@@ -16,7 +16,7 @@ export const useEventName = () => {
             }
         }
         getEventName()
-    }, [])
+    })
 
     return { eventName, isEventNameError, setEventNameError }
 }

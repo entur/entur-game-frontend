@@ -54,7 +54,7 @@ export const useInactiveStopPlaces = () => {
         }
 
         fetchEvents()
-    }, [])
+    })
 
     return { events, error, setEvents }
 }
