@@ -80,68 +80,70 @@ function ResultsScreen({
                 </Heading2>
             </div>
             <div>
-                <Heading3>Oppsummering</Heading3>
                 <div className="min-w-screen flex justify-center">
-                    <div className="w-1/2">
-                        <Table>
-                            <TableHead>
-                                <TableRow>
-                                    <HeaderCell className="text-left">
-                                        {' '}
-                                    </HeaderCell>
-                                    <HeaderCell className="text-left">
-                                        Deg
-                                    </HeaderCell>
-                                    <HeaderCell className="text-left">
-                                        Reiseplanleggeren
-                                    </HeaderCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                <TableRow className="text-left bg-blue-20">
-                                    <DataCell className="text-left">
-                                        <span className="flex items-center">
-                                            <ValueIcon className="mr-2 mb-0.5 relative" />
-                                            Poengsum
-                                        </span>
-                                    </DataCell>
-                                    <DataCell className="text-left">
-                                        {scoreValue}
-                                    </DataCell>
-                                    <DataCell className="text-left">
-                                        100
-                                    </DataCell>
-                                </TableRow>
-                                <TableRow>
-                                    <DataCell className="text-left">
-                                        <span className="flex items-center">
-                                            <ClockIcon className="mr-2 mb-0.5 relative" />
-                                            Reisetid
-                                        </span>
-                                    </DataCell>
-                                    <DataCell className="text-left">
-                                        {totalTravelTimeDescription}
-                                    </DataCell>
-                                    <DataCell className="text-left">
-                                        {optimalTravelTimeDescription}
-                                    </DataCell>
-                                </TableRow>
-                                <TableRow className="text-left bg-blue-20">
-                                    <DataCell className="text-left">
-                                        <span className="flex items-center">
-                                            <TrackIcon className="mr-2 mb-0.5 relative" />
-                                            Antall steg
-                                        </span>
-                                    </DataCell>
-                                    <DataCell className="text-left">
-                                        {numLegs}
-                                    </DataCell>
-                                    <DataCell className="text-left">
-                                        {event.optimalStepNumber}
-                                    </DataCell>
-                                </TableRow>
-                            </TableBody>
-                        </Table>
+                    <div className="w-1/2 text-left">
+                        <div className="border border-white p-4 pt-0">
+                            <Heading3>Oppsummering</Heading3>
+                            <Table>
+                                <TableHead>
+                                    <TableRow>
+                                        <HeaderCell className="text-left">
+                                            {' '}
+                                        </HeaderCell>
+                                        <HeaderCell className="text-left">
+                                            Deg
+                                        </HeaderCell>
+                                        <HeaderCell className="text-left">
+                                            Reiseplanleggeren
+                                        </HeaderCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    <TableRow className="text-left bg-blue-20">
+                                        <DataCell className="text-left">
+                                            <span className="flex items-center">
+                                                <ValueIcon className="mr-2 mb-0.5 relative" />
+                                                Poengsum
+                                            </span>
+                                        </DataCell>
+                                        <DataCell className="text-left">
+                                            {scoreValue}
+                                        </DataCell>
+                                        <DataCell className="text-left">
+                                            100
+                                        </DataCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <DataCell className="text-left">
+                                            <span className="flex items-center">
+                                                <ClockIcon className="mr-2 mb-0.5 relative" />
+                                                Reisetid
+                                            </span>
+                                        </DataCell>
+                                        <DataCell className="text-left">
+                                            {totalTravelTimeDescription}
+                                        </DataCell>
+                                        <DataCell className="text-left">
+                                            {optimalTravelTimeDescription}
+                                        </DataCell>
+                                    </TableRow>
+                                    <TableRow className="text-left bg-blue-20">
+                                        <DataCell className="text-left">
+                                            <span className="flex items-center">
+                                                <TrackIcon className="mr-2 mb-0.5 relative" />
+                                                Antall steg
+                                            </span>
+                                        </DataCell>
+                                        <DataCell className="text-left">
+                                            {numLegs}
+                                        </DataCell>
+                                        <DataCell className="text-left">
+                                            {event.optimalStepNumber}
+                                        </DataCell>
+                                    </TableRow>
+                                </TableBody>
+                            </Table>
+                        </div>
                         <br />
                         <br />
                         <div className="flex justify-center mt-4 gap-4">
@@ -166,7 +168,7 @@ function ResultsScreen({
                 src={WomanWithLuggage}
                 alt="entur partner"
                 width={480}
-                className="absolute bottom-0 right-0 mr-[-16px] transform scale-x-[-1]"
+                className="absolute bottom-[-24px] right-0 mr-[-120px] transform scale-x-[-1]"
             />
             {isModalOpen && (
                 <Modal
