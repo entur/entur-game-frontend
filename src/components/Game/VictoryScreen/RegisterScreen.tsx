@@ -13,12 +13,14 @@ import { createOptimalRouteText } from '@/lib/api/eventApi'
 import { useRouter } from 'next/navigation'
 import { SmallAlertBox, useToast } from '@entur/alert'
 import { Contrast } from '@entur/layout'
+import { Screen } from './VictoryScreen'
 
 type Props = {
     event: Event
     numLegs: number
-    currentTime: Date
     startTime: Date
+    currentTime: Date
+    setCurrentScreen: (screen: Screen) => void
 }
 
 type FormValues = {
@@ -31,8 +33,8 @@ type FormValues = {
 export function RegisterScreen({
     event,
     numLegs,
-    currentTime,
     startTime,
+    currentTime,
 }: Props): ReactElement {
     const { addToast } = useToast()
 

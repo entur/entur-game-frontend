@@ -12,10 +12,12 @@ import {
     TableHead,
     TableRow,
 } from '@entur/table'
+import { Screen } from './VictoryScreen'
 
 interface ResultsScreenProps {
     event: Event
     numLegs: number
+    setCurrentScreen: (screen: Screen) => void
 }
 
 function ResultsScreen({ event, numLegs }: ResultsScreenProps): JSX.Element {

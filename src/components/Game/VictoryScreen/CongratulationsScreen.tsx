@@ -7,8 +7,15 @@ import { Contrast } from '@entur/layout'
 import { ForwardIcon } from '@entur/icons'
 import Gratulerer from '@/lib/assets/images/Gratulerer.svg'
 import Image from 'next/image'
+import { Screen } from './VictoryScreen'
 
-function CongratulationsScreen(): JSX.Element {
+interface CongratulationsScreenProps {
+    setCurrentScreen: (screen: Screen) => void
+}
+
+function CongratulationsScreen({
+    setCurrentScreen,
+}: CongratulationsScreenProps): JSX.Element {
     window.scrollTo(0, 0)
     return (
         <Contrast className="text-center">
@@ -27,7 +34,7 @@ function CongratulationsScreen(): JSX.Element {
                     className="my-4"
                 />
             </div>
-            <PrimaryButton onClick={() => window.location.reload()}>
+            <PrimaryButton onClick={() => setCurrentScreen(Screen.Results)}>
                 <span className="flex items-center">
                     Resultater
                     <ForwardIcon className="ml-2 mb-1.5 relative" />
