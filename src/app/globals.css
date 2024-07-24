@@ -91,7 +91,6 @@ fieldset {
     }
 }
 
-
 .icon-container {
     display: flex;
     justify-content: space-around;
@@ -105,19 +104,19 @@ fieldset {
     text-align: center;
 }
 
-.icon-item img, .icon-item svg {
+.icon-item img,
+.icon-item svg {
     width: 24px;
     height: auto;
     margin-right: 8px;
     vertical-align: bottom;
 }
 
-.map-text{
+.map-text {
     display: inline-block;
     vertical-align: middle;
-    margin: 0
+    margin: 0;
 }
-
 
 .map-container {
     display: flex;
