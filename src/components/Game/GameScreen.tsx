@@ -29,12 +29,12 @@ type Props = {
     maxTime: number
     startTime: Date
     currentTime: Date
-    startLocation: StopPlace
+    currentLocation: StopPlace
     setCurrentTime: React.Dispatch<React.SetStateAction<Date>>
     setUsedTime: React.Dispatch<React.SetStateAction<number>>
     setNumLegs: React.Dispatch<React.SetStateAction<number>>
     setVictory: React.Dispatch<React.SetStateAction<boolean>>
-    setStartLocation: React.Dispatch<
+    setCurrentLocation: React.Dispatch<
         React.SetStateAction<StopPlace | undefined>
     >
 }
@@ -44,12 +44,12 @@ function GameScreen({
     maxTime,
     startTime,
     currentTime,
-    startLocation,
+    currentLocation,
     setCurrentTime,
     setNumLegs,
     setUsedTime,
     setVictory,
-    setStartLocation,
+    setCurrentLocation,
 }: Props): ReactElement {
     const router = useRouter()
     const [isLoading, setLoading] = useState<boolean>(false)
@@ -71,7 +71,6 @@ function GameScreen({
     const { getWalkableStopPlaces, getDepartures, getStopsOnLine } =
         useEnturService()
 
-    // TravelLegStart states
     const [travelLegsMode, setTravelLegsMode] = useState<QueryMode[]>([])
     const [usedDepartures, setUsedDepartures] = useState<
         (Departure | undefined)[]
@@ -79,7 +78,7 @@ function GameScreen({
     const [waitModalIsOpen, setWaitModalIsOpen] = useState<boolean>(false)
 
     useEffect(() => {
-        setStartLocation(event.startLocation)
+        setCurrentLocation(event.startLocation)
         setTravelLegs([event.startLocation])
         setEndLocation(event.endLocation)
         fetchAvailableModes(event.startLocation)
@@ -139,7 +138,7 @@ function GameScreen({
 
         if (newMode === 'foot') {
             setDepartures([])
-            getWalkableStopPlaces(startLocation)
+            getWalkableStopPlaces(currentLocation)
                 .then((stops) => {
                     setStopsOnLine(
                         stops.map((stop) => ({
@@ -156,7 +155,7 @@ function GameScreen({
                     setLoading(false)
                 })
         } else {
-            getDepartures(startLocation.id, newMode, currentTime)
+            getDepartures(currentLocation.id, newMode, currentTime)
                 .then((deps) => {
                     setStopsOnLine([])
                     setDepartures(deps)
@@ -206,7 +205,7 @@ function GameScreen({
         setMode(null)
         setModalOpen(false)
         if (stopAndTime) {
-            setStartLocation(stopAndTime.stopPlace)
+            setCurrentLocation(stopAndTime.stopPlace)
             setTravelLegs((prev) => [...prev, stopAndTime.stopPlace])
             setNumLegs((prev) => prev + 1)
             fetchAvailableModes(stopAndTime.stopPlace)
@@ -218,7 +217,10 @@ function GameScreen({
         setWaitModalIsOpen(true)
     }
 
-    if (startLocation && endLocation.some((sp) => sp.id === startLocation.id)) {
+    if (
+        currentLocation &&
+        endLocation.some((sp) => sp.id === currentLocation.id)
+    ) {
         setVictory(true)
     }
 
@@ -252,11 +254,11 @@ function GameScreen({
                     isLoading={isLoading}
                     mode={mode}
                     usedMode={usedMode}
-                    selectMode={selectMode}
-                    wait={wait}
-                    stopPlace={startLocation}
+                    stopPlace={currentLocation}
                     availableModes={availableModes}
                     availableModesError={availableModesError}
+                    selectMode={selectMode}
+                    wait={wait}
                 />
             </div>
             <Contrast>
