@@ -4,13 +4,12 @@ import React, { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import { Heading1, Heading3 } from '@entur/typography'
 import { Loader } from '@entur/loader'
-import Game from '@/components/Game/GameScreen'
+import Game from '@/components/Game/Game'
 import { getEventByEventName, Result } from '@/lib/api/eventApi'
 import { Event, StopPlace } from '@/lib/types/types'
-import { GridContainer, GridItem } from '@entur/grid'
 import useSWR from 'swr'
 import { Contrast } from '@entur/layout'
-import { VictoryScreen } from '@/components/Game/VictoryScreen/VictoryScreen'
+import VictoryScreen from '@/components/Game/VictoryScreen/VictoryScreen'
 import Map from '../components/Map'
 import { MapPinIcon, DestinationIcon, StandingIcon } from '@entur/icons'
 import GameStatus from '@/components/GameStatus'
@@ -60,15 +59,11 @@ export default function GamePage(): JSX.Element {
 
     return (
         <>
-            {isLoading ? (
+            {isLoading || !startTime || !currentTime ? (
                 <Contrast>
                     <Loader>Laster inn spill...</Loader>
                 </Contrast>
-            ) : eventError ||
-              !event ||
-              !maxTime ||
-              !startTime ||
-              !currentTime ? (
+            ) : eventError || !event || !maxTime ? (
                 <Contrast>
                     <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
                         <Heading1>Spill ikke funnet</Heading1>
@@ -76,7 +71,7 @@ export default function GamePage(): JSX.Element {
                 </Contrast>
             ) : isVictory ? (
                 <Contrast>
-                    <div className="app">
+                    <div>
                         <VictoryScreen
                             event={event}
                             numLegs={numLegs}
@@ -96,9 +91,9 @@ export default function GamePage(): JSX.Element {
                                 maxTime={maxTime}
                             />
                         </div>
-                        <div className="max-w-screen-2xl xl:ml-72 xl:mr-40 ml-10 mr-10">
-                            <GridContainer spacing="large">
-                                <GridItem small={7} className="grid-demo-item">
+                        <div className="max-w-screen-3xl mx-auto xl:mx-24">
+                            <div className="grid grid-cols-5 gap-24">
+                                <div className="col-span-3">
                                     <Game
                                         event={event}
                                         maxTime={maxTime}
@@ -111,9 +106,9 @@ export default function GamePage(): JSX.Element {
                                         setVictory={setVictory}
                                         setStartLocation={setStartLocation}
                                     />
-                                </GridItem>
+                                </div>
 
-                                <GridItem small={5} className="grid-demo-item">
+                                <div className="col-span-2">
                                     <Contrast>
                                         <Map
                                             event={event}
@@ -140,8 +135,8 @@ export default function GamePage(): JSX.Element {
                                             </div>
                                         </div>
                                     </Contrast>
-                                </GridItem>
-                            </GridContainer>
+                                </div>
+                            </div>
                         </div>
                     </main>
                 )

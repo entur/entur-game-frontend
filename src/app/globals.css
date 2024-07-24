@@ -131,3 +131,9 @@ fieldset {
     top: 20px;
     border-radius: 2%;
 }
+
+.grid-demo-item {
+    max-height: 50vh;
+    overflow: auto;
+    margin-top: 1rem;
+}
