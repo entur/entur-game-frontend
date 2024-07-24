@@ -35,6 +35,7 @@ export function RegisterScreen({
     numLegs,
     startTime,
     currentTime,
+    setCurrentScreen,
 }: Props): ReactElement {
     const { addToast } = useToast()
 
@@ -248,9 +249,10 @@ export function RegisterScreen({
                         <div className="flex flex-row mt-4 gap-4">
                             <SecondaryButton
                                 loading={isSubmitting || isLoading}
-                                onClick={() => router.push('/')}
+                                onClick={() => setCurrentScreen(Screen.Results)}
+                                // onClick={() => router.push('/')}
                             >
-                                Avbryt
+                                Avslutt
                             </SecondaryButton>
                             <PrimaryButton
                                 loading={isSubmitting || isLoading}
