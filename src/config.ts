@@ -8,5 +8,7 @@ export const baseUrl = (() => {
             default:
                 return 'http://localhost:8080'
         }
+    } else {
+        return process.env.apiUrl
     }
 })()

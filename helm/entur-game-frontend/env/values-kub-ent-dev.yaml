@@ -1,5 +1,6 @@
 common:
     env: dev
+    apiUrl: 'http://localhost:8080'
     ingress:
         host: entur-game.dev.entur.org
     container:
