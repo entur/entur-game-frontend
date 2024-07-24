@@ -22,6 +22,7 @@ interface ResultsScreenProps {
     event: Event
     numLegs: number
     scoreValue: number
+    totalTravelTime: number
     setCurrentScreen: (screen: Screen) => void
 }
 
@@ -29,6 +30,7 @@ function ResultsScreen({
     event,
     numLegs,
     scoreValue,
+    totalTravelTime,
     setCurrentScreen,
 }: ResultsScreenProps): JSX.Element {
     window.scrollTo(0, 0)
@@ -79,7 +81,7 @@ function ResultsScreen({
                                         Reisetid
                                     </DataCell>
                                     <DataCell className="text-left">
-                                        Null
+                                        {totalTravelTime}
                                     </DataCell>
                                     <DataCell className="text-left">
                                         {event.optimalTravelTime}

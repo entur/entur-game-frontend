@@ -39,6 +39,7 @@ function VictoryScreen({
                     formatIntervalToSeconds(currentTime, startTime)),
         ) / 10
 
+    const totalTravelTime = formatIntervalToSeconds(currentTime, startTime)
     window.scrollTo(0, 0)
     return (
         <Contrast>
@@ -53,6 +54,7 @@ function VictoryScreen({
                     event={event}
                     numLegs={numLegs}
                     scoreValue={scoreValue}
+                    totalTravelTime={totalTravelTime}
                     setCurrentScreen={setCurrentScreen}
                 />
             )}
@@ -63,6 +65,7 @@ function VictoryScreen({
                     startTime={startTime}
                     currentTime={currentTime}
                     scoreValue={scoreValue}
+                    totalTravelTime={totalTravelTime}
                     setCurrentScreen={setCurrentScreen}
                 />
             )}

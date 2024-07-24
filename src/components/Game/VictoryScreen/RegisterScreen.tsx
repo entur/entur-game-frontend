@@ -4,10 +4,7 @@ import { Checkbox, TextField } from '@entur/form'
 import { PrimaryButton, SecondaryButton } from '@entur/button'
 import { BackendEvent, Event, Player, PlayerScore } from '@/lib/types/types'
 import { saveScore } from '@/lib/api/scoreApi'
-import {
-    formatIntervalToSeconds,
-    formatMilliseconds,
-} from '@/lib/utils/dateFnsUtils'
+import { formatMilliseconds } from '@/lib/utils/dateFnsUtils'
 import { Controller, useForm } from 'react-hook-form'
 import { createOptimalRouteText } from '@/lib/api/eventApi'
 import { useRouter } from 'next/navigation'
@@ -21,6 +18,7 @@ type Props = {
     startTime: Date
     currentTime: Date
     scoreValue: number
+    totalTravelTime: number
     setCurrentScreen: (screen: Screen) => void
 }
 
@@ -37,6 +35,7 @@ export function RegisterScreen({
     startTime,
     currentTime,
     scoreValue,
+    totalTravelTime,
     setCurrentScreen,
 }: Props): ReactElement {
     const { addToast } = useToast()
@@ -82,7 +81,7 @@ export function RegisterScreen({
             scoreId: null,
             scoreValue: scoreValue,
             totalStepNumber: numLegs,
-            totalTravelTime: formatIntervalToSeconds(currentTime, startTime),
+            totalTravelTime: totalTravelTime,
             totalPlayTime: 0,
             player: newPlayer,
             event: backendEvent,
