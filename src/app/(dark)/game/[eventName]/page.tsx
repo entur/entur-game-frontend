@@ -5,15 +5,15 @@ import { useParams } from 'next/navigation'
 import { Heading1, Heading3 } from '@entur/typography'
 import { Loader } from '@entur/loader'
 import Game from '@/components/Game/GameScreen'
-import GameNavBar from '@/components/NavBar/GameNavBar'
 import { getEventByEventName, Result } from '@/lib/api/eventApi'
 import { Event, StopPlace } from '@/lib/types/types'
 import { GridContainer, GridItem } from '@entur/grid'
 import useSWR from 'swr'
 import { Contrast } from '@entur/layout'
+import VictoryScreen from '@/components/Game/VictoryScreen/VictoryScreen'
 import Map from '../components/Map'
 import { MapPinIcon, DestinationIcon, StandingIcon } from '@entur/icons'
-import VictoryScreen from '@/components/Game/VictoryScreen/VictoryScreen'
+import GameStatus from '@/components/GameStatus'
 
 export default function GamePage(): JSX.Element {
     const [numLegs, setNumLegs] = useState<number>(0)
@@ -90,7 +90,7 @@ export default function GamePage(): JSX.Element {
                 startLocation && (
                     <main className="flex flex-col">
                         <div className="sm:sticky top-20">
-                            <GameNavBar
+                            <GameStatus
                                 numLegs={numLegs}
                                 usedTime={usedTime}
                                 maxTime={maxTime}
