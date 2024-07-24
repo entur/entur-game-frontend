@@ -103,7 +103,7 @@ export function formatDate(date: Date): string {
     const dayOfMonth = date.getDate()
     const month = months[date.getMonth()]
     const hour = date.getHours()
-    const minute = date.getMinutes()
+    const minute = date.getMinutes().toString().padStart(2, '0')
     return `${dayOfWeek} ${dayOfMonth}. ${month} kl. ${hour}:${minute}`
 }
 

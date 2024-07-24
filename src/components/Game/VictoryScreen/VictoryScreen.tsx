@@ -2,13 +2,7 @@ import React, { ReactElement, useEffect, useState } from 'react'
 import { Heading3, Heading5, Label, Paragraph } from '@entur/typography'
 import { Checkbox, TextField } from '@entur/form'
 import { PrimaryButton, SecondaryButton } from '@entur/button'
-import {
-    BackendEvent,
-    Event,
-    Player,
-    PlayerScore,
-    StopPlace,
-} from '@/lib/types/types'
+import { BackendEvent, Event, Player, PlayerScore } from '@/lib/types/types'
 import { saveScore } from '@/lib/api/scoreApi'
 import {
     formatIntervalToSeconds,
@@ -21,13 +15,10 @@ import { SmallAlertBox, useToast } from '@entur/alert'
 import { Contrast } from '@entur/layout'
 
 type Props = {
-    name: string
     event: Event
-    endLocation: StopPlace[]
     numLegs: number
     currentTime: Date
     startTime: Date
-    startTimer: number
 }
 
 type FormValues = {
@@ -38,25 +29,22 @@ type FormValues = {
 }
 
 export function VictoryScreen({
-    name = '',
     event,
     numLegs,
     currentTime,
     startTime,
-    startTimer,
 }: Props): ReactElement {
     const { addToast } = useToast()
 
     const {
-        formState: { errors, isLoading, isSubmitting, isValid },
+        formState: { errors, isLoading, isSubmitting },
         control,
         register,
         handleSubmit,
-        watch,
         setValue,
         getValues,
     } = useForm<FormValues>({
-        defaultValues: { name: name, email: '', consent: false },
+        defaultValues: { name: '', email: '', consent: false },
     })
     const router = useRouter()
     const [isError, setError] = useState<boolean>(false)
@@ -94,7 +82,7 @@ export function VictoryScreen({
                     formatIntervalToSeconds(currentTime, startTime)),
             totalStepNumber: numLegs,
             totalTravelTime: formatIntervalToSeconds(currentTime, startTime),
-            totalPlayTime: Math.trunc((Date.now() - startTimer) / 1000),
+            totalPlayTime: 0,
             player: newPlayer,
             event: backendEvent,
         }
@@ -255,26 +243,19 @@ export function VictoryScreen({
                                 </Label>
                             </div>
                         </div>
-
                         <div className="flex flex-row mt-4 gap-4">
-                            <PrimaryButton
-                                className={`select-none ${
-                                    watch('consent') && 'bg-blue-main'
-                                }`}
+                            <SecondaryButton
                                 loading={isSubmitting || isLoading}
-                                disabled={!watch('consent') && !isValid}
+                                onClick={() => router.push('/')}
+                            >
+                                Avbryt
+                            </SecondaryButton>
+                            <PrimaryButton
+                                loading={isSubmitting || isLoading}
                                 type="submit"
                             >
                                 Lagre poengsum
                             </PrimaryButton>
-                            <SecondaryButton
-                                className="bg-lavender select-none"
-                                loading={isSubmitting || isLoading}
-                                disabled={watch('consent')}
-                                onClick={() => router.push('/')}
-                            >
-                                Avslutt reise
-                            </SecondaryButton>
                         </div>
                         {isError && (
                             <SmallAlertBox

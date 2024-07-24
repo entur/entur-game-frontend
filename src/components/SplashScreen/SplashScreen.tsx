@@ -18,17 +18,12 @@ import { useEffect, useState } from 'react'
 export function SplashScreen(): JSX.Element {
     const router = useRouter()
     const [activeEventName, setActiveEventName] = useState<string | null>(null)
-    const [isEventNameError, setEventNameError] = useState<boolean>(false)
 
     useEffect(() => {
         const getActiveEventName = async () => {
             const event = await getActiveEvent()
             if (event) {
                 setActiveEventName(event.eventName)
-                setEventNameError(false)
-            } else {
-                setEventNameError(true)
-                console.error(isEventNameError)
             }
         }
         getActiveEventName()

@@ -21,7 +21,7 @@ if (
     throw new Error('The Azure AD environment variables are not set.')
 }
 
-export const authOptions: NextAuthOptions = {
+const authOptions: NextAuthOptions = {
     providers: [
         AzureADProvider({
             clientId: AZURE_AD_CLIENT_ID,
