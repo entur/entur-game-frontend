@@ -1,7 +1,7 @@
 'use client'
 
 import { Heading1, Heading2, Paragraph } from '@entur/typography'
-import { AddIcon, ExternalIcon, ValidationInfoFilledIcon } from '@entur/icons'
+import { AddIcon, ExternalIcon } from '@entur/icons'
 import { Contrast, NavigationCard } from '@entur/layout'
 import BackgroundAdmin from '@/lib/assets/images/BackgroundAdmin.svg'
 import Image from 'next/image'
@@ -9,12 +9,22 @@ import { Button, SecondaryButton } from '@entur/button'
 import CompactLeaderboardPage from './components/CompactLeaderboard'
 import { useRouter } from 'next/navigation'
 import InactiveEventsList from './components/InactiveEventsList'
+import { endActiveEvent } from '@/lib/api/eventApi'
 
 export default function AdminPage(): JSX.Element | null {
     const router = useRouter()
 
     const handleOnClick = () => {
         router.push('/')
+    }
+
+    const handleEndGame = async () => {
+        const result = await endActiveEvent()
+        if (result.success) {
+            alert(`Success: ${result.data}`)
+        } else {
+            alert(`Error: ${result.error}`)
+        }
     }
 
     return (
@@ -66,6 +76,7 @@ export default function AdminPage(): JSX.Element | null {
                             variant="secondary"
                             size="large"
                             className="max-w-[250px] mt-6"
+                            onClick={handleEndGame}
                         >
                             Avslutt spill
                         </Button>

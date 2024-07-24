@@ -53,6 +53,26 @@ export async function getEventById(
     }
 }
 
+export async function endActiveEvent(): Promise<Result<string>> {
+    try {
+        const response = await fetch(`${baseUrl}/end-event`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok')
+        }
+
+        const data = await response.text()
+        return { success: true, data }
+    } catch (error) {
+        return { success: false, error: 'Network error' }
+    }
+}
+
 export async function updateActiveEvent(gameId: number): Promise<Event> {
     const response = await fetch(`${baseUrl}/event/active/${gameId}`, {
         method: 'PUT',
