@@ -1,12 +1,10 @@
-import React, { ReactElement, useEffect, useState } from 'react'
-import { Heading3, Heading5, Label, Paragraph } from '@entur/typography'
+import React, { ReactElement, useState } from 'react'
+import { Heading1, Heading5, Label, LeadParagraph } from '@entur/typography'
 import { Checkbox, TextField } from '@entur/form'
 import { PrimaryButton, SecondaryButton } from '@entur/button'
 import { BackendEvent, Event, Player, PlayerScore } from '@/lib/types/types'
 import { saveScore } from '@/lib/api/scoreApi'
-import { formatMilliseconds } from '@/lib/utils/dateFnsUtils'
 import { Controller, useForm } from 'react-hook-form'
-import { createOptimalRouteText } from '@/lib/api/eventApi'
 import { useRouter } from 'next/navigation'
 import { SmallAlertBox, useToast } from '@entur/alert'
 import { Contrast } from '@entur/layout'
@@ -15,8 +13,6 @@ import { Screen } from './VictoryScreen'
 type Props = {
     event: Event
     numLegs: number
-    startTime: Date
-    currentTime: Date
     scoreValue: number
     totalTravelTime: number
     setCurrentScreen: (screen: Screen) => void
@@ -32,8 +28,6 @@ type FormValues = {
 export function RegisterScreen({
     event,
     numLegs,
-    startTime,
-    currentTime,
     scoreValue,
     totalTravelTime,
     setCurrentScreen,
@@ -53,11 +47,6 @@ export function RegisterScreen({
     const router = useRouter()
     const [isError, setError] = useState<boolean>(false)
     const [responseStatus, setResponseStatus] = useState<number | null>(null)
-
-    const timeDescription = formatMilliseconds(
-        currentTime.getTime() - startTime.getTime(),
-    )
-    const [optimalRouteText, setOptimalRouteText] = useState<string>('')
 
     async function onSubmit(data: FormValues) {
         const newPlayer: Player = {
@@ -113,15 +102,6 @@ export function RegisterScreen({
         setError(true)
     }
 
-    useEffect(() => {
-        async function getOptimalRouteText(): Promise<void> {
-            const data = await createOptimalRouteText(event)
-            setOptimalRouteText(data)
-        }
-        getOptimalRouteText()
-        window.scroll(0, 0)
-    }, [])
-
     return (
         <Contrast>
             <div className="min-w-screen">
@@ -132,15 +112,11 @@ export function RegisterScreen({
                             await onSubmit(data)
                         })}
                     >
-                        <Heading3 className="font-semibold">
-                            Du er fremme!
-                        </Heading3>
-                        <Paragraph>
-                            {`Du kom deg fra ${event.startLocation.name} til ${event.endLocation[0].name} på ${numLegs} etapper og ${timeDescription}`}
-                            <br />
-                            <br />
-                            {optimalRouteText}
-                        </Paragraph>
+                        <Heading1>Lagre poengsum</Heading1>
+                        <LeadParagraph>
+                            Takk for at du spilte Entur-spillet! Fyll ut
+                            skjemaet under for å lagre poengsummen din.{' '}
+                        </LeadParagraph>
                         <Controller
                             name="name"
                             control={control}
@@ -239,7 +215,8 @@ export function RegisterScreen({
                                 />
                                 <Label className=" col-span-5 cursor-pointer select-none">
                                     Jeg samtykker til at Entur kan kontakte meg
-                                    på e-post i forbindelse med konkurransen.
+                                    på sms eller e-post i forbindelse med
+                                    konkurransen.
                                 </Label>
                             </div>
                         </div>

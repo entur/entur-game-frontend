@@ -62,8 +62,6 @@ function VictoryScreen({
                 <RegisterScreen
                     event={event}
                     numLegs={numLegs}
-                    startTime={startTime}
-                    currentTime={currentTime}
                     scoreValue={scoreValue}
                     totalTravelTime={totalTravelTime}
                     setCurrentScreen={setCurrentScreen}

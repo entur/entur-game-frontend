@@ -134,15 +134,6 @@ export async function getEventByEventName(
     }
 }
 
-export async function createOptimalRouteText(event: Event): Promise<string> {
-    const totalSeconds = event?.optimalTravelTime
-    const hours = Math.floor(totalSeconds / 3600)
-    const minutes = Math.floor((totalSeconds % 3600) / 60)
-    const seconds = totalSeconds % 60
-
-    return `Vår reiseplanlegger har beregnet en optimal rute der antall etapper er ${event?.optimalStepNumber} og reisetid er ${hours} timer, ${minutes} minutter og ${seconds} sekunder.`
-}
-
 export async function createEvent(
     event: BackendEvent,
 ): Promise<BackendEvent | null> {
