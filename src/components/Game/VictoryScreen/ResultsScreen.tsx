@@ -13,12 +13,12 @@ import {
     TableRow,
 } from '@entur/table'
 
-interface ScoreScreenProps {
+interface ResultsScreenProps {
     event: Event
     numLegs: number
 }
 
-function ScoreScreen({ event, numLegs }: ScoreScreenProps): JSX.Element {
+function ResultsScreen({ event, numLegs }: ResultsScreenProps): JSX.Element {
     window.scrollTo(0, 0)
     return (
         <Contrast className="text-center">
@@ -92,4 +92,4 @@ function ScoreScreen({ event, numLegs }: ScoreScreenProps): JSX.Element {
     )
 }
 
-export default ScoreScreen
+export default ResultsScreen

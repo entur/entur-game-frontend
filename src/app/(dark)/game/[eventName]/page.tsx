@@ -11,9 +11,9 @@ import { Event, StopPlace } from '@/lib/types/types'
 import { GridContainer, GridItem } from '@entur/grid'
 import useSWR from 'swr'
 import { Contrast } from '@entur/layout'
-import { VictoryScreen } from '@/components/Game/VictoryScreen/VictoryScreen'
 import Map from '../components/Map'
 import { MapPinIcon, DestinationIcon, StandingIcon } from '@entur/icons'
+import VictoryScreen from '@/components/Game/VictoryScreen/VictoryScreen'
 
 export default function GamePage(): JSX.Element {
     const [numLegs, setNumLegs] = useState<number>(0)
