@@ -9,13 +9,27 @@ import { Button, SecondaryButton } from '@entur/button'
 import CompactLeaderboardPage from './components/CompactLeaderboard'
 import { useRouter } from 'next/navigation'
 import InactiveEventsList from './components/InactiveEventsList'
-import { endActiveEvent } from '@/lib/api/eventApi'
+import { endActiveEvent, getActiveEvent } from '@/lib/api/eventApi'
 import { Modal } from '@entur/modal'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function AdminPage(): JSX.Element | null {
     const [isOpen, setOpen] = useState(false)
+    const [isActiveEvent, setIsActiveEvent] = useState<boolean>(false)
     const router = useRouter()
+
+    const checkActiveEvent = async (): Promise<boolean> => {
+        const result = await getActiveEvent()
+        return result?.isActive ?? false
+    }
+
+    useEffect(() => {
+        const fetchActiveEvent = async () => {
+            const isActive = await checkActiveEvent()
+            setIsActiveEvent(isActive)
+        }
+        fetchActiveEvent()
+    }, [])
 
     const handleOnClick = () => {
         router.push('/')
@@ -24,9 +38,7 @@ export default function AdminPage(): JSX.Element | null {
     const handleEndGame = async () => {
         const result = await endActiveEvent()
         if (result.success) {
-            alert(`Success: ${result.data}`)
-        } else {
-            alert(`Error: ${result.error}`)
+            setOpen(false)
         }
     }
 
@@ -91,6 +103,7 @@ export default function AdminPage(): JSX.Element | null {
                                 <Button
                                     variant="primary"
                                     className="max-w-[250px]"
+                                    disabled={!isActiveEvent}
                                     onClick={handleEndGame}
                                 >
                                     Avslutt spill
