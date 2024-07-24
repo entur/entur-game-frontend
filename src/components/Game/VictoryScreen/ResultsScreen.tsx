@@ -16,6 +16,7 @@ import Ticket from '@/lib/assets/images/Ticket.svg'
 import Image from 'next/image'
 import { Screen } from './VictoryScreen'
 import { PrimaryButton, SecondaryButton } from '@entur/button'
+import { useRouter } from 'next/navigation'
 
 interface ResultsScreenProps {
     event: Event
@@ -29,6 +30,7 @@ function ResultsScreen({
     setCurrentScreen,
 }: ResultsScreenProps): JSX.Element {
     window.scrollTo(0, 0)
+    const router = useRouter()
     return (
         <Contrast className="text-center">
             <Heading1>Resultater</Heading1>
@@ -103,7 +105,9 @@ function ResultsScreen({
                             </TableBody>
                         </Table>
                         <div className="flex justify-center mt-4 gap-4">
-                            <SecondaryButton>Avbryt</SecondaryButton>
+                            <SecondaryButton onClick={() => router.push('/')}>
+                                Avslutt
+                            </SecondaryButton>
                             <PrimaryButton
                                 onClick={() =>
                                     setCurrentScreen(Screen.Register)

@@ -99,7 +99,7 @@ export function RegisterScreen({
             })
             setTimeout(() => {
                 router.push('/')
-            }, 5000)
+            }, 1000)
             return
         }
         if (response.status === 400) {
@@ -109,7 +109,7 @@ export function RegisterScreen({
             })
             setTimeout(() => {
                 router.push('/')
-            }, 5000)
+            }, 1000)
             return
         }
         setResponseStatus(response.status)
@@ -250,9 +250,8 @@ export function RegisterScreen({
                             <SecondaryButton
                                 loading={isSubmitting || isLoading}
                                 onClick={() => setCurrentScreen(Screen.Results)}
-                                // onClick={() => router.push('/')}
                             >
-                                Avslutt
+                                Avbryt
                             </SecondaryButton>
                             <PrimaryButton
                                 loading={isSubmitting || isLoading}
