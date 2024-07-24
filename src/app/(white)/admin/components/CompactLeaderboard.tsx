@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { PlayerScore } from '@/lib/types/types'
 import { getActiveScores } from '@/lib/api/scoreApi'
 import Leaderboard from './Leaderboard'
-import { Heading3 } from '@entur/typography'
 import { useEventName } from '@/lib/hooks/useEventName'
 import { BreadcrumbItem } from '@entur/menu'
 import Link from 'next/link'
 import { useStopPlaceNames } from '@/lib/hooks/useStopPlaceName'
 import { TravelHeader } from '@entur/travel'
+import { BannerAlertBox } from '@entur/alert'
 
 const CompactLeaderboardPage: React.FC = (): JSX.Element => {
     const [scores, setScores] = useState<PlayerScore[]>([])
@@ -32,35 +32,42 @@ const CompactLeaderboardPage: React.FC = (): JSX.Element => {
 
     return (
         <div>
-            <div className="flex flex-col pb-4">
-                <div className="bg-white rounded shadow-md p-6">
-                    {isEventNameError ? (
-                        <Heading3 margin="bottom">Ingen aktive spill</Heading3>
-                    ) : (
+            {isEventNameError ? (
+                <BannerAlertBox
+                    className="w-[640px]"
+                    title="Det finnes ikke et aktivt spill for øyeblikket"
+                    variant="information"
+                >
+                    Gå til “Opprett spill” for å opprette et nytt spill
+                </BannerAlertBox>
+            ) : (
+                <div className="flex flex-col pb-4">
+                    <div className="bg-white rounded shadow-md p-6">
                         <TravelHeader
                             size="large"
                             from={startLocationName}
                             to={endLocationName}
                             noWrap={true}
                         ></TravelHeader>
-                    )}
-                    <Leaderboard
-                        scores={scores}
-                        compact
-                        currentPage={1}
-                        results={5}
-                    />
-                    <div className="flex justify-end pt-6">
-                        <BreadcrumbItem
-                            className="inline align-baseline"
-                            as={Link}
-                            href="/admin/leaderboard"
-                        >
-                            Se fullstendig ledertavle
-                        </BreadcrumbItem>
+
+                        <Leaderboard
+                            scores={scores}
+                            compact
+                            currentPage={1}
+                            results={5}
+                        />
+                        <div className="flex justify-end pt-6">
+                            <BreadcrumbItem
+                                className="inline align-baseline"
+                                as={Link}
+                                href="/admin/leaderboard"
+                            >
+                                Se fullstendig ledertavle
+                            </BreadcrumbItem>
+                        </div>
                     </div>
                 </div>
-            </div>
+            )}
         </div>
     )
 }
