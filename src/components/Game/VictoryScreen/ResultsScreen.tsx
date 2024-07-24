@@ -18,7 +18,7 @@ import { Screen } from './VictoryScreen'
 import { PrimaryButton, SecondaryButton } from '@entur/button'
 import { useRouter } from 'next/navigation'
 import { formatMilliseconds } from '@/lib/utils/dateFnsUtils'
-import { ForwardIcon } from '@entur/icons'
+import { ClockIcon, ForwardIcon, TrackIcon, ValueIcon } from '@entur/icons'
 
 interface ResultsScreenProps {
     event: Event
@@ -87,7 +87,24 @@ function ResultsScreen({
                             <TableBody>
                                 <TableRow>
                                     <DataCell className="text-left">
-                                        Reisetid
+                                        <span className="flex items-center">
+                                            <ValueIcon className="mr-2 mb-0.5 relative" />
+                                            Poengsum
+                                        </span>
+                                    </DataCell>
+                                    <DataCell className="text-left">
+                                        {scoreValue}
+                                    </DataCell>
+                                    <DataCell className="text-left">
+                                        100
+                                    </DataCell>
+                                </TableRow>
+                                <TableRow>
+                                    <DataCell className="text-left">
+                                        <span className="flex items-center">
+                                            <ClockIcon className="mr-2 mb-0.5 relative" />
+                                            Reisetid
+                                        </span>
                                     </DataCell>
                                     <DataCell className="text-left">
                                         {totalTravelTimeDescription}
@@ -98,18 +115,10 @@ function ResultsScreen({
                                 </TableRow>
                                 <TableRow>
                                     <DataCell className="text-left">
-                                        Reiselengde
-                                    </DataCell>
-                                    <DataCell className="text-left">
-                                        Null
-                                    </DataCell>
-                                    <DataCell className="text-left">
-                                        Null
-                                    </DataCell>
-                                </TableRow>
-                                <TableRow>
-                                    <DataCell className="text-left">
-                                        Antall steg
+                                        <span className="flex items-center">
+                                            <TrackIcon className="mr-2 mb-0.5 relative" />
+                                            Antall steg
+                                        </span>
                                     </DataCell>
                                     <DataCell className="text-left">
                                         {numLegs}
