@@ -225,7 +225,7 @@ export function RegisterScreen({
                                 loading={isSubmitting || isLoading}
                                 onClick={() => setCurrentScreen(Screen.Results)}
                             >
-                                Avbryt
+                                Tilbake
                             </SecondaryButton>
                             <PrimaryButton
                                 loading={isSubmitting || isLoading}

@@ -18,6 +18,7 @@ import { Screen } from './VictoryScreen'
 import { PrimaryButton, SecondaryButton } from '@entur/button'
 import { useRouter } from 'next/navigation'
 import { formatMilliseconds } from '@/lib/utils/dateFnsUtils'
+import { ForwardIcon } from '@entur/icons'
 
 interface ResultsScreenProps {
     event: Event
@@ -128,7 +129,10 @@ function ResultsScreen({
                                     setCurrentScreen(Screen.Register)
                                 }
                             >
-                                Lagre poengsum
+                                <span className="flex items-center">
+                                    Lagre poengsum
+                                    <ForwardIcon className="ml-2 mb-1.5 relative" />
+                                </span>
                             </PrimaryButton>
                         </div>
                     </div>
