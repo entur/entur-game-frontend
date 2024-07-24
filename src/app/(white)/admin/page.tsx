@@ -10,8 +10,11 @@ import CompactLeaderboardPage from './components/CompactLeaderboard'
 import { useRouter } from 'next/navigation'
 import InactiveEventsList from './components/InactiveEventsList'
 import { endActiveEvent } from '@/lib/api/eventApi'
+import { Modal } from '@entur/modal'
+import { useState } from 'react'
 
 export default function AdminPage(): JSX.Element | null {
+    const [isOpen, setOpen] = useState(false)
     const router = useRouter()
 
     const handleOnClick = () => {
@@ -72,11 +75,40 @@ export default function AdminPage(): JSX.Element | null {
                             Vinneren trekkes tilfeldig blant spillerne med
                             høyest poengsum.
                         </Paragraph>
+                        <Modal
+                            open={isOpen}
+                            onDismiss={() => setOpen(false)}
+                            title="Avslutt spill uten å trekke vinner?"
+                            size="medium"
+                        >
+                            <Paragraph>
+                                Du er i ferd med å avslutte spillet uten å trekk
+                                een vinner. Det vil være mulig å gjenåpne
+                                spillet og trekke en vinner på et senere
+                                tidspunkt.
+                            </Paragraph>
+                            <div className="flex items-center gap-4">
+                                <Button
+                                    variant="primary"
+                                    className="max-w-[250px]"
+                                    onClick={handleEndGame}
+                                >
+                                    Avslutt spill
+                                </Button>
+                                <Button
+                                    variant="secondary"
+                                    onClick={() => setOpen(false)}
+                                >
+                                    Avbryt
+                                </Button>
+                            </div>
+                        </Modal>
                         <Button
                             variant="secondary"
                             size="large"
                             className="max-w-[250px] mt-6"
-                            onClick={handleEndGame}
+                            onClick={() => setOpen(true)}
+                            type="button"
                         >
                             Avslutt spill
                         </Button>
