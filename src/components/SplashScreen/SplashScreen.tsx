@@ -14,11 +14,9 @@ import LightLogo from '@/lib/assets/images/LightLogo.png'
 import Link from 'next/link'
 import { getActiveEvent } from '@/lib/api/eventApi'
 import { useEffect, useState } from 'react'
-
 export function SplashScreen(): JSX.Element {
     const router = useRouter()
     const [activeEventName, setActiveEventName] = useState<string | null>(null)
-
     useEffect(() => {
         const getActiveEventName = async () => {
             const event = await getActiveEvent()
@@ -28,7 +26,6 @@ export function SplashScreen(): JSX.Element {
         }
         getActiveEventName()
     }, [])
-
     return (
         <>
             <Link href="/" className="pt-10 ml-5 mr-20">
@@ -75,5 +72,4 @@ export function SplashScreen(): JSX.Element {
         </>
     )
 }
-
 export default SplashScreen
