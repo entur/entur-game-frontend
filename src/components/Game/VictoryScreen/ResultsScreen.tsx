@@ -158,12 +158,12 @@ function ResultsScreen({
                 <Modal
                     isOpen={isModalOpen}
                     onDismiss={closeModal}
-                    title="Bekreft avslutning"
+                    title="Avslutte uten å lagre?"
                     size="medium"
                 >
                     <p>
-                        Er du sikker på at du vil avslutte uten å lagre
-                        poengsummen din?
+                        Hvis du avslutter nå, vil du ikke kunne være med i
+                        konkurransen om å vinne kule premier.
                     </p>
                     <div className="flex justify-start mt-4 gap-4">
                         <SecondaryButton onClick={closeModal}>
