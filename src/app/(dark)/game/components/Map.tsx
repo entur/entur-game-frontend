@@ -37,6 +37,8 @@ const Map = ({ event, currentPosition }: Props) => {
 
             mapRef.current = map
 
+            const bounds = new mapboxgl.LngLatBounds()
+
             if (event.startLocation.longitude && event.startLocation.latitude) {
                 const el = document.createElement('div')
                 el.innerHTML = MapPin
@@ -73,6 +75,11 @@ const Map = ({ event, currentPosition }: Props) => {
                         event.endLocation[0].latitude,
                     ])
                     .addTo(map)
+
+                bounds.extend([
+                    event.endLocation[0].longitude,
+                    event.endLocation[0].latitude,
+                ])
             }
 
             if (
@@ -94,6 +101,17 @@ const Map = ({ event, currentPosition }: Props) => {
                         currentPosition.latitude,
                     ])
                     .addTo(map)
+
+                bounds.extend([
+                    currentPosition.longitude,
+                    currentPosition.latitude,
+                ])
+            }
+
+            if (!bounds.isEmpty()) {
+                map.fitBounds(bounds, {
+                    padding: { top: 100, bottom: 100, left: 50, right: 50 },
+                })
             }
 
             return () => {
