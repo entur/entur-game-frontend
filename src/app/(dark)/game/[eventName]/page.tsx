@@ -72,7 +72,7 @@ export default function GamePage(): JSX.Element {
                 </Contrast>
             ) : isVictory ? (
                 <Contrast>
-                    <div className="app">
+                    <div>
                         <VictoryScreen
                             event={event}
                             numLegs={numLegs}

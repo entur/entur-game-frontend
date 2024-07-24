@@ -168,7 +168,7 @@ function ResultsScreen({
                 src={WomanWithLuggage}
                 alt="entur partner"
                 width={480}
-                className="absolute bottom-[-24px] right-0 mr-[-120px] transform scale-x-[-1]"
+                className="absolute bottom-[-24px] right-0 transform scale-x-[-1]"
             />
             {isModalOpen && (
                 <Modal
