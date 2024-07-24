@@ -1,7 +1,7 @@
 'use client'
 
 import { Heading1, Heading2, Heading3 } from '@entur/typography'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Contrast } from '@entur/layout'
 import { Event } from '@/lib/types/types'
 import {
@@ -20,6 +20,7 @@ import { useRouter } from 'next/navigation'
 import { formatMilliseconds } from '@/lib/utils/dateFnsUtils'
 import { ClockIcon, ForwardIcon, TrackIcon, ValueIcon } from '@entur/icons'
 import { Modal } from '@entur/modal'
+import { calculateRankOfScore } from '@/lib/utils/calculateRank'
 
 interface ResultsScreenProps {
     event: Event
@@ -39,6 +40,11 @@ function ResultsScreen({
     window.scrollTo(0, 0)
     const router = useRouter()
     const [isModalOpen, setModalOpen] = useState(false)
+    const [rank, setRank] = useState<number>(1)
+
+    useEffect(() => {
+        calculateRankOfScore(scoreValue).then(setRank)
+    }, [scoreValue])
 
     const totalTravelTimeDescription = formatMilliseconds(
         totalTravelTime * 1000,
@@ -69,7 +75,7 @@ function ResultsScreen({
                     poeng
                 </Heading1>
                 <Heading2>
-                    Din plassering: <span className="text-coral">12</span>
+                    Din plassering: <span className="text-coral">{rank}</span>
                 </Heading2>
             </div>
             <div>
