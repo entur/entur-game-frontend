@@ -4,8 +4,7 @@ import { LeadParagraph } from '@entur/typography'
 import { Button } from '@entur/button'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
-import LightLogo from '@/lib/assets/images/LightLogo.png'
-import Link from 'next/link'
+import Entur_logo_contrast from '@/lib/assets/images/Entur_logo_contrast.svg'
 import { getActiveEvent } from '@/lib/api/eventApi'
 import { useEffect, useState } from 'react'
 
@@ -25,15 +24,13 @@ export function SplashScreen(): JSX.Element {
 
     return (
         <>
-            <Link href="/" className="pt-10 ml-5 mr-20">
+            <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center z-10">
                 <Image
                     className="cursor-pointer"
-                    src={LightLogo}
+                    src={Entur_logo_contrast}
                     alt="entur partner"
-                    width={215}
+                    width={800}
                 />
-            </Link>
-            <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center z-10">
                 <LeadParagraph className="text-white font-normal text-left">
                     Klarer du å finne en like effektiv rute som Enturs
                     reiseplanlegger?
