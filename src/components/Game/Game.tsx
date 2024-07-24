@@ -1,6 +1,6 @@
 'use client'
 
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { ReactElement, useEffect, useRef, useState } from 'react'
 import { Paragraph } from '@entur/typography'
 import { Departure, QueryMode, StopPlaceDetails } from '@entur/sdk'
 import { addHours, addMinutes } from 'date-fns'
@@ -39,7 +39,7 @@ type Props = {
     >
 }
 
-function GameScreen({
+function Game({
     event,
     maxTime,
     startTime,
@@ -71,7 +71,8 @@ function GameScreen({
     const { getWalkableStopPlaces, getDepartures, getStopsOnLine } =
         useEnturService()
 
-    // TravelLegStart states
+    const containerRef = useRef<HTMLDivElement>(null)
+
     const [travelLegsMode, setTravelLegsMode] = useState<QueryMode[]>([])
     const [usedDepartures, setUsedDepartures] = useState<
         (Departure | undefined)[]
@@ -86,8 +87,11 @@ function GameScreen({
     }, [event])
 
     useEffect(() => {
-        window.scrollTo(0, document.body.scrollHeight)
-    }, [currentTime])
+        const container = containerRef.current
+        if (container) {
+            container.scrollTop = container.scrollHeight
+        }
+    }, [travelLegs])
 
     useEffect(() => {
         const newUsedTime = currentTime.getTime() - startTime.getTime()
@@ -231,40 +235,42 @@ function GameScreen({
     }
 
     return (
-        <div className="flex flex-col mb-4">
+        <div className="flex flex-col">
             <Contrast>
-                <FromAndToTitle
-                    className="mt-10 xl:mt-28"
-                    event={event}
-                    startTime={startTime}
-                />
-                <div className="mt-5 xl:mt-14">
-                    <TravelLegStart
-                        travelLegs={travelLegs}
-                        travelLegsMode={travelLegsMode}
-                        usedDepartures={usedDepartures}
+                <FromAndToTitle event={event} startTime={startTime} />
+            </Contrast>
+            <div className="grid-demo-item overflow-auto" ref={containerRef}>
+                <Contrast>
+                    <div className="mt-5 xl:mt-14">
+                        <TravelLegStart
+                            travelLegs={travelLegs}
+                            travelLegsMode={travelLegsMode}
+                            usedDepartures={usedDepartures}
+                        />
+                    </div>
+                </Contrast>
+                <div className="mt-5 ml-9 xl:mr-4 xl:ml-12">
+                    <TransportTypePicker
+                        currentTime={currentTime}
+                        isLoading={isLoading}
+                        mode={mode}
+                        usedMode={usedMode}
+                        selectMode={selectMode}
+                        wait={wait}
+                        stopPlace={startLocation}
+                        availableModes={availableModes}
+                        availableModesError={availableModesError}
                     />
                 </div>
-            </Contrast>
-            <div className="mt-5 ml-9 xl:mr-4 xl:ml-12">
-                <TransportTypePicker
-                    currentTime={currentTime}
-                    isLoading={isLoading}
-                    mode={mode}
-                    usedMode={usedMode}
-                    selectMode={selectMode}
-                    wait={wait}
-                    stopPlace={startLocation}
-                    availableModes={availableModes}
-                    availableModesError={availableModesError}
-                />
+                <Contrast>
+                    <div className="mt-5 xl:mt-14">
+                        <TravelLegFinished endLocation={endLocation} />
+                    </div>
+                </Contrast>
             </div>
             <Contrast>
-                <div className="mt-5 xl:mt-14">
-                    <TravelLegFinished endLocation={endLocation} />
-                </div>
                 <SecondaryButton
-                    className="sm:mt-28 mt-10 mb-10 sm:place-self-start place-self-center"
+                    className="sm:mt-28 mt-30 mb-10 sm:place-self-start place-self-center"
                     onClick={() => router.push('/')}
                 >
                     Avslutt reise
@@ -297,4 +303,4 @@ function GameScreen({
     )
 }
 
-export default GameScreen
+export default Game
