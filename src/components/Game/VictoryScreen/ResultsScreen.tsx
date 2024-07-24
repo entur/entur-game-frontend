@@ -102,14 +102,16 @@ function ResultsScreen({
                                 </TableRow>
                             </TableBody>
                         </Table>
-                    </div>
-                    <div className="flex flex-row mt-4 gap-4">
-                        <SecondaryButton>Avbryt</SecondaryButton>
-                        <PrimaryButton
-                            onClick={() => setCurrentScreen(Screen.Register)}
-                        >
-                            Lagre poengsum
-                        </PrimaryButton>
+                        <div className="flex justify-center mt-4 gap-4">
+                            <SecondaryButton>Avbryt</SecondaryButton>
+                            <PrimaryButton
+                                onClick={() =>
+                                    setCurrentScreen(Screen.Register)
+                                }
+                            >
+                                Lagre poengsum
+                            </PrimaryButton>
+                        </div>
                     </div>
                 </div>
             </div>
