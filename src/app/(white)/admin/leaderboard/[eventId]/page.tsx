@@ -10,6 +10,7 @@ import { Button, SecondaryButton } from '@entur/button'
 import { DeleteIcon } from '@entur/icons'
 import { Modal } from '@entur/modal'
 import { getEventById } from '@/lib/api/eventApi'
+import PropTypes from 'prop-types'
 
 interface LeaderboardPageProps {
     params: {
@@ -24,7 +25,6 @@ const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
 
     const [scores, setScores] = useState<PlayerScore[]>([])
     const [leader, setLeader] = useState<PlayerScore | null>(null)
-    const [showAlert, setShowAlert] = useState<boolean>(false)
     const [eventName, setEventName] = useState<string | null>(null)
     const [currentPage, setPage] = useState(1)
     const [isOpen, setOpen] = useState<boolean>(false)
@@ -49,7 +49,6 @@ const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
                 )
                 setScores(sortedScores)
                 setLeader(sortedScores[0])
-                setShowAlert(false)
             }
             const eventResponse = await getEventById(eventIdNumber)
             if (eventResponse.success && eventResponse.data) {
@@ -97,7 +96,7 @@ const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
                 scores={scores}
                 currentPage={currentPage}
                 results={results}
-            ></Leaderboard>
+            />
             <div className="pt-12 mb-12">
                 <Pagination
                     pageCount={pageCount}
@@ -119,6 +118,12 @@ const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
             </Modal>
         </div>
     )
+}
+
+LeaderboardPage.propTypes = {
+    params: PropTypes.shape({
+        eventId: PropTypes.string.isRequired,
+    }).isRequired,
 }
 
 export default LeaderboardPage

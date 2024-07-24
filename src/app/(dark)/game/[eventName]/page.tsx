@@ -10,15 +10,18 @@ import { getEventByEventName, Result } from '@/lib/api/eventApi'
 import { Event, StopPlace } from '@/lib/types/types'
 import { GridContainer, GridItem } from '@entur/grid'
 import useSWR from 'swr'
+import { Contrast } from '@entur/layout'
+import { VictoryScreen } from '@/components/Game/VictoryScreen/VictoryScreen'
 import Map from '../components/Map'
 import { MapPinIcon, DestinationIcon, StandingIcon } from '@entur/icons'
-import { Contrast } from '@entur/layout'
 
 export default function GamePage(): JSX.Element {
-    const [startTimer] = useState<number>(Date.now())
     const [numLegs, setNumLegs] = useState<number>(0)
     const [usedTime, setUsedTime] = useState<number>(0)
     const { eventName }: { eventName: string } = useParams()
+    const [isVictory, setVictory] = useState<boolean>(false)
+    const [startTime, setStartTime] = useState<Date | null>(null)
+    const [currentTime, setCurrentTime] = useState<Date>(new Date())
 
     const {
         data: eventResult,
@@ -33,6 +36,20 @@ export default function GamePage(): JSX.Element {
         ? Math.ceil((3 * event.optimalTravelTime) / (60 * 60)) * 1000 * 60 * 60
         : null
 
+    useEffect(() => {
+        if (event) {
+            const eventStartDate = new Date(
+                Number(event.startTime[0]),
+                Number(event.startTime[1]) - 1,
+                Number(event.startTime[2]),
+                Number(event.startTime[3]),
+                Number(event.startTime[4]),
+            )
+            setStartTime(eventStartDate)
+            setCurrentTime(eventStartDate)
+        }
+    }, [event])
+
     const [startLocation, setStartLocation] = useState<StopPlace | undefined>()
 
     useEffect(() => {
@@ -44,11 +61,30 @@ export default function GamePage(): JSX.Element {
     return (
         <>
             {isLoading ? (
-                <Loader>Laster inn spill...</Loader>
-            ) : eventError || !event || !maxTime ? (
-                <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
-                    <Heading1>Spill ikke funnet</Heading1>
-                </div>
+                <Contrast>
+                    <Loader>Laster inn spill...</Loader>
+                </Contrast>
+            ) : eventError ||
+              !event ||
+              !maxTime ||
+              !startTime ||
+              !currentTime ? (
+                <Contrast>
+                    <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
+                        <Heading1>Spill ikke funnet</Heading1>
+                    </div>
+                </Contrast>
+            ) : isVictory ? (
+                <Contrast>
+                    <div className="app">
+                        <VictoryScreen
+                            event={event}
+                            numLegs={numLegs}
+                            currentTime={currentTime}
+                            startTime={startTime}
+                        />
+                    </div>
+                </Contrast>
             ) : (
                 event &&
                 startLocation && (
@@ -64,16 +100,15 @@ export default function GamePage(): JSX.Element {
                             <GridContainer spacing="large">
                                 <GridItem small={7} className="grid-demo-item">
                                     <Game
-                                        name={''}
                                         event={event}
-                                        startTimer={startTimer}
-                                        // eslint-disable-next-line @typescript-eslint/no-empty-function
-                                        handleWinner={() => {}}
                                         maxTime={maxTime}
-                                        setUsedTime={setUsedTime}
-                                        numLegs={numLegs}
-                                        setNumLegs={setNumLegs}
+                                        startTime={startTime}
+                                        currentTime={currentTime}
                                         startLocation={startLocation}
+                                        setCurrentTime={setCurrentTime}
+                                        setUsedTime={setUsedTime}
+                                        setNumLegs={setNumLegs}
+                                        setVictory={setVictory}
                                         setStartLocation={setStartLocation}
                                     />
                                 </GridItem>

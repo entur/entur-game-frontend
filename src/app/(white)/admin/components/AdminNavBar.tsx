@@ -7,7 +7,7 @@ import Image from 'next/image'
 import AdminLogoLight from '@/lib/assets/images/AdminLogoLight.png'
 import AdminLogoDark from '@/lib/assets/images/AdminLogoDark.png'
 import { Contrast } from '@entur/layout'
-import { Button, IconButton } from '@entur/button'
+import { Button } from '@entur/button'
 import { useAuth } from '@/context/AuthContext'
 import { UserIcon } from '@entur/icons'
 

@@ -1,7 +1,7 @@
 'use client'
 
 import { Heading1, Heading2, Paragraph } from '@entur/typography'
-import { AddIcon, ExternalIcon, ValidationInfoFilledIcon } from '@entur/icons'
+import { AddIcon, ExternalIcon } from '@entur/icons'
 import { Contrast, NavigationCard } from '@entur/layout'
 import BackgroundAdmin from '@/lib/assets/images/BackgroundAdmin.svg'
 import Image from 'next/image'

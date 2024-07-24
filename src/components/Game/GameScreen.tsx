@@ -16,7 +16,6 @@ import { DepartureAndOnLinePickerModal } from './components/DepartureAndOnLinePi
 import { isTruthy } from '@/lib/utils/isTruthy'
 import { TravelLegFinished } from './components/TravelLegFinished'
 import DeadScreen from './DeadScreen'
-import { VictoryScreen } from './VictoryScreen/VictoryScreen'
 import { Modal } from '@entur/modal'
 import { Contrast } from '@entur/layout'
 
@@ -26,31 +25,31 @@ export interface StopAndTime {
 }
 
 type Props = {
-    name: string
     event: Event
-    startTimer: number
-    handleWinner: () => void
     maxTime: number
+    startTime: Date
+    currentTime: Date
+    startLocation: StopPlace
+    setCurrentTime: React.Dispatch<React.SetStateAction<Date>>
     setUsedTime: React.Dispatch<React.SetStateAction<number>>
-    numLegs: number
     setNumLegs: React.Dispatch<React.SetStateAction<number>>
+    setVictory: React.Dispatch<React.SetStateAction<boolean>>
     setStartLocation: React.Dispatch<
         React.SetStateAction<StopPlace | undefined>
     >
-    startLocation: StopPlace
 }
 
 function GameScreen({
     event,
-    numLegs,
-    setNumLegs,
-    startTimer,
-    handleWinner,
     maxTime,
-    setUsedTime,
-    name,
-    setStartLocation,
+    startTime,
+    currentTime,
     startLocation,
+    setCurrentTime,
+    setNumLegs,
+    setUsedTime,
+    setVictory,
+    setStartLocation,
 }: Props): ReactElement {
     const router = useRouter()
     const [isLoading, setLoading] = useState<boolean>(false)
@@ -72,16 +71,6 @@ function GameScreen({
     const { getWalkableStopPlaces, getDepartures, getStopsOnLine } =
         useEnturService()
 
-    const eventStartDate = new Date(
-        Number(event.startTime[0]),
-        Number(event.startTime[1]) - 1,
-        Number(event.startTime[2]),
-        Number(event.startTime[3]),
-        Number(event.startTime[4]),
-    )
-
-    const [startTime, setStartTime] = useState<Date>(eventStartDate)
-    const [currentTime, setCurrentTime] = useState<Date>(startTime)
     // TravelLegStart states
     const [travelLegsMode, setTravelLegsMode] = useState<QueryMode[]>([])
     const [usedDepartures, setUsedDepartures] = useState<
@@ -93,7 +82,6 @@ function GameScreen({
         setStartLocation(event.startLocation)
         setTravelLegs([event.startLocation])
         setEndLocation(event.endLocation)
-        setStartTime(eventStartDate)
         fetchAvailableModes(event.startLocation)
     }, [event])
 
@@ -231,20 +219,7 @@ function GameScreen({
     }
 
     if (startLocation && endLocation.some((sp) => sp.id === startLocation.id)) {
-        handleWinner()
-        return (
-            <div className="app" style={{ maxWidth: '800px' }}>
-                <VictoryScreen
-                    name={name}
-                    event={event}
-                    endLocation={endLocation}
-                    numLegs={numLegs}
-                    currentTime={currentTime}
-                    startTime={startTime}
-                    startTimer={startTimer}
-                />
-            </div>
-        )
+        setVictory(true)
     }
 
     if (isDead) {
