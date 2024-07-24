@@ -141,6 +141,8 @@ function ResultsScreen({
                                 </TableRow>
                             </TableBody>
                         </Table>
+                        <br />
+                        <br />
                         <div className="flex justify-center mt-4 gap-4">
                             <SecondaryButton onClick={openModal}>
                                 Avslutt uten å lagre
