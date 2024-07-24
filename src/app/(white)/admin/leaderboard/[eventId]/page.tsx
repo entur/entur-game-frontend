@@ -12,7 +12,7 @@ import { Modal } from '@entur/modal'
 import { getEventById } from '@/lib/api/eventApi'
 import PropTypes from 'prop-types'
 
-interface LeaderboardPageProps {
+type LeaderboardPageProps = {
     params: {
         eventId: string
     }
@@ -20,9 +20,8 @@ interface LeaderboardPageProps {
 
 const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
     params,
-}): JSX.Element => {
+}: LeaderboardPageProps): JSX.Element => {
     const { eventId } = params
-
     const [scores, setScores] = useState<PlayerScore[]>([])
     const [leader, setLeader] = useState<PlayerScore | null>(null)
     const [eventName, setEventName] = useState<string | null>(null)
