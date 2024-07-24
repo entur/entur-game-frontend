@@ -21,6 +21,7 @@ import { formatMilliseconds } from '@/lib/utils/dateFnsUtils'
 import { ClockIcon, ForwardIcon, TrackIcon, ValueIcon } from '@entur/icons'
 import { Modal } from '@entur/modal'
 import { calculateRankOfScore } from '@/lib/utils/calculateRank'
+import WomanWithLuggage from '@/lib/assets/images/Woman walking with luggage.svg'
 
 interface ResultsScreenProps {
     event: Event
@@ -57,7 +58,7 @@ function ResultsScreen({
     const closeModal = () => setModalOpen(false)
 
     return (
-        <Contrast className="text-center">
+        <Contrast className="text-center relative">
             <Heading1>Resultater</Heading1>
             <div className="relative w-full mt-8">
                 <div className="flex justify-center">
@@ -97,7 +98,7 @@ function ResultsScreen({
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                <TableRow>
+                                <TableRow className="text-left bg-blue-20">
                                     <DataCell className="text-left">
                                         <span className="flex items-center">
                                             <ValueIcon className="mr-2 mb-0.5 relative" />
@@ -125,7 +126,7 @@ function ResultsScreen({
                                         {optimalTravelTimeDescription}
                                     </DataCell>
                                 </TableRow>
-                                <TableRow>
+                                <TableRow className="text-left bg-blue-20">
                                     <DataCell className="text-left">
                                         <span className="flex items-center">
                                             <TrackIcon className="mr-2 mb-0.5 relative" />
@@ -161,7 +162,12 @@ function ResultsScreen({
                     </div>
                 </div>
             </div>
-
+            <Image
+                src={WomanWithLuggage}
+                alt="entur partner"
+                width={480}
+                className="absolute bottom-0 right-0 mr-[-16px] transform scale-x-[-1]"
+            />
             {isModalOpen && (
                 <Modal
                     isOpen={isModalOpen}
