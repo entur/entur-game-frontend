@@ -1,8 +1,8 @@
 import React from 'react'
 import { Heading5, Label } from '@entur/typography'
 import { ClockIcon, TrackIcon, ValidTicketIcon } from '@entur/icons'
-import { Loader } from '@entur/loader'
 import { formatMilliseconds } from '@/lib/utils/dateFnsUtils'
+import CountdownBar from './CountdownBar'
 
 type Props = {
     className?: string
@@ -57,12 +57,7 @@ function GameStatus({
                     </Heading5>
                 </div>
                 <div className="bg-blue-main text-white">
-                    <Loader
-                        progress={Math.max(
-                            0,
-                            Math.ceil(((maxTime - usedTime) / maxTime) * 100),
-                        )}
-                    ></Loader>
+                    <CountdownBar maxTime={maxTime} usedTime={usedTime} />
                 </div>
             </div>
         </div>
