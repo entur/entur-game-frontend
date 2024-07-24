@@ -15,9 +15,19 @@ export async function getAllEvents(): Promise<BackendEvent[] | null> {
 }
 
 export async function getActiveEvent(): Promise<BackendEvent | null> {
-    const response = await fetch(`${baseUrl}/event/active`)
-    if (response.status !== 200) return null
-    return response.json()
+    try {
+        const response = await fetch(`${baseUrl}/event/active`)
+
+        if (!response.ok) {
+            console.error(
+                `Failed to fetch inactive events: ${response.status} ${response.statusText}`,
+            )
+            return null
+        }
+        return response.json()
+    } catch (error) {
+        return null
+    }
 }
 
 export async function getInactiveEvents(): Promise<BackendEvent[] | null> {
