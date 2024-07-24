@@ -1,7 +1,7 @@
 'use client'
 
-import { Heading1, Heading3 } from '@entur/typography'
-import React from 'react'
+import { Heading1, Heading2, Heading3 } from '@entur/typography'
+import React, { useState } from 'react'
 import { Contrast } from '@entur/layout'
 import { Event } from '@/lib/types/types'
 import {
@@ -19,6 +19,7 @@ import { PrimaryButton, SecondaryButton } from '@entur/button'
 import { useRouter } from 'next/navigation'
 import { formatMilliseconds } from '@/lib/utils/dateFnsUtils'
 import { ClockIcon, ForwardIcon, TrackIcon, ValueIcon } from '@entur/icons'
+import { Modal } from '@entur/modal'
 
 interface ResultsScreenProps {
     event: Event
@@ -37,13 +38,18 @@ function ResultsScreen({
 }: ResultsScreenProps): JSX.Element {
     window.scrollTo(0, 0)
     const router = useRouter()
+    const [isModalOpen, setModalOpen] = useState(false)
 
     const totalTravelTimeDescription = formatMilliseconds(
         totalTravelTime * 1000,
     )
-    const optimalravelTimeDescription = formatMilliseconds(
+    const optimalTravelTimeDescription = formatMilliseconds(
         event.optimalTravelTime * 1000,
     )
+
+    const openModal = () => setModalOpen(true)
+    const closeModal = () => setModalOpen(false)
+
     return (
         <Contrast className="text-center">
             <Heading1>Resultater</Heading1>
@@ -62,9 +68,9 @@ function ResultsScreen({
                 <Heading1 className="absolute inset-x-0 right-12 top-24 text-4xl text-coral transform rotate-6">
                     poeng
                 </Heading1>
-                <Heading3>
+                <Heading2>
                     Din plassering: <span className="text-coral">12</span>
-                </Heading3>
+                </Heading2>
             </div>
             <div>
                 <Heading3>Oppsummering</Heading3>
@@ -110,7 +116,7 @@ function ResultsScreen({
                                         {totalTravelTimeDescription}
                                     </DataCell>
                                     <DataCell className="text-left">
-                                        {optimalravelTimeDescription}
+                                        {optimalTravelTimeDescription}
                                     </DataCell>
                                 </TableRow>
                                 <TableRow>
@@ -130,8 +136,8 @@ function ResultsScreen({
                             </TableBody>
                         </Table>
                         <div className="flex justify-center mt-4 gap-4">
-                            <SecondaryButton onClick={() => router.push('/')}>
-                                Avslutt
+                            <SecondaryButton onClick={openModal}>
+                                Avslutt uten å lagre
                             </SecondaryButton>
                             <PrimaryButton
                                 onClick={() =>
@@ -147,6 +153,33 @@ function ResultsScreen({
                     </div>
                 </div>
             </div>
+
+            {isModalOpen && (
+                <Modal
+                    isOpen={isModalOpen}
+                    onDismiss={closeModal}
+                    title="Bekreft avslutning"
+                    size="medium"
+                >
+                    <p>
+                        Er du sikker på at du vil avslutte uten å lagre
+                        poengsummen din?
+                    </p>
+                    <div className="flex justify-start mt-4 gap-4">
+                        <SecondaryButton onClick={closeModal}>
+                            Tilbake
+                        </SecondaryButton>
+                        <PrimaryButton
+                            onClick={() => {
+                                closeModal()
+                                router.push('/')
+                            }}
+                        >
+                            Avslutt uten å lagre
+                        </PrimaryButton>
+                    </div>
+                </Modal>
+            )}
         </Contrast>
     )
 }
