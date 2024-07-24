@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import mapboxgl from 'mapbox-gl'
 import { Event, StopPlace } from '@/lib/types/types'
 import MapPin from '!!raw-loader!@/lib/assets/icons/MapPin.svg'
@@ -21,6 +21,7 @@ type Props = {
 const Map = ({ event, currentPosition }: Props) => {
     const mapContainerRef = useRef<HTMLDivElement | null>(null)
     const mapRef = useRef<mapboxgl.Map | null>(null)
+    const [mapLoaded, setMapLoaded] = useState(false)
 
     useEffect(() => {
         if (
@@ -33,10 +34,32 @@ const Map = ({ event, currentPosition }: Props) => {
                 style: 'mapbox://styles/mapbox/streets-v12',
                 center: [currentPosition.longitude, currentPosition.latitude],
                 zoom: 4,
+                dragRotate: false,
+                pitchWithRotate: false,
             })
 
             mapRef.current = map
 
+            map.addControl(
+                new mapboxgl.NavigationControl({ showCompass: false }),
+                'top-right',
+            )
+
+            map.on('load', () => {
+                setMapLoaded(true)
+            })
+
+            return () => {
+                if (mapRef.current) {
+                    mapRef.current.remove()
+                }
+            }
+        }
+    }, [currentPosition])
+
+    useEffect(() => {
+        if (mapLoaded && mapRef.current) {
+            const map = mapRef.current
             const bounds = new mapboxgl.LngLatBounds()
 
             if (event.startLocation.longitude && event.startLocation.latitude) {
@@ -113,14 +136,9 @@ const Map = ({ event, currentPosition }: Props) => {
                     padding: { top: 100, bottom: 100, left: 50, right: 50 },
                 })
             }
-
-            return () => {
-                if (mapRef.current) {
-                    mapRef.current.remove()
-                }
-            }
         }
     }, [
+        mapLoaded,
         event.startLocation.latitude,
         event.startLocation.longitude,
         event.endLocation,
