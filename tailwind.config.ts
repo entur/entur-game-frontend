@@ -38,6 +38,8 @@ const config: Config = {
             coral: colors.brand.coral,
             lavender: colors.brand.lavender,
             'mint-contrast': colors.validation.mintContrast,
+            'lava-contrast': colors.validation.lavaContrast,
+            'canary-contrast': colors.validation.canaryContrast,
         },
         borderColor: {
             'blue-20': colors.blues.blue20,
