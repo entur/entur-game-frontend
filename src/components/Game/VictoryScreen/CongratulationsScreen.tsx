@@ -10,10 +10,12 @@ import Image from 'next/image'
 import { Screen } from './VictoryScreen'
 
 interface CongratulationsScreenProps {
+    scoreValue: number
     setCurrentScreen: (screen: Screen) => void
 }
 
 function CongratulationsScreen({
+    scoreValue,
     setCurrentScreen,
 }: CongratulationsScreenProps): JSX.Element {
     window.scrollTo(0, 0)
@@ -22,7 +24,7 @@ function CongratulationsScreen({
             <Heading1>Gratulerer, du er fremme!</Heading1>
             <div className="relative w-full mt-8">
                 <Heading1 className="absolute inset-x-0 right-12 top-28 text-6xl text-coral transform rotate-6">
-                    75
+                    {scoreValue}
                 </Heading1>
                 <Heading1 className="absolute inset-x-0 right-12 top-40 text-4xl text-coral transform rotate-6">
                     poeng

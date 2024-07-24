@@ -6,6 +6,7 @@ import { Event } from '@/lib/types/types'
 import CongratulationsScreen from './CongratulationsScreen'
 import ResultsScreen from './ResultsScreen'
 import { RegisterScreen } from './RegisterScreen'
+import { formatIntervalToSeconds } from '@/lib/utils/dateFnsUtils'
 
 export enum Screen {
     Congratulations,
@@ -30,16 +31,28 @@ function VictoryScreen({
         Screen.Congratulations,
     )
 
+    const scoreValue =
+        Math.round(
+            1000 *
+                (event.optimalStepNumber / numLegs) *
+                (event.optimalTravelTime /
+                    formatIntervalToSeconds(currentTime, startTime)),
+        ) / 10
+
     window.scrollTo(0, 0)
     return (
         <Contrast>
             {currentScreen === Screen.Congratulations && (
-                <CongratulationsScreen setCurrentScreen={setCurrentScreen} />
+                <CongratulationsScreen
+                    scoreValue={scoreValue}
+                    setCurrentScreen={setCurrentScreen}
+                />
             )}
             {currentScreen === Screen.Results && (
                 <ResultsScreen
                     event={event}
                     numLegs={numLegs}
+                    scoreValue={scoreValue}
                     setCurrentScreen={setCurrentScreen}
                 />
             )}
@@ -49,6 +62,7 @@ function VictoryScreen({
                     numLegs={numLegs}
                     startTime={startTime}
                     currentTime={currentTime}
+                    scoreValue={scoreValue}
                     setCurrentScreen={setCurrentScreen}
                 />
             )}

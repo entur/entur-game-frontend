@@ -21,12 +21,14 @@ import { useRouter } from 'next/navigation'
 interface ResultsScreenProps {
     event: Event
     numLegs: number
+    scoreValue: number
     setCurrentScreen: (screen: Screen) => void
 }
 
 function ResultsScreen({
     event,
     numLegs,
+    scoreValue,
     setCurrentScreen,
 }: ResultsScreenProps): JSX.Element {
     window.scrollTo(0, 0)
@@ -39,18 +41,18 @@ function ResultsScreen({
                     <Image
                         src={Ticket}
                         alt="entur partner"
-                        width={200}
+                        width={240}
                         className="my-4"
                     />
                 </div>
-                <Heading1 className="absolute inset-x-0 right-12 top-8 text-6xl text-coral transform rotate-6">
-                    75
+                <Heading1 className="absolute inset-x-0 right-12 top-12 text-6xl text-coral transform rotate-6">
+                    {scoreValue}
                 </Heading1>
-                <Heading1 className="absolute inset-x-0 right-12 top-20 text-4xl text-coral transform rotate-6">
+                <Heading1 className="absolute inset-x-0 right-12 top-24 text-4xl text-coral transform rotate-6">
                     poeng
                 </Heading1>
                 <Heading3>
-                    Din Plassering: <span className="text-coral">12</span>
+                    Din plassering: <span className="text-coral">12</span>
                 </Heading3>
             </div>
             <div>

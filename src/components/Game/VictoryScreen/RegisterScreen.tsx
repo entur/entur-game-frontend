@@ -20,6 +20,7 @@ type Props = {
     numLegs: number
     startTime: Date
     currentTime: Date
+    scoreValue: number
     setCurrentScreen: (screen: Screen) => void
 }
 
@@ -35,6 +36,7 @@ export function RegisterScreen({
     numLegs,
     startTime,
     currentTime,
+    scoreValue,
     setCurrentScreen,
 }: Props): ReactElement {
     const { addToast } = useToast()
@@ -78,11 +80,7 @@ export function RegisterScreen({
 
         const playerScore: PlayerScore = {
             scoreId: null,
-            scoreValue:
-                100.0 *
-                (event.optimalStepNumber / numLegs) *
-                (event.optimalTravelTime /
-                    formatIntervalToSeconds(currentTime, startTime)),
+            scoreValue: scoreValue,
             totalStepNumber: numLegs,
             totalTravelTime: formatIntervalToSeconds(currentTime, startTime),
             totalPlayTime: 0,
