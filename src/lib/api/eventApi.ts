@@ -42,7 +42,7 @@ export async function getEventById(
     eventId: number,
 ): Promise<Result<BackendEvent | null>> {
     try {
-        const response = await fetch(`${baseUrl}/event/inactive/${eventId}`)
+        const response = await fetch(`${baseUrl}/event/${eventId}`)
         if (response.status !== 200) {
             return { success: false, error: 'Failed to fetch event' }
         }
