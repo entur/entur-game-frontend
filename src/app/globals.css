@@ -16,6 +16,7 @@
 @import '@entur/dropdown/dist/styles.css';
 @import '@entur/datepicker/dist/styles.css';
 @import '@entur/menu/dist/styles.css';
+@import '@entur/tooltip/dist/styles.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
