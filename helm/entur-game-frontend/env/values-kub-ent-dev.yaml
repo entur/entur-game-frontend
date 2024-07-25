@@ -1,0 +1,14 @@
+common:
+    env: dev
+    ingress:
+        host: entur-game.dev.entur.org
+    container:
+        env:
+            - name: apiUrl
+              value: 'http://localhost:8080'
+            - name: gcloud_logging
+              value: 'true'
+            - name: LOG_LEVEL
+              value: info
+            - name: DOCKER_IMAGE
+              value: <+artifacts.primary.image>

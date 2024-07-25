@@ -8,25 +8,15 @@ const {
     AZURE_AD_CLIENT_SECRET,
     AZURE_AD_TENANT_ID,
     NEXTAUTH_SECRET,
-    NEXTAUTH_URL,
 } = process.env
 
-if (
-    !AZURE_AD_CLIENT_ID ||
-    !AZURE_AD_CLIENT_SECRET ||
-    !AZURE_AD_TENANT_ID ||
-    !NEXTAUTH_SECRET ||
-    !NEXTAUTH_URL
-) {
-    throw new Error('The Azure AD environment variables are not set.')
-}
-
+//TODO: Fix types for environment variables
 const authOptions: NextAuthOptions = {
     providers: [
         AzureADProvider({
-            clientId: AZURE_AD_CLIENT_ID,
-            clientSecret: AZURE_AD_CLIENT_SECRET,
-            tenantId: AZURE_AD_TENANT_ID,
+            clientId: AZURE_AD_CLIENT_ID ?? 'not set',
+            clientSecret: AZURE_AD_CLIENT_SECRET ?? 'not set',
+            tenantId: AZURE_AD_TENANT_ID ?? 'not set',
         }),
     ],
     callbacks: {
@@ -47,7 +37,7 @@ const authOptions: NextAuthOptions = {
             return session
         },
     },
-    secret: NEXTAUTH_SECRET,
+    secret: NEXTAUTH_SECRET ?? 'not set',
     debug: true,
 }
 
