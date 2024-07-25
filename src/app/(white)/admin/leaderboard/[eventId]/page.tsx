@@ -1,27 +1,23 @@
 'use client'
 import { useEffect, useState } from 'react'
 import Leaderboard from '../../components/Leaderboard'
+import PropTypes from 'prop-types'
 import { PlayerScore } from '@/lib/types/types'
 import { getScoresEventId } from '@/lib/api/scoreApi'
-import { Loader } from '@entur/loader'
 import { BlockquoteFooter, Heading1, LeadParagraph } from '@entur/typography'
 import { Pagination } from '@entur/menu'
 import { Button, SecondaryButton } from '@entur/button'
 import { DeleteIcon } from '@entur/icons'
 import { Modal } from '@entur/modal'
 import { getEventById } from '@/lib/api/eventApi'
-import PropTypes from 'prop-types'
 
-interface LeaderboardPageProps {
-    params: {
-        eventId: string
-    }
+type EventPageProps = {
+    eventId: number
 }
 
-const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
-    params,
+const LeaderboardPage: React.FC<EventPageProps> = ({
+    eventId,
 }): JSX.Element => {
-    const { eventId } = params
     const [scores, setScores] = useState<PlayerScore[]>([])
     const [leader, setLeader] = useState<PlayerScore | null>(null)
     const [eventName, setEventName] = useState<string | null>(null)
@@ -49,6 +45,7 @@ const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
                 setScores(sortedScores)
                 setLeader(sortedScores[0])
             }
+
             const eventResponse = await getEventById(eventIdNumber)
             if (eventResponse.success && eventResponse.data) {
                 setEventName(eventResponse.data.eventName)
@@ -64,16 +61,7 @@ const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
         if (eventId) {
             fetchScores()
         }
-    }, [eventId])
-
-    if (eventName === null) {
-        return (
-            <div className="max-w-screen mx-56 p-4">
-                <BlockquoteFooter>Ledertavle</BlockquoteFooter>
-                <Loader>Laster...</Loader>
-            </div>
-        )
-    }
+    })
 
     return (
         <div className="flex flex-col mx-40">
@@ -120,9 +108,7 @@ const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
 }
 
 LeaderboardPage.propTypes = {
-    params: PropTypes.shape({
-        eventId: PropTypes.string.isRequired,
-    }).isRequired,
+    eventId: PropTypes.number.isRequired,
 }
 
 export default LeaderboardPage
