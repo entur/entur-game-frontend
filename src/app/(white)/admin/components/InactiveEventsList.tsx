@@ -1,6 +1,5 @@
 'use client'
 import { deleteEvent } from '@/lib/api/eventApi'
-import { getScoresEventId } from '@/lib/api/scoreApi'
 import { useInactiveStopPlaces } from '@/lib/hooks/useInactiveStopPlaceName'
 import { Button } from '@entur/button'
 import { DeleteIcon } from '@entur/icons'
@@ -25,7 +24,6 @@ const InactiveEventsList: React.FC = (): JSX.Element => {
 
     const handleNavigateLeaderboard = (eventId: number | undefined) => {
         if (router && eventId !== undefined) {
-            getScoresEventId(eventId)
             router.push(`/admin/leaderboard/${eventId}`)
         }
     }

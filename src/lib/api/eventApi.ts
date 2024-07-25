@@ -38,21 +38,6 @@ export async function getInactiveEvents(): Promise<BackendEvent[] | null> {
     }
 }
 
-// export async function getEventById(
-//     eventId: number,
-// ): Promise<Result<BackendEvent | null>> {
-//     try {
-//         const response = await fetch(`${baseUrl}/event/inactive/${eventId}`)
-//         if (response.status !== 200) {
-//             return { success: false, error: 'Failed to fetch event' }
-//         }
-//         const data = await response.json()
-//         return { success: true, data }
-//     } catch (error) {
-//         return { success: false, error: 'Network error' }
-//     }
-// }
-
 export async function endActiveEvent(): Promise<Result<string>> {
     try {
         const response = await fetch(`${baseUrl}/end-event`, {
@@ -73,16 +58,14 @@ export async function endActiveEvent(): Promise<Result<string>> {
     }
 }
 
-export const getEventById = async (
-    eventId: number,
-): Promise<Result<BackendEvent>> => {
+export const getEventById = async (eventId: number) => {
     try {
         const response = await fetch(`${baseUrl}/event/id/${eventId}`)
         if (response.status !== 200) {
-            return { success: false, error: 'Failed to fetch event' }
+            throw new Error('Network response not okay')
         }
-        const data: Result<BackendEvent> = await response.json()
-        return data
+        const data: BackendEvent = await response.json()
+        return { success: true, data }
     } catch (error) {
         console.error('Error fetching event by ID:', error)
         return { success: false, error: 'network' }
@@ -108,7 +91,7 @@ export async function getBackendEventByEventName(
         if (response.status !== 200) {
             return { success: false, error: 'Failed to fetch event' }
         }
-        const data = await response.json()
+        const data: BackendEvent = await response.json()
         return { success: true, data }
     } catch (error) {
         return { success: false, error: 'Network error' }

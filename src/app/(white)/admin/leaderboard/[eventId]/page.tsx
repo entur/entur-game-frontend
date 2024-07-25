@@ -12,12 +12,12 @@ import { Modal } from '@entur/modal'
 import { getEventById } from '@/lib/api/eventApi'
 
 type EventPageProps = {
-    eventId: number
+    params: {
+        eventId: number
+    }
 }
 
-const LeaderboardPage: React.FC<EventPageProps> = ({
-    eventId,
-}): JSX.Element => {
+const LeaderboardPage: React.FC<EventPageProps> = ({ params }): JSX.Element => {
     const [scores, setScores] = useState<PlayerScore[]>([])
     const [leader, setLeader] = useState<PlayerScore | null>(null)
     const [eventName, setEventName] = useState<string | null>(null)
@@ -26,16 +26,11 @@ const LeaderboardPage: React.FC<EventPageProps> = ({
     const [results, setResults] = useState(10)
     const numberOfResults = scores.length
     const pageCount = Math.ceil(numberOfResults / results)
+    const { eventId } = params
 
     const fetchScores = async () => {
         try {
-            if (!eventId || Array.isArray(eventId)) {
-                throw new Error(
-                    'Event ID is null, undefined, or not a valid string',
-                )
-            }
-            const eventIdNumber = Number(eventId)
-            const scores = await getScoresEventId(eventIdNumber)
+            const scores = await getScoresEventId(eventId)
             if (scores && scores.length > 0) {
                 const sortedScores = scores.sort(
                     (a, b) =>
@@ -46,7 +41,7 @@ const LeaderboardPage: React.FC<EventPageProps> = ({
                 setLeader(sortedScores[0])
             }
 
-            const eventResponse = await getEventById(eventIdNumber)
+            const eventResponse = await getEventById(eventId)
             if (eventResponse.success && eventResponse.data) {
                 setEventName(eventResponse.data.eventName)
             } else {
@@ -61,7 +56,7 @@ const LeaderboardPage: React.FC<EventPageProps> = ({
         if (eventId) {
             fetchScores()
         }
-    })
+    }, [])
 
     return (
         <div className="flex flex-col mx-40">
@@ -108,7 +103,9 @@ const LeaderboardPage: React.FC<EventPageProps> = ({
 }
 
 LeaderboardPage.propTypes = {
-    eventId: PropTypes.number.isRequired,
+    params: PropTypes.shape({
+        eventId: PropTypes.number.isRequired,
+    }).isRequired,
 }
 
 export default LeaderboardPage

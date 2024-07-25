@@ -19,9 +19,7 @@ export async function getActiveScores(): Promise<PlayerScore[] | null> {
     return await response.json()
 }
 
-export async function getScoresEventId(
-    eventId: number,
-): Promise<PlayerScore[] | null> {
+export async function getScoresEventId(eventId: number) {
     try {
         const response = await fetch(`${baseUrl}/score/event/${eventId}`)
         if (response.status !== 200) {
