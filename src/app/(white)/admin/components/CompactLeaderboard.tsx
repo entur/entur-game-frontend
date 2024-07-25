@@ -11,13 +11,11 @@ import { endActiveEvent } from '@/lib/api/eventApi'
 import { Modal } from '@entur/modal'
 import { Paragraph } from '@entur/typography'
 import { Button, SecondaryButton } from '@entur/button'
-import { useRouter } from 'next/navigation'
 
 const CompactLeaderboardPage: React.FC = (): JSX.Element => {
     const { isEventNameError, setEventNameError } = useEventName()
     const { startLocationName, endLocationName } = useStopPlaceName()
     const { scores, leader, setShowAlert } = useScores()
-    const router = useRouter()
     const [isOpen, setOpen] = useState(false)
     const [isWinnerEndOpen, setWinnerEndOpen] = useState(false)
     const [isWinnerOpen, setWinnerOpen] = useState(false)
@@ -37,14 +35,14 @@ const CompactLeaderboardPage: React.FC = (): JSX.Element => {
         if (result.success) {
             setOpen(false)
             setEventNameError(true)
-            router.refresh
+            window.location.reload()
         }
     }
 
     const handleDismiss = () => {
         setWinnerOpen(false)
         setEventNameError(true)
-        router.refresh
+        window.location.reload()
     }
 
     return (

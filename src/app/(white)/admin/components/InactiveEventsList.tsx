@@ -30,11 +30,9 @@ const InactiveEventsList: React.FC = (): JSX.Element => {
 
     const handleDelete = async (eventId: number | undefined) => {
         if (eventId !== undefined) {
-            const result = await deleteEvent(eventId)
-            if (result.success) {
-                events.map((event) => event.eventId !== eventId)
-            }
+            await deleteEvent(eventId)
         }
+        window.location.reload()
     }
 
     return (
