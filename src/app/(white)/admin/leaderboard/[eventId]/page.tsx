@@ -1,7 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
 import Leaderboard from '../../components/Leaderboard'
-import PropTypes from 'prop-types'
 import { PlayerScore } from '@/lib/types/types'
 import { getScoresEventId } from '@/lib/api/scoreApi'
 import { BlockquoteFooter, Heading1, LeadParagraph } from '@entur/typography'
@@ -18,7 +17,9 @@ type EventPageProps = {
     }
 }
 
-const LeaderboardPage: React.FC<EventPageProps> = ({ params }): JSX.Element => {
+const LeaderboardPage: React.FC<EventPageProps> = ({
+    params,
+}: EventPageProps): JSX.Element => {
     const [scores, setScores] = useState<PlayerScore[]>([])
     const [leader, setLeader] = useState<PlayerScore | null>(null)
     const [eventName, setEventName] = useState<string | null>(null)
@@ -112,12 +113,6 @@ const LeaderboardPage: React.FC<EventPageProps> = ({ params }): JSX.Element => {
             </Modal>
         </div>
     )
-}
-
-LeaderboardPage.propTypes = {
-    params: PropTypes.shape({
-        eventId: PropTypes.number.isRequired,
-    }).isRequired,
 }
 
 export default LeaderboardPage
