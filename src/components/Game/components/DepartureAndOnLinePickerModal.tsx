@@ -5,7 +5,7 @@ import { Departure, QueryMode } from '@entur/sdk'
 import { Modal } from '@entur/modal'
 import { getModeIcon } from '@/lib/utils/transportMapper'
 import { formatTime } from '@/lib/utils/dateFnsUtils'
-import { StopAndTime } from '../GameScreen'
+import { StopAndTime } from '@/components/Game/Game'
 
 type Props = {
     departures: Departure[]
