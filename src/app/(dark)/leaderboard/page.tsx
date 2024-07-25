@@ -48,6 +48,20 @@ export default function EventHighScorePage(): JSX.Element {
         )
     }
 
+    if (playerScores.length < 1) {
+        return (
+            <Contrast>
+                <BannerAlertBox
+                    className="w-fit mx-auto"
+                    title="Ingen spillere"
+                    variant="info"
+                >
+                    Det er ingen spillere som har fullført.
+                </BannerAlertBox>
+            </Contrast>
+        )
+    }
+
     const filteredPlayerScores = playerScores
         .filter((playerScore) => playerScore.scoreValue > 0)
         .sort((a, b) => sortNumber(a.scoreValue, b.scoreValue))
