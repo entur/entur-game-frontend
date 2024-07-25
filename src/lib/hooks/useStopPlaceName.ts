@@ -2,11 +2,9 @@ import { useEffect, useState } from 'react'
 import { useEventName } from './useEventName'
 import { getEventByEventName } from '../api/eventApi'
 
-export const useTripLocations = () => {
-    const [startLocationName, setStartLocationName] = useState<string | null>(
-        null,
-    )
-    const [endLocationName, setEndLocationName] = useState<string | null>(null)
+export const useStopPlaceName = () => {
+    const [startLocationName, setStartLocationName] = useState<string>()
+    const [endLocationName, setEndLocationName] = useState<string>()
     const [error, setError] = useState<string | null>(null)
     const { eventName } = useEventName()
 
