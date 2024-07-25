@@ -5,17 +5,14 @@ import { Event } from '@/lib/types/types'
 import { Heading2, Heading3 } from '@entur/typography'
 
 type Props = {
-    className?: string
     event: Event
     startTime: Date
 }
 
-function FromAndToTitle({ className, event, startTime }: Props): ReactElement {
+function FromAndToTitle({ event, startTime }: Props): ReactElement {
     return (
         <div>
-            <div
-                className={`flex xl:flex-row flex-wrap space-x-1 ${className}`}
-            >
+            <div className={'flex xl:flex-row flex-wrap space-x-1 mt-5'}>
                 <Heading2 margin="none">Du skal reise fra</Heading2>
                 <Heading2 margin="none" className="text-coral">
                     {event.startLocation.name}
