@@ -1,10 +1,11 @@
 common:
     env: tst
-    apiUrl: 'http://localhost:8080'
     ingress:
         host: entur-game.staging.entur.org
     container:
         env:
+            - name: apiUrl
+              value: 'https://api.staging.entur.io/entur-game-backend/v1'
             - name: gcloud_logging
               value: 'true'
             - name: LOG_LEVEL

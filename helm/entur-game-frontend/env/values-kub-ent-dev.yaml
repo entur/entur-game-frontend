@@ -1,10 +1,11 @@
 common:
     env: dev
-    apiUrl: 'http://localhost:8080'
     ingress:
         host: entur-game.dev.entur.org
     container:
         env:
+            - name: apiUrl
+              value: 'http://localhost:8080'
             - name: gcloud_logging
               value: 'true'
             - name: LOG_LEVEL
