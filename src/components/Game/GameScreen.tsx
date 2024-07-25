@@ -139,12 +139,12 @@ function GameScreen({
 
         if (newMode === 'foot') {
             setDepartures([])
-            getWalkableStopPlaces(currentLocation) //TODO: sjekk dette
+            getWalkableStopPlaces(currentLocation)
                 .then((stops) => {
                     setStopsOnLine(
                         stops.map((stop) => ({
                             stopPlace: stop,
-                            time: addMinutes(currentTime, 2), //TODO: dette må endres på også
+                            time: addMinutes(currentTime, 2),
                         })),
                     )
                     setModalOpen(true)
