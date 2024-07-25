@@ -1,0 +1,28 @@
+name: PR
+on:
+    workflow_dispatch:
+    pull_request:
+
+jobs:
+    docker-lint:
+        uses: entur/gha-docker/.github/workflows/lint.yml@v1
+
+    helm-lint:
+        uses: entur/gha-helm/.github/workflows/lint.yml@v1
+        with:
+            environment: dev
+            chart: helm/entur-game-frontend
+    test-build-and-prettier-check:
+        runs-on: ubuntu-latest
+        steps:
+        - uses: actions/checkout@v4
+        - name: Use Node.js
+          uses: actions/setup-node@v4
+          with:
+              node-version: '20.x'
+        - name: Install dependencies
+          run: npm ci
+        - name: Prettier Check
+          run: npm run prettier:check
+        - name: Build app
+          run: npm run build

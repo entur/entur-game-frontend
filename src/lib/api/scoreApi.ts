@@ -1,6 +1,5 @@
 import { PlayerScore } from '@/lib/types/types'
-
-const baseUrl = 'http://localhost:8080'
+import { baseUrl } from '@/config'
 
 export async function saveScore(playerScore: PlayerScore): Promise<Response> {
     const response = await fetch(`${baseUrl}/score/save`, {

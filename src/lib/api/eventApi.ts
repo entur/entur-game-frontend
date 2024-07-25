@@ -1,8 +1,7 @@
 import { BackendEvent, Event } from '../types/types'
 import { StopPlace } from '../types/types'
 import { fetchStopPlace, fetchStopPlaceChildren } from './stopPlaceApi'
-
-const baseUrl = 'http://localhost:8080'
+import { baseUrl } from '@/config'
 
 export type Result<T> =
     | { success: true; data: T }
