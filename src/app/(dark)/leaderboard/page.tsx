@@ -18,6 +18,7 @@ import { PlayerScore } from '@/lib/types/types'
 import { getActiveScores } from '@/lib/api/scoreApi'
 import { BannerAlertBox } from '@entur/alert'
 import { Loader } from '@entur/loader'
+import { formatMilliseconds } from '@/lib/utils/dateFnsUtils'
 
 export default function EventHighScorePage(): JSX.Element {
     const {
@@ -76,64 +77,72 @@ export default function EventHighScorePage(): JSX.Element {
                     Ledertavle
                 </Heading1>
             </Contrast>
-            <Table className="text-white" spacing="small">
-                <TableHead>
-                    <TableRow>
-                        <HeaderCell>
-                            <Heading1 className="text-white/25">Rank</Heading1>
-                        </HeaderCell>
-                        <HeaderCell>
-                            <Heading1 className="text-white/25">Navn</Heading1>
-                        </HeaderCell>
-                        <HeaderCell>
-                            <Heading1 className="text-white/25">
-                                Spillertrekk
-                            </Heading1>
-                        </HeaderCell>
-                        <HeaderCell>
-                            <Heading1 className="text-white/25">
-                                Total reisetid
-                            </Heading1>
-                        </HeaderCell>
-                        <HeaderCell>
-                            <Heading1 className="text-white/25">
-                                Poengsum
-                            </Heading1>
-                        </HeaderCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {filteredPlayerScores.map((playerScore, index) => (
-                        <TableRow key={playerScore.scoreId}>
-                            <DataCell>
-                                <Heading1 className="text-white">
-                                    {index + 1}
+            <Contrast>
+                <Table className="text-white" spacing="small">
+                    <TableHead>
+                        <TableRow>
+                            <HeaderCell>
+                                <Heading1 className="text-white/80">
+                                    Rank
                                 </Heading1>
-                            </DataCell>
-                            <DataCell>
-                                <Heading3 className="text-white">
-                                    {playerScore.player.playerName}
-                                </Heading3>
-                            </DataCell>
-                            <DataCell>
-                                <Heading3 className="text-white">
-                                    {playerScore.totalStepNumber}
-                                </Heading3>
-                            </DataCell>
-                            <DataCell>
-                                <Heading3 className="text-white">
-                                    {playerScore.totalTravelTime}
-                                </Heading3>
-                            </DataCell>
-                            <DataCell>
-                                <Heading3 className="text-white">
-                                    {playerScore.scoreValue}
-                                </Heading3>
-                            </DataCell>
+                            </HeaderCell>
+                            <HeaderCell>
+                                <Heading1 className="text-white/80">
+                                    Navn
+                                </Heading1>
+                            </HeaderCell>
+                            <HeaderCell>
+                                <Heading1 className="text-white/80">
+                                    Spillertrekk
+                                </Heading1>
+                            </HeaderCell>
+                            <HeaderCell>
+                                <Heading1 className="text-white/80">
+                                    Total reisetid
+                                </Heading1>
+                            </HeaderCell>
+                            <HeaderCell>
+                                <Heading1 className="text-white/80">
+                                    Poengsum
+                                </Heading1>
+                            </HeaderCell>
                         </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+                    </TableHead>
+                    <TableBody>
+                        {filteredPlayerScores.map((playerScore, index) => (
+                            <TableRow key={playerScore.scoreId}>
+                                <DataCell>
+                                    <Heading1 className="text-white">
+                                        {index + 1}
+                                    </Heading1>
+                                </DataCell>
+                                <DataCell>
+                                    <Heading3 className="text-white">
+                                        {playerScore.player.playerName}
+                                    </Heading3>
+                                </DataCell>
+                                <DataCell>
+                                    <Heading3 className="text-white">
+                                        {playerScore.totalStepNumber}
+                                    </Heading3>
+                                </DataCell>
+                                <DataCell>
+                                    <Heading3 className="text-white">
+                                        {formatMilliseconds(
+                                            playerScore.totalTravelTime,
+                                        )}
+                                    </Heading3>
+                                </DataCell>
+                                <DataCell>
+                                    <Heading3 className="text-white">
+                                        {playerScore.scoreValue}
+                                    </Heading3>
+                                </DataCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </Contrast>
         </div>
     )
 }
