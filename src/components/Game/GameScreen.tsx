@@ -156,7 +156,7 @@ function GameScreen({
                     setLoading(false)
                 })
         } else {
-            getDepartures(currentLocation.id, newMode, currentTime) //TODO: sjekk dette også
+            getDepartures(currentLocation.id, newMode, currentTime)
                 .then((deps) => {
                     setStopsOnLine([])
                     setDepartures(deps)
