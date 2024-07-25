@@ -42,7 +42,7 @@ export async function getEventById(
     eventId: number,
 ): Promise<Result<BackendEvent | null>> {
     try {
-        const response = await fetch(`${baseUrl}/event/inactive/${eventId}`)
+        const response = await fetch(`${baseUrl}/event/id/${eventId}`)
         if (response.status !== 200) {
             return { success: false, error: 'Failed to fetch event' }
         }
@@ -68,7 +68,7 @@ export async function getBackendEventByEventName(
     eventName: string,
 ): Promise<Result<BackendEvent>> {
     try {
-        const response = await fetch(`${baseUrl}/event/${eventName}`)
+        const response = await fetch(`${baseUrl}/event/name/${eventName}`)
         if (response.status !== 200) {
             return { success: false, error: 'Failed to fetch event' }
         }
