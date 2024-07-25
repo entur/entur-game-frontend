@@ -14,7 +14,7 @@ export default function AdminPage(): JSX.Element | null {
     const router = useRouter()
 
     const handleOnClick = () => {
-        router.push('/')
+        window.open('/', '_blank')
     }
 
     return (
@@ -30,7 +30,7 @@ export default function AdminPage(): JSX.Element | null {
                     className="flex flex-row max-w-lg max-h-20"
                     title="Opprett spill"
                     titleIcon={<AddIcon className="inline align-baseline" />}
-                    href="http://localhost:3000/admin/create-game"
+                    onClick={() => router.push('/admin/create-game')}
                     compact
                 ></NavigationCard>
                 <div className="flex mt-20 gap-4 ">
@@ -38,7 +38,7 @@ export default function AdminPage(): JSX.Element | null {
                     <SecondaryButton
                         className="max-w-60 inline align-baseline"
                         width="auto"
-                        size="small"
+                        size="medium"
                         onClick={handleOnClick}
                     >
                         <div className="flex gap-2 justify-center">
