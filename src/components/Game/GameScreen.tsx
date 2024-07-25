@@ -18,6 +18,7 @@ import { TravelLegFinished } from './components/TravelLegFinished'
 import DeadScreen from './DeadScreen'
 import { Modal } from '@entur/modal'
 import { Contrast } from '@entur/layout'
+import { fetchStopPlace, fetchStopPlaceParent } from '@/lib/api/stopPlaceApi'
 
 export interface StopAndTime {
     stopPlace: StopPlace | StopPlaceDetails
@@ -198,18 +199,26 @@ function GameScreen({
         )
     }
 
-    const selectStopOnLine = (stopAndTime: StopAndTime) => {
+    const selectStopOnLine = async (stopAndTime: StopAndTime) => {
         setUsedMode([])
         setStopsOnLine([])
         setCurrentTime(stopAndTime.time)
         setMode(null)
         setModalOpen(false)
-        if (stopAndTime) {
-            setCurrentLocation(stopAndTime.stopPlace) //TODO: her er det det må endres!
-            setTravelLegs((prev) => [...prev, stopAndTime.stopPlace])
-            setNumLegs((prev) => prev + 1)
-            fetchAvailableModes(stopAndTime.stopPlace)
-        }
+
+        if (!stopAndTime) return
+
+        const stopPlaceParentId = await fetchStopPlaceParent(
+            stopAndTime.stopPlace.id,
+        )
+        const stopPlace = stopPlaceParentId
+            ? (await fetchStopPlace(stopPlaceParentId)) ?? stopAndTime.stopPlace
+            : stopAndTime.stopPlace
+
+        setCurrentLocation(stopPlace)
+        setTravelLegs((prev) => [...prev, stopPlace])
+        setNumLegs((prev) => prev + 1)
+        fetchAvailableModes(stopPlace)
     }
 
     const wait = () => {

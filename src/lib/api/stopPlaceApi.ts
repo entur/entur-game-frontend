@@ -14,7 +14,7 @@ const query = `
 
 export async function fetchStopPlace(
     stopPlaceId: string,
-): Promise<{ name: string; latitude: number; longitude: number } | null> {
+): Promise<StopPlace | null> {
     try {
         const response = await fetch(
             'https://api.entur.io/journey-planner/v3/graphql',
@@ -42,7 +42,8 @@ export async function fetchStopPlace(
         }
 
         const { name, latitude, longitude } = stopPlace
-        return { name, latitude, longitude }
+        const id = stopPlaceId
+        return { id, name, latitude, longitude }
     } catch (error) {
         console.error('Error fetching stop place:', error)
         return null
