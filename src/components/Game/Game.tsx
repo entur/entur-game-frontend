@@ -18,6 +18,7 @@ import { TravelLegFinished } from './components/TravelLegFinished'
 import DeadScreen from './DeadScreen'
 import { Modal } from '@entur/modal'
 import { Contrast } from '@entur/layout'
+import { fetchStopPlace, fetchStopPlaceParent } from '@/lib/api/stopPlaceApi'
 
 export interface StopAndTime {
     stopPlace: StopPlace | StopPlaceDetails
@@ -29,12 +30,12 @@ type Props = {
     maxTime: number
     startTime: Date
     currentTime: Date
-    startLocation: StopPlace
+    currentLocation: StopPlace
     setCurrentTime: React.Dispatch<React.SetStateAction<Date>>
     setUsedTime: React.Dispatch<React.SetStateAction<number>>
     setNumLegs: React.Dispatch<React.SetStateAction<number>>
     setVictory: React.Dispatch<React.SetStateAction<boolean>>
-    setStartLocation: React.Dispatch<
+    setCurrentLocation: React.Dispatch<
         React.SetStateAction<StopPlace | undefined>
     >
 }
@@ -44,12 +45,12 @@ function Game({
     maxTime,
     startTime,
     currentTime,
-    startLocation,
+    currentLocation,
     setCurrentTime,
     setNumLegs,
     setUsedTime,
     setVictory,
-    setStartLocation,
+    setCurrentLocation,
 }: Props): ReactElement {
     const router = useRouter()
     const [isLoading, setLoading] = useState<boolean>(false)
@@ -80,7 +81,7 @@ function Game({
     const [waitModalIsOpen, setWaitModalIsOpen] = useState<boolean>(false)
 
     useEffect(() => {
-        setStartLocation(event.startLocation)
+        setCurrentLocation(event.startLocation)
         setTravelLegs([event.startLocation])
         setEndLocation(event.endLocation)
         fetchAvailableModes(event.startLocation)
@@ -143,7 +144,7 @@ function Game({
 
         if (newMode === 'foot') {
             setDepartures([])
-            getWalkableStopPlaces(startLocation)
+            getWalkableStopPlaces(currentLocation)
                 .then((stops) => {
                     setStopsOnLine(
                         stops.map((stop) => ({
@@ -160,7 +161,7 @@ function Game({
                     setLoading(false)
                 })
         } else {
-            getDepartures(startLocation.id, newMode, currentTime)
+            getDepartures(currentLocation.id, newMode, currentTime)
                 .then((deps) => {
                     setStopsOnLine([])
                     setDepartures(deps)
@@ -203,18 +204,26 @@ function Game({
         )
     }
 
-    const selectStopOnLine = (stopAndTime: StopAndTime) => {
+    const selectStopOnLine = async (stopAndTime: StopAndTime) => {
         setUsedMode([])
         setStopsOnLine([])
         setCurrentTime(stopAndTime.time)
         setMode(null)
         setModalOpen(false)
-        if (stopAndTime) {
-            setStartLocation(stopAndTime.stopPlace)
-            setTravelLegs((prev) => [...prev, stopAndTime.stopPlace])
-            setNumLegs((prev) => prev + 1)
-            fetchAvailableModes(stopAndTime.stopPlace)
-        }
+
+        if (!stopAndTime) return
+
+        const stopPlaceParentId = await fetchStopPlaceParent(
+            stopAndTime.stopPlace.id,
+        )
+        const stopPlace = stopPlaceParentId
+            ? (await fetchStopPlace(stopPlaceParentId)) ?? stopAndTime.stopPlace
+            : stopAndTime.stopPlace
+
+        setCurrentLocation(stopPlace)
+        setTravelLegs((prev) => [...prev, stopPlace])
+        setNumLegs((prev) => prev + 1)
+        fetchAvailableModes(stopPlace)
     }
 
     const wait = () => {
@@ -222,7 +231,10 @@ function Game({
         setWaitModalIsOpen(true)
     }
 
-    if (startLocation && endLocation.some((sp) => sp.id === startLocation.id)) {
+    if (
+        currentLocation &&
+        endLocation.some((sp) => sp.id === currentLocation.id)
+    ) {
         setVictory(true)
     }
 
@@ -257,7 +269,7 @@ function Game({
                         usedMode={usedMode}
                         selectMode={selectMode}
                         wait={wait}
-                        stopPlace={startLocation}
+                        stopPlace={currentLocation}
                         availableModes={availableModes}
                         availableModesError={availableModesError}
                     />

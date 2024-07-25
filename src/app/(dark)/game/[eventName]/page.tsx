@@ -49,11 +49,11 @@ export default function GamePage(): JSX.Element {
         }
     }, [event])
 
-    const [startLocation, setStartLocation] = useState<StopPlace | undefined>()
+    const [currentLocation, setCurrentLocation] = useState<StopPlace>()
 
     useEffect(() => {
         if (event?.startLocation) {
-            setStartLocation(event.startLocation)
+            setCurrentLocation(event.startLocation)
         }
     }, [event])
 
@@ -82,7 +82,7 @@ export default function GamePage(): JSX.Element {
                 </Contrast>
             ) : (
                 event &&
-                startLocation && (
+                currentLocation && (
                     <main className="flex flex-col">
                         <div className="sm:sticky top-20">
                             <GameStatus
@@ -99,12 +99,12 @@ export default function GamePage(): JSX.Element {
                                         maxTime={maxTime}
                                         startTime={startTime}
                                         currentTime={currentTime}
-                                        startLocation={startLocation}
+                                        currentLocation={currentLocation}
                                         setCurrentTime={setCurrentTime}
                                         setUsedTime={setUsedTime}
                                         setNumLegs={setNumLegs}
                                         setVictory={setVictory}
-                                        setStartLocation={setStartLocation}
+                                        setCurrentLocation={setCurrentLocation}
                                     />
                                 </div>
 
@@ -112,7 +112,7 @@ export default function GamePage(): JSX.Element {
                                     <Contrast>
                                         <Map
                                             event={event}
-                                            currentPosition={startLocation}
+                                            currentPosition={currentLocation}
                                         />
                                         <div className="icon-container">
                                             <div className="icon-item">
