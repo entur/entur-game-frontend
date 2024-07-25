@@ -1,55 +1,26 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Leaderboard from './Leaderboard'
 import { useEventName } from '@/lib/hooks/useEventName'
 import { BreadcrumbItem } from '@entur/menu'
 import Link from 'next/link'
-import { useTripLocations } from '@/lib/hooks/useStopPlaceName'
+import { useStopPlaceName } from '@/lib/hooks/useStopPlaceName'
 import { TravelHeader } from '@entur/travel'
 import { BannerAlertBox } from '@entur/alert'
 import useScores from '@/lib/hooks/useScores'
-import { endActiveEvent, getActiveEvent } from '@/lib/api/eventApi'
+import { endActiveEvent } from '@/lib/api/eventApi'
 import { Modal } from '@entur/modal'
 import { Paragraph } from '@entur/typography'
 import { Button, SecondaryButton } from '@entur/button'
 import { useRouter } from 'next/navigation'
-import { getActiveScores } from '@/lib/api/scoreApi'
-
-const checkHasPlayers = async (): Promise<boolean> => {
-    const score = await getActiveScores()
-    return score == null
-}
-
-const checkActiveEvent = async (): Promise<boolean> => {
-    const result = await getActiveEvent()
-    return result?.isActive ?? false
-}
 
 const CompactLeaderboardPage: React.FC = (): JSX.Element => {
     const { isEventNameError, setEventNameError } = useEventName()
-    const { startLocationName, endLocationName } = useTripLocations()
+    const { startLocationName, endLocationName } = useStopPlaceName()
     const { scores, leader, setShowAlert } = useScores()
     const router = useRouter()
     const [isOpen, setOpen] = useState(false)
     const [isWinnerEndOpen, setWinnerEndOpen] = useState(false)
     const [isWinnerOpen, setWinnerOpen] = useState(false)
-    const [isActiveEvent, setIsActiveEvent] = useState<boolean>(false)
-    const [hasPlayers, setHasPlayers] = useState<boolean | undefined>(false)
-
-    useEffect(() => {
-        const fetchHasPlayers = async () => {
-            const players = await checkHasPlayers()
-            setHasPlayers(players)
-        }
-        fetchHasPlayers()
-    }, [])
-
-    useEffect(() => {
-        const fetchActiveEvent = async () => {
-            const isActive = await checkActiveEvent()
-            setIsActiveEvent(isActive)
-        }
-        fetchActiveEvent()
-    }, [])
 
     const handleDrawWinnerAndEndGame = async () => {
         if (scores.length === 0) {
@@ -128,7 +99,6 @@ const CompactLeaderboardPage: React.FC = (): JSX.Element => {
                                     variant={'primary'}
                                     className="max-w-[250px]"
                                     onClick={handleDrawWinnerAndEndGame}
-                                    disabled={!hasPlayers}
                                     type="button"
                                 >
                                     Trekk vinner og avslutt
@@ -170,7 +140,6 @@ const CompactLeaderboardPage: React.FC = (): JSX.Element => {
                                 <Button
                                     variant="primary"
                                     className="max-w-[250px]"
-                                    disabled={!isActiveEvent}
                                     onClick={handleEndGame}
                                 >
                                     Avslutt spill
