@@ -184,6 +184,16 @@ export default function AdminCreateJourney() {
         router.push(`/admin`)
     }
 
+    const handleStartChange = (item: NormalizedDropdownItemType | null) => {
+        setSelectedStart(item)
+        setError(false)
+    }
+
+    const handleGoalChange = (item: NormalizedDropdownItemType | null) => {
+        setSelectedGoal(item)
+        setError(false)
+    }
+
     return (
         <div className="ml-56 p-4 pt-20">
             <div className="flex flex-col">
@@ -205,7 +215,7 @@ export default function AdminCreateJourney() {
                         items={fetchDropdownItems}
                         selectedItem={selectedStart}
                         prepend={<MapPinIcon></MapPinIcon>}
-                        onChange={setSelectedStart}
+                        onChange={handleStartChange}
                         selectOnTab
                         variant={
                             attemptedSubmit && !selectedStart
@@ -223,7 +233,7 @@ export default function AdminCreateJourney() {
                         items={fetchDropdownItems}
                         prepend={<DestinationIcon></DestinationIcon>}
                         selectedItem={selectedGoal}
-                        onChange={setSelectedGoal}
+                        onChange={handleGoalChange}
                         selectOnTab
                         variant={
                             attemptedSubmit && !selectedGoal
@@ -243,7 +253,7 @@ export default function AdminCreateJourney() {
                     <br />
                     <SmallAlertBox variant="negative" width="fit-content">
                         {responseStatus === 409
-                            ? 'Et spill med samme start- og stoppested finnes fra før. Slett dette spillet før du kan opprette samme ruten på nytt.'
+                            ? 'Et spill med samme start- og stoppested finnes allerede. Slett dette spillet før du kan opprette samme ruten på nytt.'
                             : 'Ukjent feil oppdaget. Tillkall hjelp.'}
                     </SmallAlertBox>
                 </>
