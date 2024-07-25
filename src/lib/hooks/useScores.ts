@@ -1,4 +1,3 @@
-// src/hooks/useScores.ts
 import { useEffect, useState } from 'react'
 import { getActiveScores } from '@/lib/api/scoreApi'
 import { PlayerScore } from '@/lib/types/types'
