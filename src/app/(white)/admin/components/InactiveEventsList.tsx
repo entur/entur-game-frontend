@@ -1,5 +1,5 @@
 'use client'
-import { getScoresEventId } from '@/lib/api/scoreApi'
+import { deleteEvent } from '@/lib/api/eventApi'
 import { useInactiveStopPlaces } from '@/lib/hooks/useInactiveStopPlaceName'
 import { Button } from '@entur/button'
 import { DeleteIcon } from '@entur/icons'
@@ -24,9 +24,15 @@ const InactiveEventsList: React.FC = (): JSX.Element => {
 
     const handleNavigateLeaderboard = (eventId: number | undefined) => {
         if (router && eventId !== undefined) {
-            getScoresEventId(eventId)
             router.push(`/admin/leaderboard/${eventId}`)
         }
+    }
+
+    const handleDelete = async (eventId: number | undefined) => {
+        if (eventId !== undefined) {
+            await deleteEvent(eventId)
+        }
+        window.location.reload()
     }
 
     return (
@@ -52,7 +58,11 @@ const InactiveEventsList: React.FC = (): JSX.Element => {
                         />
                     </BaseCard>
                     <div className="flex flex-col justify-center items-center">
-                        <Button variant="negative" size="small">
+                        <Button
+                            variant="negative"
+                            size="small"
+                            onClick={() => handleDelete(event.eventId)}
+                        >
                             <DeleteIcon className="inline align-baseline" />
                             Slett spill
                         </Button>

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 import {
@@ -9,23 +9,20 @@ import {
     LeadParagraph,
     SubParagraph,
 } from '@entur/typography'
-import { Loader } from '@entur/loader'
 import { Modal } from '@entur/modal'
 import { Button } from '@entur/button'
 import { BannerAlertBox, SmallAlertBox } from '@entur/alert'
-import { PlayerScore } from '@/lib/types/types'
-import { getActiveScores } from '@/lib/api/scoreApi'
 import { useEventName } from '@/lib/hooks/useEventName'
 import { Pagination } from '@entur/menu'
 import Leaderboard from '../components/Leaderboard'
+import useScores from '@/lib/hooks/useScores'
 
 const GamePage: React.FC = (): JSX.Element => {
     const { eventName, isEventNameError } = useEventName()
-    const [scores, setScores] = useState<PlayerScore[]>([])
-    const [leader, setLeader] = useState<PlayerScore | null>(null)
     const [isOpen, setOpen] = useState<boolean>(false)
-    const [showAlert, setShowAlert] = useState<boolean>(false)
     const router = useRouter()
+
+    const { scores, leader, showAlert, setShowAlert } = useScores()
 
     const [currentPage, setPage] = React.useState(1)
     const [results, setResults] = React.useState(10)
@@ -33,23 +30,6 @@ const GamePage: React.FC = (): JSX.Element => {
     const pageCount = Math.ceil(numberOfResults / results)
 
     //TODO: side oppdateres hver gang ny spiller legges til i db
-
-    useEffect(() => {
-        const getScores = async () => {
-            const scores = await getActiveScores()
-            if (scores && scores.length > 0) {
-                const sortedScores = scores.sort(
-                    (a, b) =>
-                        b.scoreValue - a.scoreValue ||
-                        a.totalTravelTime - b.totalTravelTime,
-                )
-                setScores(sortedScores)
-                setLeader(sortedScores[0])
-                setShowAlert(false)
-            }
-        }
-        getScores()
-    }, [])
 
     const handleDrawWinner = () => {
         if (scores.length === 0) {
@@ -63,7 +43,13 @@ const GamePage: React.FC = (): JSX.Element => {
         return (
             <div className="max-w-screen mx-56 p-4">
                 <BlockquoteFooter>Ledertavle</BlockquoteFooter>
-                <Loader>Laster...</Loader>
+                <BannerAlertBox
+                    title="Det finnes ikke et aktivt spill for øyeblikket"
+                    variant="information"
+                    className="w-[640px] mt-2"
+                >
+                    Gå til “Opprett spill” for å opprette et nytt spill
+                </BannerAlertBox>
             </div>
         )
     }
