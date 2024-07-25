@@ -59,6 +59,7 @@ async function getWalkableStopPlaces(
     if (!currentStopPlace.latitude || !currentStopPlace.longitude) {
         return []
     }
+
     const nearby = await entur.getNearestPlaces(
         {
             latitude: currentStopPlace.latitude,
@@ -71,8 +72,12 @@ async function getWalkableStopPlaces(
     )
 
     const stopPlaceIds = nearby
-        .filter((place) => place.type === 'StopPlace')
+        .filter(
+            (place) =>
+                place.type === 'StopPlace' && place.id !== currentStopPlace.id,
+        )
         .map(({ id }) => id)
+
     const stopPlaces = await entur.getStopPlaces(stopPlaceIds)
     return stopPlaces.filter(isTruthy)
 }

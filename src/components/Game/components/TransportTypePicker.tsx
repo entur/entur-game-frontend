@@ -15,11 +15,11 @@ type Props = {
     isLoading: boolean
     mode: QueryMode | null
     usedMode: QueryMode[]
-    selectMode: (mode: QueryMode) => void
-    wait: () => void
     stopPlace: StopPlace
     availableModes: QueryMode[]
     availableModesError: boolean
+    selectMode: (mode: QueryMode) => void
+    wait: () => void
 }
 
 function TransportTypePicker({
@@ -27,11 +27,11 @@ function TransportTypePicker({
     isLoading,
     mode,
     usedMode,
-    selectMode,
-    wait,
     stopPlace,
     availableModes,
     availableModesError,
+    selectMode,
+    wait,
 }: Props): ReactElement {
     return (
         <div className="bg-blue-20 text-white border-2 border-blue-20 shadow-sm rounded-sm pl-10 pb-8 pr-10">
@@ -68,9 +68,7 @@ function TransportTypePicker({
             ) : (
                 <ChoiceChipGroup
                     value={mode ?? 'none'}
-                    onChange={() => {
-                        /* Do nothing */
-                    }}
+                    onChange={() => {}}
                     name="Transport mode"
                 >
                     <>
