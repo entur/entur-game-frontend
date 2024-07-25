@@ -19,6 +19,7 @@ import DeadScreen from './DeadScreen'
 import { Modal } from '@entur/modal'
 import { Contrast } from '@entur/layout'
 import { fetchStopPlace, fetchStopPlaceParent } from '@/lib/api/stopPlaceApi'
+import { ALL_MODES } from '@/lib/constants/queryMode'
 
 export interface StopAndTime {
     stopPlace: StopPlace | StopPlaceDetails
@@ -103,15 +104,7 @@ function Game({
     }, [currentTime, setUsedTime, maxTime, startTime])
 
     const fetchAvailableModes = async (location: StopPlace) => {
-        const modes: QueryMode[] = [
-            QueryMode.BUS,
-            QueryMode.METRO,
-            QueryMode.TRAM,
-            QueryMode.RAIL,
-            QueryMode.WATER,
-        ]
-
-        const departurePromises = modes.map((mode) =>
+        const departurePromises = ALL_MODES.map((mode) =>
             getDepartures(location.id, mode, currentTime),
         )
         const walkableStopsPromise = getWalkableStopPlaces(location)
@@ -123,7 +116,7 @@ function Game({
 
         const validModes = results
             .map((deps, index) =>
-                (deps as Departure[]).length > 0 ? modes[index] : null,
+                (deps as Departure[]).length > 0 ? ALL_MODES[index] : null,
             )
             .filter(isTruthy)
 

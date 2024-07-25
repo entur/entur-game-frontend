@@ -17,6 +17,8 @@ export function getModeIcon(mode: QueryMode): JSX.Element | null {
             return <WalkIcon size={20} />
         case 'bus':
             return <BusIcon size={24} />
+        case 'coach':
+            return <BusIcon size={24} />
         case 'tram':
             return <TramIcon size={24} />
         case 'rail':
@@ -36,6 +38,8 @@ export function getModeTranslation(mode: QueryMode): string {
             return 'Gange (maks 500 m)'
         case 'bus':
             return 'Buss'
+        case 'coach':
+            return 'Ekspressbuss'
         case 'tram':
             return 'Trikk'
         case 'rail':
