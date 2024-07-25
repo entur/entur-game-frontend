@@ -49,9 +49,7 @@ export default function GamePage(): JSX.Element {
         }
     }, [event])
 
-    const [currentLocation, setCurrentLocation] = useState<
-        StopPlace | undefined
-    >()
+    const [currentLocation, setCurrentLocation] = useState<StopPlace>()
 
     useEffect(() => {
         if (event?.startLocation) {
