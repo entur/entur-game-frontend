@@ -35,7 +35,7 @@ export function getModeIcon(mode: QueryMode): JSX.Element | null {
 export function getModeTranslation(mode: QueryMode): string {
     switch (mode) {
         case 'foot':
-            return 'Gange (maks 500 m)'
+            return 'Gange'
         case 'bus':
             return 'Buss'
         case 'coach':

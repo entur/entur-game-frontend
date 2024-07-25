@@ -19,6 +19,24 @@ export async function getTripInfo(
     return response.json()
 }
 
+export async function getWalkTrip(
+    query: string,
+    variables: Partial<TripQueryVariables>,
+) {
+    const response = await fetch(
+        'https://api.entur.io/journey-planner/v3/graphql',
+        {
+            method: 'POST',
+            headers: {
+                'ET-Client-Name': 'enturspillet',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ query, variables }),
+        },
+    )
+    return response.json()
+}
+
 export const fetchDropdownItems = async (
     inputValue: string,
 ): Promise<NormalizedDropdownItemType[]> => {

@@ -97,6 +97,8 @@ export type Leg = {
 type TripPattern = {
     duration: number
     expectedStartTime: string
+    streetDistance?: number
+    walkTime?: number
     legs: Leg[]
 }
 
