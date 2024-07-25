@@ -3,7 +3,7 @@ import Leaderboard from './Leaderboard'
 import { useEventName } from '@/lib/hooks/useEventName'
 import { BreadcrumbItem } from '@entur/menu'
 import Link from 'next/link'
-import { useStopPlaceNames } from '@/lib/hooks/useStopPlaceName'
+import { useTripLocations } from '@/lib/hooks/useStopPlaceName'
 import { TravelHeader } from '@entur/travel'
 import { BannerAlertBox } from '@entur/alert'
 import useScores from '@/lib/hooks/useScores'
@@ -14,9 +14,19 @@ import { Button, SecondaryButton } from '@entur/button'
 import { useRouter } from 'next/navigation'
 import { getActiveScores } from '@/lib/api/scoreApi'
 
+const checkHasPlayers = async (): Promise<boolean> => {
+    const score = await getActiveScores()
+    return score == null
+}
+
+const checkActiveEvent = async (): Promise<boolean> => {
+    const result = await getActiveEvent()
+    return result?.isActive ?? false
+}
+
 const CompactLeaderboardPage: React.FC = (): JSX.Element => {
     const { isEventNameError, setEventNameError } = useEventName()
-    const { startLocationName, endLocationName } = useStopPlaceNames()
+    const { startLocationName, endLocationName } = useTripLocations()
     const { scores, leader, setShowAlert } = useScores()
     const router = useRouter()
     const [isOpen, setOpen] = useState(false)
@@ -25,25 +35,13 @@ const CompactLeaderboardPage: React.FC = (): JSX.Element => {
     const [isActiveEvent, setIsActiveEvent] = useState<boolean>(false)
     const [hasPlayers, setHasPlayers] = useState<boolean | undefined>(false)
 
-    const checkHasPlayers = async (): Promise<boolean | undefined> => {
-        const score = await getActiveScores()
-        if (score?.length == 0) {
-            return false
-        }
-    }
-
     useEffect(() => {
-        const fetchActiveEvent = async () => {
+        const fetchHasPlayers = async () => {
             const players = await checkHasPlayers()
             setHasPlayers(players)
         }
-        fetchActiveEvent()
-    })
-
-    const checkActiveEvent = async (): Promise<boolean> => {
-        const result = await getActiveEvent()
-        return result?.isActive ?? false
-    }
+        fetchHasPlayers()
+    }, [])
 
     useEffect(() => {
         const fetchActiveEvent = async () => {
@@ -51,7 +49,7 @@ const CompactLeaderboardPage: React.FC = (): JSX.Element => {
             setIsActiveEvent(isActive)
         }
         fetchActiveEvent()
-    })
+    }, [])
 
     const handleDrawWinnerAndEndGame = async () => {
         if (scores.length === 0) {
