@@ -71,3 +71,25 @@ export async function fetchStopPlaceChildren(
         return null
     }
 }
+
+export async function fetchStopPlaceParent(
+    stopPlaceId: string,
+): Promise<string | null> {
+    try {
+        const response = await fetch(
+            `https://api.entur.io/stop-places/v1/read/stop-places/${stopPlaceId}`,
+        )
+
+        if (!response.ok) {
+            throw new Error(
+                `Failed to fetch data. Status code: ${response.status}`,
+            )
+        }
+        const data = await response.json()
+        const id = data.parentSiteRef.ref
+        return id
+    } catch (error) {
+        console.error('Error fetching stop place children:', error)
+        return null
+    }
+}

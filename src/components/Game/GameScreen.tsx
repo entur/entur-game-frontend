@@ -138,12 +138,12 @@ function GameScreen({
 
         if (newMode === 'foot') {
             setDepartures([])
-            getWalkableStopPlaces(currentLocation)
+            getWalkableStopPlaces(currentLocation) //TODO: sjekk dette
                 .then((stops) => {
                     setStopsOnLine(
                         stops.map((stop) => ({
                             stopPlace: stop,
-                            time: addMinutes(currentTime, 2),
+                            time: addMinutes(currentTime, 2), //TODO: dette må endres på også
                         })),
                     )
                     setModalOpen(true)
@@ -155,7 +155,7 @@ function GameScreen({
                     setLoading(false)
                 })
         } else {
-            getDepartures(currentLocation.id, newMode, currentTime)
+            getDepartures(currentLocation.id, newMode, currentTime) //TODO: sjekk dette også
                 .then((deps) => {
                     setStopsOnLine([])
                     setDepartures(deps)
@@ -205,7 +205,7 @@ function GameScreen({
         setMode(null)
         setModalOpen(false)
         if (stopAndTime) {
-            setCurrentLocation(stopAndTime.stopPlace)
+            setCurrentLocation(stopAndTime.stopPlace) //TODO: her er det det må endres!
             setTravelLegs((prev) => [...prev, stopAndTime.stopPlace])
             setNumLegs((prev) => prev + 1)
             fetchAvailableModes(stopAndTime.stopPlace)
