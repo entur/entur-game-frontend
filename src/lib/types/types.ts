@@ -83,7 +83,7 @@ type Line = {
     publicCode: string
 }
 
-export type Mode = 'rail' | 'bus' | 'tram' | 'metro' | 'water'
+export type Mode = 'rail' | 'bus' | 'tram' | 'metro' | 'water' | 'coach'
 
 export type Leg = {
     id: string
