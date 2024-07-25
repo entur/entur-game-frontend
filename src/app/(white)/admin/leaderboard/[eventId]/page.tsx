@@ -9,7 +9,8 @@ import { Pagination } from '@entur/menu'
 import { Button, SecondaryButton } from '@entur/button'
 import { DeleteIcon } from '@entur/icons'
 import { Modal } from '@entur/modal'
-import { getEventById } from '@/lib/api/eventApi'
+import { deleteEvent, getEventById } from '@/lib/api/eventApi'
+import { useRouter } from 'next/navigation'
 
 type EventPageProps = {
     params: {
@@ -27,6 +28,7 @@ const LeaderboardPage: React.FC<EventPageProps> = ({ params }): JSX.Element => {
     const numberOfResults = scores.length
     const pageCount = Math.ceil(numberOfResults / results)
     const { eventId } = params
+    const router = useRouter()
 
     const fetchScores = async () => {
         try {
@@ -58,6 +60,13 @@ const LeaderboardPage: React.FC<EventPageProps> = ({ params }): JSX.Element => {
         }
     }, [])
 
+    const handleDelete = async (eventId: number | undefined) => {
+        if (eventId !== undefined) {
+            await deleteEvent(eventId)
+        }
+        router.push('/admin')
+    }
+
     return (
         <div className="flex flex-col mx-40">
             <div className="flex flex-col pb-4 mt-16">
@@ -67,7 +76,10 @@ const LeaderboardPage: React.FC<EventPageProps> = ({ params }): JSX.Element => {
                     Se resultater fra avsluttet spill
                 </LeadParagraph>
                 <div className="flex gap-6 mb-20">
-                    <Button variant="negative">
+                    <Button
+                        variant="negative"
+                        onClick={() => handleDelete(eventId)}
+                    >
                         <DeleteIcon className="inline align-baseline" />
                         Slett spill
                     </Button>
