@@ -7,6 +7,7 @@ export type Event = {
     optimalStepNumber: number
     optimalTravelTime: number
     isActive: boolean
+    winner?: Player
 }
 
 export type BackendEvent = {
@@ -18,6 +19,7 @@ export type BackendEvent = {
     optimalStepNumber: number
     optimalTravelTime: number
     isActive: boolean
+    winner?: Player
 }
 
 export type PlayerScore = {

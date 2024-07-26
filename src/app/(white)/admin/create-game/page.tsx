@@ -25,7 +25,7 @@ import {
     TripQueryVariables,
 } from '@/lib/types/types'
 import { useRouter } from 'next/navigation'
-import { useToast } from '@entur/alert'
+import { SmallAlertBox, useToast } from '@entur/alert'
 import { createEvent } from '@/lib/api/eventApi'
 import { formatDateTime } from '@/lib/utils/dateFnsUtils'
 import { getTripInfo, fetchDropdownItems } from '@/lib/api/journeyPlannerApi'
@@ -49,15 +49,35 @@ export default function AdminCreateJourney() {
     const [event, setEvent] = useState<BackendEvent>()
     const [loading, setLoading] = useState<boolean>(false)
 
+    const [isError, setError] = useState<boolean>(false)
+    const [responseStatus, setResponseStatus] = useState<number | null>(null)
+
     useEffect(() => {
-        if (event) {
-            createEvent(event)
-            router.push(`/admin`)
-            addToast({
-                title: 'Nytt spill opprettet!',
-                content: <>Ruten kan spilles av alle med lenken</>,
-            })
+        const handleCreateEvent = async () => {
+            if (!event) return
+
+            const response = await createEvent(event)
+            setResponseStatus(response.status)
+
+            if (response.status === 200) {
+                router.push(`/admin`)
+                addToast({
+                    title: 'Nytt spill opprettet!',
+                    content: <>Ruten kan spilles av alle med lenken</>,
+                })
+            } else {
+                console.error(
+                    'Error handling create event:',
+                    response.statusText,
+                )
+                setError(true)
+            }
         }
+
+        handleCreateEvent().catch((error) => {
+            console.error('Error handling create event:', error)
+            setError(true)
+        })
     }, [event, router, addToast])
 
     const fetchTripInfo = useCallback(async () => {
@@ -166,6 +186,16 @@ export default function AdminCreateJourney() {
         router.push(`/admin`)
     }
 
+    const handleStartChange = (item: NormalizedDropdownItemType | null) => {
+        setSelectedStart(item)
+        setError(false)
+    }
+
+    const handleGoalChange = (item: NormalizedDropdownItemType | null) => {
+        setSelectedGoal(item)
+        setError(false)
+    }
+
     return (
         <div className="ml-56 p-4 pt-20">
             <div className="flex flex-col">
@@ -187,7 +217,7 @@ export default function AdminCreateJourney() {
                         items={fetchDropdownItems}
                         selectedItem={selectedStart}
                         prepend={<MapPinIcon></MapPinIcon>}
-                        onChange={setSelectedStart}
+                        onChange={handleStartChange}
                         selectOnTab
                         variant={
                             attemptedSubmit && !selectedStart
@@ -205,7 +235,7 @@ export default function AdminCreateJourney() {
                         items={fetchDropdownItems}
                         prepend={<DestinationIcon></DestinationIcon>}
                         selectedItem={selectedGoal}
-                        onChange={setSelectedGoal}
+                        onChange={handleGoalChange}
                         selectOnTab
                         variant={
                             attemptedSubmit && !selectedGoal
@@ -220,6 +250,16 @@ export default function AdminCreateJourney() {
                     />
                 </div>
             </div>
+            {isError && (
+                <>
+                    <br />
+                    <SmallAlertBox variant="negative" width="fit-content">
+                        {responseStatus === 409
+                            ? 'Et spill med samme start- og stoppested finnes allerede. Slett dette spillet før du kan opprette samme ruten på nytt.'
+                            : 'Ukjent feil oppdaget. Tillkall hjelp.'}
+                    </SmallAlertBox>
+                </>
+            )}
             <div className="flex flex-col pt-12">
                 <Heading3>Velg starttidspunkt</Heading3>
                 <Paragraph margin="bottom">

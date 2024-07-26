@@ -148,13 +148,12 @@ export async function getEventByEventName(
             optimalStepNumber: baseEvent.optimalStepNumber,
             optimalTravelTime: baseEvent.optimalTravelTime,
             isActive: baseEvent.isActive,
+            winner: baseEvent.winner,
         } as Event,
     }
 }
 
-export async function createEvent(
-    event: BackendEvent,
-): Promise<BackendEvent | null> {
+export async function createEvent(event: BackendEvent): Promise<Response> {
     try {
         const response = await fetch(`${baseUrl}/new-event`, {
             method: 'POST',
@@ -163,16 +162,21 @@ export async function createEvent(
             },
             body: JSON.stringify(event),
         })
-
-        if (!response.ok) {
-            console.error(`Error: ${response.status} - ${response.statusText}`)
-            return null
-        }
-
-        return await response.json()
+        return response
     } catch (error) {
         console.error('Error creating new event:', error)
-        return null
+        return new Response(
+            JSON.stringify({
+                error: 'Network error',
+                message: 'Internal server error',
+            }),
+            {
+                status: 500,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            },
+        )
     }
 }
 
@@ -193,5 +197,41 @@ export async function deleteEvent(eventId: number): Promise<Result<string>> {
         return { success: true, data }
     } catch (error) {
         return { success: false, error: 'Network error' }
+    }
+}
+
+export async function saveWinner(
+    eventName: string,
+    playerId: number,
+): Promise<Response> {
+    try {
+        const payload = {
+            eventName: eventName,
+            playerId: playerId !== undefined ? playerId : null,
+        }
+
+        const response = await fetch(`${baseUrl}/save-winner`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+        })
+
+        return response
+    } catch (error) {
+        console.error('Error creating new event:', error)
+        return new Response(
+            JSON.stringify({
+                error: 'Network error',
+                message: 'Internal server error',
+            }),
+            {
+                status: 500,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            },
+        )
     }
 }
