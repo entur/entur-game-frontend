@@ -114,10 +114,6 @@ export type TransportIconPickerProps = {
     transportType: string | undefined
 }
 
-export type Result<T> =
-    | { success: true; data: T }
-    | { success: false; error: string }
-
 // TODO: find how to change any, so that we can remove eslint-disabled
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function isEmptyTrip(obj: any): obj is Trip {
