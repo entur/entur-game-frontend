@@ -17,6 +17,8 @@ export function getModeIcon(mode: QueryMode): JSX.Element | null {
             return <WalkIcon size={20} />
         case 'bus':
             return <BusIcon size={24} />
+        case 'coach':
+            return <BusIcon size={24} />
         case 'tram':
             return <TramIcon size={24} />
         case 'rail':
@@ -33,9 +35,11 @@ export function getModeIcon(mode: QueryMode): JSX.Element | null {
 export function getModeTranslation(mode: QueryMode): string {
     switch (mode) {
         case 'foot':
-            return 'Gange (maks 500 m)'
+            return 'Gange'
         case 'bus':
             return 'Buss'
+        case 'coach':
+            return 'Ekspressbuss'
         case 'tram':
             return 'Trikk'
         case 'rail':
@@ -73,43 +77,33 @@ export function LegLinePicker({ mode }: { mode?: Mode }) {
         minWidth: '1.5rem',
         backgroundColor: '#E3E6E8',
     }
+    const bus = () => (
+        <LegLine
+            style={style}
+            direction="horizontal"
+            pattern="dashed"
+            color="#E3E6E8"
+        ></LegLine>
+    )
+    const rail = () => (
+        <LegLine
+            style={style}
+            direction="horizontal"
+            pattern="line"
+            color="#E3E6E8"
+        ></LegLine>
+    )
     switch (mode) {
         case 'bus':
-            return (
-                <LegLine
-                    style={style}
-                    direction="horizontal"
-                    pattern="dashed"
-                    color="#E3E6E8"
-                ></LegLine>
-            )
+            return bus()
+        case 'coach':
+            return bus()
         case 'rail':
-            return (
-                <LegLine
-                    style={style}
-                    direction="horizontal"
-                    pattern="line"
-                    color="#E3E6E8"
-                ></LegLine>
-            )
+            return rail()
         case 'tram':
-            return (
-                <LegLine
-                    style={style}
-                    direction="horizontal"
-                    pattern="line"
-                    color="#E3E6E8"
-                ></LegLine>
-            )
+            return rail()
         case 'metro':
-            return (
-                <LegLine
-                    style={style}
-                    direction="horizontal"
-                    pattern="line"
-                    color="#E3E6E8"
-                ></LegLine>
-            )
+            return rail()
         case 'water':
             return (
                 <LegLine

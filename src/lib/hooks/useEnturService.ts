@@ -55,6 +55,7 @@ async function getStopsOnLine(
 
 async function getWalkableStopPlaces(
     currentStopPlace: StopPlace,
+    maximumDistance?: number,
 ): Promise<StopPlaceDetails[]> {
     if (!currentStopPlace.latitude || !currentStopPlace.longitude) {
         return []
@@ -67,7 +68,7 @@ async function getWalkableStopPlaces(
         },
         {
             filterByPlaceTypes: [TypeName.STOP_PLACE],
-            maximumDistance: 500,
+            maximumDistance: maximumDistance ? Math.ceil(maximumDistance) : 500,
         },
     )
 

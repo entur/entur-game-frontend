@@ -3,7 +3,7 @@ import { LegLinePicker, TransportIconPicker } from '@/lib/utils/transportMapper'
 import { WalkIcon } from '@entur/icons'
 import { SubParagraph } from '@entur/typography'
 import { formatTimePlanner } from '@/lib/utils/dateFnsUtils'
-import { Leg } from '@/lib/types/types'
+import { Leg, Mode } from '@/lib/types/types'
 
 type Props = {
     leg: Leg
@@ -13,13 +13,18 @@ type Props = {
 
 export default function TravelLeg({ leg, index, array }: Props) {
     const isLastLeg = index === array.length - 1
+    const translateModeToTransport = (mode: Mode) =>
+        mode === 'coach' ? 'bus' : mode
     return (
         <li className={isLastLeg ? `flex-grow` : ''}>
             {isLastLeg ? (
                 <>
                     {leg.line ? (
                         <div className="flex items-center">
-                            <TravelTag alert="none" transport={leg.mode}>
+                            <TravelTag
+                                alert="none"
+                                transport={translateModeToTransport(leg.mode)}
+                            >
                                 <TransportIconPicker transportType={leg.mode} />
                                 {leg.line?.publicCode}
                             </TravelTag>
@@ -38,7 +43,10 @@ export default function TravelLeg({ leg, index, array }: Props) {
                 <>
                     {leg.line ? (
                         <div className="flex items-center">
-                            <TravelTag alert="none" transport={leg.mode}>
+                            <TravelTag
+                                alert="none"
+                                transport={translateModeToTransport(leg.mode)}
+                            >
                                 <TransportIconPicker transportType={leg.mode} />
                                 {leg.line?.publicCode}
                             </TravelTag>
