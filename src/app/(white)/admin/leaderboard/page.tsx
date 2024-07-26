@@ -7,17 +7,20 @@ import {
     BlockquoteFooter,
     Heading1,
     LeadParagraph,
-    Paragraph,
     SubParagraph,
 } from '@entur/typography'
-import { Modal } from '@entur/modal'
-import { Button, SecondaryButton } from '@entur/button'
 import { BannerAlertBox, SmallAlertBox } from '@entur/alert'
 import { useEventName } from '@/lib/hooks/useEventName'
 import { Pagination } from '@entur/menu'
 import Leaderboard from '../components/Leaderboard'
-import { saveWinner, endActiveEvent } from '@/lib/api/eventApi'
 import useScores from '@/lib/hooks/useScores'
+import { Button } from '@entur/button'
+import {
+    handleDismiss,
+    handleDrawWinnerAndEndGame,
+} from '@/lib/utils/handleWinner'
+import { WinnerWarningModal } from '../components/winnerWarningModal'
+import { WinnerModal } from '../components/winnerModal'
 
 const GamePage: React.FC = (): JSX.Element => {
     const { eventName, isEventNameError, setEventNameError } = useEventName()
@@ -32,32 +35,6 @@ const GamePage: React.FC = (): JSX.Element => {
     const [results, setResults] = React.useState(10)
     const numberOfResults = scores.length
     const pageCount = Math.ceil(numberOfResults / results)
-
-    const handleDrawWinnerAndEndGame = async () => {
-        if (scores.length === 0) {
-            setShowAlert(true)
-            return
-        }
-
-        setWinnerEndOpen(false)
-        setModalOpen(true)
-
-        if (!eventName || !leader?.player?.playerId) {
-            setSaveWinnerError(true)
-            return
-        }
-
-        const response = await saveWinner(eventName, leader.player.playerId)
-        setSaveWinnerError(response.status !== 200)
-
-        await endActiveEvent()
-    }
-
-    const handleDismiss = () => {
-        setModalOpen(false)
-        setEventNameError(true)
-        window.location.reload()
-    }
 
     if (eventName === null) {
         return (
@@ -147,55 +124,29 @@ const GamePage: React.FC = (): JSX.Element => {
                     onResultsPerPageChange={(e) => setResults(e)}
                 />
             </div>
-            <Modal
-                open={isWinnerEndOpen}
-                onDismiss={() => setWinnerEndOpen(false)}
-                title="Trekk vinner og avslutt spill?"
-                size="medium"
-            >
-                <Paragraph>
-                    Når du trekker en vinner avsluttes spillet automatisk. Det
-                    vil være mulig å gjenåpne spillet igjen på et senere
-                    tidspunkt.
-                </Paragraph>
-                <div className="flex gap-4">
-                    <Button
-                        variant={'primary'}
-                        className="max-w-[250px]"
-                        onClick={handleDrawWinnerAndEndGame}
-                        type="button"
-                    >
-                        Trekk vinner og avslutt
-                    </Button>
-                    <SecondaryButton
-                        className="w-[81px]"
-                        onClick={() => setWinnerEndOpen(false)}
-                    >
-                        Avbryt
-                    </SecondaryButton>
-                </div>
-            </Modal>
-            <Modal
-                open={isModalOpen}
-                onDismiss={handleDismiss}
-                title={`Vinner: ${leader?.player.playerName}`}
-                size="medium"
-            >
-                <p>E-post: {leader?.player.email}</p>
-                <p>Telefon: {leader?.player.phoneNumber}</p>
-                {isSaveWinnerError && (
-                    <>
-                        <br />
-                        <SmallAlertBox
-                            variant="warning"
-                            width="fit-content"
-                            margin="top"
-                        >
-                            Det oppsto en feil ved lagring av vinner.
-                        </SmallAlertBox>
-                    </>
-                )}
-            </Modal>
+            <WinnerWarningModal
+                isWinnerEndOpen={isWinnerEndOpen}
+                setWinnerEndOpen={setWinnerEndOpen}
+                handleDrawWinnerAndEndGame={() =>
+                    handleDrawWinnerAndEndGame(
+                        scores,
+                        setShowAlert,
+                        eventName,
+                        leader,
+                        setSaveWinnerError,
+                        setWinnerEndOpen,
+                        setModalOpen,
+                    )
+                }
+            />
+            <WinnerModal
+                isModalOpen={isModalOpen}
+                handleDismiss={() =>
+                    handleDismiss(setModalOpen, setEventNameError)
+                }
+                leader={leader}
+                isSaveWinnerError={isSaveWinnerError}
+            />
         </div>
     )
 }
