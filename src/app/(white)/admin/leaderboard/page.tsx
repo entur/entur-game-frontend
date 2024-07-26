@@ -36,24 +36,18 @@ const GamePage: React.FC = (): JSX.Element => {
     const handleDrawWinner = async () => {
         if (scores.length === 0) {
             setShowAlert(true)
-        } else {
-            setModalOpen(true)
-            if (eventName) {
-                if (!leader?.player?.playerId) {
-                    setSaveWinnerError(true)
-                } else {
-                    const response = await saveWinner(
-                        eventName,
-                        leader.player.playerId,
-                    )
-                    if (response.status !== 200) {
-                        setSaveWinnerError(true)
-                    } else {
-                        setSaveWinnerError(false)
-                    }
-                }
-            }
+            return
         }
+
+        setModalOpen(true)
+
+        if (!eventName || !leader?.player?.playerId) {
+            setSaveWinnerError(true)
+            return
+        }
+
+        const response = await saveWinner(eventName, leader.player.playerId)
+        setSaveWinnerError(response.status !== 200)
     }
 
     if (eventName === null) {
