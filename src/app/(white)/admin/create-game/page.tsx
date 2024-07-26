@@ -32,6 +32,7 @@ import { getTripInfo, fetchDropdownItems } from '@/lib/api/journeyPlannerApi'
 import { tripQuery, visualSolutionTripQuery } from '@/lib/constants/queries'
 import useSWR from 'swr'
 import RouteSuggestion from '@/components/RouteSuggestion'
+import { Modal } from '@entur/modal'
 
 export default function AdminCreateJourney() {
     const router = useRouter()
@@ -48,6 +49,7 @@ export default function AdminCreateJourney() {
 
     const [event, setEvent] = useState<BackendEvent>()
     const [loading, setLoading] = useState<boolean>(false)
+    const [isOpen, setOpen] = useState<boolean>(false)
 
     const [isError, setError] = useState<boolean>(false)
     const [responseStatus, setResponseStatus] = useState<number | null>(null)
@@ -305,12 +307,37 @@ export default function AdminCreateJourney() {
                         </div>
                         Tilbake
                     </SecondaryButton>
+                    <Modal
+                        open={isOpen}
+                        onDismiss={() => setOpen(false)}
+                        title="Avslutt aktivt spill og opprett nytt?"
+                        size="medium"
+                    >
+                        <Paragraph>
+                            Du har allerede et aktivt spill. Oppretter du et
+                            nytt spill avsluttes det nåværende aktive spillet
+                            automatisk og det trekkes ingen vinner.
+                        </Paragraph>
+                        <div className="flex gap-6">
+                            <SecondaryButton onClick={() => setOpen(false)}>
+                                Avbryt
+                            </SecondaryButton>
+                            <Button
+                                width="auto"
+                                variant="primary"
+                                size="medium"
+                                onClick={handleOnClick}
+                                loading={loading}
+                            >
+                                Opprett spill
+                            </Button>
+                        </div>
+                    </Modal>
                     <Button
                         width="auto"
                         variant="primary"
                         size="medium"
-                        onClick={handleOnClick}
-                        loading={loading}
+                        onClick={() => setOpen(true)}
                     >
                         Opprett spill
                     </Button>
