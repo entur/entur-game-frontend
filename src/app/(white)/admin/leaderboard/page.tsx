@@ -21,6 +21,7 @@ import useScores from '@/lib/hooks/useScores'
 const GamePage: React.FC = (): JSX.Element => {
     const { eventName, isEventNameError } = useEventName()
     const [isModalOpen, setModalOpen] = useState<boolean>(false)
+    const [isSaveWinnerError, setSaveWinnerError] = useState<boolean>(false)
     const router = useRouter()
 
     const { scores, leader, showAlert, setShowAlert } = useScores()
@@ -32,15 +33,24 @@ const GamePage: React.FC = (): JSX.Element => {
 
     //TODO: side oppdateres hver gang ny spiller legges til i db
 
-    const handleDrawWinner = () => {
+    const handleDrawWinner = async () => {
         if (scores.length === 0) {
             setShowAlert(true)
         } else {
             setModalOpen(true)
             if (eventName) {
-                //TODO: feilmelding for 1. feil fra backend og 2. leader?.player?.playerId=false
-                if (leader?.player?.playerId) {
-                    saveWinner(eventName, leader.player.playerId)
+                if (!leader?.player?.playerId) {
+                    setSaveWinnerError(true)
+                } else {
+                    const response = await saveWinner(
+                        eventName,
+                        leader.player.playerId,
+                    )
+                    if (response.status !== 200) {
+                        setSaveWinnerError(true)
+                    } else {
+                        setSaveWinnerError(false)
+                    }
                 }
             }
         }
@@ -142,6 +152,18 @@ const GamePage: React.FC = (): JSX.Element => {
             >
                 <p>E-post: {leader?.player.email}</p>
                 <p>Telefon: {leader?.player.phoneNumber}</p>
+                {isSaveWinnerError && (
+                    <>
+                        <br />
+                        <SmallAlertBox
+                            variant="warning"
+                            width="fit-content"
+                            margin="top"
+                        >
+                            Det oppsto en feil ved lagring av vinner.
+                        </SmallAlertBox>
+                    </>
+                )}
             </Modal>
         </div>
     )
