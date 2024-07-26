@@ -204,3 +204,39 @@ export async function getTripLocations(
         },
     }
 }
+
+export async function saveWinner(
+    eventName: string,
+    playerId: number,
+): Promise<Response> {
+    try {
+        const payload = {
+            eventName: eventName,
+            playerId: playerId !== undefined ? playerId : null,
+        }
+
+        const response = await fetch(`${baseUrl}/save-winner`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+        })
+
+        return response
+    } catch (error) {
+        console.error('Error creating new event:', error)
+        return new Response(
+            JSON.stringify({
+                error: 'Network error',
+                message: 'Internal server error',
+            }),
+            {
+                status: 500,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            },
+        )
+    }
+}

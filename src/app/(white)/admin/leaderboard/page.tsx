@@ -18,12 +18,13 @@ import { getActiveScores } from '@/lib/api/scoreApi'
 import { useEventName } from '@/lib/hooks/useEventName'
 import { Pagination } from '@entur/menu'
 import Leaderboard from '../components/Leaderboard'
+import { saveWinner } from '@/lib/api/eventApi'
 
 const GamePage: React.FC = (): JSX.Element => {
     const { eventName, isEventNameError } = useEventName()
     const [scores, setScores] = useState<PlayerScore[]>([])
     const [leader, setLeader] = useState<PlayerScore | null>(null)
-    const [isOpen, setOpen] = useState<boolean>(false)
+    const [isModalOpen, setModalOpen] = useState<boolean>(false)
     const [showAlert, setShowAlert] = useState<boolean>(false)
     const router = useRouter()
 
@@ -55,7 +56,13 @@ const GamePage: React.FC = (): JSX.Element => {
         if (scores.length === 0) {
             setShowAlert(true)
         } else {
-            setOpen(true)
+            setModalOpen(true)
+            if (eventName) {
+                //TODO: feilmelding for 1. feil fra backend og 2. leader?.player?.playerId=false
+                if (leader?.player?.playerId) {
+                    saveWinner(eventName, leader.player.playerId)
+                }
+            }
         }
     }
 
@@ -109,7 +116,7 @@ const GamePage: React.FC = (): JSX.Element => {
                 size="medium"
                 onClick={handleDrawWinner}
             >
-                Trekk en vinner
+                Trekk vinner
             </Button>
             <SubParagraph className="w-96 pt-2">
                 Ved å trykke på knappen trekkes en tilfeldig vinner blant
@@ -142,8 +149,8 @@ const GamePage: React.FC = (): JSX.Element => {
                 />
             </div>
             <Modal
-                open={isOpen}
-                onDismiss={() => setOpen(false)}
+                open={isModalOpen}
+                onDismiss={() => setModalOpen(false)}
                 title={`Vinner: ${leader?.player.playerName}`}
                 size="medium"
             >
