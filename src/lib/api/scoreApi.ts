@@ -18,11 +18,11 @@ export async function getActiveScores(): Promise<PlayerScore[] | null> {
     return await response.json()
 }
 
-export async function getScoresEventId(eventId: number) {
+export async function getScoresByEventId(eventId: number) {
     try {
         const response = await fetch(`${baseUrl}/score/event/${eventId}`)
         if (response.status !== 200) {
-            throw new Error('Network response not okay')
+            console.error('Network response not okay')
         }
         const data: PlayerScore[] = await response.json()
         return data

@@ -2,10 +2,7 @@ import { BackendEvent, Event } from '../types/types'
 import { StopPlace } from '../types/types'
 import { fetchStopPlace, fetchStopPlaceChildren } from './stopPlaceApi'
 import { baseUrl } from '@/config'
-
-export type Result<T> =
-    | { success: true; data: T }
-    | { success: false; error: string }
+import { Result } from '../types/types'
 
 export async function getAllEvents(): Promise<BackendEvent[] | null> {
     const response = await fetch(`${baseUrl}/event/all`)
