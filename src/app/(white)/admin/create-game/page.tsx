@@ -280,7 +280,7 @@ export default function AdminCreateJourney() {
                         </Paragraph>
                         <div className="flex gap-6">
                             <SecondaryButton onClick={() => setOpen(false)}>
-                                Lukk
+                                Avbryt
                             </SecondaryButton>
                             <Button
                                 width="auto"
