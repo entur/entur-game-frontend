@@ -80,17 +80,17 @@ const InactiveEventsList: React.FC = (): JSX.Element => {
                         </Paragraph>
                         <div className="flex gap-6">
                             <Button
+                                variant="secondary"
+                                onClick={() => setOpen(false)}
+                            >
+                                Lukk
+                            </Button>
+                            <Button
                                 variant="negative"
                                 onClick={() => handleDelete()}
                             >
                                 <DeleteIcon className="inline align-baseline" />
                                 Slett spill
-                            </Button>
-                            <Button
-                                variant="secondary"
-                                onClick={() => setOpen(false)}
-                            >
-                                Lukk
                             </Button>
                         </div>
                     </Modal>

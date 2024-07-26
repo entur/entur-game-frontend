@@ -109,6 +109,12 @@ const CompactLeaderboardPage: React.FC = (): JSX.Element => {
                                 spillet igjen på et senere tidspunkt.
                             </Paragraph>
                             <div className="flex gap-4">
+                                <SecondaryButton
+                                    className="w-[81px]"
+                                    onClick={() => setWinnerEndOpen(false)}
+                                >
+                                    Avbryt
+                                </SecondaryButton>
                                 <Button
                                     variant={'primary'}
                                     className="max-w-[250px]"
@@ -117,12 +123,6 @@ const CompactLeaderboardPage: React.FC = (): JSX.Element => {
                                 >
                                     Trekk vinner og avslutt
                                 </Button>
-                                <SecondaryButton
-                                    className="w-[81px]"
-                                    onClick={() => setWinnerEndOpen(false)}
-                                >
-                                    Avbryt
-                                </SecondaryButton>
                             </div>
                         </Modal>
                         <Button
@@ -152,17 +152,17 @@ const CompactLeaderboardPage: React.FC = (): JSX.Element => {
                             </Paragraph>
                             <div className="flex items-center gap-4">
                                 <Button
+                                    variant="secondary"
+                                    onClick={() => setOpen(false)}
+                                >
+                                    Avbryt
+                                </Button>
+                                <Button
                                     variant="primary"
                                     className="max-w-[250px]"
                                     onClick={handleEndGame}
                                 >
                                     Avslutt spill
-                                </Button>
-                                <Button
-                                    variant="secondary"
-                                    onClick={() => setOpen(false)}
-                                >
-                                    Avbryt
                                 </Button>
                             </div>
                         </Modal>
