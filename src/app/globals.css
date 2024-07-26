@@ -16,6 +16,7 @@
 @import '@entur/dropdown/dist/styles.css';
 @import '@entur/datepicker/dist/styles.css';
 @import '@entur/menu/dist/styles.css';
+@import '@entur/tooltip/dist/styles.css';
 @import '@entur/grid/dist/styles.css';
 @tailwind base;
 @tailwind components;
@@ -129,4 +130,10 @@ fieldset {
     position: sticky;
     top: 20px;
     border-radius: 2%;
+}
+
+.grid-demo-item {
+    max-height: 50vh;
+    overflow: auto;
+    margin-top: 1rem;
 }

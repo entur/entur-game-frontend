@@ -7,11 +7,9 @@ import Image from 'next/image'
 import Entur_logo_contrast from '@/lib/assets/images/Entur_logo_contrast.svg'
 import { getActiveEvent } from '@/lib/api/eventApi'
 import { useEffect, useState } from 'react'
-
 export function SplashScreen(): JSX.Element {
     const router = useRouter()
     const [activeEventName, setActiveEventName] = useState<string | null>(null)
-
     useEffect(() => {
         const getActiveEventName = async () => {
             const event = await getActiveEvent()
@@ -21,7 +19,6 @@ export function SplashScreen(): JSX.Element {
         }
         getActiveEventName()
     }, [])
-
     return (
         <>
             <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center z-10">
@@ -53,5 +50,4 @@ export function SplashScreen(): JSX.Element {
         </>
     )
 }
-
 export default SplashScreen

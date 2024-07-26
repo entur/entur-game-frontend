@@ -4,10 +4,9 @@ import React, { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import { Heading1, Heading3 } from '@entur/typography'
 import { Loader } from '@entur/loader'
-import Game from '@/components/Game/GameScreen'
+import Game from '@/components/Game/Game'
 import { getEventByEventName, Result } from '@/lib/api/eventApi'
 import { Event, StopPlace } from '@/lib/types/types'
-import { GridContainer, GridItem } from '@entur/grid'
 import useSWR from 'swr'
 import { Contrast } from '@entur/layout'
 import VictoryScreen from '@/components/Game/VictoryScreen/VictoryScreen'
@@ -50,11 +49,11 @@ export default function GamePage(): JSX.Element {
         }
     }, [event])
 
-    const [startLocation, setStartLocation] = useState<StopPlace | undefined>()
+    const [currentLocation, setCurrentLocation] = useState<StopPlace>()
 
     useEffect(() => {
         if (event?.startLocation) {
-            setStartLocation(event.startLocation)
+            setCurrentLocation(event.startLocation)
         }
     }, [event])
 
@@ -83,7 +82,7 @@ export default function GamePage(): JSX.Element {
                 </Contrast>
             ) : (
                 event &&
-                startLocation && (
+                currentLocation && (
                     <main className="flex flex-col">
                         <div className="sm:sticky top-20">
                             <GameStatus
@@ -92,28 +91,28 @@ export default function GamePage(): JSX.Element {
                                 maxTime={maxTime}
                             />
                         </div>
-                        <div className="max-w-screen-2xl xl:ml-72 xl:mr-40 ml-10 mr-10">
-                            <GridContainer spacing="large">
-                                <GridItem small={7} className="grid-demo-item">
+                        <div className="max-w-screen-3xl mx-auto xl:mx-24">
+                            <div className="grid grid-cols-5 gap-24">
+                                <div className="col-span-3">
                                     <Game
                                         event={event}
                                         maxTime={maxTime}
                                         startTime={startTime}
                                         currentTime={currentTime}
-                                        startLocation={startLocation}
+                                        currentLocation={currentLocation}
                                         setCurrentTime={setCurrentTime}
                                         setUsedTime={setUsedTime}
                                         setNumLegs={setNumLegs}
                                         setVictory={setVictory}
-                                        setStartLocation={setStartLocation}
+                                        setCurrentLocation={setCurrentLocation}
                                     />
-                                </GridItem>
+                                </div>
 
-                                <GridItem small={5} className="grid-demo-item">
+                                <div className="col-span-2">
                                     <Contrast>
                                         <Map
                                             event={event}
-                                            currentPosition={startLocation}
+                                            currentPosition={currentLocation}
                                         />
                                         <div className="icon-container">
                                             <div className="icon-item">
@@ -136,8 +135,8 @@ export default function GamePage(): JSX.Element {
                                             </div>
                                         </div>
                                     </Contrast>
-                                </GridItem>
-                            </GridContainer>
+                                </div>
+                            </div>
                         </div>
                     </main>
                 )

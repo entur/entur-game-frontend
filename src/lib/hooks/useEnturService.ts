@@ -55,10 +55,12 @@ async function getStopsOnLine(
 
 async function getWalkableStopPlaces(
     currentStopPlace: StopPlace,
+    maximumDistance?: number,
 ): Promise<StopPlaceDetails[]> {
     if (!currentStopPlace.latitude || !currentStopPlace.longitude) {
         return []
     }
+
     const nearby = await entur.getNearestPlaces(
         {
             latitude: currentStopPlace.latitude,
@@ -66,13 +68,17 @@ async function getWalkableStopPlaces(
         },
         {
             filterByPlaceTypes: [TypeName.STOP_PLACE],
-            maximumDistance: 500,
+            maximumDistance: maximumDistance ? Math.ceil(maximumDistance) : 500,
         },
     )
 
     const stopPlaceIds = nearby
-        .filter((place) => place.type === 'StopPlace')
+        .filter(
+            (place) =>
+                place.type === 'StopPlace' && place.id !== currentStopPlace.id,
+        )
         .map(({ id }) => id)
+
     const stopPlaces = await entur.getStopPlaces(stopPlaceIds)
     return stopPlaces.filter(isTruthy)
 }

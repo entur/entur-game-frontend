@@ -1,8 +1,7 @@
 import { BackendEvent, Event } from '../types/types'
 import { StopPlace } from '../types/types'
 import { fetchStopPlace, fetchStopPlaceChildren } from './stopPlaceApi'
-
-const baseUrl = 'http://localhost:8080'
+import { baseUrl } from '@/config'
 
 export type Result<T> =
     | { success: true; data: T }
@@ -38,18 +37,37 @@ export async function getInactiveEvents(): Promise<BackendEvent[] | null> {
     }
 }
 
-export async function getEventById(
-    eventId: number,
-): Promise<Result<BackendEvent | null>> {
+export async function endActiveEvent(): Promise<Result<string>> {
     try {
-        const response = await fetch(`${baseUrl}/event/inactive/${eventId}`)
-        if (response.status !== 200) {
-            return { success: false, error: 'Failed to fetch event' }
+        const response = await fetch(`${baseUrl}/end-event`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok')
         }
-        const data = await response.json()
+
+        const data = await response.text()
         return { success: true, data }
     } catch (error) {
         return { success: false, error: 'Network error' }
+    }
+}
+
+export const getEventById = async (eventId: number) => {
+    try {
+        const response = await fetch(`${baseUrl}/event/id/${eventId}`)
+        if (response.status !== 200) {
+            throw new Error('Network response not okay')
+        }
+        const data: BackendEvent = await response.json()
+        return { success: true, data }
+    } catch (error) {
+        console.error('Error fetching event by ID:', error)
+        return { success: false, error: 'network' }
     }
 }
 
@@ -68,11 +86,11 @@ export async function getBackendEventByEventName(
     eventName: string,
 ): Promise<Result<BackendEvent>> {
     try {
-        const response = await fetch(`${baseUrl}/event/${eventName}`)
+        const response = await fetch(`${baseUrl}/event/name/${eventName}`)
         if (response.status !== 200) {
             return { success: false, error: 'Failed to fetch event' }
         }
-        const data = await response.json()
+        const data: BackendEvent = await response.json()
         return { success: true, data }
     } catch (error) {
         return { success: false, error: 'Network error' }
@@ -160,7 +178,7 @@ export async function createEvent(
 
 export async function deleteEvent(eventId: number): Promise<Result<string>> {
     try {
-        const response = await fetch(`${baseUrl}/${eventId}`, {
+        const response = await fetch(`${baseUrl}/delete/${eventId}`, {
             method: 'DELETE',
         })
 
@@ -175,28 +193,5 @@ export async function deleteEvent(eventId: number): Promise<Result<string>> {
         return { success: true, data }
     } catch (error) {
         return { success: false, error: 'Network error' }
-    }
-}
-
-export async function getTripLocations(
-    eventName: string,
-): Promise<Result<{ startLocationName: string; endLocationNames: string[] }>> {
-    const eventResult = await getEventByEventName(eventName)
-
-    if (!eventResult.success) {
-        return { success: false, error: eventResult.error }
-    }
-
-    const event = eventResult.data
-
-    const startLocationName = event.startLocation.name
-    const endLocationNames = event.endLocation.map((location) => location.name)
-
-    return {
-        success: true,
-        data: {
-            startLocationName,
-            endLocationNames,
-        },
     }
 }

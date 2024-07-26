@@ -86,6 +86,7 @@ export default function AdminCreateJourney() {
                     { transportMode: 'rail' },
                     { transportMode: 'metro' },
                     { transportMode: 'water' },
+                    { transportMode: 'coach' },
                 ],
             },
         }
@@ -142,6 +143,7 @@ export default function AdminCreateJourney() {
                 { transportMode: 'rail' },
                 { transportMode: 'metro' },
                 { transportMode: 'water' },
+                { transportMode: 'coach' },
             ],
         },
     }

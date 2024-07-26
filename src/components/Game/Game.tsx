@@ -1,12 +1,12 @@
 'use client'
 
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { ReactElement, useEffect, useRef, useState } from 'react'
 import { Paragraph } from '@entur/typography'
 import { Departure, QueryMode, StopPlaceDetails } from '@entur/sdk'
 import { addHours, addMinutes } from 'date-fns'
 import { PrimaryButton, SecondaryButton } from '@entur/button'
 import { useRouter } from 'next/navigation'
-import { Event, StopPlace } from '@/lib/types/types'
+import { Event, StopPlace, Trip } from '@/lib/types/types'
 import { useEnturService } from '@/lib/hooks/useEnturService'
 
 import FromAndToTitle from './components/FromAndToTitle'
@@ -18,10 +18,23 @@ import { TravelLegFinished } from './components/TravelLegFinished'
 import DeadScreen from './DeadScreen'
 import { Modal } from '@entur/modal'
 import { Contrast } from '@entur/layout'
+import { fetchStopPlace, fetchStopPlaceParent } from '@/lib/api/stopPlaceApi'
+import { ALL_MODES } from '@/lib/constants/queryMode'
+import { getTripInfo, getWalkTrip } from '@/lib/api/journeyPlannerApi'
+import {
+    walkingDistanceTripQuery,
+    walkOnlyTripQuery,
+} from '@/lib/constants/queries'
 
 export interface StopAndTime {
     stopPlace: StopPlace | StopPlaceDetails
     time: Date
+}
+
+type TripResponse = {
+    data: {
+        trip: Partial<Trip>
+    }
 }
 
 type Props = {
@@ -29,27 +42,27 @@ type Props = {
     maxTime: number
     startTime: Date
     currentTime: Date
-    startLocation: StopPlace
+    currentLocation: StopPlace
     setCurrentTime: React.Dispatch<React.SetStateAction<Date>>
     setUsedTime: React.Dispatch<React.SetStateAction<number>>
     setNumLegs: React.Dispatch<React.SetStateAction<number>>
     setVictory: React.Dispatch<React.SetStateAction<boolean>>
-    setStartLocation: React.Dispatch<
+    setCurrentLocation: React.Dispatch<
         React.SetStateAction<StopPlace | undefined>
     >
 }
 
-function GameScreen({
+function Game({
     event,
     maxTime,
     startTime,
     currentTime,
-    startLocation,
+    currentLocation,
     setCurrentTime,
     setNumLegs,
     setUsedTime,
     setVictory,
-    setStartLocation,
+    setCurrentLocation,
 }: Props): ReactElement {
     const router = useRouter()
     const [isLoading, setLoading] = useState<boolean>(false)
@@ -71,23 +84,64 @@ function GameScreen({
     const { getWalkableStopPlaces, getDepartures, getStopsOnLine } =
         useEnturService()
 
-    // TravelLegStart states
+    const containerRef = useRef<HTMLDivElement>(null)
+
     const [travelLegsMode, setTravelLegsMode] = useState<QueryMode[]>([])
     const [usedDepartures, setUsedDepartures] = useState<
         (Departure | undefined)[]
     >([undefined])
     const [waitModalIsOpen, setWaitModalIsOpen] = useState<boolean>(false)
+    const [maximumWalkingDistance, setMaximumWalkingDistance] =
+        useState<number>()
 
     useEffect(() => {
-        setStartLocation(event.startLocation)
+        setCurrentLocation(event.startLocation)
         setTravelLegs([event.startLocation])
         setEndLocation(event.endLocation)
         fetchAvailableModes(event.startLocation)
+        getTripInfo(walkingDistanceTripQuery, {
+            from: {
+                name: event.startLocation.name,
+                place: event.startLocation.id,
+            },
+            to: {
+                name: event.endLocation[event.endLocation.length - 1].name,
+                place: event.endLocation[event.endLocation.length - 1].id,
+            },
+            dateTime: new Date(
+                Number(event.startTime[0]),
+                Number(event.startTime[1]) - 1,
+                Number(event.startTime[2]),
+                Number(event.startTime[3]),
+                Number(event.startTime[4]),
+            ).toISOString(),
+            numTripPatterns: 1,
+            modes: {
+                accessMode: 'foot',
+                egressMode: 'foot',
+                transportModes: [
+                    { transportMode: 'bus' },
+                    { transportMode: 'tram' },
+                    { transportMode: 'rail' },
+                    { transportMode: 'metro' },
+                    { transportMode: 'water' },
+                ],
+            },
+        }).then(({ data }: TripResponse) => {
+            data?.trip?.tripPatterns?.[0]?.streetDistance &&
+                data?.trip?.tripPatterns?.[0]?.streetDistance > 500 &&
+                setMaximumWalkingDistance(
+                    data?.trip.tripPatterns[0].streetDistance,
+                )
+        })
     }, [event])
 
     useEffect(() => {
-        window.scrollTo(0, document.body.scrollHeight)
-    }, [currentTime])
+        const container = containerRef.current
+        if (container) {
+            container.scrollTop = container.scrollHeight
+        }
+    }, [travelLegs])
 
     useEffect(() => {
         const newUsedTime = currentTime.getTime() - startTime.getTime()
@@ -98,17 +152,10 @@ function GameScreen({
     }, [currentTime, setUsedTime, maxTime, startTime])
 
     const fetchAvailableModes = async (location: StopPlace) => {
-        const modes: QueryMode[] = [
-            QueryMode.BUS,
-            QueryMode.METRO,
-            QueryMode.TRAM,
-            QueryMode.RAIL,
-            QueryMode.WATER,
-        ]
-
-        const departurePromises = modes.map((mode) =>
+        const departurePromises = ALL_MODES.map((mode) =>
             getDepartures(location.id, mode, currentTime),
         )
+
         const walkableStopsPromise = getWalkableStopPlaces(location)
         const results = await Promise.all([
             ...departurePromises,
@@ -118,7 +165,7 @@ function GameScreen({
 
         const validModes = results
             .map((deps, index) =>
-                (deps as Departure[]).length > 0 ? modes[index] : null,
+                (deps as Departure[]).length > 0 ? ALL_MODES[index] : null,
             )
             .filter(isTruthy)
 
@@ -139,14 +186,35 @@ function GameScreen({
 
         if (newMode === 'foot') {
             setDepartures([])
-            getWalkableStopPlaces(startLocation)
-                .then((stops) => {
-                    setStopsOnLine(
-                        stops.map((stop) => ({
+            getWalkableStopPlaces(currentLocation, maximumWalkingDistance)
+                .then(async (stops) => {
+                    const stopsWithTimePromises = stops.map(async (stop) => {
+                        const { data }: TripResponse = await getWalkTrip(
+                            walkOnlyTripQuery,
+                            {
+                                from: {
+                                    name: currentLocation.name,
+                                    place: currentLocation.id,
+                                },
+                                to: {
+                                    name: stop.name,
+                                    place: stop.id,
+                                },
+                            },
+                        )
+                        const timeToAdd = data?.trip?.tripPatterns?.[0]
+                            ?.walkTime
+                            ? Math.round(
+                                  data.trip.tripPatterns[0].walkTime / 60,
+                              )
+                            : 2
+                        return {
                             stopPlace: stop,
-                            time: addMinutes(currentTime, 2),
-                        })),
-                    )
+                            time: addMinutes(currentTime, timeToAdd),
+                        }
+                    })
+                    const stopsOnLine = await Promise.all(stopsWithTimePromises)
+                    setStopsOnLine(stopsOnLine)
                     setModalOpen(true)
                     setTravelLegsMode((prev) => [...prev, newMode])
                     setLoading(false)
@@ -156,7 +224,7 @@ function GameScreen({
                     setLoading(false)
                 })
         } else {
-            getDepartures(startLocation.id, newMode, currentTime)
+            getDepartures(currentLocation.id, newMode, currentTime)
                 .then((deps) => {
                     setStopsOnLine([])
                     setDepartures(deps)
@@ -199,18 +267,26 @@ function GameScreen({
         )
     }
 
-    const selectStopOnLine = (stopAndTime: StopAndTime) => {
+    const selectStopOnLine = async (stopAndTime: StopAndTime) => {
         setUsedMode([])
         setStopsOnLine([])
         setCurrentTime(stopAndTime.time)
         setMode(null)
         setModalOpen(false)
-        if (stopAndTime) {
-            setStartLocation(stopAndTime.stopPlace)
-            setTravelLegs((prev) => [...prev, stopAndTime.stopPlace])
-            setNumLegs((prev) => prev + 1)
-            fetchAvailableModes(stopAndTime.stopPlace)
-        }
+
+        if (!stopAndTime) return
+
+        const stopPlaceParentId = await fetchStopPlaceParent(
+            stopAndTime.stopPlace.id,
+        )
+        const stopPlace = stopPlaceParentId
+            ? (await fetchStopPlace(stopPlaceParentId)) ?? stopAndTime.stopPlace
+            : stopAndTime.stopPlace
+
+        setCurrentLocation(stopPlace)
+        setTravelLegs((prev) => [...prev, stopPlace])
+        setNumLegs((prev) => prev + 1)
+        fetchAvailableModes(stopPlace)
     }
 
     const wait = () => {
@@ -218,7 +294,10 @@ function GameScreen({
         setWaitModalIsOpen(true)
     }
 
-    if (startLocation && endLocation.some((sp) => sp.id === startLocation.id)) {
+    if (
+        currentLocation &&
+        endLocation.some((sp) => sp.id === currentLocation.id)
+    ) {
         setVictory(true)
     }
 
@@ -231,40 +310,42 @@ function GameScreen({
     }
 
     return (
-        <div className="flex flex-col mb-4">
+        <div className="flex flex-col">
             <Contrast>
-                <FromAndToTitle
-                    className="mt-10 xl:mt-28"
-                    event={event}
-                    startTime={startTime}
-                />
-                <div className="mt-5 xl:mt-14">
-                    <TravelLegStart
-                        travelLegs={travelLegs}
-                        travelLegsMode={travelLegsMode}
-                        usedDepartures={usedDepartures}
+                <FromAndToTitle event={event} startTime={startTime} />
+            </Contrast>
+            <div className="grid-demo-item overflow-auto" ref={containerRef}>
+                <Contrast>
+                    <div className="mt-5 xl:mt-14">
+                        <TravelLegStart
+                            travelLegs={travelLegs}
+                            travelLegsMode={travelLegsMode}
+                            usedDepartures={usedDepartures}
+                        />
+                    </div>
+                </Contrast>
+                <div className="mt-5 ml-9 xl:mr-4 xl:ml-12">
+                    <TransportTypePicker
+                        currentTime={currentTime}
+                        isLoading={isLoading}
+                        mode={mode}
+                        usedMode={usedMode}
+                        selectMode={selectMode}
+                        wait={wait}
+                        stopPlace={currentLocation}
+                        availableModes={availableModes}
+                        availableModesError={availableModesError}
                     />
                 </div>
-            </Contrast>
-            <div className="mt-5 ml-9 xl:mr-4 xl:ml-12">
-                <TransportTypePicker
-                    currentTime={currentTime}
-                    isLoading={isLoading}
-                    mode={mode}
-                    usedMode={usedMode}
-                    selectMode={selectMode}
-                    wait={wait}
-                    stopPlace={startLocation}
-                    availableModes={availableModes}
-                    availableModesError={availableModesError}
-                />
+                <Contrast>
+                    <div className="mt-5 xl:mt-14">
+                        <TravelLegFinished endLocation={endLocation} />
+                    </div>
+                </Contrast>
             </div>
             <Contrast>
-                <div className="mt-5 xl:mt-14">
-                    <TravelLegFinished endLocation={endLocation} />
-                </div>
                 <SecondaryButton
-                    className="sm:mt-28 mt-10 mb-10 sm:place-self-start place-self-center"
+                    className="sm:mt-28 mt-30 mb-10 sm:place-self-start place-self-center"
                     onClick={() => router.push('/')}
                 >
                     Avslutt reise
@@ -297,4 +378,4 @@ function GameScreen({
     )
 }
 
-export default GameScreen
+export default Game
