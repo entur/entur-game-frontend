@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react'
 import { getActiveScores } from '@/lib/api/scoreApi'
 import { PlayerScore } from '@/lib/types/types'
 
-interface UseScoresReturnType {
+type UseScoresReturnType = {
     scores: PlayerScore[]
     leader: PlayerScore | null
     showAlert: boolean
-    setShowAlert: React.Dispatch<React.SetStateAction<boolean>>
+    setShowAlert: (show: boolean) => void
 }
 
 const useScores = (): UseScoresReturnType => {
@@ -21,10 +21,18 @@ const useScores = (): UseScoresReturnType => {
                 const sortedScores = scores.sort(
                     (a, b) =>
                         b.scoreValue - a.scoreValue ||
-                        a.totalTravelTime - b.totalTravelTime,
+                        -(a.totalStepNumber - b.totalStepNumber),
                 )
                 setScores(sortedScores)
-                setLeader(sortedScores[0])
+
+                const highestScore = sortedScores[0].scoreValue
+                const topScorers = sortedScores.filter(
+                    (score) => score.scoreValue === highestScore,
+                )
+                const randomLeader =
+                    topScorers[Math.floor(Math.random() * topScorers.length)]
+
+                setLeader(randomLeader)
                 setShowAlert(false)
             }
         }

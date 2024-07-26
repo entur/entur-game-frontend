@@ -111,7 +111,7 @@ const CompactLeaderboardPage: React.FC = (): JSX.Element => {
                     size="medium"
                 >
                     <Paragraph>
-                        Du er i ferd med å avslutte spillet uten å trekk een
+                        Du er i ferd med å avslutte spillet uten å trekke en
                         vinner. Det vil være mulig å gjenåpne spillet og trekke
                         en vinner på et senere tidspunkt.
                     </Paragraph>
