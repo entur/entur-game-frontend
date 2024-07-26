@@ -9,17 +9,24 @@ import {
     LeadParagraph,
     SubParagraph,
 } from '@entur/typography'
-import { Modal } from '@entur/modal'
-import { Button } from '@entur/button'
 import { BannerAlertBox, SmallAlertBox } from '@entur/alert'
 import { useEventName } from '@/lib/hooks/useEventName'
 import { Pagination } from '@entur/menu'
 import Leaderboard from '../components/Leaderboard'
 import useScores from '@/lib/hooks/useScores'
+import { Button } from '@entur/button'
+import {
+    handleDismiss,
+    handleDrawWinnerAndEndGame,
+} from '@/lib/utils/handleWinner'
+import { WinnerWarningModal } from '../components/winnerWarningModal'
+import { WinnerModal } from '../components/winnerModal'
 
 const GamePage: React.FC = (): JSX.Element => {
-    const { eventName, isEventNameError } = useEventName()
-    const [isOpen, setOpen] = useState<boolean>(false)
+    const { eventName, isEventNameError, setEventNameError } = useEventName()
+    const [isWinnerEndOpen, setWinnerEndOpen] = useState<boolean>(false)
+    const [isModalOpen, setModalOpen] = useState<boolean>(false)
+    const [isSaveWinnerError, setSaveWinnerError] = useState<boolean>(false)
     const router = useRouter()
 
     const { scores, leader, showAlert, setShowAlert } = useScores()
@@ -28,16 +35,6 @@ const GamePage: React.FC = (): JSX.Element => {
     const [results, setResults] = React.useState(10)
     const numberOfResults = scores.length
     const pageCount = Math.ceil(numberOfResults / results)
-
-    //TODO: side oppdateres hver gang ny spiller legges til i db
-
-    const handleDrawWinner = () => {
-        if (scores.length === 0) {
-            setShowAlert(true)
-        } else {
-            setOpen(true)
-        }
-    }
 
     if (eventName === null) {
         return (
@@ -93,9 +90,9 @@ const GamePage: React.FC = (): JSX.Element => {
                 width="auto"
                 variant="success"
                 size="medium"
-                onClick={handleDrawWinner}
+                onClick={() => setWinnerEndOpen(true)}
             >
-                Trekk en vinner
+                Trekk vinner og avslutt
             </Button>
             <SubParagraph className="w-96 pt-2">
                 Ved å trykke på knappen trekkes en tilfeldig vinner blant
@@ -127,15 +124,29 @@ const GamePage: React.FC = (): JSX.Element => {
                     onResultsPerPageChange={(e) => setResults(e)}
                 />
             </div>
-            <Modal
-                open={isOpen}
-                onDismiss={() => setOpen(false)}
-                title={`Vinner: ${leader?.player.playerName}`}
-                size="medium"
-            >
-                <p>E-post: {leader?.player.email}</p>
-                <p>Telefon: {leader?.player.phoneNumber}</p>
-            </Modal>
+            <WinnerWarningModal
+                isWinnerEndOpen={isWinnerEndOpen}
+                setWinnerEndOpen={setWinnerEndOpen}
+                handleDrawWinnerAndEndGame={() =>
+                    handleDrawWinnerAndEndGame(
+                        scores,
+                        setShowAlert,
+                        eventName,
+                        leader,
+                        setSaveWinnerError,
+                        setWinnerEndOpen,
+                        setModalOpen,
+                    )
+                }
+            />
+            <WinnerModal
+                isModalOpen={isModalOpen}
+                handleDismiss={() =>
+                    handleDismiss(setModalOpen, setEventNameError)
+                }
+                leader={leader}
+                isSaveWinnerError={isSaveWinnerError}
+            />
         </div>
     )
 }
