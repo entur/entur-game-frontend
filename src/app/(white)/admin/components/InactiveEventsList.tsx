@@ -4,13 +4,19 @@ import { useInactiveStopPlaces } from '@/lib/hooks/useInactiveStopPlaceName'
 import { Button } from '@entur/button'
 import { DeleteIcon } from '@entur/icons'
 import { BaseCard } from '@entur/layout'
+import { Modal } from '@entur/modal'
 import { TravelHeader } from '@entur/travel'
+import { Paragraph } from '@entur/typography'
 import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 const InactiveEventsList: React.FC = (): JSX.Element => {
     const { events, error } = useInactiveStopPlaces()
     const router = useRouter()
+    const [isOpen, setOpen] = useState<boolean>(false)
+    const [selectedEventId, setSelectedEventId] = useState<number | undefined>(
+        undefined,
+    )
 
     useEffect(() => {
         if (!router) {
@@ -27,12 +33,17 @@ const InactiveEventsList: React.FC = (): JSX.Element => {
             router.push(`/admin/leaderboard/${eventId}`)
         }
     }
-
-    const handleDelete = async (eventId: number | undefined) => {
-        if (eventId !== undefined) {
-            await deleteEvent(eventId)
+    const handleDelete = async () => {
+        if (selectedEventId !== undefined) {
+            await deleteEvent(selectedEventId)
         }
+        setOpen(false)
         window.location.reload()
+    }
+
+    const openModal = (eventId: number) => {
+        setSelectedEventId(eventId)
+        setOpen(true)
     }
 
     return (
@@ -57,11 +68,40 @@ const InactiveEventsList: React.FC = (): JSX.Element => {
                             }
                         />
                     </BaseCard>
+                    <Modal
+                        open={isOpen}
+                        onDismiss={() => setOpen(false)}
+                        title="Slette spill?"
+                        size="medium"
+                    >
+                        <Paragraph>
+                            Du er i ferd med å avslutte et spill, er du sikker
+                            på dette?
+                        </Paragraph>
+                        <div className="flex gap-6">
+                            <Button
+                                variant="negative"
+                                onClick={() => handleDelete()}
+                            >
+                                <DeleteIcon className="inline align-baseline" />
+                                Slett spill
+                            </Button>
+                            <Button
+                                variant="secondary"
+                                onClick={() => setOpen(false)}
+                            >
+                                Lukk
+                            </Button>
+                        </div>
+                    </Modal>
                     <div className="flex flex-col justify-center items-center">
                         <Button
                             variant="negative"
                             size="small"
-                            onClick={() => handleDelete(event.eventId)}
+                            onClick={() =>
+                                event.eventId !== undefined &&
+                                openModal(event.eventId)
+                            }
                         >
                             <DeleteIcon className="inline align-baseline" />
                             Slett spill
