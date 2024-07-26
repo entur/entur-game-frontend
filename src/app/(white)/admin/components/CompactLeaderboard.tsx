@@ -5,7 +5,7 @@ import { BreadcrumbItem } from '@entur/menu'
 import Link from 'next/link'
 import { useStopPlaceName } from '@/lib/hooks/useStopPlaceName'
 import { TravelHeader } from '@entur/travel'
-import { BannerAlertBox, useToast } from '@entur/alert'
+import { BannerAlertBox, SmallAlertBox } from '@entur/alert'
 import useScores from '@/lib/hooks/useScores'
 import { endActiveEvent } from '@/lib/api/eventApi'
 import { Modal } from '@entur/modal'
@@ -15,19 +15,14 @@ import { Button, SecondaryButton } from '@entur/button'
 const CompactLeaderboardPage: React.FC = (): JSX.Element => {
     const { isEventNameError, setEventNameError } = useEventName()
     const { startLocationName, endLocationName } = useStopPlaceName()
-    const { scores, leader, setShowAlert } = useScores()
+    const { scores, leader, showAlert, setShowAlert } = useScores()
     const [isOpen, setOpen] = useState(false)
     const [isWinnerEndOpen, setWinnerEndOpen] = useState(false)
     const [isWinnerOpen, setWinnerOpen] = useState(false)
-    const { addToast } = useToast()
 
     const displayAlert = () => {
-        if (scores.length == 0) {
-            addToast({
-                title: 'Minst én spiller kreves for å trekke en vinner',
-                content: '',
-                variant: 'information',
-            })
+        if (scores.length === 0) {
+            setShowAlert(true)
         } else {
             setWinnerEndOpen(true)
         }
@@ -48,11 +43,6 @@ const CompactLeaderboardPage: React.FC = (): JSX.Element => {
         if (result.success) {
             setOpen(false)
             setEventNameError(true)
-            addToast({
-                title: 'Spill avsluttet',
-                content: '',
-                variant: 'information',
-            })
         }
     }
 
@@ -134,6 +124,18 @@ const CompactLeaderboardPage: React.FC = (): JSX.Element => {
                         >
                             Trekk vinner og avslutt spill
                         </Button>
+                        {showAlert && (
+                            <>
+                                <br />
+                                <SmallAlertBox
+                                    variant="negative"
+                                    width="fit-content"
+                                >
+                                    Minst én spiller kreves for å trekke en
+                                    vinner
+                                </SmallAlertBox>
+                            </>
+                        )}
                         <Paragraph margin="none" className="mt-2">
                             Vinneren trekkes tilfeldig blant spillerne med
                             høyest poengsum.
@@ -145,8 +147,8 @@ const CompactLeaderboardPage: React.FC = (): JSX.Element => {
                             size="medium"
                         >
                             <Paragraph>
-                                Du er i ferd med å avslutte spillet uten å trekk
-                                een vinner. Det vil være mulig å gjenåpne
+                                Du er i ferd med å avslutte spillet uten å
+                                trekke en vinner. Det vil være mulig å gjenåpne
                                 spillet og trekke en vinner på et senere
                                 tidspunkt.
                             </Paragraph>
