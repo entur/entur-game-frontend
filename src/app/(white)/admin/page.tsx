@@ -55,7 +55,7 @@ export default function AdminPage(): JSX.Element | null {
                         onClick={handleToLeaderboard}
                     >
                         <div className="flex gap-2 justify-center">
-                            Til ledertavlen! <ExternalIcon />
+                            Ledertavlen til stand <ExternalIcon />
                         </div>
                     </SecondaryButton>
                 </div>
