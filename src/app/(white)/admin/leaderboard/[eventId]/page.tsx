@@ -1,4 +1,5 @@
 'use client'
+
 import React, { useEffect, useState } from 'react'
 import Leaderboard from '../../components/Leaderboard'
 import { BackendEvent, PlayerScore } from '@/lib/types/types'
@@ -7,9 +8,9 @@ import { BlockquoteFooter, Heading1, LeadParagraph } from '@entur/typography'
 import { Pagination } from '@entur/menu'
 import { Button, SecondaryButton } from '@entur/button'
 import { DeleteIcon } from '@entur/icons'
-import { Modal } from '@entur/modal'
 import { deleteEvent, getEventById } from '@/lib/api/eventApi'
 import { useRouter } from 'next/navigation'
+import { WinnerModal } from '../../components/winnerModal'
 
 type EventPageProps = {
     params: {
@@ -103,15 +104,12 @@ const LeaderboardPage: React.FC<EventPageProps> = ({
                     onResultsPerPageChange={setResults}
                 />
             </div>
-            <Modal
-                open={isOpen}
-                onDismiss={() => setOpen(false)}
-                title={`Vinner: ${event?.winner?.playerName}`}
-                size="medium"
-            >
-                <p>E-post: {event?.winner?.email}</p>
-                <p>Telefon: {event?.winner?.phoneNumber}</p>
-            </Modal>
+            <WinnerModal
+                isModalOpen={isOpen}
+                handleDismiss={() => setOpen(false)}
+                leader={scores.length > 0 ? scores[0] : null}
+                isSaveWinnerError={false}
+            />
         </div>
     )
 }
