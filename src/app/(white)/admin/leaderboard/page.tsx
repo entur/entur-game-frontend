@@ -7,19 +7,21 @@ import {
     BlockquoteFooter,
     Heading1,
     LeadParagraph,
+    Paragraph,
     SubParagraph,
 } from '@entur/typography'
 import { Modal } from '@entur/modal'
-import { Button } from '@entur/button'
+import { Button, SecondaryButton } from '@entur/button'
 import { BannerAlertBox, SmallAlertBox } from '@entur/alert'
 import { useEventName } from '@/lib/hooks/useEventName'
 import { Pagination } from '@entur/menu'
 import Leaderboard from '../components/Leaderboard'
-import { saveWinner } from '@/lib/api/eventApi'
+import { saveWinner, endActiveEvent } from '@/lib/api/eventApi'
 import useScores from '@/lib/hooks/useScores'
 
 const GamePage: React.FC = (): JSX.Element => {
-    const { eventName, isEventNameError } = useEventName()
+    const { eventName, isEventNameError, setEventNameError } = useEventName()
+    const [isWinnerEndOpen, setWinnerEndOpen] = useState<boolean>(false)
     const [isModalOpen, setModalOpen] = useState<boolean>(false)
     const [isSaveWinnerError, setSaveWinnerError] = useState<boolean>(false)
     const router = useRouter()
@@ -31,14 +33,13 @@ const GamePage: React.FC = (): JSX.Element => {
     const numberOfResults = scores.length
     const pageCount = Math.ceil(numberOfResults / results)
 
-    //TODO: side oppdateres hver gang ny spiller legges til i db
-
-    const handleDrawWinner = async () => {
+    const handleDrawWinnerAndEndGame = async () => {
         if (scores.length === 0) {
             setShowAlert(true)
             return
         }
 
+        setWinnerEndOpen(false)
         setModalOpen(true)
 
         if (!eventName || !leader?.player?.playerId) {
@@ -48,6 +49,14 @@ const GamePage: React.FC = (): JSX.Element => {
 
         const response = await saveWinner(eventName, leader.player.playerId)
         setSaveWinnerError(response.status !== 200)
+
+        await endActiveEvent()
+    }
+
+    const handleDismiss = () => {
+        setModalOpen(false)
+        setEventNameError(true)
+        window.location.reload()
     }
 
     if (eventName === null) {
@@ -104,9 +113,9 @@ const GamePage: React.FC = (): JSX.Element => {
                 width="auto"
                 variant="success"
                 size="medium"
-                onClick={handleDrawWinner}
+                onClick={() => setWinnerEndOpen(true)}
             >
-                Trekk vinner
+                Trekk vinner og avslutt
             </Button>
             <SubParagraph className="w-96 pt-2">
                 Ved å trykke på knappen trekkes en tilfeldig vinner blant
@@ -139,8 +148,36 @@ const GamePage: React.FC = (): JSX.Element => {
                 />
             </div>
             <Modal
+                open={isWinnerEndOpen}
+                onDismiss={() => setWinnerEndOpen(false)}
+                title="Trekk vinner og avslutt spill?"
+                size="medium"
+            >
+                <Paragraph>
+                    Når du trekker en vinner avsluttes spillet automatisk. Det
+                    vil være mulig å gjenåpne spillet igjen på et senere
+                    tidspunkt.
+                </Paragraph>
+                <div className="flex gap-4">
+                    <Button
+                        variant={'primary'}
+                        className="max-w-[250px]"
+                        onClick={handleDrawWinnerAndEndGame}
+                        type="button"
+                    >
+                        Trekk vinner og avslutt
+                    </Button>
+                    <SecondaryButton
+                        className="w-[81px]"
+                        onClick={() => setWinnerEndOpen(false)}
+                    >
+                        Avbryt
+                    </SecondaryButton>
+                </div>
+            </Modal>
+            <Modal
                 open={isModalOpen}
-                onDismiss={() => setModalOpen(false)}
+                onDismiss={handleDismiss}
                 title={`Vinner: ${leader?.player.playerName}`}
                 size="medium"
             >
