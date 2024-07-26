@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Leaderboard from '../../components/Leaderboard'
 import { PlayerScore } from '@/lib/types/types'
 import { getScoresEventId } from '@/lib/api/scoreApi'
@@ -19,7 +19,7 @@ type EventPageProps = {
 
 const LeaderboardPage: React.FC<EventPageProps> = ({
     params,
-}: EventPageProps): JSX.Element => {
+}: EventPageProps) => {
     const [scores, setScores] = useState<PlayerScore[]>([])
     const [leader, setLeader] = useState<PlayerScore | null>(null)
     const [eventName, setEventName] = useState<string | null>(null)
@@ -31,41 +31,45 @@ const LeaderboardPage: React.FC<EventPageProps> = ({
     const { eventId } = params
     const router = useRouter()
 
-    const fetchScores = async () => {
-        try {
-            const scores = await getScoresEventId(eventId)
-            if (scores && scores.length > 0) {
-                const sortedScores = scores.sort(
-                    (a, b) =>
-                        b.scoreValue - a.scoreValue ||
-                        a.totalTravelTime - b.totalTravelTime,
-                )
-                setScores(sortedScores)
-                setLeader(sortedScores[0])
-            }
-
-            const eventResponse = await getEventById(eventId)
-            if (eventResponse.success && eventResponse.data) {
-                setEventName(eventResponse.data.eventName)
-            } else {
-                console.error('Failed to fetch event details')
-            }
-        } catch (error) {
-            console.error('Error fetching scores:', error)
-        }
-    }
-
     useEffect(() => {
+        const fetchScores = async () => {
+            try {
+                const scores = await getScoresEventId(eventId)
+                if (scores && scores.length > 0) {
+                    const sortedScores = scores.sort(
+                        (a, b) =>
+                            b.scoreValue - a.scoreValue ||
+                            a.totalTravelTime - b.totalTravelTime,
+                    )
+                    setScores(sortedScores)
+                    setLeader(sortedScores[0])
+                }
+
+                const eventResponse = await getEventById(eventId)
+                if (eventResponse.success && eventResponse.data) {
+                    setEventName(eventResponse.data.eventName)
+                } else {
+                    console.error('Failed to fetch event details')
+                }
+            } catch (error) {
+                console.error('Error fetching scores:', error)
+            }
+        }
+
         if (eventId) {
             fetchScores()
         }
-    }, [])
+    }, [eventId])
 
-    const handleDelete = async (eventId: number | undefined) => {
-        if (eventId !== undefined) {
-            await deleteEvent(eventId)
+    const handleDelete = async () => {
+        try {
+            if (eventId !== undefined) {
+                await deleteEvent(eventId)
+            }
+            router.push('/admin')
+        } catch (error) {
+            console.error('Error deleting event:', error)
         }
-        router.push('/admin')
     }
 
     return (
@@ -77,14 +81,13 @@ const LeaderboardPage: React.FC<EventPageProps> = ({
                     Se resultater fra avsluttet spill
                 </LeadParagraph>
                 <div className="flex gap-6 mb-20">
-                    <Button
-                        variant="negative"
-                        onClick={() => handleDelete(eventId)}
-                    >
+                    <Button variant="negative" onClick={handleDelete}>
                         <DeleteIcon className="inline align-baseline" />
                         Slett spill
                     </Button>
-                    <SecondaryButton>Vis vinner</SecondaryButton>
+                    <SecondaryButton onClick={() => setOpen(true)}>
+                        Vis vinner
+                    </SecondaryButton>
                 </div>
             </div>
             <Leaderboard
@@ -96,10 +99,10 @@ const LeaderboardPage: React.FC<EventPageProps> = ({
                 <Pagination
                     pageCount={pageCount}
                     currentPage={currentPage}
-                    onPageChange={(page) => setPage(page)}
+                    onPageChange={setPage}
                     numberOfResults={numberOfResults}
                     resultsPerPage={results}
-                    onResultsPerPageChange={(e) => setResults(e)}
+                    onResultsPerPageChange={setResults}
                 />
             </div>
             <Modal
