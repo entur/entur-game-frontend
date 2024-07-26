@@ -34,7 +34,6 @@ function VictoryScreen({
     const scoreValue =
         Math.round(
             1000 *
-                (event.optimalStepNumber / numLegs) *
                 (event.optimalTravelTime /
                     formatIntervalToSeconds(currentTime, startTime)),
         ) / 10
