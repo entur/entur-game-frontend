@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import Leaderboard from '../../components/Leaderboard'
-import { PlayerScore } from '@/lib/types/types'
+import { BackendEvent, PlayerScore } from '@/lib/types/types'
 import { getScoresEventId } from '@/lib/api/scoreApi'
 import { BlockquoteFooter, Heading1, LeadParagraph } from '@entur/typography'
 import { Pagination } from '@entur/menu'
@@ -21,8 +21,7 @@ const LeaderboardPage: React.FC<EventPageProps> = ({
     params,
 }: EventPageProps) => {
     const [scores, setScores] = useState<PlayerScore[]>([])
-    const [leader, setLeader] = useState<PlayerScore | null>(null)
-    const [eventName, setEventName] = useState<string | null>(null)
+    const [event, setEvent] = useState<BackendEvent | null>(null)
     const [currentPage, setPage] = useState(1)
     const [isOpen, setOpen] = useState<boolean>(false)
     const [results, setResults] = useState(10)
@@ -42,12 +41,11 @@ const LeaderboardPage: React.FC<EventPageProps> = ({
                             a.totalTravelTime - b.totalTravelTime,
                     )
                     setScores(sortedScores)
-                    setLeader(sortedScores[0])
                 }
 
                 const eventResponse = await getEventById(eventId)
                 if (eventResponse.success && eventResponse.data) {
-                    setEventName(eventResponse.data.eventName)
+                    setEvent(eventResponse.data)
                 } else {
                     console.error('Failed to fetch event details')
                 }
@@ -76,7 +74,7 @@ const LeaderboardPage: React.FC<EventPageProps> = ({
         <div className="flex flex-col mx-40">
             <div className="flex flex-col pb-4 mt-16">
                 <BlockquoteFooter>Ledertavle</BlockquoteFooter>
-                <Heading1>{eventName}</Heading1>
+                <Heading1>{event?.eventName}</Heading1>
                 <LeadParagraph margin="bottom">
                     Se resultater fra avsluttet spill
                 </LeadParagraph>
@@ -108,11 +106,11 @@ const LeaderboardPage: React.FC<EventPageProps> = ({
             <Modal
                 open={isOpen}
                 onDismiss={() => setOpen(false)}
-                title={`Vinner: ${leader?.player.playerName}`}
+                title={`Vinner: ${event?.winner?.playerName}`}
                 size="medium"
             >
-                <p>E-post: {leader?.player.email}</p>
-                <p>Telefon: {leader?.player.phoneNumber}</p>
+                <p>E-post: {event?.winner?.email}</p>
+                <p>Telefon: {event?.winner?.phoneNumber}</p>
             </Modal>
         </div>
     )
