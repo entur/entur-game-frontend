@@ -5,7 +5,7 @@ import { BreadcrumbItem } from '@entur/menu'
 import Link from 'next/link'
 import { useStopPlaceName } from '@/lib/hooks/useStopPlaceName'
 import { TravelHeader } from '@entur/travel'
-import { BannerAlertBox } from '@entur/alert'
+import { BannerAlertBox, SmallAlertBox } from '@entur/alert'
 import useScores from '@/lib/hooks/useScores'
 import { Button } from '@entur/button'
 import { endActiveEvent } from '@/lib/api/eventApi'
@@ -21,7 +21,7 @@ import { WinnerModal } from './winnerModal'
 const CompactLeaderboardPage: React.FC = (): JSX.Element => {
     const { eventName, isEventNameError, setEventNameError } = useEventName()
     const { startLocationName, endLocationName } = useStopPlaceName()
-    const { scores, leader, setShowAlert } = useScores()
+    const { scores, leader, showAlert, setShowAlert } = useScores()
     const [isOpen, setOpen] = useState(false)
     const [isWinnerEndOpen, setWinnerEndOpen] = useState(false)
     const [isModalOpen, setModalOpen] = useState(false)
@@ -95,11 +95,29 @@ const CompactLeaderboardPage: React.FC = (): JSX.Element => {
                     variant={'success'}
                     size="large"
                     className="max-w-[250px]"
-                    onClick={() => setWinnerEndOpen(true)}
+                    onClick={() => {
+                        if (scores.length === 0) {
+                            setShowAlert(true)
+                        } else {
+                            setWinnerEndOpen(true)
+                        }
+                    }}
                     type="button"
                 >
                     Trekk vinner og avslutt spill
                 </Button>
+                {showAlert && (
+                    <>
+                        <br />
+                        <SmallAlertBox
+                            variant="negative"
+                            width="fit-content"
+                            margin="top"
+                        >
+                            Minst én spiller kreves for å trekke vinner.
+                        </SmallAlertBox>
+                    </>
+                )}
                 <Paragraph margin="none" className="mt-2">
                     Vinneren trekkes tilfeldig blant spillerne med høyest
                     poengsum.
@@ -117,17 +135,17 @@ const CompactLeaderboardPage: React.FC = (): JSX.Element => {
                     </Paragraph>
                     <div className="flex items-center gap-4">
                         <Button
+                            variant="secondary"
+                            onClick={() => setOpen(false)}
+                        >
+                            Avbryt
+                        </Button>
+                        <Button
                             variant="primary"
                             className="max-w-[250px]"
                             onClick={handleEndGame}
                         >
                             Avslutt spill
-                        </Button>
-                        <Button
-                            variant="secondary"
-                            onClick={() => setOpen(false)}
-                        >
-                            Avbryt
                         </Button>
                     </div>
                 </Modal>

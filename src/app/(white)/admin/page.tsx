@@ -13,8 +13,11 @@ import InactiveEventsList from './components/InactiveEventsList'
 export default function AdminPage(): JSX.Element | null {
     const router = useRouter()
 
-    const handleOnClick = () => {
+    const handleToGame = () => {
         window.open('/', '_blank')
+    }
+    const handleToLeaderboard = () => {
+        window.open('/leaderboard', '_blank')
     }
 
     return (
@@ -39,10 +42,20 @@ export default function AdminPage(): JSX.Element | null {
                         className="max-w-60 inline align-baseline"
                         width="auto"
                         size="medium"
-                        onClick={handleOnClick}
+                        onClick={handleToGame}
                     >
                         <div className="flex gap-2 justify-center">
                             Til spillet! <ExternalIcon />
+                        </div>
+                    </SecondaryButton>
+                    <SecondaryButton
+                        className="max-w-60 inline align-baseline"
+                        width="auto"
+                        size="medium"
+                        onClick={handleToLeaderboard}
+                    >
+                        <div className="flex gap-2 justify-center">
+                            Ledertavle til storskjerm <ExternalIcon />
                         </div>
                     </SecondaryButton>
                 </div>

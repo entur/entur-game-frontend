@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import Leaderboard from '../../components/Leaderboard'
 import { BackendEvent, PlayerScore } from '@/lib/types/types'
-import { getScoresEventId } from '@/lib/api/scoreApi'
+import { getScoresByEventId } from '@/lib/api/scoreApi'
 import { BlockquoteFooter, Heading1, LeadParagraph } from '@entur/typography'
 import { Pagination } from '@entur/menu'
 import { Button, SecondaryButton } from '@entur/button'
@@ -34,7 +34,7 @@ const LeaderboardPage: React.FC<EventPageProps> = ({
     useEffect(() => {
         const fetchScores = async () => {
             try {
-                const scores = await getScoresEventId(eventId)
+                const scores = await getScoresByEventId(eventId)
                 if (scores && scores.length > 0) {
                     const sortedScores = scores.sort(
                         (a, b) =>
