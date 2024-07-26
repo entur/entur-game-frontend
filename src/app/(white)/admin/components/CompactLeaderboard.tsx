@@ -5,29 +5,40 @@ import { BreadcrumbItem } from '@entur/menu'
 import Link from 'next/link'
 import { useStopPlaceName } from '@/lib/hooks/useStopPlaceName'
 import { TravelHeader } from '@entur/travel'
-import { BannerAlertBox } from '@entur/alert'
+import { BannerAlertBox, SmallAlertBox } from '@entur/alert'
 import useScores from '@/lib/hooks/useScores'
-import { endActiveEvent } from '@/lib/api/eventApi'
+import { saveWinner, endActiveEvent } from '@/lib/api/eventApi'
 import { Modal } from '@entur/modal'
 import { Paragraph } from '@entur/typography'
 import { Button, SecondaryButton } from '@entur/button'
 
 const CompactLeaderboardPage: React.FC = (): JSX.Element => {
-    const { isEventNameError, setEventNameError } = useEventName()
+    const { isEventNameError, setEventNameError, eventName } = useEventName()
     const { startLocationName, endLocationName } = useStopPlaceName()
     const { scores, leader, setShowAlert } = useScores()
     const [isOpen, setOpen] = useState(false)
     const [isWinnerEndOpen, setWinnerEndOpen] = useState(false)
     const [isWinnerOpen, setWinnerOpen] = useState(false)
+    const [isSaveWinnerError, setSaveWinnerError] = useState<boolean>(false)
 
     const handleDrawWinnerAndEndGame = async () => {
         if (scores.length === 0) {
             setShowAlert(true)
-        } else {
-            setWinnerEndOpen(false)
-            setWinnerOpen(true)
-            await endActiveEvent()
+            return
         }
+
+        setWinnerEndOpen(false)
+        setWinnerOpen(true)
+
+        if (!eventName || !leader?.player?.playerId) {
+            setSaveWinnerError(true)
+            return
+        }
+
+        const response = await saveWinner(eventName, leader.player.playerId)
+        setSaveWinnerError(response.status !== 200)
+
+        await endActiveEvent()
     }
 
     const handleEndGame = async () => {
@@ -168,6 +179,18 @@ const CompactLeaderboardPage: React.FC = (): JSX.Element => {
                     >
                         <p>E-post: {leader?.player.email}</p>
                         <p>Telefon: {leader?.player.phoneNumber}</p>
+                        {isSaveWinnerError && (
+                            <>
+                                <br />
+                                <SmallAlertBox
+                                    variant="warning"
+                                    width="fit-content"
+                                    margin="top"
+                                >
+                                    Det oppsto en feil ved lagring av vinner.
+                                </SmallAlertBox>
+                            </>
+                        )}
                     </Modal>
                 </div>
             )}
