@@ -6,7 +6,7 @@ import { Departure, QueryMode, StopPlaceDetails } from '@entur/sdk'
 import { addHours, addMinutes } from 'date-fns'
 import { PrimaryButton, SecondaryButton } from '@entur/button'
 import { useRouter } from 'next/navigation'
-import { Event, StopPlace } from '@/lib/types/types'
+import { Event, StopPlace, Trip } from '@/lib/types/types'
 import { useEnturService } from '@/lib/hooks/useEnturService'
 
 import FromAndToTitle from './components/FromAndToTitle'
@@ -20,10 +20,21 @@ import { Modal } from '@entur/modal'
 import { Contrast } from '@entur/layout'
 import { fetchStopPlace, fetchStopPlaceParent } from '@/lib/api/stopPlaceApi'
 import { ALL_MODES } from '@/lib/constants/queryMode'
+import { getTripInfo, getWalkTrip } from '@/lib/api/journeyPlannerApi'
+import {
+    walkingDistanceTripQuery,
+    walkOnlyTripQuery,
+} from '@/lib/constants/queries'
 
 export interface StopAndTime {
     stopPlace: StopPlace | StopPlaceDetails
     time: Date
+}
+
+type TripResponse = {
+    data: {
+        trip: Partial<Trip>
+    }
 }
 
 type Props = {
@@ -80,12 +91,49 @@ function Game({
         (Departure | undefined)[]
     >([undefined])
     const [waitModalIsOpen, setWaitModalIsOpen] = useState<boolean>(false)
+    const [maximumWalkingDistance, setMaximumWalkingDistance] =
+        useState<number>()
 
     useEffect(() => {
         setCurrentLocation(event.startLocation)
         setTravelLegs([event.startLocation])
         setEndLocation(event.endLocation)
         fetchAvailableModes(event.startLocation)
+        getTripInfo(walkingDistanceTripQuery, {
+            from: {
+                name: event.startLocation.name,
+                place: event.startLocation.id,
+            },
+            to: {
+                name: event.endLocation[event.endLocation.length - 1].name,
+                place: event.endLocation[event.endLocation.length - 1].id,
+            },
+            dateTime: new Date(
+                Number(event.startTime[0]),
+                Number(event.startTime[1]) - 1,
+                Number(event.startTime[2]),
+                Number(event.startTime[3]),
+                Number(event.startTime[4]),
+            ).toISOString(),
+            numTripPatterns: 1,
+            modes: {
+                accessMode: 'foot',
+                egressMode: 'foot',
+                transportModes: [
+                    { transportMode: 'bus' },
+                    { transportMode: 'tram' },
+                    { transportMode: 'rail' },
+                    { transportMode: 'metro' },
+                    { transportMode: 'water' },
+                ],
+            },
+        }).then(({ data }: TripResponse) => {
+            data?.trip?.tripPatterns?.[0]?.streetDistance &&
+                data?.trip?.tripPatterns?.[0]?.streetDistance > 500 &&
+                setMaximumWalkingDistance(
+                    data?.trip.tripPatterns[0].streetDistance,
+                )
+        })
     }, [event])
 
     useEffect(() => {
@@ -107,6 +155,7 @@ function Game({
         const departurePromises = ALL_MODES.map((mode) =>
             getDepartures(location.id, mode, currentTime),
         )
+
         const walkableStopsPromise = getWalkableStopPlaces(location)
         const results = await Promise.all([
             ...departurePromises,
@@ -137,14 +186,35 @@ function Game({
 
         if (newMode === 'foot') {
             setDepartures([])
-            getWalkableStopPlaces(currentLocation)
-                .then((stops) => {
-                    setStopsOnLine(
-                        stops.map((stop) => ({
+            getWalkableStopPlaces(currentLocation, maximumWalkingDistance)
+                .then(async (stops) => {
+                    const stopsWithTimePromises = stops.map(async (stop) => {
+                        const { data }: TripResponse = await getWalkTrip(
+                            walkOnlyTripQuery,
+                            {
+                                from: {
+                                    name: currentLocation.name,
+                                    place: currentLocation.id,
+                                },
+                                to: {
+                                    name: stop.name,
+                                    place: stop.id,
+                                },
+                            },
+                        )
+                        const timeToAdd = data?.trip?.tripPatterns?.[0]
+                            ?.walkTime
+                            ? Math.round(
+                                  data.trip.tripPatterns[0].walkTime / 60,
+                              )
+                            : 2
+                        return {
                             stopPlace: stop,
-                            time: addMinutes(currentTime, 2),
-                        })),
-                    )
+                            time: addMinutes(currentTime, timeToAdd),
+                        }
+                    })
+                    const stopsOnLine = await Promise.all(stopsWithTimePromises)
+                    setStopsOnLine(stopsOnLine)
                     setModalOpen(true)
                     setTravelLegsMode((prev) => [...prev, newMode])
                     setLoading(false)

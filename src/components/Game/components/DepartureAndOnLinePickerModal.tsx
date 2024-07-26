@@ -6,6 +6,7 @@ import { Modal } from '@entur/modal'
 import { getModeIcon } from '@/lib/utils/transportMapper'
 import { formatTime } from '@/lib/utils/dateFnsUtils'
 import { StopAndTime } from '@/components/Game/Game'
+import { generateKey } from '@/lib/utils/generateUniqueKey'
 
 type Props = {
     departures: Departure[]
@@ -114,7 +115,7 @@ export const DepartureAndOnLinePickerModal = ({
                             {stopsOnLine.map((stop) => (
                                 <ChoiceChip
                                     className="select-none"
-                                    key={stop.stopPlace.id}
+                                    key={generateKey(String(stop.stopPlace.id))}
                                     value={stop.stopPlace.id}
                                     onClick={() => {
                                         selectStopOnLine(stop)
