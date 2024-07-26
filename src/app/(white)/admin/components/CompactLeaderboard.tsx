@@ -48,14 +48,17 @@ const CompactLeaderboardPage: React.FC = (): JSX.Element => {
         if (result.success) {
             setOpen(false)
             setEventNameError(true)
-            window.location.reload()
+            addToast({
+                title: 'Spill avsluttet',
+                content: '',
+                variant: 'information',
+            })
         }
     }
 
     const handleDismiss = () => {
         setWinnerOpen(false)
         setEventNameError(true)
-        window.location.reload()
     }
 
     return (
