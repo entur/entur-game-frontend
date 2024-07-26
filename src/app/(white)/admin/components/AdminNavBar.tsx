@@ -46,6 +46,8 @@ export const AdminNavBar: React.FC = () => {
                         src={isLandingPage ? AdminLogoLight : AdminLogoDark}
                         alt="entur partner"
                         width={215}
+                        style={{ height: 'auto' }}
+                        priority={true}
                     />
                 </Link>
                 <nav className="flex flex-row items-center gap-14">

@@ -1,10 +1,10 @@
 import { QueryMode } from '@entur/sdk'
 
 export const ALL_MODES: QueryMode[] = [
-    QueryMode.FOOT,
     QueryMode.BUS,
+    QueryMode.METRO,
     QueryMode.TRAM,
     QueryMode.RAIL,
-    QueryMode.METRO,
     QueryMode.WATER,
+    QueryMode.COACH,
 ]

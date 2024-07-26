@@ -1,0 +1,14 @@
+common:
+    env: prd
+    ingress:
+        host: entur-game.entur.org
+    container:
+        env:
+            - name: apiUrl
+              value: 'https://api.entur.io/entur-game-backend/v1'
+            - name: gcloud_logging
+              value: 'true'
+            - name: LOG_LEVEL
+              value: info
+            - name: DOCKER_IMAGE
+              value: <+artifacts.primary.image>
