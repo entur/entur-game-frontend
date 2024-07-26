@@ -5,7 +5,7 @@ import { BreadcrumbItem } from '@entur/menu'
 import Link from 'next/link'
 import { useStopPlaceName } from '@/lib/hooks/useStopPlaceName'
 import { TravelHeader } from '@entur/travel'
-import { BannerAlertBox } from '@entur/alert'
+import { BannerAlertBox, useToast } from '@entur/alert'
 import useScores from '@/lib/hooks/useScores'
 import { endActiveEvent } from '@/lib/api/eventApi'
 import { Modal } from '@entur/modal'
@@ -19,6 +19,19 @@ const CompactLeaderboardPage: React.FC = (): JSX.Element => {
     const [isOpen, setOpen] = useState(false)
     const [isWinnerEndOpen, setWinnerEndOpen] = useState(false)
     const [isWinnerOpen, setWinnerOpen] = useState(false)
+    const { addToast } = useToast()
+
+    const displayAlert = () => {
+        if (scores.length == 0) {
+            addToast({
+                title: 'Minst én spiller kreves for å trekke en vinner',
+                content: '',
+                variant: 'information',
+            })
+        } else {
+            setWinnerEndOpen(true)
+        }
+    }
 
     const handleDrawWinnerAndEndGame = async () => {
         if (scores.length === 0) {
@@ -109,11 +122,12 @@ const CompactLeaderboardPage: React.FC = (): JSX.Element => {
                                 </SecondaryButton>
                             </div>
                         </Modal>
+
                         <Button
                             variant={'success'}
                             size="large"
                             className="max-w-[250px]"
-                            onClick={() => setWinnerEndOpen(true)}
+                            onClick={displayAlert}
                             type="button"
                         >
                             Trekk vinner og avslutt spill
