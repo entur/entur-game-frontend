@@ -54,7 +54,6 @@ const CompactLeaderboardPage: React.FC = (): JSX.Element => {
                 variant: 'information',
             })
         }
-        window.location.reload()
     }
 
     const handleDismiss = () => {
