@@ -3,8 +3,6 @@ import { Heading2 } from '@entur/typography'
 import { ChoiceChip, ChoiceChipGroup } from '@entur/chip'
 import { Departure, QueryMode } from '@entur/sdk'
 import { Modal } from '@entur/modal'
-import { getModeIcon } from '@/lib/utils/transportMapper'
-import { formatTime } from '@/lib/utils/dateFnsUtils'
 import { StopAndTime } from '@/components/Game/Game'
 import { generateKey } from '@/lib/utils/generateUniqueKey'
 import DepartureTable from './DepartureTable'
@@ -44,7 +42,7 @@ export const DepartureAndOnLinePickerModal = ({
                     setModalOpen(false)
                 }}
                 title=""
-                size="medium"
+                size="large"
             >
                 {departures?.length ? (
                     <DepartureTable
@@ -55,64 +53,6 @@ export const DepartureAndOnLinePickerModal = ({
                         currentStopPlaceName={currentStopPlaceName}
                     />
                 ) : null}
-                <>
-                    {departures?.length ? (
-                        <>
-                            <Heading2>Velg avgang</Heading2>
-                            <ChoiceChipGroup
-                                value="none"
-                                onChange={() => {}}
-                                name="Departure"
-                            >
-                                {departures
-                                    .filter(
-                                        (d, index, arr) =>
-                                            arr.findIndex(
-                                                (e) =>
-                                                    e.destinationDisplay
-                                                        .frontText ===
-                                                    d.destinationDisplay
-                                                        .frontText,
-                                            ) === index,
-                                    )
-                                    .map((departure) => (
-                                        <ChoiceChip
-                                            className="select-none"
-                                            key={
-                                                departure.destinationDisplay
-                                                    .frontText +
-                                                departure.serviceJourney.id
-                                            }
-                                            value={
-                                                departure.destinationDisplay
-                                                    .frontText +
-                                                departure.serviceJourney.id
-                                            }
-                                            onClick={() => {
-                                                selectDeparture(departure)
-                                                setPickedDeparture(departure)
-                                            }}
-                                        >
-                                            {mode ? getModeIcon(mode) : null}
-                                            {
-                                                departure.serviceJourney
-                                                    .journeyPattern?.line
-                                                    .publicCode
-                                            }{' '}
-                                            {
-                                                departure.destinationDisplay
-                                                    .frontText
-                                            }{' '}
-                                            kl.{' '}
-                                            {formatTime(
-                                                departure.expectedDepartureTime,
-                                            )}
-                                        </ChoiceChip>
-                                    ))}
-                            </ChoiceChipGroup>
-                        </>
-                    ) : null}
-                </>
                 {stopsOnLine?.length ? (
                     <>
                         <Heading2>

@@ -23,6 +23,45 @@ type DepartureTableProps = {
     currentStopPlaceName: string
 }
 
+// Definer en type for de tillatte verdiene
+type TransportType =
+    | 'bus'
+    | 'metro'
+    | 'air'
+    | 'tram'
+    | 'rail'
+    | 'water'
+    | 'bike'
+    | 'foot'
+    | 'car'
+    | 'scooter'
+
+// Mapping function
+const mapQueryModeToTransportType = (mode: QueryMode | null): TransportType => {
+    switch (mode) {
+        case QueryMode.BUS:
+            return 'bus'
+        case QueryMode.METRO:
+            return 'metro'
+        case QueryMode.AIR:
+            return 'air'
+        case QueryMode.TRAM:
+            return 'tram'
+        case QueryMode.RAIL:
+            return 'rail'
+        case QueryMode.WATER:
+            return 'water'
+        case QueryMode.BICYCLE:
+            return 'bike'
+        case QueryMode.FOOT:
+            return 'foot'
+        case QueryMode.CAR:
+            return 'car'
+        default:
+            return 'bus'
+    }
+}
+
 const DepartureTable = ({
     departures,
     mode,
@@ -30,7 +69,7 @@ const DepartureTable = ({
     setPickedDeparture,
     currentStopPlaceName,
 }: DepartureTableProps): JSX.Element => (
-    <div className="bg-blue-90 p-4 rounded-lg">
+    <div className="bg-blue-90 p-4 ml-2 mr-2 rounded-lg">
         <Heading1>{currentStopPlaceName}</Heading1>
         <Table>
             <TableHead>
@@ -59,7 +98,12 @@ const DepartureTable = ({
                             }
                         >
                             <DataCell>
-                                <TravelTag alert="none" transport="bus">
+                                <TravelTag
+                                    alert="none"
+                                    transport={mapQueryModeToTransportType(
+                                        mode,
+                                    )}
+                                >
                                     <TransportIconPicker
                                         transportType={mode ?? 'bus'}
                                     />
