@@ -367,8 +367,9 @@ function Game({
                     isOpenModal={isModalOpen}
                     departures={departures}
                     stopsOnLine={stopsOnLine}
-                    selectDeparture={selectDeparture}
                     mode={mode}
+                    currentStopPlaceName={currentLocation.name}
+                    selectDeparture={selectDeparture}
                     selectStopOnLine={selectStopOnLine}
                     setModalOpen={setModalOpen}
                     setUsedDepartures={setUsedDepartures}

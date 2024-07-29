@@ -21,10 +21,9 @@ export default function RouteSuggestion({
     return (
         <div>
             <div className="flex flex-col pt-12 mb-4">
-                <Heading3>Optimal fremkomstmåte for valgt rute</Heading3>
+                <Heading3>Reiseplanleggerens anbefalte rute</Heading3>
                 <Paragraph margin="none">
-                    Dette er fremkomstmåten spillerne må ta for å få maksimal
-                    poengsum
+                    Alle andre ruter i spillet måles opp mot denne
                 </Paragraph>
             </div>
             {isLoading ? (
