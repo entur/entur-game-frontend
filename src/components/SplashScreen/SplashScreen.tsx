@@ -24,22 +24,20 @@ export function SplashScreen(): JSX.Element {
     }, [])
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen text-white">
-            <div className="text-center">
+        <div className="flex flex-col items-center justify-between min-h-screen text-white">
+            <div className="mt-32 text-center">
                 <Image
                     className="cursor-pointer"
                     src={Entur_logo_contrast}
                     alt="entur partner"
                     width={800}
                 />
-                <LeadParagraph className="text-white font-normal text-center mt-4">
-                    Finn den beste kollektivreisen til mål før billetten din
-                    utløper!
+                <LeadParagraph className=" mt-8 text-white font-normal text-center mt-4">
+                    Kommer du i mål før billetten din utløper?
                     <br />
-                    De mest effektive rutevalgene gir deg mest poeng.
+                    Kortere reisetid gir mer poeng.
                     <br />
-                    Klarer du å finne en like effektiv rute som Enturs
-                    reiseplanlegger?
+                    Klarer du å slå Enturs reiseplanlegger?
                 </LeadParagraph>
                 <div className="mt-12 w-80 mx-auto">
                     <Button
