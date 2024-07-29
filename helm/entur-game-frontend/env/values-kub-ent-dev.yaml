@@ -12,3 +12,5 @@ common:
               value: info
             - name: DOCKER_IMAGE
               value: <+artifacts.primary.image>
+            - name: NEXTAUTH_URL
+              value: 'https://entur-game.dev.entur.org'
