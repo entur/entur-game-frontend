@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useParams } from 'next/navigation'
 import { Heading1, Heading3 } from '@entur/typography'
 import { Loader } from '@entur/loader'
@@ -14,6 +14,7 @@ import Map from '../components/Map'
 import { MapPinIcon, DestinationIcon, StandingIcon } from '@entur/icons'
 import GameStatus from '@/components/GameStatus'
 import DeadScreen from '@/components/Game/DeadScreen'
+import { Map as MapboxMap } from 'mapbox-gl'
 
 export default function GamePage(): JSX.Element {
     const [numLegs, setNumLegs] = useState<number>(0)
@@ -58,6 +59,14 @@ export default function GamePage(): JSX.Element {
             setCurrentLocation(event.startLocation)
         }
     }, [event])
+
+    const mapRef = useRef<MapboxMap | null>(null)
+
+    const handleZoom = (lng: number, lat: number) => {
+        if (mapRef.current) {
+            mapRef.current.flyTo({ center: [lng, lat], zoom: 20 })
+        }
+    }
 
     if (isDead) {
         return (
@@ -128,19 +137,47 @@ export default function GamePage(): JSX.Element {
                                             currentPosition={currentLocation}
                                         />
                                         <div className="icon-container">
-                                            <div className="icon-item">
+                                            <div
+                                                className="icon-item "
+                                                onClick={() =>
+                                                    handleZoom(
+                                                        event.startLocation
+                                                            .longitude!,
+                                                        event.startLocation
+                                                            .latitude!,
+                                                    )
+                                                }
+                                            >
                                                 <MapPinIcon className="text-coral" />
                                                 <Heading3 className="map-text">
                                                     Start
                                                 </Heading3>
                                             </div>
-                                            <div className="icon-item">
+                                            <div
+                                                className="icon-item"
+                                                onClick={() =>
+                                                    handleZoom(
+                                                        event.endLocation[0]
+                                                            .longitude!,
+                                                        event.endLocation[0]
+                                                            .latitude!,
+                                                    )
+                                                }
+                                            >
                                                 <DestinationIcon className="text-coral" />
                                                 <Heading3 className="map-text">
                                                     Mål
                                                 </Heading3>
                                             </div>
-                                            <div className="icon-item">
+                                            <div
+                                                className="icon-item"
+                                                onClick={() =>
+                                                    handleZoom(
+                                                        currentLocation.longitude!,
+                                                        currentLocation.latitude!,
+                                                    )
+                                                }
+                                            >
                                                 <StandingIcon className="text-coral" />
                                                 <Heading3 className="map-text">
                                                     Din posisjon

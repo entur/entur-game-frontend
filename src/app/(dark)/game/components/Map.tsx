@@ -77,6 +77,16 @@ const Map = ({ event, currentPosition }: Props) => {
                         event.startLocation.latitude,
                     ])
                     .addTo(map)
+
+                el.addEventListener('click', () => {
+                    map.flyTo({
+                        center: [
+                            event.startLocation.longitude!,
+                            event.startLocation.latitude!,
+                        ],
+                        zoom: 10,
+                    })
+                })
             }
 
             if (
@@ -98,6 +108,16 @@ const Map = ({ event, currentPosition }: Props) => {
                         event.endLocation[0].latitude,
                     ])
                     .addTo(map)
+
+                endEl.addEventListener('click', () => {
+                    map.flyTo({
+                        center: [
+                            event.endLocation[0].longitude!,
+                            event.endLocation[0].latitude!,
+                        ],
+                        zoom: 10,
+                    })
+                })
 
                 bounds.extend([
                     event.endLocation[0].longitude,
@@ -124,6 +144,16 @@ const Map = ({ event, currentPosition }: Props) => {
                         currentPosition.latitude,
                     ])
                     .addTo(map)
+
+                currentEl.addEventListener('click', () => {
+                    map.flyTo({
+                        center: [
+                            currentPosition.longitude!,
+                            currentPosition.latitude!,
+                        ],
+                        zoom: 10,
+                    })
+                })
 
                 bounds.extend([
                     currentPosition.longitude,
