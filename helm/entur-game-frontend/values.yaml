@@ -19,3 +19,10 @@ common:
                 path: '/api/health'
             startup:
                 path: '/api/health'
+    secrets:
+        azure-ad:
+            - AZURE_AD_CLIENT_ID
+            - AZURE_AD_CLIENT_SECRET
+            - AZURE_AD_TENANT_ID
+            - NEXTAUTH_SECRET
+            - NEXT_PUBLIC_MAPBOX_TOKEN
