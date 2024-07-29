@@ -3,6 +3,7 @@ query getTripInfo($from: Location!, $to: Location!, $dateTime: DateTime!, $modes
   trip(from: $from, to: $to, numTripPatterns: 1, dateTime: $dateTime, modes: $modes) {
     tripPatterns {
       duration
+      expectedEndTime
       legs {
         fromPlace {
           name

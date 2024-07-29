@@ -27,7 +27,10 @@ import {
 import { useRouter } from 'next/navigation'
 import { SmallAlertBox, useToast } from '@entur/alert'
 import { createEvent } from '@/lib/api/eventApi'
-import { formatDateTime } from '@/lib/utils/dateFnsUtils'
+import {
+    formatDateTime,
+    formatIntervalToSeconds,
+} from '@/lib/utils/dateFnsUtils'
 import { getTripInfo, fetchDropdownItems } from '@/lib/api/journeyPlannerApi'
 import { tripQuery, visualSolutionTripQuery } from '@/lib/constants/queries'
 import useSWR from 'swr'
@@ -128,7 +131,10 @@ export default function AdminCreateJourney() {
                         endLocationId: selectedGoal?.value,
                         startTime: formattedDateTime,
                         optimalStepNumber: tripPattern.legs.length,
-                        optimalTravelTime: tripPattern.duration,
+                        optimalTravelTime: formatIntervalToSeconds(
+                            new Date(tripPattern.expectedEndTime),
+                            new Date(formattedDateTime),
+                        ),
                         isActive: true,
                     }
                     setEvent(newEvent)

@@ -257,7 +257,7 @@ function Game({
                             return {
                                 stopPlace: stop,
                                 time: new Date(
-                                    (nextDep || d).expectedArrivalTime,
+                                    (d || nextDep).expectedArrivalTime,
                                 ),
                             }
                         })

@@ -45,6 +45,7 @@ export default function GamePage(): JSX.Element {
                 Number(event.startTime[2]),
                 Number(event.startTime[3]),
                 Number(event.startTime[4]),
+                Number(event.startTime?.[5]) || 0,
             )
             setStartTime(eventStartDate)
             setCurrentTime(eventStartDate)
