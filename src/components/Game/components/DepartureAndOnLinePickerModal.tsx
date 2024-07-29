@@ -3,18 +3,18 @@ import { Heading2 } from '@entur/typography'
 import { ChoiceChip, ChoiceChipGroup } from '@entur/chip'
 import { Departure, QueryMode } from '@entur/sdk'
 import { Modal } from '@entur/modal'
-import { getModeIcon } from '@/lib/utils/transportMapper'
-import { formatTime } from '@/lib/utils/dateFnsUtils'
 import { StopAndTime } from '@/components/Game/Game'
 import { generateKey } from '@/lib/utils/generateUniqueKey'
+import DepartureTable from './DepartureTable'
 
 type Props = {
     departures: Departure[]
     stopsOnLine: StopAndTime[]
-    selectDeparture: (departure: Departure) => void
     mode: QueryMode | null
-    selectStopOnLine: (stopAndTime: StopAndTime) => void
     isOpenModal: boolean
+    currentStopPlaceName: string
+    selectDeparture: (departure: Departure) => void
+    selectStopOnLine: (stopAndTime: StopAndTime) => void
     setModalOpen: Dispatch<SetStateAction<boolean>>
     setUsedDepartures: Dispatch<SetStateAction<(Departure | undefined)[]>>
 }
@@ -22,10 +22,11 @@ type Props = {
 export const DepartureAndOnLinePickerModal = ({
     departures,
     stopsOnLine,
-    selectDeparture,
     mode,
-    selectStopOnLine,
     isOpenModal,
+    currentStopPlaceName,
+    selectDeparture,
+    selectStopOnLine,
     setModalOpen,
     setUsedDepartures,
 }: Props): JSX.Element => {
@@ -41,66 +42,17 @@ export const DepartureAndOnLinePickerModal = ({
                     setModalOpen(false)
                 }}
                 title=""
-                size="medium"
+                size="large"
             >
-                <>
-                    {departures?.length ? (
-                        <>
-                            <Heading2>Velg avgang</Heading2>
-                            <ChoiceChipGroup
-                                value="none"
-                                onChange={() => {}}
-                                name="Departure"
-                            >
-                                {departures
-                                    .filter(
-                                        (d, index, arr) =>
-                                            arr.findIndex(
-                                                (e) =>
-                                                    e.destinationDisplay
-                                                        .frontText ===
-                                                    d.destinationDisplay
-                                                        .frontText,
-                                            ) === index,
-                                    )
-                                    .map((departure) => (
-                                        <ChoiceChip
-                                            className="select-none"
-                                            key={
-                                                departure.destinationDisplay
-                                                    .frontText +
-                                                departure.serviceJourney.id
-                                            }
-                                            value={
-                                                departure.destinationDisplay
-                                                    .frontText +
-                                                departure.serviceJourney.id
-                                            }
-                                            onClick={() => {
-                                                selectDeparture(departure)
-                                                setPickedDeparture(departure)
-                                            }}
-                                        >
-                                            {mode ? getModeIcon(mode) : null}
-                                            {
-                                                departure.serviceJourney
-                                                    .journeyPattern?.line
-                                                    .publicCode
-                                            }{' '}
-                                            {
-                                                departure.destinationDisplay
-                                                    .frontText
-                                            }{' '}
-                                            kl.{' '}
-                                            {formatTime(
-                                                departure.expectedDepartureTime,
-                                            )}
-                                        </ChoiceChip>
-                                    ))}
-                            </ChoiceChipGroup>
-                        </>
-                    ) : null}
-                </>
+                {departures?.length ? (
+                    <DepartureTable
+                        departures={departures}
+                        mode={mode}
+                        selectDeparture={selectDeparture}
+                        setPickedDeparture={setPickedDeparture}
+                        currentStopPlaceName={currentStopPlaceName}
+                    />
+                ) : null}
                 {stopsOnLine?.length ? (
                     <>
                         <Heading2>
