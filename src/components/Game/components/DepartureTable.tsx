@@ -27,14 +27,11 @@ type DepartureTableProps = {
 type TransportType =
     | 'bus'
     | 'metro'
-    | 'air'
     | 'tram'
     | 'rail'
     | 'water'
     | 'bike'
     | 'foot'
-    | 'car'
-    | 'scooter'
 
 // Mapping function
 const mapQueryModeToTransportType = (mode: QueryMode | null): TransportType => {
@@ -43,8 +40,6 @@ const mapQueryModeToTransportType = (mode: QueryMode | null): TransportType => {
             return 'bus'
         case QueryMode.METRO:
             return 'metro'
-        case QueryMode.AIR:
-            return 'air'
         case QueryMode.TRAM:
             return 'tram'
         case QueryMode.RAIL:
@@ -55,8 +50,6 @@ const mapQueryModeToTransportType = (mode: QueryMode | null): TransportType => {
             return 'bike'
         case QueryMode.FOOT:
             return 'foot'
-        case QueryMode.CAR:
-            return 'car'
         default:
             return 'bus'
     }
