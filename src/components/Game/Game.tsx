@@ -15,7 +15,6 @@ import TravelLegStart from './components/TravelLegStart/TravelLegStart'
 import { DepartureAndOnLinePickerModal } from './components/DepartureAndOnLinePickerModal'
 import { isTruthy } from '@/lib/utils/isTruthy'
 import { TravelLegFinished } from './components/TravelLegFinished'
-import DeadScreen from './DeadScreen'
 import { Modal } from '@entur/modal'
 import { Contrast } from '@entur/layout'
 import { fetchStopPlace, fetchStopPlaceParent } from '@/lib/api/stopPlaceApi'
@@ -50,6 +49,7 @@ type Props = {
     setCurrentLocation: React.Dispatch<
         React.SetStateAction<StopPlace | undefined>
     >
+    setDead: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 function Game({
@@ -63,10 +63,10 @@ function Game({
     setUsedTime,
     setVictory,
     setCurrentLocation,
+    setDead,
 }: Props): ReactElement {
     const router = useRouter()
     const [isLoading, setLoading] = useState<boolean>(false)
-    const [isDead, setDead] = useState<boolean>(false)
     const [endLocation, setEndLocation] = useState<StopPlace[]>(
         event.endLocation,
     )
@@ -299,14 +299,6 @@ function Game({
         endLocation.some((sp) => sp.id === currentLocation.id)
     ) {
         setVictory(true)
-    }
-
-    if (isDead) {
-        return (
-            <div className="app" style={{ maxWidth: '800px' }}>
-                <DeadScreen endLocationName={endLocation[0].name} />
-            </div>
-        )
     }
 
     return (

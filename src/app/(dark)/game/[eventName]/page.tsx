@@ -13,6 +13,7 @@ import VictoryScreen from '@/components/Game/VictoryScreen/VictoryScreen'
 import Map from '../components/Map'
 import { MapPinIcon, DestinationIcon, StandingIcon } from '@entur/icons'
 import GameStatus from '@/components/GameStatus'
+import DeadScreen from '@/components/Game/DeadScreen'
 
 export default function GamePage(): JSX.Element {
     const [numLegs, setNumLegs] = useState<number>(0)
@@ -21,6 +22,7 @@ export default function GamePage(): JSX.Element {
     const [isVictory, setVictory] = useState<boolean>(false)
     const [startTime, setStartTime] = useState<Date | null>(null)
     const [currentTime, setCurrentTime] = useState<Date>(new Date())
+    const [isDead, setDead] = useState<boolean>(false)
 
     const {
         data: eventResult,
@@ -57,6 +59,14 @@ export default function GamePage(): JSX.Element {
         }
     }, [event])
 
+    if (isDead) {
+        return (
+            <div className="app" style={{ maxWidth: '800px' }}>
+                <DeadScreen />
+            </div>
+        )
+    }
+
     return (
         <>
             {isLoading || !startTime || !currentTime ? (
@@ -80,6 +90,8 @@ export default function GamePage(): JSX.Element {
                         />
                     </div>
                 </Contrast>
+            ) : isDead ? (
+                <Contrast></Contrast>
             ) : (
                 event &&
                 currentLocation && (
@@ -105,6 +117,7 @@ export default function GamePage(): JSX.Element {
                                         setNumLegs={setNumLegs}
                                         setVictory={setVictory}
                                         setCurrentLocation={setCurrentLocation}
+                                        setDead={setDead}
                                     />
                                 </div>
 
