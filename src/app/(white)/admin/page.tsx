@@ -9,9 +9,17 @@ import { SecondaryButton } from '@entur/button'
 import CompactLeaderboardPage from './components/CompactLeaderboard'
 import { useRouter } from 'next/navigation'
 import InactiveEventsList from './components/InactiveEventsList'
+import { Loader } from '@entur/loader'
+import { useState } from 'react'
 
 export default function AdminPage(): JSX.Element | null {
     const router = useRouter()
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+
+    const handleToCreateGame = () => {
+        setIsLoading(true)
+        router.push('/admin/create-game')
+    }
 
     const handleToGame = () => {
         window.open('/', '_blank')
@@ -29,13 +37,19 @@ export default function AdminPage(): JSX.Element | null {
             </Contrast>
             <Image className="w-full" src={BackgroundAdmin} alt="background" />
             <div className="flex flex-col p-12 ml-20">
-                <NavigationCard
-                    className="flex flex-row max-w-lg max-h-20"
-                    title="Opprett spill"
-                    titleIcon={<AddIcon className="inline align-baseline" />}
-                    onClick={() => router.push('/admin/create-game')}
-                    compact
-                ></NavigationCard>
+                {isLoading ? (
+                    <Loader>Laster...</Loader>
+                ) : (
+                    <NavigationCard
+                        className="flex flex-row max-w-lg max-h-20"
+                        title="Opprett spill"
+                        titleIcon={
+                            <AddIcon className="inline align-baseline" />
+                        }
+                        onClick={handleToCreateGame}
+                        compact
+                    ></NavigationCard>
+                )}
                 <div className="flex mt-20 gap-4 ">
                     <Heading2 margin="none">Aktivt spill</Heading2>
                     <SecondaryButton
