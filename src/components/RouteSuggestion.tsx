@@ -23,7 +23,7 @@ export default function RouteSuggestion({
             <div className="flex flex-col pt-12 mb-4">
                 <Heading3>Reiseplanleggerens anbefalte rute</Heading3>
                 <Paragraph margin="none">
-                    Dette er ruter i spillet måles opp mot denne
+                    Alle andre ruter i spillet måles opp mot denne
                 </Paragraph>
             </div>
             {isLoading ? (
