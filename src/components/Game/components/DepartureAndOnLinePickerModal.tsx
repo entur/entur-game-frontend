@@ -1,5 +1,5 @@
 import { useState, SetStateAction, Dispatch } from 'react'
-import { Heading1, Heading2 } from '@entur/typography'
+import { Heading1, Heading2, SubParagraph } from '@entur/typography'
 import { ChoiceChip, ChoiceChipGroup } from '@entur/chip'
 import { Departure, QueryMode } from '@entur/sdk'
 import { Modal } from '@entur/modal'
@@ -55,9 +55,9 @@ export const DepartureAndOnLinePickerModal = ({
                 title=""
                 size="medium"
             >
-                <div className="bg-blue-90">
-                    <Heading1>{currentStopPlaceName}</Heading1>
-                    {departures?.length ? (
+                {departures?.length ? (
+                    <div className="bg-blue-90 p-4 rounded-lg">
+                        <Heading1>{currentStopPlaceName}</Heading1>
                         <Table>
                             <TableHead>
                                 <TableRow>
@@ -93,20 +93,25 @@ export const DepartureAndOnLinePickerModal = ({
                                                     : null}
                                             </DataCell>
                                             <DataCell>
-                                                {
-                                                    departure.serviceJourney
-                                                        .journeyPattern?.line
-                                                        .publicCode
-                                                }{' '}
-                                                {
-                                                    departure.destinationDisplay
-                                                        .frontText
-                                                }
+                                                <SubParagraph>
+                                                    {
+                                                        departure.serviceJourney
+                                                            .journeyPattern
+                                                            ?.line.publicCode
+                                                    }{' '}
+                                                    {
+                                                        departure
+                                                            .destinationDisplay
+                                                            .frontText
+                                                    }
+                                                </SubParagraph>
                                             </DataCell>
                                             <DataCell>
-                                                {formatTime(
-                                                    departure.expectedDepartureTime,
-                                                )}
+                                                <SubParagraph>
+                                                    {formatTime(
+                                                        departure.expectedDepartureTime,
+                                                    )}
+                                                </SubParagraph>
                                             </DataCell>
                                             <DataCell>
                                                 <SecondaryButton
@@ -130,8 +135,8 @@ export const DepartureAndOnLinePickerModal = ({
                                     ))}
                             </TableBody>
                         </Table>
-                    ) : null}
-                </div>
+                    </div>
+                ) : null}
                 <>
                     {departures?.length ? (
                         <>
