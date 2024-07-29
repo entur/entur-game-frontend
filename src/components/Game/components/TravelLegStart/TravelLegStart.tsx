@@ -31,9 +31,14 @@ function TravelLegStart({
         )
     }
     const travelLegsLength = travelLegs.length - 1
+
     return (
         <div className="grid grid-cols-1">
             {travelLegs.map((travelLeg, index): JSX.Element => {
+                const transportMode = travelLegsMode[index]
+                const correctedTransportMode =
+                    transportMode === 'coach' ? 'bus' : transportMode
+
                 return travelLegsLength !== index ? (
                     <div
                         key={generateKey(travelLeg.id)}
@@ -42,9 +47,7 @@ function TravelLegStart({
                         <TravelLeg
                             className="mt-1 mr-6 sm:mr-8 h-24"
                             transport={
-                                travelLegsMode[
-                                    index
-                                ] as TravelLegProps['transport']
+                                correctedTransportMode as TravelLegProps['transport']
                             }
                             direction="vertical"
                         />
@@ -77,9 +80,7 @@ function TravelLegStart({
                         <TravelLeg
                             className="mt-1 mr-6 sm:mr-8"
                             transport={
-                                travelLegsMode[
-                                    index - 1
-                                ] as TravelLegProps['transport']
+                                correctedTransportMode as TravelLegProps['transport']
                             }
                             direction="vertical"
                         />
