@@ -33,6 +33,7 @@ import { tripQuery, visualSolutionTripQuery } from '@/lib/constants/queries'
 import useSWR from 'swr'
 import RouteSuggestion from '@/components/RouteSuggestion'
 import { Modal } from '@entur/modal'
+import { useEventName } from '@/lib/hooks/useEventName'
 
 export default function AdminCreateJourney() {
     const router = useRouter()
@@ -53,6 +54,7 @@ export default function AdminCreateJourney() {
 
     const [isError, setError] = useState<boolean>(false)
     const [responseStatus, setResponseStatus] = useState<number | null>(null)
+    const { eventName } = useEventName()
 
     useEffect(() => {
         const handleCreateEvent = async () => {
@@ -143,6 +145,14 @@ export default function AdminCreateJourney() {
         }
 
         fetchTripInfo()
+    }
+
+    const handleCheckActive = async () => {
+        if (eventName === null) {
+            handleOnClick()
+        } else {
+            setOpen(true)
+        }
     }
 
     const variables = {
@@ -337,7 +347,8 @@ export default function AdminCreateJourney() {
                         width="auto"
                         variant="primary"
                         size="medium"
-                        onClick={() => setOpen(true)}
+                        onClick={handleCheckActive}
+                        loading={loading}
                     >
                         Opprett spill
                     </Button>
