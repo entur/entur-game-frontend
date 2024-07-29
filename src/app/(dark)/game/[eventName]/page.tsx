@@ -69,15 +69,19 @@ export default function GamePage(): JSX.Element {
 
     return (
         <>
-            {isLoading || !startTime || !currentTime ? (
+            {isLoading ? (
                 <Contrast>
                     <Loader>Laster inn spill...</Loader>
                 </Contrast>
             ) : eventError || !event || !maxTime ? (
                 <Contrast>
                     <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
-                        <Heading1>Spill ikke funnet</Heading1>
+                        <Heading1>Aktivt spill ikke funnet</Heading1>
                     </div>
+                </Contrast>
+            ) : !startTime || !currentTime ? (
+                <Contrast>
+                    <Loader>Laster inn spill...</Loader>
                 </Contrast>
             ) : isVictory ? (
                 <Contrast>
