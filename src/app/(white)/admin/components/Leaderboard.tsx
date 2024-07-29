@@ -10,6 +10,7 @@ import {
 import { Badge } from '@entur/layout'
 import { PlayerScore } from '@/lib/types/types'
 import { calculateRank } from '@/lib/utils/calculateRank'
+import { formatMilliseconds } from '@/lib/utils/dateFnsUtils'
 
 interface LeaderboardProps {
     scores: PlayerScore[]
@@ -65,7 +66,9 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
                                     </DataCell>
                                     {!compact && (
                                         <DataCell>
-                                            {score.totalTravelTime}
+                                            {formatMilliseconds(
+                                                1000 * score.totalTravelTime,
+                                            )}
                                         </DataCell>
                                     )}
                                     <DataCell>{score.scoreValue}</DataCell>

@@ -129,7 +129,7 @@ export default function EventHighScorePage(): JSX.Element {
                                 <DataCell>
                                     <Heading3 className="text-white">
                                         {formatMilliseconds(
-                                            playerScore.totalTravelTime,
+                                            1000 * playerScore.totalTravelTime,
                                         )}
                                     </Heading3>
                                 </DataCell>
