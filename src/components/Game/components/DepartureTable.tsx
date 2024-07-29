@@ -1,7 +1,7 @@
 import React from 'react'
 import { Departure, QueryMode } from '@entur/sdk'
 import { Heading1, SubParagraph } from '@entur/typography'
-import { getModeIcon } from '@/lib/utils/transportMapper'
+import { TransportIconPicker } from '@/lib/utils/transportMapper'
 import { formatTime } from '@/lib/utils/dateFnsUtils'
 import {
     DataCell,
@@ -13,6 +13,7 @@ import {
 } from '@entur/table'
 import { SecondaryButton } from '@entur/button'
 import { ForwardIcon } from '@entur/icons'
+import { TravelTag } from '@entur/travel'
 
 type DepartureTableProps = {
     departures: Departure[]
@@ -58,14 +59,20 @@ const DepartureTable = ({
                             }
                         >
                             <DataCell>
-                                {mode ? getModeIcon(mode) : null}
+                                <TravelTag alert="none" transport="bus">
+                                    <TransportIconPicker
+                                        transportType={mode ?? 'bus'}
+                                    />
+                                    <SubParagraph className="pt-0.5 pb-0 text-white">
+                                        {
+                                            departure.serviceJourney
+                                                .journeyPattern?.line.publicCode
+                                        }
+                                    </SubParagraph>
+                                </TravelTag>
                             </DataCell>
                             <DataCell>
                                 <SubParagraph>
-                                    {
-                                        departure.serviceJourney.journeyPattern
-                                            ?.line.publicCode
-                                    }{' '}
                                     {departure.destinationDisplay.frontText}
                                 </SubParagraph>
                             </DataCell>

@@ -26,6 +26,7 @@ export default function RouteSuggestion({
                     Dette er fremkomstmåten spillerne må ta for å få maksimal
                     poengsum
                 </Paragraph>
+                {/* TODO: gjøre om på tekst fordi det teknisk sett ikke er sant */}
             </div>
             {isLoading ? (
                 <Loader>Laster inn rute...</Loader>
