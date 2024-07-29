@@ -69,7 +69,7 @@ const DepartureTable = ({
     setPickedDeparture,
     currentStopPlaceName,
 }: DepartureTableProps): JSX.Element => (
-    <div className="bg-blue-90 p-4 ml-2 mr-2 rounded-lg">
+    <div className="bg-blue-90 p-4 m-2 rounded-lg">
         <Heading1>{currentStopPlaceName}</Heading1>
         <Table>
             <TableHead>
