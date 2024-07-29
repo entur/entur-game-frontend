@@ -22,20 +22,22 @@ export function TravelLegTag({
             </div>
         )
     }
+
+    const transportMode =
+        usedDeparture?.serviceJourney.journeyPattern?.line.transportMode
+
+    const correctedTransportMode =
+        transportMode === 'coach' ? 'bus' : transportMode
+
     return (
         <div className="w-20 [&>*]:w-full mr-2">
             <TravelTag
                 transport={
-                    (usedDeparture?.serviceJourney.journeyPattern?.line
-                        .transportMode as TravelLegProps['transport']) ?? 'foot'
+                    (correctedTransportMode as TravelLegProps['transport']) ??
+                    'foot'
                 }
             >
-                <TransportIconPicker
-                    transportType={
-                        usedDeparture?.serviceJourney.journeyPattern?.line
-                            .transportMode
-                    }
-                />
+                <TransportIconPicker transportType={correctedTransportMode} />
                 <SubParagraph className="pt-0.5 pb-0">
                     {
                         usedDeparture?.serviceJourney.journeyPattern?.line

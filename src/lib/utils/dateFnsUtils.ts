@@ -54,11 +54,17 @@ export function formatMilliseconds(milliseconds: number) {
     const minutes = Math.floor((totalSeconds % 3600) / 60)
     const seconds = totalSeconds % 60
 
-    const hoursString = hours === 0 ? '' : hours + ' timer'
-    const minutesString = minutes === 0 ? '' : minutes + ' minutter'
-    const secondsString = seconds === 0 ? '' : seconds + ' sekunder'
+    const hoursString =
+        hours === 0 ? '' : hours === 1 ? '1 time' : hours + ' timer'
+    const minutesString =
+        minutes === 0 && hours === 0
+            ? ''
+            : minutes === 1
+              ? '1 minutt'
+              : minutes + ' minutter'
+    const secondsString = seconds === 1 ? '1 sekund' : seconds + ' sekunder'
 
-    return `${hoursString} ${minutesString} ${secondsString}`
+    return `${hoursString} ${minutesString} ${secondsString}`.trim()
 }
 
 export function formatIntervalToSeconds(
