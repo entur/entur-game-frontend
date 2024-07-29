@@ -1,5 +1,5 @@
 import { useState, SetStateAction, Dispatch } from 'react'
-import { Heading2 } from '@entur/typography'
+import { Heading1, Heading2 } from '@entur/typography'
 import { ChoiceChip, ChoiceChipGroup } from '@entur/chip'
 import { Departure, QueryMode } from '@entur/sdk'
 import { Modal } from '@entur/modal'
@@ -7,14 +7,25 @@ import { getModeIcon } from '@/lib/utils/transportMapper'
 import { formatTime } from '@/lib/utils/dateFnsUtils'
 import { StopAndTime } from '@/components/Game/Game'
 import { generateKey } from '@/lib/utils/generateUniqueKey'
+import {
+    DataCell,
+    HeaderCell,
+    Table,
+    TableBody,
+    TableHead,
+    TableRow,
+} from '@entur/table'
+import { SecondaryButton } from '@entur/button'
+import { ForwardIcon } from '@entur/icons'
 
 type Props = {
     departures: Departure[]
     stopsOnLine: StopAndTime[]
-    selectDeparture: (departure: Departure) => void
     mode: QueryMode | null
-    selectStopOnLine: (stopAndTime: StopAndTime) => void
     isOpenModal: boolean
+    currentStopPlaceName: string
+    selectDeparture: (departure: Departure) => void
+    selectStopOnLine: (stopAndTime: StopAndTime) => void
     setModalOpen: Dispatch<SetStateAction<boolean>>
     setUsedDepartures: Dispatch<SetStateAction<(Departure | undefined)[]>>
 }
@@ -22,10 +33,11 @@ type Props = {
 export const DepartureAndOnLinePickerModal = ({
     departures,
     stopsOnLine,
-    selectDeparture,
     mode,
-    selectStopOnLine,
     isOpenModal,
+    currentStopPlaceName,
+    selectDeparture,
+    selectStopOnLine,
     setModalOpen,
     setUsedDepartures,
 }: Props): JSX.Element => {
@@ -43,6 +55,83 @@ export const DepartureAndOnLinePickerModal = ({
                 title=""
                 size="medium"
             >
+                <div className="bg-blue-90">
+                    <Heading1>{currentStopPlaceName}</Heading1>
+                    {departures?.length ? (
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <HeaderCell>Linje</HeaderCell>
+                                    <HeaderCell>Destinasjon</HeaderCell>
+                                    <HeaderCell>Avreise</HeaderCell>
+                                    <HeaderCell>Velg</HeaderCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {departures
+                                    .filter(
+                                        (d, index, arr) =>
+                                            arr.findIndex(
+                                                (e) =>
+                                                    e.destinationDisplay
+                                                        .frontText ===
+                                                    d.destinationDisplay
+                                                        .frontText,
+                                            ) === index,
+                                    )
+                                    .map((departure) => (
+                                        <TableRow
+                                            key={
+                                                departure.destinationDisplay
+                                                    .frontText +
+                                                departure.serviceJourney.id
+                                            }
+                                        >
+                                            <DataCell>
+                                                {mode
+                                                    ? getModeIcon(mode)
+                                                    : null}
+                                            </DataCell>
+                                            <DataCell>
+                                                {
+                                                    departure.serviceJourney
+                                                        .journeyPattern?.line
+                                                        .publicCode
+                                                }{' '}
+                                                {
+                                                    departure.destinationDisplay
+                                                        .frontText
+                                                }
+                                            </DataCell>
+                                            <DataCell>
+                                                {formatTime(
+                                                    departure.expectedDepartureTime,
+                                                )}
+                                            </DataCell>
+                                            <DataCell>
+                                                <SecondaryButton
+                                                    size="small"
+                                                    onClick={() => {
+                                                        selectDeparture(
+                                                            departure,
+                                                        )
+                                                        setPickedDeparture(
+                                                            departure,
+                                                        )
+                                                    }}
+                                                >
+                                                    <span className="flex items-center">
+                                                        Velg
+                                                        <ForwardIcon className="ml-2 mb-1.5 relative" />
+                                                    </span>
+                                                </SecondaryButton>
+                                            </DataCell>
+                                        </TableRow>
+                                    ))}
+                            </TableBody>
+                        </Table>
+                    ) : null}
+                </div>
                 <>
                     {departures?.length ? (
                         <>
