@@ -5,11 +5,14 @@ import { Button } from '@entur/button'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Entur_logo_contrast from '@/lib/assets/images/Entur_logo_contrast.svg'
+import Test from '@/lib/assets/images/Test.gif'
 import { getActiveEvent } from '@/lib/api/eventApi'
 import { useEffect, useState } from 'react'
+
 export function SplashScreen(): JSX.Element {
     const router = useRouter()
     const [activeEventName, setActiveEventName] = useState<string | null>(null)
+
     useEffect(() => {
         const getActiveEventName = async () => {
             const event = await getActiveEvent()
@@ -19,18 +22,19 @@ export function SplashScreen(): JSX.Element {
         }
         getActiveEventName()
     }, [])
+
     return (
-        <>
-            <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center z-10">
+        <div className="flex flex-col items-center justify-center min-h-screen text-white">
+            <div className="text-center">
                 <Image
                     className="cursor-pointer"
                     src={Entur_logo_contrast}
                     alt="entur partner"
                     width={800}
                 />
-                <LeadParagraph className="text-white font-normal text-left">
-                    Klarer du å finne en like effektiv rute som Enturs
-                    reiseplanlegger?
+                <LeadParagraph className="text-white font-normal text-center mt-4">
+                    Finn den beste kollektivreisen til mål før billetten din
+                    utløper!
                     <br />
                     De mest effektive rutevalgene gir deg mest poeng.
                     <br />
@@ -47,7 +51,17 @@ export function SplashScreen(): JSX.Element {
                     </Button>
                 </div>
             </div>
-        </>
+            <div className="mt-auto w-full">
+                <Image
+                    src={Test}
+                    alt="Animated GIF"
+                    layout="responsive"
+                    width={1600}
+                    height={900}
+                />
+            </div>
+        </div>
     )
 }
+
 export default SplashScreen
