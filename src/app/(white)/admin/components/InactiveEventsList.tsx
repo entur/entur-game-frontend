@@ -1,6 +1,6 @@
-'use client'
 import { deleteEvent } from '@/lib/api/eventApi'
 import { useInactiveStopPlaces } from '@/lib/hooks/useInactiveStopPlaceName'
+import { BannerAlertBox } from '@entur/alert'
 import { Button } from '@entur/button'
 import { DeleteIcon } from '@entur/icons'
 import { BaseCard } from '@entur/layout'
@@ -8,7 +8,7 @@ import { Modal } from '@entur/modal'
 import { TravelHeader } from '@entur/travel'
 import { Paragraph } from '@entur/typography'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 const InactiveEventsList: React.FC = (): JSX.Element => {
     const { events, error } = useInactiveStopPlaces()
@@ -18,14 +18,12 @@ const InactiveEventsList: React.FC = (): JSX.Element => {
         undefined,
     )
 
-    useEffect(() => {
-        if (!router) {
-            console.error('Router instance not found')
-        }
-    }, [router])
-
     if (error) {
-        return <div>Error: {error}</div>
+        return (
+            <BannerAlertBox title="Feilmelding" variant="negative">
+                {error}
+            </BannerAlertBox>
+        )
     }
 
     const handleNavigateLeaderboard = (eventId: number | undefined) => {

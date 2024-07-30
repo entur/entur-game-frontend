@@ -19,8 +19,8 @@ import {
     handleDismiss,
     handleDrawWinnerAndEndGame,
 } from '@/lib/utils/handleWinner'
-import { WinnerWarningModal } from '../components/winnerWarningModal'
-import { WinnerModal } from '../components/winnerModal'
+import { WinnerWarningModal } from '../components/WinnerWarningModal'
+import { WinnerModal } from '../components/WinnerModal'
 
 const GamePage: React.FC = (): JSX.Element => {
     const { eventName, isEventNameError, setEventNameError } = useEventName()

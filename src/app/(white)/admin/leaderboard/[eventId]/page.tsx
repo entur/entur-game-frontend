@@ -10,7 +10,7 @@ import { Button, SecondaryButton } from '@entur/button'
 import { DeleteIcon } from '@entur/icons'
 import { deleteEvent, getEventById } from '@/lib/api/eventApi'
 import { useRouter } from 'next/navigation'
-import { WinnerModal } from '../../components/winnerModal'
+import { WinnerModal } from '../../components/WinnerModal'
 
 type EventPageProps = {
     params: {
