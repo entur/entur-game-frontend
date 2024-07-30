@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useParams } from 'next/navigation'
 import { Heading1, Heading3 } from '@entur/typography'
 import { Loader } from '@entur/loader'
@@ -14,6 +14,7 @@ import MapComponent from '../components/Map'
 import { MapPinIcon, DestinationIcon, StandingIcon } from '@entur/icons'
 import GameStatus from '@/components/GameStatus'
 import DeadScreen from '@/components/Game/DeadScreen'
+import { MapRef } from 'react-map-gl'
 
 export default function GamePage(): JSX.Element {
     const [numLegs, setNumLegs] = useState<number>(0)
@@ -23,6 +24,7 @@ export default function GamePage(): JSX.Element {
     const [startTime, setStartTime] = useState<Date | null>(null)
     const [currentTime, setCurrentTime] = useState<Date>(new Date())
     const [isDead, setDead] = useState<boolean>(false)
+    const mapRef = useRef<MapRef | null>(null)
 
     const {
         data: eventResult,
@@ -59,6 +61,17 @@ export default function GamePage(): JSX.Element {
             setCurrentLocation(event.startLocation)
         }
     }, [event])
+
+    const handleMarkerClick = (longitude: number, latitude: number) => {
+        if (mapRef.current) {
+            const map = mapRef.current.getMap()
+            map.flyTo({
+                center: [longitude, latitude],
+                zoom: 12, // Lower zoom level
+                speed: 2, // Faster animation
+            })
+        }
+    }
 
     if (isDead) {
         return (
@@ -131,26 +144,78 @@ export default function GamePage(): JSX.Element {
                                         <MapComponent
                                             event={event}
                                             currentPosition={currentLocation}
+                                            handleMarkerClick={
+                                                handleMarkerClick
+                                            }
+                                            mapRef={mapRef}
                                         />
                                         <div className="icon-container">
-                                            <div className="icon-item">
-                                                <MapPinIcon className="text-coral" />
-                                                <Heading3 className="map-text">
-                                                    Start
-                                                </Heading3>
-                                            </div>
-                                            <div className="icon-item">
-                                                <DestinationIcon className="text-coral" />
-                                                <Heading3 className="map-text">
-                                                    Mål
-                                                </Heading3>
-                                            </div>
-                                            <div className="icon-item">
-                                                <StandingIcon className="text-coral" />
-                                                <Heading3 className="map-text">
-                                                    Din posisjon
-                                                </Heading3>
-                                            </div>
+                                            {event.startLocation.longitude !==
+                                                undefined &&
+                                                event.startLocation.latitude !==
+                                                    undefined && (
+                                                    <div
+                                                        className="icon-item"
+                                                        onClick={() =>
+                                                            handleMarkerClick(
+                                                                event
+                                                                    .startLocation
+                                                                    .longitude!,
+                                                                event
+                                                                    .startLocation
+                                                                    .latitude!,
+                                                            )
+                                                        }
+                                                    >
+                                                        <MapPinIcon className="text-coral" />
+                                                        <Heading3 className="map-text">
+                                                            Start
+                                                        </Heading3>
+                                                    </div>
+                                                )}
+                                            {event.endLocation[0]?.longitude !==
+                                                undefined &&
+                                                event.endLocation[0]
+                                                    ?.latitude !==
+                                                    undefined && (
+                                                    <div
+                                                        className="icon-item"
+                                                        onClick={() =>
+                                                            handleMarkerClick(
+                                                                event
+                                                                    .endLocation[0]
+                                                                    .longitude!,
+                                                                event
+                                                                    .endLocation[0]
+                                                                    .latitude!,
+                                                            )
+                                                        }
+                                                    >
+                                                        <DestinationIcon className="text-coral" />
+                                                        <Heading3 className="map-text">
+                                                            Mål
+                                                        </Heading3>
+                                                    </div>
+                                                )}
+                                            {currentLocation.longitude !==
+                                                undefined &&
+                                                currentLocation.latitude !==
+                                                    undefined && (
+                                                    <div
+                                                        className="icon-item"
+                                                        onClick={() =>
+                                                            handleMarkerClick(
+                                                                currentLocation.longitude!,
+                                                                currentLocation.latitude!,
+                                                            )
+                                                        }
+                                                    >
+                                                        <StandingIcon className="text-coral" />
+                                                        <Heading3 className="map-text">
+                                                            Din posisjon
+                                                        </Heading3>
+                                                    </div>
+                                                )}
                                         </div>
                                     </Contrast>
                                 </div>

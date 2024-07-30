@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Map, { Marker, NavigationControl, MapRef } from 'react-map-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { Event, StopPlace } from '@/lib/types/types'
@@ -16,10 +16,16 @@ if (!NEXT_PUBLIC_MAPBOX_TOKEN) {
 type Props = {
     event: Event
     currentPosition: StopPlace
+    handleMarkerClick: (longitude: number, latitude: number) => void
+    mapRef: React.RefObject<MapRef>
 }
 
-const MapComponent = ({ event, currentPosition }: Props) => {
-    const mapRef = useRef<MapRef | null>(null)
+const MapComponent = ({
+    event,
+    currentPosition,
+    handleMarkerClick,
+    mapRef,
+}: Props) => {
     const [mapLoaded, setMapLoaded] = useState(false)
 
     useEffect(() => {
@@ -29,7 +35,7 @@ const MapComponent = ({ event, currentPosition }: Props) => {
                 clearInterval(checkMapLoaded)
             }
         }, 100)
-    }, [])
+    }, [mapRef])
 
     useEffect(() => {
         if (
@@ -69,18 +75,7 @@ const MapComponent = ({ event, currentPosition }: Props) => {
                 maxZoom: 15,
             })
         }
-    }, [mapLoaded, currentPosition, event.endLocation])
-
-    const handleMarkerClick = (longitude: number, latitude: number) => {
-        if (mapRef.current) {
-            const map = mapRef.current.getMap()
-            map.flyTo({
-                center: [longitude, latitude],
-                zoom: 12,
-                speed: 2,
-            })
-        }
-    }
+    }, [mapLoaded, currentPosition, event.endLocation, mapRef])
 
     return (
         <div className="map-container">
