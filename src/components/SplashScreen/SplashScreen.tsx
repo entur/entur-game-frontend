@@ -1,6 +1,6 @@
 'use client'
 
-import { LeadParagraph } from '@entur/typography'
+import { LeadParagraph, SubParagraph } from '@entur/typography'
 import { Button } from '@entur/button'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
@@ -25,14 +25,22 @@ export function SplashScreen(): JSX.Element {
 
     return (
         <div className="flex flex-col items-center justify-between min-h-screen text-white">
-            <div className="mt-32 text-center">
+            <div className="mt-8 text-center">
+                <SubParagraph className="text-white font-normal">
+                    <a href="/admin" className="text-blue-500 underline">
+                        Trykk her
+                    </a>{' '}
+                    for å logge inn som admin
+                </SubParagraph>
+            </div>
+            <div className="mt-20 text-center">
                 <Image
                     className="cursor-pointer"
                     src={Entur_logo_contrast}
                     alt="entur partner"
                     width={800}
                 />
-                <LeadParagraph className=" mt-8 text-white font-normal text-center mt-4">
+                <LeadParagraph className="mt-8 text-white font-normal text-center">
                     Kommer du i mål før billetten din utløper?
                     <br />
                     Kortere reisetid gir mer poeng.

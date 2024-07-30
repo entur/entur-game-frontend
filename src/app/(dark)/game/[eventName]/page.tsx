@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useParams } from 'next/navigation'
 import { Heading1, Heading3 } from '@entur/typography'
 import { Loader } from '@entur/loader'
@@ -10,10 +10,11 @@ import { Event, StopPlace } from '@/lib/types/types'
 import useSWR from 'swr'
 import { Contrast } from '@entur/layout'
 import VictoryScreen from '@/components/Game/VictoryScreen/VictoryScreen'
-import Map from '../components/Map'
+import MapComponent from '../components/Map'
 import { MapPinIcon, DestinationIcon, StandingIcon } from '@entur/icons'
 import GameStatus from '@/components/GameStatus'
 import DeadScreen from '@/components/Game/DeadScreen'
+import { MapRef } from 'react-map-gl'
 
 export default function GamePage(): JSX.Element {
     const [numLegs, setNumLegs] = useState<number>(0)
@@ -23,6 +24,7 @@ export default function GamePage(): JSX.Element {
     const [startTime, setStartTime] = useState<Date | null>(null)
     const [currentTime, setCurrentTime] = useState<Date>(new Date())
     const [isDead, setDead] = useState<boolean>(false)
+    const mapRef = useRef<MapRef | null>(null)
 
     const {
         data: eventResult,
@@ -60,6 +62,17 @@ export default function GamePage(): JSX.Element {
         }
     }, [event])
 
+    const handleMarkerClick = (longitude: number, latitude: number) => {
+        if (mapRef.current) {
+            const map = mapRef.current.getMap()
+            map.flyTo({
+                center: [longitude, latitude],
+                zoom: 12,
+                speed: 2,
+            })
+        }
+    }
+
     if (isDead) {
         return (
             <div className="app" style={{ maxWidth: '800px' }}>
@@ -70,15 +83,19 @@ export default function GamePage(): JSX.Element {
 
     return (
         <>
-            {isLoading || !startTime || !currentTime ? (
+            {isLoading ? (
                 <Contrast>
                     <Loader>Laster inn spill...</Loader>
                 </Contrast>
             ) : eventError || !event || !maxTime ? (
                 <Contrast>
                     <div className="max-w-screen-xl xl:ml-72 xl:mr-40 ml-10 mr-10">
-                        <Heading1>Spill ikke funnet</Heading1>
+                        <Heading1>Aktivt spill ikke funnet</Heading1>
                     </div>
+                </Contrast>
+            ) : !startTime || !currentTime ? (
+                <Contrast>
+                    <Loader>Laster inn spill...</Loader>
                 </Contrast>
             ) : isVictory ? (
                 <Contrast>
@@ -124,29 +141,81 @@ export default function GamePage(): JSX.Element {
 
                                 <div className="col-span-2">
                                     <Contrast>
-                                        <Map
+                                        <MapComponent
                                             event={event}
                                             currentPosition={currentLocation}
+                                            handleMarkerClick={
+                                                handleMarkerClick
+                                            }
+                                            mapRef={mapRef}
                                         />
                                         <div className="icon-container">
-                                            <div className="icon-item">
-                                                <MapPinIcon className="text-coral" />
-                                                <Heading3 className="map-text">
-                                                    Start
-                                                </Heading3>
-                                            </div>
-                                            <div className="icon-item">
-                                                <DestinationIcon className="text-coral" />
-                                                <Heading3 className="map-text">
-                                                    Mål
-                                                </Heading3>
-                                            </div>
-                                            <div className="icon-item">
-                                                <StandingIcon className="text-coral" />
-                                                <Heading3 className="map-text">
-                                                    Din posisjon
-                                                </Heading3>
-                                            </div>
+                                            {event.startLocation.longitude !==
+                                                undefined &&
+                                                event.startLocation.latitude !==
+                                                    undefined && (
+                                                    <div
+                                                        className="icon-item cursor-pointer flex items-center"
+                                                        onClick={() =>
+                                                            handleMarkerClick(
+                                                                event
+                                                                    .startLocation
+                                                                    .longitude!,
+                                                                event
+                                                                    .startLocation
+                                                                    .latitude!,
+                                                            )
+                                                        }
+                                                    >
+                                                        <MapPinIcon className="text-coral" />
+                                                        <Heading3 className="map-text">
+                                                            Start
+                                                        </Heading3>
+                                                    </div>
+                                                )}
+                                            {event.endLocation[0]?.longitude !==
+                                                undefined &&
+                                                event.endLocation[0]
+                                                    ?.latitude !==
+                                                    undefined && (
+                                                    <div
+                                                        className="icon-item cursor-pointer flex items-center"
+                                                        onClick={() =>
+                                                            handleMarkerClick(
+                                                                event
+                                                                    .endLocation[0]
+                                                                    .longitude!,
+                                                                event
+                                                                    .endLocation[0]
+                                                                    .latitude!,
+                                                            )
+                                                        }
+                                                    >
+                                                        <DestinationIcon className="text-coral" />
+                                                        <Heading3 className="map-text">
+                                                            Mål
+                                                        </Heading3>
+                                                    </div>
+                                                )}
+                                            {currentLocation.longitude !==
+                                                undefined &&
+                                                currentLocation.latitude !==
+                                                    undefined && (
+                                                    <div
+                                                        className="icon-item cursor-pointer flex items-center"
+                                                        onClick={() =>
+                                                            handleMarkerClick(
+                                                                currentLocation.longitude!,
+                                                                currentLocation.latitude!,
+                                                            )
+                                                        }
+                                                    >
+                                                        <StandingIcon className="text-coral" />
+                                                        <Heading3 className="map-text">
+                                                            Din posisjon
+                                                        </Heading3>
+                                                    </div>
+                                                )}
                                         </div>
                                     </Contrast>
                                 </div>
