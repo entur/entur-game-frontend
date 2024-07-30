@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react'
 import { useParams } from 'next/navigation'
-import { Heading1, Heading3 } from '@entur/typography'
+import { Heading1, Heading4 } from '@entur/typography'
 import { Loader } from '@entur/loader'
 import Game from '@/components/Game/Game'
 import { getEventByEventName, Result } from '@/lib/api/eventApi'
@@ -167,10 +167,10 @@ export default function GamePage(): JSX.Element {
                                                             )
                                                         }
                                                     >
-                                                        <MapPinIcon className="text-coral" />
-                                                        <Heading3 className="map-text">
+                                                        <MapPinIcon className="text-lavender" />
+                                                        <Heading4 className="map-text text-lavender">
                                                             Start
-                                                        </Heading3>
+                                                        </Heading4>
                                                     </div>
                                                 )}
                                             {event.endLocation[0]?.longitude !==
@@ -191,10 +191,10 @@ export default function GamePage(): JSX.Element {
                                                             )
                                                         }
                                                     >
-                                                        <DestinationIcon className="text-coral" />
-                                                        <Heading3 className="map-text">
+                                                        <DestinationIcon className="text-lavender" />
+                                                        <Heading4 className="map-text text-lavender">
                                                             Mål
-                                                        </Heading3>
+                                                        </Heading4>
                                                     </div>
                                                 )}
                                             {currentLocation.longitude !==
@@ -210,10 +210,10 @@ export default function GamePage(): JSX.Element {
                                                             )
                                                         }
                                                     >
-                                                        <StandingIcon className="text-coral" />
-                                                        <Heading3 className="map-text">
+                                                        <StandingIcon className="text-lavender" />
+                                                        <Heading4 className="map-text text-lavender">
                                                             Din posisjon
-                                                        </Heading3>
+                                                        </Heading4>
                                                     </div>
                                                 )}
                                         </div>
