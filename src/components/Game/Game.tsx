@@ -309,7 +309,7 @@ function Game({
             </Contrast>
             <div className="grid-demo-item overflow-auto" ref={containerRef}>
                 <Contrast>
-                    <div className="mt-5 xl:mt-14">
+                    <div className="mt-4 2xl:mt-10">
                         <TravelLegStart
                             travelLegs={travelLegs}
                             travelLegsMode={travelLegsMode}
