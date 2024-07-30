@@ -10,7 +10,7 @@ import { Event, StopPlace } from '@/lib/types/types'
 import useSWR from 'swr'
 import { Contrast } from '@entur/layout'
 import VictoryScreen from '@/components/Game/VictoryScreen/VictoryScreen'
-import Map from '../components/Map'
+import MapComponent from '../components/Map'
 import { MapPinIcon, DestinationIcon, StandingIcon } from '@entur/icons'
 import GameStatus from '@/components/GameStatus'
 import DeadScreen from '@/components/Game/DeadScreen'
@@ -128,7 +128,7 @@ export default function GamePage(): JSX.Element {
 
                                 <div className="col-span-2">
                                     <Contrast>
-                                        <Map
+                                        <MapComponent
                                             event={event}
                                             currentPosition={currentLocation}
                                         />
