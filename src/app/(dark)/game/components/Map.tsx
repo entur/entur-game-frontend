@@ -1,9 +1,11 @@
-import { useEffect, useRef, useState } from 'react'
-import mapboxgl from 'mapbox-gl'
+import { useRef, useEffect } from 'react'
+import Map, { Marker, NavigationControl, MapRef } from 'react-map-gl'
+import 'mapbox-gl/dist/mapbox-gl.css'
 import { Event, StopPlace } from '@/lib/types/types'
 import MapPin from '!!raw-loader!@/lib/assets/icons/MapPin.svg'
 import Destination from '!!raw-loader!@/lib/assets/icons/Destination.svg'
 import Standing from '!!raw-loader!@/lib/assets/icons/Standing.svg'
+import mapboxgl from 'mapbox-gl'
 
 const NEXT_PUBLIC_MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
 
@@ -11,141 +13,130 @@ if (!NEXT_PUBLIC_MAPBOX_TOKEN) {
     throw new Error('Mapbox token is not defined')
 }
 
-mapboxgl.accessToken = NEXT_PUBLIC_MAPBOX_TOKEN
-
 type Props = {
     event: Event
     currentPosition: StopPlace
 }
 
-const Map = ({ event, currentPosition }: Props) => {
-    const mapContainerRef = useRef<HTMLDivElement | null>(null)
-    const mapRef = useRef<mapboxgl.Map | null>(null)
-    const [mapLoaded, setMapLoaded] = useState(false)
+const MapComponent = ({ event, currentPosition }: Props) => {
+    const mapRef = useRef<MapRef | null>(null)
 
     useEffect(() => {
-        if (
-            mapContainerRef.current &&
-            currentPosition?.longitude &&
-            currentPosition.latitude
-        ) {
-            const map = new mapboxgl.Map({
-                container: mapContainerRef.current,
-                style: 'mapbox://styles/mapbox/streets-v12',
-                center: [currentPosition.longitude, currentPosition.latitude],
-                zoom: 4,
-                dragRotate: false,
-                pitchWithRotate: false,
-            })
-
-            mapRef.current = map
-
-            map.addControl(
-                new mapboxgl.NavigationControl({ showCompass: false }),
-                'top-right',
-            )
-
-            map.on('load', () => {
-                setMapLoaded(true)
-            })
-
-            return () => {
-                if (mapRef.current) {
-                    mapRef.current.remove()
-                }
-            }
-        }
-    }, [currentPosition])
-
-    useEffect(() => {
-        if (mapLoaded && mapRef.current) {
-            const map = mapRef.current
+        if (mapRef.current && currentPosition && event.endLocation) {
+            const map = mapRef.current.getMap()
             const bounds = new mapboxgl.LngLatBounds()
 
-            if (event.startLocation.longitude && event.startLocation.latitude) {
-                const el = document.createElement('div')
-                el.innerHTML = MapPin
-                el.style.width = '70px'
-                el.style.height = '70px'
-                el.style.display = 'flex'
-                el.style.alignItems = 'flex-end'
-                el.style.justifyContent = 'center'
-
-                new mapboxgl.Marker(el, { anchor: 'bottom' })
-                    .setLngLat([
-                        event.startLocation.longitude,
-                        event.startLocation.latitude,
-                    ])
-                    .addTo(map)
-            }
-
             if (
-                event.endLocation &&
-                event.endLocation[0].longitude &&
-                event.endLocation[0].latitude
+                currentPosition.longitude !== undefined &&
+                currentPosition.latitude !== undefined
             ) {
-                const endEl = document.createElement('div')
-                endEl.innerHTML = Destination
-                endEl.style.width = '70px'
-                endEl.style.height = '70px'
-                endEl.style.display = 'flex'
-                endEl.style.alignItems = 'flex-end'
-                endEl.style.justifyContent = 'center'
-
-                new mapboxgl.Marker(endEl, { anchor: 'bottom' })
-                    .setLngLat([
-                        event.endLocation[0].longitude,
-                        event.endLocation[0].latitude,
-                    ])
-                    .addTo(map)
-
+                bounds.extend([
+                    currentPosition.longitude,
+                    currentPosition.latitude,
+                ])
+            }
+            if (
+                event.endLocation[0]?.longitude !== undefined &&
+                event.endLocation[0]?.latitude !== undefined
+            ) {
                 bounds.extend([
                     event.endLocation[0].longitude,
                     event.endLocation[0].latitude,
                 ])
             }
 
-            if (
-                currentPosition &&
-                currentPosition.latitude &&
-                currentPosition.longitude
-            ) {
-                const currentEl = document.createElement('div')
-                currentEl.innerHTML = Standing
-                currentEl.style.width = '70px'
-                currentEl.style.height = '70px'
-                currentEl.style.display = 'flex'
-                currentEl.style.alignItems = 'flex-end'
-                currentEl.style.justifyContent = 'center'
-
-                new mapboxgl.Marker(currentEl, { anchor: 'bottom' })
-                    .setLngLat([
-                        currentPosition.longitude,
-                        currentPosition.latitude,
-                    ])
-                    .addTo(map)
-
-                bounds.extend([
-                    currentPosition.longitude,
-                    currentPosition.latitude,
-                ])
+            if (bounds.isEmpty()) {
+                return
             }
 
-            if (!bounds.isEmpty()) {
-                map.fitBounds(bounds, {
-                    padding: { top: 100, bottom: 100, left: 50, right: 50 },
-                })
-            }
+            map.fitBounds(bounds, {
+                padding: { top: 100, bottom: 100, left: 50, right: 50 },
+                maxZoom: 15,
+            })
         }
-    }, [
-        mapLoaded,
-        event.startLocation.latitude,
-        event.startLocation.longitude,
-        event.endLocation,
-        currentPosition,
-    ])
+    }, [currentPosition, event.endLocation])
 
-    return <div ref={mapContainerRef} className="map-container" />
+    return (
+        <div className="map-container">
+            <Map
+                ref={mapRef}
+                initialViewState={{
+                    longitude: currentPosition?.longitude || 0,
+                    latitude: currentPosition?.latitude || 0,
+                    zoom: 4,
+                }}
+                style={{ width: '100%', height: '100%' }}
+                mapStyle="mapbox://styles/mapbox/streets-v12"
+                mapboxAccessToken={NEXT_PUBLIC_MAPBOX_TOKEN}
+            >
+                <NavigationControl position="top-right" showCompass={false} />
+
+                {event.startLocation.longitude &&
+                    event.startLocation.latitude && (
+                        <Marker
+                            longitude={event.startLocation.longitude}
+                            latitude={event.startLocation.latitude}
+                            anchor="bottom"
+                        >
+                            <div
+                                dangerouslySetInnerHTML={{ __html: MapPin }}
+                                style={{
+                                    width: '70px',
+                                    height: '70px',
+                                    display: 'flex',
+                                    alignItems: 'flex-end',
+                                    justifyContent: 'center',
+                                }}
+                            />
+                        </Marker>
+                    )}
+
+                {event.endLocation &&
+                    event.endLocation[0]?.longitude &&
+                    event.endLocation[0]?.latitude && (
+                        <Marker
+                            longitude={event.endLocation[0].longitude}
+                            latitude={event.endLocation[0].latitude}
+                            anchor="bottom"
+                        >
+                            <div
+                                dangerouslySetInnerHTML={{
+                                    __html: Destination,
+                                }}
+                                style={{
+                                    width: '70px',
+                                    height: '70px',
+                                    display: 'flex',
+                                    alignItems: 'flex-end',
+                                    justifyContent: 'center',
+                                }}
+                            />
+                        </Marker>
+                    )}
+
+                {currentPosition &&
+                    currentPosition.latitude &&
+                    currentPosition.longitude && (
+                        <Marker
+                            longitude={currentPosition.longitude}
+                            latitude={currentPosition.latitude}
+                            anchor="bottom"
+                        >
+                            <div
+                                dangerouslySetInnerHTML={{ __html: Standing }}
+                                style={{
+                                    width: '70px',
+                                    height: '70px',
+                                    display: 'flex',
+                                    alignItems: 'flex-end',
+                                    justifyContent: 'center',
+                                }}
+                            />
+                        </Marker>
+                    )}
+            </Map>
+        </div>
+    )
 }
 
-export default Map
+export default MapComponent
