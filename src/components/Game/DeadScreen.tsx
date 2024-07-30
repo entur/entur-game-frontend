@@ -30,9 +30,9 @@ function DeadScreen(): JSX.Element {
                         Du rakk dessverre ikke fram til mål i tide
                     </Heading2>
                     <Image
-                        className="xl:mb-16 xl:mt-10 lg:mt-5 lg:mb-5 md:mt-3 md:mb-3 xl:w-[500px] lg:w-80 md:w-48"
+                        className="mt-3 mb-3 lg:mt-5 lg:mb-5 xl:mb-16 xl:mt-10 w-48 lg:w-80 xl:w-[500px]"
                         src={Ripped_Ticket}
-                        alt="ticket"
+                        alt="ripped ticket"
                         width={500}
                         style={{ height: 'auto' }}
                         priority={true}
