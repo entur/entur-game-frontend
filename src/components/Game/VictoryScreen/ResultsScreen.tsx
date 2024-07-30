@@ -2,7 +2,6 @@
 
 import { Heading1, Heading2, Heading3 } from '@entur/typography'
 import React, { useState, useEffect } from 'react'
-import { Contrast } from '@entur/layout'
 import { Event } from '@/lib/types/types'
 import {
     DataCell,
@@ -58,9 +57,9 @@ function ResultsScreen({
     const closeModal = () => setModalOpen(false)
 
     return (
-        <Contrast className="text-center relative">
+        <div className="text-center relative">
             <Heading1>Resultater</Heading1>
-            <div className="relative w-full mt-8">
+            <div className="relative w-full mt-4 2xl:mt-8">
                 <div className="flex justify-center">
                     <Image
                         src={Ticket}
@@ -75,7 +74,7 @@ function ResultsScreen({
                 <Heading1 className="absolute inset-x-0 right-12 top-24 text-4xl text-coral transform rotate-6">
                     poeng
                 </Heading1>
-                <Heading2>
+                <Heading2 className="-mt-2 2xl:mt-8">
                     Din plassering: <span className="text-coral">{rank}</span>
                 </Heading2>
             </div>
@@ -146,7 +145,7 @@ function ResultsScreen({
                         </div>
                         <br />
                         <br />
-                        <div className="flex justify-center mt-4 gap-4">
+                        <div className="flex justify-center -mt-2 2xl:mt-4 gap-4">
                             <SecondaryButton onClick={openModal}>
                                 Avslutt uten å lagre
                             </SecondaryButton>
@@ -196,7 +195,7 @@ function ResultsScreen({
                     </div>
                 </Modal>
             )}
-        </Contrast>
+        </div>
     )
 }
 

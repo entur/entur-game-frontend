@@ -46,7 +46,7 @@ export function SplashScreen(): JSX.Element {
                     alt="entur partner"
                     width={800}
                 />
-                <LeadParagraph className="mt-0 2xl:mt-8 text-white font-normal text-center">
+                <LeadParagraph className="mt-0 xl:mt-8 text-white font-normal text-center">
                     Kommer du i mål før billetten din utløper?
                     <br />
                     Kortere reisetid gir mer poeng.
@@ -55,7 +55,7 @@ export function SplashScreen(): JSX.Element {
                 </LeadParagraph>
                 <div className="mt-4 2xl:mt-12 w-80 mx-auto">
                     <Button
-                        className="font-semibold w-full h-12 2xl:h-16"
+                        className="font-semibold w-full h-12 xl:h-16"
                         onClick={handleClick}
                         variant="success"
                         loading={loading}
