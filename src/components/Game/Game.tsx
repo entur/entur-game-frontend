@@ -317,7 +317,7 @@ function Game({
                         />
                     </div>
                 </Contrast>
-                <div className="mt-5 ml-9 xl:mr-4 xl:ml-12">
+                <div className="mt-4 ml-9 xl:mr-4 xl:ml-12">
                     <TransportTypePicker
                         currentTime={currentTime}
                         isLoading={isLoading}
@@ -331,14 +331,14 @@ function Game({
                     />
                 </div>
                 <Contrast>
-                    <div className="mt-5 xl:mt-14">
+                    <div className="mt-4">
                         <TravelLegFinished endLocation={endLocation} />
                     </div>
                 </Contrast>
             </div>
             <Contrast>
                 <SecondaryButton
-                    className="sm:mt-28 mt-30 mb-10 sm:place-self-start place-self-center"
+                    className="mt-12 mb-10 sm:place-self-start place-self-center"
                     onClick={() => router.push('/')}
                 >
                     Avslutt reise

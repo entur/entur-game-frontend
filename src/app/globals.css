@@ -133,7 +133,7 @@ fieldset {
 }
 
 .grid-demo-item {
-    max-height: 50vh;
+    max-height: 60vh;
     overflow: auto;
     margin-top: 1rem;
 }
