@@ -155,7 +155,7 @@ export default function GamePage(): JSX.Element {
                                                 event.startLocation.latitude !==
                                                     undefined && (
                                                     <div
-                                                        className="icon-item"
+                                                        className="icon-item cursor-pointer flex items-center"
                                                         onClick={() =>
                                                             handleMarkerClick(
                                                                 event
@@ -179,7 +179,7 @@ export default function GamePage(): JSX.Element {
                                                     ?.latitude !==
                                                     undefined && (
                                                     <div
-                                                        className="icon-item"
+                                                        className="icon-item cursor-pointer flex items-center"
                                                         onClick={() =>
                                                             handleMarkerClick(
                                                                 event
@@ -202,7 +202,7 @@ export default function GamePage(): JSX.Element {
                                                 currentLocation.latitude !==
                                                     undefined && (
                                                     <div
-                                                        className="icon-item"
+                                                        className="icon-item cursor-pointer flex items-center"
                                                         onClick={() =>
                                                             handleMarkerClick(
                                                                 currentLocation.longitude!,
