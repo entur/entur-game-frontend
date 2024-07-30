@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react'
 export function SplashScreen(): JSX.Element {
     const router = useRouter()
     const [activeEventName, setActiveEventName] = useState<string | null>(null)
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         const getActiveEventName = async () => {
@@ -22,6 +23,11 @@ export function SplashScreen(): JSX.Element {
         }
         getActiveEventName()
     }, [])
+
+    const handleClick = () => {
+        setLoading(true)
+        router.push(`/game/${activeEventName}`)
+    }
 
     return (
         <div className="flex flex-col items-center justify-between min-h-screen text-white">
@@ -50,8 +56,9 @@ export function SplashScreen(): JSX.Element {
                 <div className="mt-4 2xl:mt-12 w-80 mx-auto">
                     <Button
                         className="font-semibold w-full h-12 xl:h-16"
-                        onClick={() => router.push(`/game/${activeEventName}`)}
+                        onClick={handleClick}
                         variant="success"
+                        loading={loading}
                     >
                         Jeg er klar!
                     </Button>
