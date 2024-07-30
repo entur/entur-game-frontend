@@ -9,8 +9,8 @@ common:
         internalPort: 3000
     container:
         image: <+artifacts.primary.image>
-        cpu: 0.10
-        memory: 44
+        cpu: 0.30
+        memory: 512
         replicas: 2
         probes:
             liveness:
