@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import { ChoiceChipGroup } from '@entur/chip'
 import { SleepIcon } from '@entur/icons'
 import { QueryMode } from '@entur/sdk'
-import { Heading2, Heading4, Paragraph } from '@entur/typography'
+import { Heading3, Heading4, Paragraph } from '@entur/typography'
 import { StopPlace } from '@/lib/types/types'
 import { getModeIcon, getModeTranslation } from '@/lib/utils/transportMapper'
 import { Loader } from '@entur/loader'
@@ -37,10 +37,10 @@ function TransportTypePicker({
         <div className="bg-blue-20 text-white border-2 border-blue-20 shadow-sm rounded-sm pl-10 pb-8 pr-10">
             {stopPlace && (
                 <>
-                    <Heading2 className="text-white">
+                    <Heading3 className="text-white">
                         Velg transportmåte fra{' '}
                         <span className="text-coral">{stopPlace.name}</span>
-                    </Heading2>
+                    </Heading3>
                     <Heading4 margin="none" className="text-white select-none">
                         Klokken er:{' '}
                         <span className="text-coral">
