@@ -76,8 +76,8 @@ const MapComponent = ({ event, currentPosition }: Props) => {
             const map = mapRef.current.getMap()
             map.flyTo({
                 center: [longitude, latitude],
-                zoom: 15,
-                speed: 0.5,
+                zoom: 12,
+                speed: 2,
             })
         }
     }
