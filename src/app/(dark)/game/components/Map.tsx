@@ -78,7 +78,7 @@ const MapComponent = ({
     }, [mapLoaded, currentPosition, event.endLocation, mapRef])
 
     return (
-        <div className="map-container">
+        <div className="map-container rounded-lg overflow-hidden">
             <Map
                 ref={mapRef}
                 initialViewState={{
