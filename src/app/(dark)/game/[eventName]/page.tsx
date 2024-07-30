@@ -67,8 +67,8 @@ export default function GamePage(): JSX.Element {
             const map = mapRef.current.getMap()
             map.flyTo({
                 center: [longitude, latitude],
-                zoom: 12, // Lower zoom level
-                speed: 2, // Faster animation
+                zoom: 12,
+                speed: 2,
             })
         }
     }

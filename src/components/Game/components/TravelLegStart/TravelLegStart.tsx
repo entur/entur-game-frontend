@@ -17,7 +17,6 @@ function TravelLegStart({
     travelLegsMode,
     usedDepartures,
 }: Props): ReactElement {
-    // Show only one travel leg if there is only one
     if (travelLegs.length === 1) {
         return (
             <div className="flex flex-row">
@@ -72,7 +71,6 @@ function TravelLegStart({
                         </div>
                     </div>
                 ) : (
-                    // Last travel leg
                     <div
                         key={generateKey(travelLeg.id)}
                         className="flex flex-row"
