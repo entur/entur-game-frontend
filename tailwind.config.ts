@@ -20,6 +20,7 @@ const config: Config = {
             white: colors.brand.white,
             black: colors.misc.black,
             coral: colors.brand.coral,
+            lavender: colors.brand.lavender,
         },
         backgroundColor: {
             // Background colors
