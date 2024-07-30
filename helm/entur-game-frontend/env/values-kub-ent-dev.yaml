@@ -4,7 +4,7 @@ common:
         host: entur-game.dev.entur.org
     container:
         env:
-            - name: apiUrl
+            - name: API_URL
               value: 'http://localhost:8080'
             - name: gcloud_logging
               value: 'true'

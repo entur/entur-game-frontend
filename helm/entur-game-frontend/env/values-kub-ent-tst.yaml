@@ -4,7 +4,7 @@ common:
         host: entur-game.staging.entur.org
     container:
         env:
-            - name: apiUrl
+            - name: API_URL
               value: 'https://api.staging.entur.io/entur-game-backend/v1'
             - name: gcloud_logging
               value: 'true'
