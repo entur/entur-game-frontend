@@ -71,6 +71,17 @@ const MapComponent = ({ event, currentPosition }: Props) => {
         }
     }, [mapLoaded, currentPosition, event.endLocation])
 
+    const handleMarkerClick = (longitude: number, latitude: number) => {
+        if (mapRef.current) {
+            const map = mapRef.current.getMap()
+            map.flyTo({
+                center: [longitude, latitude],
+                zoom: 15,
+                speed: 0.5,
+            })
+        }
+    }
+
     return (
         <div className="map-container">
             <Map
@@ -86,12 +97,18 @@ const MapComponent = ({ event, currentPosition }: Props) => {
             >
                 <NavigationControl position="top-right" showCompass={false} />
 
-                {event.startLocation.longitude &&
-                    event.startLocation.latitude && (
+                {event.startLocation.longitude !== undefined &&
+                    event.startLocation.latitude !== undefined && (
                         <Marker
                             longitude={event.startLocation.longitude}
                             latitude={event.startLocation.latitude}
                             anchor="bottom"
+                            onClick={() =>
+                                handleMarkerClick(
+                                    event.startLocation.longitude!,
+                                    event.startLocation.latitude!,
+                                )
+                            }
                         >
                             <div
                                 dangerouslySetInnerHTML={{ __html: MapPin }}
@@ -101,18 +118,25 @@ const MapComponent = ({ event, currentPosition }: Props) => {
                                     display: 'flex',
                                     alignItems: 'flex-end',
                                     justifyContent: 'center',
+                                    cursor: 'pointer',
                                 }}
                             />
                         </Marker>
                     )}
 
                 {event.endLocation &&
-                    event.endLocation[0]?.longitude &&
-                    event.endLocation[0]?.latitude && (
+                    event.endLocation[0]?.longitude !== undefined &&
+                    event.endLocation[0]?.latitude !== undefined && (
                         <Marker
                             longitude={event.endLocation[0].longitude}
                             latitude={event.endLocation[0].latitude}
                             anchor="bottom"
+                            onClick={() =>
+                                handleMarkerClick(
+                                    event.endLocation[0].longitude!,
+                                    event.endLocation[0].latitude!,
+                                )
+                            }
                         >
                             <div
                                 dangerouslySetInnerHTML={{
@@ -124,18 +148,25 @@ const MapComponent = ({ event, currentPosition }: Props) => {
                                     display: 'flex',
                                     alignItems: 'flex-end',
                                     justifyContent: 'center',
+                                    cursor: 'pointer',
                                 }}
                             />
                         </Marker>
                     )}
 
                 {currentPosition &&
-                    currentPosition.latitude &&
-                    currentPosition.longitude && (
+                    currentPosition.latitude !== undefined &&
+                    currentPosition.longitude !== undefined && (
                         <Marker
                             longitude={currentPosition.longitude}
                             latitude={currentPosition.latitude}
                             anchor="bottom"
+                            onClick={() =>
+                                handleMarkerClick(
+                                    currentPosition.longitude!,
+                                    currentPosition.latitude!,
+                                )
+                            }
                         >
                             <div
                                 dangerouslySetInnerHTML={{ __html: Standing }}
@@ -145,6 +176,7 @@ const MapComponent = ({ event, currentPosition }: Props) => {
                                     display: 'flex',
                                     alignItems: 'flex-end',
                                     justifyContent: 'center',
+                                    cursor: 'pointer',
                                 }}
                             />
                         </Marker>
