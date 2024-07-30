@@ -7,6 +7,7 @@ const nextConfig = {
     removeConsole: false,
   },
   async rewrites() {
+    console.log('process.env.apiUrl', process.env.API_URL)
     return [
       {
         source: '/api/auth/:path*',
