@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import Map, { Marker, NavigationControl, MapRef } from 'react-map-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { Event, StopPlace } from '@/lib/types/types'
@@ -20,9 +20,24 @@ type Props = {
 
 const MapComponent = ({ event, currentPosition }: Props) => {
     const mapRef = useRef<MapRef | null>(null)
+    const [mapLoaded, setMapLoaded] = useState(false)
 
     useEffect(() => {
-        if (mapRef.current && currentPosition && event.endLocation) {
+        const checkMapLoaded = setInterval(() => {
+            if (mapRef.current) {
+                setMapLoaded(true)
+                clearInterval(checkMapLoaded)
+            }
+        }, 100)
+    }, [])
+
+    useEffect(() => {
+        if (
+            mapLoaded &&
+            mapRef.current &&
+            currentPosition &&
+            event.endLocation
+        ) {
             const map = mapRef.current.getMap()
             const bounds = new mapboxgl.LngLatBounds()
 
@@ -54,7 +69,7 @@ const MapComponent = ({ event, currentPosition }: Props) => {
                 maxZoom: 15,
             })
         }
-    }, [currentPosition, event.endLocation])
+    }, [mapLoaded, currentPosition, event.endLocation])
 
     return (
         <div className="map-container">
