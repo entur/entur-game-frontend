@@ -39,7 +39,7 @@ export async function getInactiveEvents(): Promise<BackendEvent[] | null> {
 
 export async function endActiveEvent(): Promise<Result<string>> {
     try {
-        const response = await fetch(`${baseUrl}/end-event`, {
+        const response = await fetch(`api/end-event`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -155,7 +155,7 @@ export async function getEventByEventName(
 
 export async function createEvent(event: BackendEvent): Promise<Response> {
     try {
-        const response = await fetch(`${baseUrl}/new-event`, {
+        const response = await fetch(`api/new-event`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -182,7 +182,7 @@ export async function createEvent(event: BackendEvent): Promise<Response> {
 
 export async function deleteEvent(eventId: number): Promise<Result<string>> {
     try {
-        const response = await fetch(`${baseUrl}/delete/${eventId}`, {
+        const response = await fetch(`api/delete/${eventId}`, {
             method: 'DELETE',
         })
 
