@@ -90,7 +90,7 @@ function TransportTypePicker({
                                             disabled={disabled || isLoading}
                                         >
                                             {getModeIcon(mode)}
-                                            <Paragraph className="pt-1 pb-0">
+                                            <Paragraph className="pb-0">
                                                 {getModeTranslation(mode)}
                                             </Paragraph>
                                         </FloatingButton>
