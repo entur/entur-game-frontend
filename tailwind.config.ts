@@ -56,6 +56,10 @@ const config: Config = {
             fontSize: {
                 '55': '55px',
             },
+            screens: {
+                'zoom-125': { raw: '(min-device-pixel-ratio: 1.25)' },
+                'zoom-150': { raw: '(min-device-pixel-ratio: 1.5)' },
+            },
         },
     },
     plugins: [],

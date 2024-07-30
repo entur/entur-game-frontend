@@ -19,9 +19,9 @@ function DeadScreen(): JSX.Element {
     return (
         <>
             <Contrast>
-                <div className="flex flex-col items-center w-full">
+                <div className="flex flex-col items-center w-full min-h-full">
                     <Heading1
-                        className="text-coral mb-10 text-55"
+                        className="text-coral lg:mb-10 text-55 sm:mb-5"
                         margin="none"
                     >
                         Ånei! Billetten din er utløpt!
@@ -30,9 +30,9 @@ function DeadScreen(): JSX.Element {
                         Du rakk dessverre ikke fram til mål i tide
                     </Heading2>
                     <Image
-                        className="mb-16 mt-10"
+                        className="xl:mb-16 xl:mt-10 lg:mt-5 lg:mb-5 md:mt-3 md:mb-3 xl:w-[500px] lg:w-80 md:w-48"
                         src={Ripped_Ticket}
-                        alt="entur partner"
+                        alt="ticket"
                         width={500}
                         style={{ height: 'auto' }}
                         priority={true}
