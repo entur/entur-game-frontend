@@ -30,7 +30,7 @@ export function TravelLegTag({
         transportMode === 'coach' ? 'bus' : transportMode
 
     return (
-        <div className="w-20 [&>*]:w-full mr-2">
+        <div className="[&>*]:w-full mr-2">
             <TravelTag
                 transport={
                     (correctedTransportMode as TravelLegProps['transport']) ??

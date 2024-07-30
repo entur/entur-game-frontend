@@ -56,6 +56,7 @@ const InactiveEventsList: React.FC = (): JSX.Element => {
                     <BaseCard
                         key={event.eventId}
                         className="mb-4 max-h-20 flex-1 min-w-[200px] max-w-[480px] h-[80px] p-4 cursor-pointer hover:bg-gray-200 transform hover:-translate-y-0.5 transition-all duration-200 hover:shadow-lg"
+                        onClick={() => handleNavigateLeaderboard(event.eventId)}
                     >
                         <TravelHeader
                             className="max-w-full"
@@ -63,9 +64,6 @@ const InactiveEventsList: React.FC = (): JSX.Element => {
                             from={event.startLocationName}
                             to={event.endLocationNames[0] || ''}
                             noWrap={true}
-                            onClick={() =>
-                                handleNavigateLeaderboard(event.eventId)
-                            }
                         />
                     </BaseCard>
                     <Modal
