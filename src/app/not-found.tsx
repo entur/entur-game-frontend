@@ -7,7 +7,7 @@ export default function NotFound() {
                 404
             </Heading1>
             <LeadParagraph className="text-white">
-                Her var det ingenting!
+                Beklager, vi finner ikke siden du ser etter
             </LeadParagraph>
         </div>
     )
