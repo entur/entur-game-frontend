@@ -113,7 +113,8 @@ function Game({
                 Number(event.startTime[1]) - 1,
                 Number(event.startTime[2]),
                 Number(event.startTime[3]),
-                Number(event.startTime[4]),
+                Number(event.startTime?.[4]) || 0,
+                Number(event.startTime?.[5]) || 0,
             ).toISOString(),
             numTripPatterns: 1,
             modes: {
