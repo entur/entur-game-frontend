@@ -10,7 +10,7 @@ export default function DarkModeLayout({
 }>) {
     return (
         <div className="bg-blue-main flex flex-col w-screen min-h-screen">
-            <Link href="/" className="pt-10 ml-5 mr-20">
+            <Link href="/" className="pt-5 ml-5 mr-20">
                 <Image
                     className="cursor-pointer"
                     src={LightLogo}
