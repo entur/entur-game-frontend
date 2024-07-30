@@ -23,10 +23,10 @@ function CongratulationsScreen({
         <Contrast className="text-center">
             <Heading1>Gratulerer, du er fremme!</Heading1>
             <div className="relative w-full mt-8">
-                <Heading1 className="absolute inset-x-0 right-12 2xl:right-16 top-36 2xl:top-44 text-7xl 2xl:text-8xl text-coral transform rotate-6">
+                <Heading1 className="absolute inset-x-0 right-12 2xl:right-16 top-28 xl:top-36 2xl:top-44 text-6xl xl:text-7xl 2xl:text-8xl text-coral transform rotate-6">
                     {scoreValue}
                 </Heading1>
-                <Heading1 className="absolute inset-x-0 right-16 2xl:right-20 top-52 2xl:top-64 text-5xl 2xl:text-6xl text-coral transform rotate-6">
+                <Heading1 className="absolute inset-x-0 right-16 2xl:right-20 top-40 xl:top-52 2xl:top-64 text-5xl 2xl:text-6xl text-coral transform rotate-6">
                     poeng
                 </Heading1>
                 <Image
