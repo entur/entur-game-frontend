@@ -19,10 +19,6 @@ const ProtectedComponents = ({ children }: { children: ReactNode }) => {
         return <Loader className="m-auto">Laster...</Loader>
     }
 
-    if (!isAuthenticated) {
-        return <div>You are not authorized to view this content.</div>
-    }
-
     return <>{children}</>
 }
 
