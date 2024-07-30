@@ -338,7 +338,7 @@ function Game({
             </div>
             <Contrast>
                 <SecondaryButton
-                    className="mt-12 mb-10 sm:place-self-start place-self-center"
+                    className="mt-12 mb-4 sm:place-self-start place-self-center"
                     onClick={() => router.push('/')}
                 >
                     Avslutt reise
