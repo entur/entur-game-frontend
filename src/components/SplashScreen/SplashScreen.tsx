@@ -25,7 +25,7 @@ export function SplashScreen(): JSX.Element {
 
     return (
         <div className="flex flex-col items-center justify-between min-h-screen text-white">
-            <div className="mt-8 text-center">
+            <div className="mt-4 2xl:mt-8 text-center">
                 <SubParagraph className="text-white font-normal">
                     <a href="/admin" className="text-blue-500 underline">
                         Trykk her
@@ -33,23 +33,23 @@ export function SplashScreen(): JSX.Element {
                     for å logge inn som admin
                 </SubParagraph>
             </div>
-            <div className="mt-20 text-center">
+            <div className="mt-12 2xl:mt-20 text-center">
                 <Image
-                    className="cursor-pointer"
+                    className="cursor-pointer max-w-md xl:max-w-lg 2xl:max-w-2xl"
                     src={Entur_logo_contrast}
                     alt="entur partner"
                     width={800}
                 />
-                <LeadParagraph className="mt-8 text-white font-normal text-center">
+                <LeadParagraph className="mt-0 2xl:mt-8 text-white font-normal text-center">
                     Kommer du i mål før billetten din utløper?
                     <br />
                     Kortere reisetid gir mer poeng.
                     <br />
                     Klarer du å slå Enturs reiseplanlegger?
                 </LeadParagraph>
-                <div className="mt-12 w-80 mx-auto">
+                <div className="mt-4 2xl:mt-12 w-80 mx-auto">
                     <Button
-                        className="font-semibold w-full h-16"
+                        className="font-semibold w-full h-12 2xl:h-16"
                         onClick={() => router.push(`/game/${activeEventName}`)}
                         variant="success"
                     >

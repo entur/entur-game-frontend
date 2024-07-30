@@ -109,26 +109,20 @@ const DepartureTable = ({
                                 </TravelTag>
                             </DataCell>
                             <DataCell>
-                                <SubParagraph>
-                                    {departure.destinationDisplay.frontText}
-                                </SubParagraph>
+                                {departure.destinationDisplay.frontText}
                             </DataCell>
                             <DataCell>
-                                <SubParagraph>
-                                    {formatTime(
-                                        departure.expectedDepartureTime,
-                                    )}
-                                </SubParagraph>
+                                {formatTime(departure.expectedDepartureTime)}
                             </DataCell>
                             <DataCell>
                                 <SecondaryButton
-                                    size="small"
+                                    size="medium"
                                     onClick={() => {
                                         selectDeparture(departure)
                                         setPickedDeparture(departure)
                                     }}
                                 >
-                                    <span className="flex items-center">
+                                    <span className="inline-flex items-center justify-center">
                                         Velg
                                         <ForwardIcon className="ml-2 mb-1.5 relative" />
                                     </span>

@@ -42,7 +42,7 @@ export const DepartureAndOnLinePickerModal = ({
                     setModalOpen(false)
                 }}
                 title=""
-                size="large"
+                size="extraLarge"
             >
                 {departures?.length ? (
                     <DepartureTable
