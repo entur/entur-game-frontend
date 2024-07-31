@@ -3,8 +3,8 @@ import { PrimaryButton } from '@entur/button'
 import React from 'react'
 import { Contrast } from '@entur/layout'
 import { ForwardIcon } from '@entur/icons'
-import Framme_background from '@/lib/assets/images/Framme_Background.svg'
-import Framme_Ticket from '@/lib/assets/images/Framme_Ticket.svg'
+import Congratulations_background from '@/lib/assets/images/Congratulations_background.svg'
+import Congratulations_ticket from '@/lib/assets/images/Congratulations_ticket.svg'
 import Image from 'next/image'
 import { Screen } from './VictoryScreen'
 
@@ -24,7 +24,7 @@ function CongratulationsScreen({
             <div className="relative w-full mt-8">
                 <div className="relative">
                     <Image
-                        src={Framme_Ticket}
+                        src={Congratulations_ticket}
                         alt="entur partner"
                         width={360}
                         className="absolute inset-x-0 mx-auto -top-4 xl:top-8 2xl:top-20"
@@ -37,7 +37,7 @@ function CongratulationsScreen({
                     </Heading1>
                 </div>
                 <Image
-                    src={Framme_background}
+                    src={Congratulations_background}
                     alt="entur partner"
                     width={2000}
                     className="my-4"
