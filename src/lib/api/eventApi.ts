@@ -1,27 +1,27 @@
 import { BackendEvent, Event } from '../types/types'
 import { StopPlace } from '../types/types'
 import { fetchStopPlace, fetchStopPlaceChildren } from './stopPlaceApi'
-import { baseUrl } from '@/config'
+import { BASE_URL } from '@/constants'
 
 export type Result<T> =
     | { success: true; data: T }
     | { success: false; error: string }
 
 export async function getAllEvents(): Promise<BackendEvent[] | null> {
-    const response = await fetch(`${baseUrl}/event/all`)
+    const response = await fetch(`${BASE_URL}/event/all`)
     if (response.status !== 200) return null
     return response.json()
 }
 
 export async function getActiveEvent(): Promise<BackendEvent | null> {
-    const response = await fetch(`${baseUrl}/event/active`)
+    const response = await fetch(`${BASE_URL}/event/active`)
     if (response.status !== 200) return null
     return response.json()
 }
 
 export async function getInactiveEvents(): Promise<BackendEvent[] | null> {
     try {
-        const response = await fetch(`${baseUrl}/event/inactive`)
+        const response = await fetch(`${BASE_URL}/event/inactive`)
 
         if (!response.ok) {
             console.error(
@@ -39,7 +39,7 @@ export async function getInactiveEvents(): Promise<BackendEvent[] | null> {
 
 export async function endActiveEvent(): Promise<Result<string>> {
     try {
-        const response = await fetch(`${baseUrl}/end-event`, {
+        const response = await fetch(`${BASE_URL}/end-event`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -59,7 +59,7 @@ export async function endActiveEvent(): Promise<Result<string>> {
 
 export const getEventById = async (eventId: number) => {
     try {
-        const response = await fetch(`${baseUrl}/event/id/${eventId}`)
+        const response = await fetch(`${BASE_URL}/event/id/${eventId}`)
         if (response.status !== 200) {
             throw new Error('Network response not okay')
         }
@@ -72,7 +72,7 @@ export const getEventById = async (eventId: number) => {
 }
 
 export async function updateActiveEvent(gameId: number): Promise<Event> {
-    const response = await fetch(`${baseUrl}/event/active/${gameId}`, {
+    const response = await fetch(`${BASE_URL}/event/active/${gameId}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -86,7 +86,7 @@ export async function getBackendEventByEventName(
     eventName: string,
 ): Promise<Result<BackendEvent>> {
     try {
-        const response = await fetch(`${baseUrl}/event/name/${eventName}`)
+        const response = await fetch(`${BASE_URL}/event/name/${eventName}`)
         if (response.status !== 200) {
             return { success: false, error: 'Failed to fetch event' }
         }
@@ -155,7 +155,7 @@ export async function getEventByEventName(
 
 export async function createEvent(event: BackendEvent): Promise<Response> {
     try {
-        const response = await fetch(`${baseUrl}/new-event`, {
+        const response = await fetch(`${BASE_URL}/new-event`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -182,7 +182,7 @@ export async function createEvent(event: BackendEvent): Promise<Response> {
 
 export async function deleteEvent(eventId: number): Promise<Result<string>> {
     try {
-        const response = await fetch(`${baseUrl}/delete/${eventId}`, {
+        const response = await fetch(`${BASE_URL}/delete/${eventId}`, {
             method: 'DELETE',
         })
 
@@ -210,7 +210,7 @@ export async function saveWinner(
             playerId: playerId !== undefined ? playerId : null,
         }
 
-        const response = await fetch(`${baseUrl}/save-winner`, {
+        const response = await fetch(`${BASE_URL}/save-winner`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

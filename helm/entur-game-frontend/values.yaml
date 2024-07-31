@@ -25,4 +25,3 @@ common:
             - AZURE_AD_CLIENT_SECRET
             - AZURE_AD_TENANT_ID
             - NEXTAUTH_SECRET
-            - NEXT_PUBLIC_MAPBOX_TOKEN
