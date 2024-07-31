@@ -9,8 +9,6 @@ export const ENVIRONMENT: 'PROD' | 'STAGING' | 'LOCAL' = (() => {
     }
 })()
 
-export const baseUrl = '/proxy-api/entur-game-backend/v1'
-
 export const MAP_BOX_TOKEN = (() => {
     const ENV_MAP_BOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
 

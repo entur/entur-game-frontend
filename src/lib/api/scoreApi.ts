@@ -1,8 +1,8 @@
 import { PlayerScore } from '@/lib/types/types'
-import { baseUrl } from '@/config'
+import { BASE_URL } from '@/constants'
 
 export async function saveScore(playerScore: PlayerScore): Promise<Response> {
-    const response = await fetch(`${baseUrl}/score/save`, {
+    const response = await fetch(`${BASE_URL}/score/save`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -13,14 +13,14 @@ export async function saveScore(playerScore: PlayerScore): Promise<Response> {
 }
 
 export async function getActiveScores(): Promise<PlayerScore[] | null> {
-    const response = await fetch(`${baseUrl}/score/active`)
+    const response = await fetch(`${BASE_URL}/score/active`)
     if (response.status !== 200) return null
     return await response.json()
 }
 
 export async function getScoresByEventId(eventId: number) {
     try {
-        const response = await fetch(`${baseUrl}/score/event/${eventId}`)
+        const response = await fetch(`${BASE_URL}/score/event/${eventId}`)
         if (response.status !== 200) {
             console.error('Network response not okay')
         }
