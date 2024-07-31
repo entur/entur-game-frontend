@@ -37,6 +37,18 @@ const InactiveEventsList: React.FC = (): JSX.Element => {
         )
     }
 
+    if (events.length === 0) {
+        return (
+            <BannerAlertBox
+                className="w-[640px]"
+                title="Du har ingen tidligere spill"
+                variant="information"
+            >
+                Når du avslutter aktive spill havner de her
+            </BannerAlertBox>
+        )
+    }
+
     const handleNavigateLeaderboard = (eventId: number | undefined) => {
         if (router && eventId !== undefined) {
             router.push(`/admin/leaderboard/${eventId}`)
