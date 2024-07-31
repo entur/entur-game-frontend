@@ -9,14 +9,14 @@ import { BannerAlertBox, SmallAlertBox } from '@entur/alert'
 import useScores from '@/lib/hooks/useScores'
 import { Button } from '@entur/button'
 import { endActiveEvent } from '@/lib/api/eventApi'
-import { WinnerWarningModal } from './winnerWarningModal'
+import { WinnerWarningModal } from './WinnerWarningModal'
 import {
     handleDismiss,
     handleDrawWinnerAndEndGame,
 } from '@/lib/utils/handleWinner'
 import { Paragraph } from '@entur/typography'
 import { Modal } from '@entur/modal'
-import { WinnerModal } from './winnerModal'
+import { WinnerModal } from './WinnerModal'
 
 const CompactLeaderboardPage: React.FC = (): JSX.Element => {
     const { eventName, isEventNameError, setEventNameError } = useEventName()
