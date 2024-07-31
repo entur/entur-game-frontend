@@ -6,10 +6,9 @@ import MapPin from '!!raw-loader!@/lib/assets/icons/MapPin.svg'
 import Destination from '!!raw-loader!@/lib/assets/icons/Destination.svg'
 import Standing from '!!raw-loader!@/lib/assets/icons/Standing.svg'
 import mapboxgl from 'mapbox-gl'
+import { MAP_BOX_TOKEN } from '@/config'
 
-const NEXT_PUBLIC_MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
-
-if (!NEXT_PUBLIC_MAPBOX_TOKEN) {
+if (!MAP_BOX_TOKEN) {
     throw new Error('Mapbox token is not defined')
 }
 
@@ -88,7 +87,7 @@ const MapComponent = ({
                 }}
                 style={{ width: '100%', height: '100%' }}
                 mapStyle="mapbox://styles/mapbox/streets-v12"
-                mapboxAccessToken={NEXT_PUBLIC_MAPBOX_TOKEN}
+                mapboxAccessToken={MAP_BOX_TOKEN}
             >
                 <NavigationControl position="top-right" showCompass={false} />
 
