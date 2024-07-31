@@ -38,7 +38,6 @@ const useScores = (): UseScoresReturnType => {
         }
         getScores()
     }, [])
-
     return { scores, leader, showAlert, setShowAlert }
 }
 

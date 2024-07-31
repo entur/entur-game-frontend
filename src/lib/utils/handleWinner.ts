@@ -1,7 +1,7 @@
 import { saveWinner, endActiveEvent } from '@/lib/api/eventApi'
 import { PlayerScore } from '../types/types'
 
-export const handleDrawWinnerAndEndGame = async (
+export const endGame = async (
     scores: PlayerScore[],
     setShowAlert: (show: boolean) => void,
     eventName: string | null,
@@ -17,7 +17,6 @@ export const handleDrawWinnerAndEndGame = async (
 
     setWinnerEndOpen(false)
     setModalOpen(true)
-
     if (!eventName || !leader?.player?.playerId) {
         setSaveWinnerError(true)
         return
@@ -36,4 +35,18 @@ export const handleDismiss = (
     setModalOpen(false)
     setEventNameError(true)
     window.location.reload()
+}
+
+export function calculateWinner(scores: PlayerScore[]) {
+    const sortedScores = scores.sort(
+        (a, b) =>
+            b.scoreValue - a.scoreValue ||
+            -(a.totalStepNumber - b.totalStepNumber),
+    )
+
+    const highestScore = sortedScores[0].scoreValue
+    const topScorers = sortedScores.filter(
+        (score) => score.scoreValue === highestScore,
+    )
+    return topScorers[Math.floor(Math.random() * topScorers.length)]
 }

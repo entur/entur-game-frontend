@@ -6,11 +6,11 @@ import { Button, SecondaryButton } from '@entur/button'
 export const WinnerWarningModal = ({
     isWinnerEndOpen,
     setWinnerEndOpen,
-    handleDrawWinnerAndEndGame,
+    handleEndGame,
 }: {
     isWinnerEndOpen: boolean
     setWinnerEndOpen: (open: boolean) => void
-    handleDrawWinnerAndEndGame: () => void
+    handleEndGame: () => void
 }) => (
     <Modal
         open={isWinnerEndOpen}
@@ -19,8 +19,8 @@ export const WinnerWarningModal = ({
         size="medium"
     >
         <Paragraph>
-            Når du trekker en vinner avsluttes spillet automatisk. Det vil være
-            mulig å gjenåpne spillet igjen på et senere tidspunkt.
+            Når du trekker en vinner avsluttes spillet automatisk. Det vil ikke
+            være mulig å gjenåpne spillet igjen på et senere tidspunkt.
         </Paragraph>
         <div className="flex gap-4">
             <SecondaryButton
@@ -32,7 +32,7 @@ export const WinnerWarningModal = ({
             <Button
                 variant={'primary'}
                 className="max-w-[250px]"
-                onClick={handleDrawWinnerAndEndGame}
+                onClick={handleEndGame}
                 type="button"
             >
                 Trekk vinner og avslutt
