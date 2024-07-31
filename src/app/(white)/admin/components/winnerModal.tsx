@@ -17,11 +17,17 @@ export const WinnerModal = ({
     <Modal
         open={isModalOpen}
         onDismiss={handleDismiss}
-        title={`Vinner: ${leader?.player.playerName}`}
+        title={leader ? `Vinner: ${leader.player.playerName}` : 'Ingen vinner'}
         size="medium"
     >
-        <p>E-post: {leader?.player.email}</p>
-        <p>Telefon: {leader?.player.phoneNumber}</p>
+        {leader ? (
+            <>
+                <p>E-post: {leader.player.email}</p>
+                <p>Telefon: {leader.player.phoneNumber}</p>
+            </>
+        ) : (
+            <p>Det ble ikke trukket noen vinner i dette spillet.</p>
+        )}
         {isSaveWinnerError && (
             <>
                 <br />
