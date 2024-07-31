@@ -121,9 +121,9 @@ export default function GamePage(): JSX.Element {
                                 maxTime={maxTime}
                             />
                         </div>
-                        <div className="max-w-screen-3xl -mt-16 mx-8 2xl:mx-24">
+                        <div className="max-w-screen-3xl -mt-20 xl:-mt-16 mx-8 2xl:mx-24">
                             <div className="grid grid-cols-5 gap-24">
-                                <div className="col-span-3">
+                                <div className="col-span-3 -mt-4 xl:mt-0">
                                     <Game
                                         event={event}
                                         maxTime={maxTime}
