@@ -107,120 +107,127 @@ export function RegisterScreen({
             <div className="min-w-screen">
                 <div className="flex justify-center">
                     <form
-                        className="flex flex-col max-w-3xl mt-20 pr-4 pl-4 gap-6"
+                        className="flex flex-col max-w-3xl xl:mt-20 lg:mt-4 mt-0 mb-0 pr-4 pl-4"
                         onSubmit={handleSubmit(async (data) => {
                             await onSubmit(data)
                         })}
                     >
-                        <Heading1>Lagre poengsum</Heading1>
-                        <LeadParagraph>
+                        <Heading1 margin="none">Lagre poengsum</Heading1>
+                        <LeadParagraph
+                            margin="none"
+                            className="md:mt-5 xl:mt-12 mt-0 mb-2 xl:mb-10 md:mb-4"
+                        >
                             Takk for at du spilte Entur-spillet! Fyll ut
                             skjemaet under for å lagre poengsummen din.{' '}
                         </LeadParagraph>
-                        <Controller
-                            name="name"
-                            control={control}
-                            rules={{
-                                required: 'Dette feltet er påkrevet.',
-                                maxLength: {
-                                    value: 50,
-                                    message: 'Maks 50 tegn.',
-                                },
-                            }}
-                            render={({ field, fieldState }) => (
-                                <TextField
-                                    label="Navn"
-                                    placeholder=""
-                                    {...field}
-                                    variant={
-                                        fieldState.error ? 'error' : 'info'
-                                    }
-                                    feedback={fieldState.error?.message}
-                                />
-                            )}
-                        />
-                        <Controller
-                            name="email"
-                            control={control}
-                            rules={{
-                                required: 'Dette feltet er påkrevet.',
-                                pattern: {
-                                    value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g,
-                                    message: 'Ugyldig e-postadresse.',
-                                },
-                            }}
-                            render={({ field, fieldState }) => (
-                                <TextField
-                                    label="E-postadresse"
-                                    placeholder=""
-                                    {...field}
-                                    variant={
-                                        fieldState.error ? 'error' : 'info'
-                                    }
-                                    feedback={fieldState.error?.message}
-                                />
-                            )}
-                        />
-                        <Controller
-                            name="phoneNumber"
-                            control={control}
-                            rules={{
-                                required: 'Dette feltet er påkrevet.',
-                                pattern: {
-                                    value: /^[0-9]{8}$/g,
-                                    message:
-                                        'Ugyldig mobilnummer. Den må være 8 siffer.',
-                                },
-                            }}
-                            render={({ field, fieldState }) => (
-                                <TextField
-                                    label="Mobilnummer"
-                                    placeholder=""
-                                    {...field}
-                                    type="number"
-                                    variant={
-                                        fieldState.error ? 'error' : 'info'
-                                    }
-                                    feedback={fieldState.error?.message}
-                                />
-                            )}
-                        />
-                        <div
-                            className={`border-2 ${
-                                errors.consent
-                                    ? 'border-coral'
-                                    : 'border-blue-60'
-                            } rounded border-solid w-full h-28 cursor-pointer`}
-                            {...register('consent', { required: true })}
-                            onClick={() =>
-                                setValue('consent', !getValues('consent'))
-                            }
-                        >
-                            <div className="grid grid-cols-8 grid-row-2 pt-4 pl-4 pb-4">
-                                <Heading5
-                                    className="font-semibold col-span-7 cursor-pointer select-none"
-                                    margin="none"
-                                >
-                                    Samtykke
-                                </Heading5>
-                                <Checkbox
-                                    className="sm:place-self-end sm:row-span-1 m-0 mr-0 row-span-2 place-self-center"
-                                    {...register('consent', { required: true })}
-                                    onClick={() =>
-                                        setValue(
-                                            'consent',
-                                            !getValues('consent'),
-                                        )
-                                    }
-                                />
-                                <Label className=" col-span-5 cursor-pointer select-none">
-                                    Jeg samtykker til at Entur kan kontakte meg
-                                    på sms eller e-post i forbindelse med
-                                    konkurransen.
-                                </Label>
+                        <div className="flex flex-col gap-2 xl:gap-6 lg:gap-4">
+                            <Controller
+                                name="name"
+                                control={control}
+                                rules={{
+                                    required: 'Dette feltet er påkrevet.',
+                                    maxLength: {
+                                        value: 50,
+                                        message: 'Maks 50 tegn.',
+                                    },
+                                }}
+                                render={({ field, fieldState }) => (
+                                    <TextField
+                                        label="Navn"
+                                        placeholder=""
+                                        {...field}
+                                        variant={
+                                            fieldState.error ? 'error' : 'info'
+                                        }
+                                        feedback={fieldState.error?.message}
+                                    />
+                                )}
+                            />
+                            <Controller
+                                name="email"
+                                control={control}
+                                rules={{
+                                    required: 'Dette feltet er påkrevet.',
+                                    pattern: {
+                                        value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g,
+                                        message: 'Ugyldig e-postadresse.',
+                                    },
+                                }}
+                                render={({ field, fieldState }) => (
+                                    <TextField
+                                        label="E-postadresse"
+                                        placeholder=""
+                                        {...field}
+                                        variant={
+                                            fieldState.error ? 'error' : 'info'
+                                        }
+                                        feedback={fieldState.error?.message}
+                                    />
+                                )}
+                            />
+                            <Controller
+                                name="phoneNumber"
+                                control={control}
+                                rules={{
+                                    required: 'Dette feltet er påkrevet.',
+                                    pattern: {
+                                        value: /^[0-9]{8}$/g,
+                                        message:
+                                            'Ugyldig mobilnummer. Den må være 8 siffer.',
+                                    },
+                                }}
+                                render={({ field, fieldState }) => (
+                                    <TextField
+                                        label="Mobilnummer"
+                                        placeholder=""
+                                        {...field}
+                                        type="number"
+                                        variant={
+                                            fieldState.error ? 'error' : 'info'
+                                        }
+                                        feedback={fieldState.error?.message}
+                                    />
+                                )}
+                            />
+                            <div
+                                className={`border-2 ${
+                                    errors.consent
+                                        ? 'border-coral'
+                                        : 'border-blue-60'
+                                } rounded border-solid w-full h-28 cursor-pointer`}
+                                {...register('consent', { required: true })}
+                                onClick={() =>
+                                    setValue('consent', !getValues('consent'))
+                                }
+                            >
+                                <div className="grid grid-cols-8 grid-row-2 pt-4 pl-4 pb-4">
+                                    <Heading5
+                                        className="font-semibold col-span-7 cursor-pointer select-none"
+                                        margin="none"
+                                    >
+                                        Samtykke
+                                    </Heading5>
+                                    <Checkbox
+                                        className="sm:place-self-end sm:row-span-1 m-0 mr-0 row-span-2 place-self-center"
+                                        {...register('consent', {
+                                            required: true,
+                                        })}
+                                        onClick={() =>
+                                            setValue(
+                                                'consent',
+                                                !getValues('consent'),
+                                            )
+                                        }
+                                    />
+                                    <Label className=" col-span-5 cursor-pointer select-none">
+                                        Jeg samtykker til at Entur kan kontakte
+                                        meg på sms eller e-post i forbindelse
+                                        med konkurransen.
+                                    </Label>
+                                </div>
                             </div>
                         </div>
-                        <div className="flex flex-row mt-4 gap-4">
+                        <div className="flex flex-row mt-4 lg:mt-8 xl:mt-10 gap-4 mb-4">
                             <SecondaryButton
                                 loading={isSubmitting || isLoading}
                                 onClick={() => setCurrentScreen(Screen.Results)}
@@ -234,6 +241,7 @@ export function RegisterScreen({
                                 Lagre poengsum
                             </PrimaryButton>
                         </div>
+
                         {isError && (
                             <SmallAlertBox
                                 variant="negative"

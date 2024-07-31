@@ -38,6 +38,7 @@ const authOptions: NextAuthOptions = {
         },
     },
     secret: NEXTAUTH_SECRET ?? 'not set',
+    debug: true,
 }
 
 const handler = NextAuth(authOptions)
