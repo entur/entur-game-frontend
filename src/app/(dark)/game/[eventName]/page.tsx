@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react'
 import { useParams } from 'next/navigation'
-import { Heading1, Heading4 } from '@entur/typography'
+import { Heading1 } from '@entur/typography'
 import { Loader } from '@entur/loader'
 import Game from '@/components/Game/Game'
 import { getEventByEventName, Result } from '@/lib/api/eventApi'
@@ -15,6 +15,7 @@ import { MapPinIcon, DestinationIcon, StandingIcon } from '@entur/icons'
 import GameStatus from '@/components/GameStatus'
 import DeadScreen from '@/components/Game/DeadScreen'
 import { MapRef } from 'react-map-gl'
+import { Button } from '@entur/button'
 
 export default function GamePage(): JSX.Element {
     const [numLegs, setNumLegs] = useState<number>(0)
@@ -167,10 +168,33 @@ export default function GamePage(): JSX.Element {
                                                             )
                                                         }
                                                     >
-                                                        <MapPinIcon className="text-lavender" />
-                                                        <Heading4 className="map-text text-lavender">
-                                                            Start
-                                                        </Heading4>
+                                                        <Button
+                                                            size="small"
+                                                            variant="secondary"
+                                                            aria-label="Start-ikon"
+                                                            onClick={() =>
+                                                                handleMarkerClick(
+                                                                    event
+                                                                        .startLocation
+                                                                        .longitude!,
+                                                                    event
+                                                                        .startLocation
+                                                                        .latitude!,
+                                                                )
+                                                            }
+                                                            className="flex items-center justify-center pl-0"
+                                                        >
+                                                            <MapPinIcon
+                                                                height={12}
+                                                                className="relative"
+                                                                style={{
+                                                                    top: '-0.5px',
+                                                                }}
+                                                            />
+                                                            <span className="text-base leading-none">
+                                                                Start
+                                                            </span>
+                                                        </Button>
                                                     </div>
                                                 )}
                                             {event.endLocation[0]?.longitude !==
@@ -191,10 +215,33 @@ export default function GamePage(): JSX.Element {
                                                             )
                                                         }
                                                     >
-                                                        <DestinationIcon className="text-lavender" />
-                                                        <Heading4 className="map-text text-lavender">
-                                                            Mål
-                                                        </Heading4>
+                                                        <Button
+                                                            size="small"
+                                                            variant="secondary"
+                                                            aria-label="Start-ikon"
+                                                            onClick={() =>
+                                                                handleMarkerClick(
+                                                                    event
+                                                                        .startLocation
+                                                                        .longitude!,
+                                                                    event
+                                                                        .startLocation
+                                                                        .latitude!,
+                                                                )
+                                                            }
+                                                            className="flex items-center justify-center pl-0"
+                                                        >
+                                                            <DestinationIcon
+                                                                height={10}
+                                                                className="relative"
+                                                                style={{
+                                                                    top: '-0.5px',
+                                                                }}
+                                                            />
+                                                            <span className="text-base leading-none">
+                                                                Mål
+                                                            </span>
+                                                        </Button>
                                                     </div>
                                                 )}
                                             {currentLocation.longitude !==
@@ -210,10 +257,33 @@ export default function GamePage(): JSX.Element {
                                                             )
                                                         }
                                                     >
-                                                        <StandingIcon className="text-lavender" />
-                                                        <Heading4 className="map-text text-lavender">
-                                                            Din posisjon
-                                                        </Heading4>
+                                                        <Button
+                                                            size="small"
+                                                            variant="secondary"
+                                                            aria-label="Start-ikon"
+                                                            onClick={() =>
+                                                                handleMarkerClick(
+                                                                    event
+                                                                        .startLocation
+                                                                        .longitude!,
+                                                                    event
+                                                                        .startLocation
+                                                                        .latitude!,
+                                                                )
+                                                            }
+                                                            className="flex items-center justify-center pl-0"
+                                                        >
+                                                            <StandingIcon
+                                                                height={12}
+                                                                className="relative"
+                                                                style={{
+                                                                    top: '-0.5px',
+                                                                }}
+                                                            />
+                                                            <span className="text-base leading-none">
+                                                                Deg
+                                                            </span>
+                                                        </Button>
                                                     </div>
                                                 )}
                                         </div>
