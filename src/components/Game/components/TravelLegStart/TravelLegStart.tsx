@@ -17,6 +17,7 @@ function TravelLegStart({
     travelLegsMode,
     usedDepartures,
 }: Props): ReactElement {
+    // Show only one travel leg if there is only one
     if (travelLegs.length === 1) {
         return (
             <div className="flex flex-row">
@@ -24,6 +25,10 @@ function TravelLegStart({
                     className="mt-1 mr-6 sm:mr-8"
                     transport="foot"
                     direction="vertical"
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    showStop={false}
+                    showLine={false}
                 />
                 <Heading4 margin="none">{travelLegs[0].name}</Heading4>
             </div>
@@ -31,13 +36,13 @@ function TravelLegStart({
     }
     const travelLegsLength = travelLegs.length - 1
 
+    const correctedTransportModes = travelLegsMode.map((transportMode) => {
+        return transportMode === 'coach' ? 'bus' : transportMode
+    })
+
     return (
         <div className="grid grid-cols-1">
             {travelLegs.map((travelLeg, index): JSX.Element => {
-                const transportMode = travelLegsMode[index]
-                const correctedTransportMode =
-                    transportMode === 'coach' ? 'bus' : transportMode
-
                 return travelLegsLength !== index ? (
                     <div
                         key={generateKey(travelLeg.id)}
@@ -46,9 +51,14 @@ function TravelLegStart({
                         <TravelLeg
                             className="mt-1 mr-6 sm:mr-8 h-24"
                             transport={
-                                correctedTransportMode as TravelLegProps['transport']
+                                correctedTransportModes[
+                                    index
+                                ] as TravelLegProps['transport']
                             }
                             direction="vertical"
+                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                            // @ts-ignore
+                            showStop={false}
                         />
                         <div className="flex flex-col">
                             <Heading5 margin="none">
@@ -78,9 +88,15 @@ function TravelLegStart({
                         <TravelLeg
                             className="mt-1 mr-6 sm:mr-8"
                             transport={
-                                correctedTransportMode as TravelLegProps['transport']
+                                correctedTransportModes[
+                                    index - 1
+                                ] as TravelLegProps['transport']
                             }
                             direction="vertical"
+                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                            // @ts-ignore
+                            showStop={false}
+                            showLine={false}
                         />
                         <Heading5 margin="none">
                             {travelLegs[index].name}
