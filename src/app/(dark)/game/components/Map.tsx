@@ -8,10 +8,6 @@ import Standing from '!!raw-loader!@/lib/assets/icons/Standing.svg'
 import mapboxgl from 'mapbox-gl'
 import { MAP_BOX_TOKEN } from '@/config'
 
-if (!MAP_BOX_TOKEN) {
-    throw new Error('Mapbox token is not defined')
-}
-
 type Props = {
     event: Event
     currentPosition: StopPlace

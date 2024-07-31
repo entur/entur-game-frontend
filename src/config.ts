@@ -12,12 +12,20 @@ export const ENVIRONMENT: 'PROD' | 'STAGING' | 'LOCAL' = (() => {
 export const baseUrl = '/proxy-api/entur-game-backend/v1'
 
 export const MAP_BOX_TOKEN = (() => {
+    const ENV_MAP_BOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
+
+    if (typeof window === 'undefined') {
+        if (!ENV_MAP_BOX_TOKEN) throw Error('Mapbox token is not defined')
+        return ENV_MAP_BOX_TOKEN as string
+    }
+
     switch (ENVIRONMENT) {
         case 'PROD':
             return 'pk.eyJ1IjoiZW50dXIiLCJhIjoiY2x6OWlkZDBrMDhvbDJ4czdxMnVwMjJ4YiJ9.mng8swE3lk-TXdLbdOdv2Q'
         case 'STAGING':
             return 'pk.eyJ1IjoiZW50dXIiLCJhIjoiY2x6OWllZDNpMDQyNzJrczgydXhteWdrdCJ9.25MKjylrKRdojFLOQylIag'
         default:
-            return process.env.NEXT_PUBLIC_MAPBOX_TOKEN
+            if (!ENV_MAP_BOX_TOKEN) throw Error('Mapbox token is not defined')
+            return ENV_MAP_BOX_TOKEN as string
     }
 })()
