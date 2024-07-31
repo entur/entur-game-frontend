@@ -130,8 +130,8 @@ const CompactLeaderboardPage: React.FC = (): JSX.Element => {
                 >
                     <Paragraph>
                         Du er i ferd med å avslutte spillet uten å trekke en
-                        vinner. Det vil være mulig å gjenåpne spillet og trekke
-                        en vinner på et senere tidspunkt.
+                        vinner. Det vil ikke være mulig å trekke en vinner på et
+                        senere tidspunkt.
                     </Paragraph>
                     <div className="flex items-center gap-4">
                         <Button
