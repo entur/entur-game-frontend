@@ -3,6 +3,9 @@ name: Docker Build & Publish
 on:
     push:
         branches: [main]
+    pull_request:
+        branches:
+            - 'feature/*'
 
 jobs:
     docker-build:
