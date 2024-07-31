@@ -7,7 +7,7 @@ import { getScoresByEventId } from '@/lib/api/scoreApi'
 import { BlockquoteFooter, Heading1, LeadParagraph } from '@entur/typography'
 import { Pagination } from '@entur/menu'
 import { Button, SecondaryButton } from '@entur/button'
-import { DeleteIcon } from '@entur/icons'
+import { DeleteIcon, ViewIcon } from '@entur/icons'
 import { deleteEvent, getEventById } from '@/lib/api/eventApi'
 import { useRouter } from 'next/navigation'
 import { WinnerModal } from '../../components/WinnerModal'
@@ -85,6 +85,7 @@ const LeaderboardPage: React.FC<EventPageProps> = ({
                         Slett spill
                     </Button>
                     <SecondaryButton onClick={() => setOpen(true)}>
+                        <ViewIcon className="inline align-baseline" />
                         Vis vinner
                     </SecondaryButton>
                 </div>
