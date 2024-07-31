@@ -7,7 +7,7 @@ export function middleware(request: NextRequest) {
         const newUrl = new URL(
             process.env.apiUrl +
                 request.nextUrl.pathname.replace(
-                    '/-api/entur-game-backend/v1',
+                    '/proxy-api/entur-game-backend/v1',
                     '',
                 ) +
                 request.nextUrl.search,
