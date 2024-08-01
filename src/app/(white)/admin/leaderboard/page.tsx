@@ -39,7 +39,7 @@ const GamePage: React.FC = (): JSX.Element => {
     if (eventName === null) {
         return (
             <div className="max-w-screen mx-56 p-4">
-                <BlockquoteFooter>Ledertavle</BlockquoteFooter>
+                <BlockquoteFooter>Aktivt spill</BlockquoteFooter>
                 <BannerAlertBox
                     title="Det finnes ikke et aktivt spill for øyeblikket"
                     variant="information"
