@@ -19,8 +19,8 @@ export const WinnerWarningModal = ({
         size="medium"
     >
         <Paragraph>
-            Når du trekker en vinner avsluttes spillet automatisk. Det vil være
-            mulig å gjenåpne spillet igjen på et senere tidspunkt.
+            Når du trekker en vinner avsluttes spillet automatisk. Det vil ikke
+            være mulig å gjenåpne spillet igjen på et senere tidspunkt.
         </Paragraph>
         <div className="flex gap-4">
             <SecondaryButton

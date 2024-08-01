@@ -1,6 +1,7 @@
 'use client'
 import { deleteEvent } from '@/lib/api/eventApi'
 import { useInactiveStopPlaces } from '@/lib/hooks/useInactiveStopPlaceName'
+import { BannerAlertBox } from '@entur/alert'
 import { Button } from '@entur/button'
 import { DeleteIcon } from '@entur/icons'
 import { BaseCard } from '@entur/layout'
@@ -25,7 +26,27 @@ const InactiveEventsList: React.FC = (): JSX.Element => {
     }, [router])
 
     if (error) {
-        return <div>Error: {error}</div>
+        return (
+            <BannerAlertBox
+                className="w-[640px]"
+                title="Feilmelding"
+                variant="negative"
+            >
+                En feil har skjedd ved innlasting av tidligere spill.{' '}
+            </BannerAlertBox>
+        )
+    }
+
+    if (events.length === 0) {
+        return (
+            <BannerAlertBox
+                className="w-[640px]"
+                title="Du har ingen tidligere spill"
+                variant="information"
+            >
+                Når du avslutter aktive spill havner de her
+            </BannerAlertBox>
+        )
     }
 
     const handleNavigateLeaderboard = (eventId: number | undefined) => {
