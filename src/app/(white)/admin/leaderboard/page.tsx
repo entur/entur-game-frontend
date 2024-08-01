@@ -15,7 +15,10 @@ import { Pagination } from '@entur/menu'
 import Leaderboard from '../components/Leaderboard'
 import useScores from '@/lib/hooks/useScores'
 import { Button } from '@entur/button'
-import { endGame, handleDismiss } from '@/lib/utils/handleWinner'
+import {
+    handleDrawWinnerAndEndGame,
+    handleDismiss,
+} from '@/lib/utils/handleWinner'
 import { WinnerWarningModal } from '../components/winnerWarningModal'
 import { WinnerModal } from '../components/winnerModal'
 
@@ -125,7 +128,7 @@ const GamePage: React.FC = (): JSX.Element => {
                 isWinnerEndOpen={isWinnerEndOpen}
                 setWinnerEndOpen={setWinnerEndOpen}
                 handleEndGame={() =>
-                    endGame(
+                    handleDrawWinnerAndEndGame(
                         scores,
                         setShowAlert,
                         eventName,

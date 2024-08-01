@@ -10,7 +10,10 @@ import useScores from '@/lib/hooks/useScores'
 import { Button } from '@entur/button'
 import { endActiveEvent } from '@/lib/api/eventApi'
 import { WinnerWarningModal } from './winnerWarningModal'
-import { handleDismiss, endGame } from '@/lib/utils/handleWinner'
+import {
+    handleDismiss,
+    handleDrawWinnerAndEndGame,
+} from '@/lib/utils/handleWinner'
 import { Paragraph } from '@entur/typography'
 import { Modal } from '@entur/modal'
 import { WinnerModal } from './winnerModal'
@@ -77,7 +80,7 @@ const CompactLeaderboardPage: React.FC = (): JSX.Element => {
                     isWinnerEndOpen={isWinnerEndOpen}
                     setWinnerEndOpen={setWinnerEndOpen}
                     handleEndGame={() =>
-                        endGame(
+                        handleDrawWinnerAndEndGame(
                             scores,
                             setShowAlert,
                             eventName,
