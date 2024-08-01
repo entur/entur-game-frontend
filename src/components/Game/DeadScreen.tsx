@@ -21,7 +21,7 @@ function DeadScreen(): JSX.Element {
             <Contrast>
                 <div className="flex flex-col items-center w-full min-h-full">
                     <Heading1
-                        className="text-coral lg:mb-10 text-55 sm:mb-5"
+                        className="text-coral mb-4 xl:mb-8 text-55"
                         margin="none"
                     >
                         Ånei! Billetten din er utløpt!
@@ -30,17 +30,17 @@ function DeadScreen(): JSX.Element {
                         Du rakk dessverre ikke fram til mål i tide
                     </Heading2>
                     <Image
-                        className="mt-3 mb-3 lg:mt-5 lg:mb-5 xl:mb-16 xl:mt-10 w-48 lg:w-80 xl:w-[500px]"
+                        className="mt-4 xl:mt-16 w-80 2xl:w-[500px]"
                         src={Ripped_Ticket}
                         alt="ripped ticket"
                         width={500}
                         style={{ height: 'auto' }}
                         priority={true}
                     />
-                    <Heading3 margin="none">
+                    <Heading3 margin="none" className="mt-4 xl:mt-16">
                         Velg om du vil avslutte eller prøve igjen
                     </Heading3>
-                    <div className="flex gap-6 mt-6">
+                    <div className="flex gap-6 mt-4 xl:mt-8">
                         <SecondaryButton
                             size="large"
                             onClick={handleNavigation}
