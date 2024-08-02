@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Welcome to the Norgestur project! This is the 3rd version of the game, developed by summer workers in 2024. This game aims to provide an engaging and fun way to explore routes in Norway. Below you will find information on how to set up, run, and contribute to the project. This is the frontend part of our project and works together with [entur-game-backend](https://github.com/entur/entur-game-backend).
+Welcome to the Norgestur project! This is the 3rd version of the game, developed by summer interns in 2024. This game aims to provide an engaging and fun way to explore public transportation in Norway. Below you will find information on how to set up, run, and contribute to the project. This is the frontend of our project and works together with [entur-game-backend](https://github.com/entur/entur-game-backend).
 
 ## Developers
 
@@ -30,13 +30,16 @@ You can try out the game here:
 
 In the project directory, you can run:
 
+### `npm install`
+Installs all the packages 
+
 ### `npm run dev`
 
 Runs the app in development mode.<br>
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+You will also see lint errors in the console.
 
 
 ### `npm run build`
