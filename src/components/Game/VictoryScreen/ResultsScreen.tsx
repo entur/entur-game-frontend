@@ -1,5 +1,7 @@
 'use client'
 
+import BarChart from '@/components/Chart'
+import { getActiveEvent } from '@/lib/api/eventApi'
 import { Heading1, Heading2, Heading3 } from '@entur/typography'
 import React, { useState, useEffect } from 'react'
 import { Event } from '@/lib/types/types'
@@ -40,11 +42,23 @@ function ResultsScreen({
     window.scrollTo(0, 0)
     const router = useRouter()
     const [isModalOpen, setModalOpen] = useState(false)
+    const [isModalCO2Open, setModalCO2Open] = useState(false)
     const [rank, setRank] = useState<number>(1)
+    const [activeEventName, setActiveEventName] = useState<string | null>(null)
 
     useEffect(() => {
         calculateRankOfScore(scoreValue).then(setRank)
     }, [scoreValue])
+
+    useEffect(() => {
+        const getActiveEventName = async () => {
+            const event = await getActiveEvent()
+            if (event) {
+                setActiveEventName(event.eventName)
+            }
+        }
+        getActiveEventName()
+    }, [])
 
     const totalTravelTimeDescription = formatMilliseconds(
         totalTravelTime * 1000,
@@ -54,7 +68,9 @@ function ResultsScreen({
     )
 
     const openModal = () => setModalOpen(true)
+    const openCO2Modal = () => setModalCO2Open(true)
     const closeModal = () => setModalOpen(false)
+    const closeC02Modal = () => setModalCO2Open(false)
 
     return (
         <div className="text-center relative">
@@ -160,6 +176,13 @@ function ResultsScreen({
                                 </span>
                             </PrimaryButton>
                         </div>
+                        <br />
+                        <br />
+                        <div className="flex justify-center -mt-2 2xl:mt-4 gap-4">
+                            <SecondaryButton onClick={openCO2Modal}>
+                                CO2e
+                            </SecondaryButton>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -192,6 +215,28 @@ function ResultsScreen({
                         >
                             Avslutt uten å lagre
                         </PrimaryButton>
+                    </div>
+                </Modal>
+            )}
+            {isModalCO2Open && (
+                <Modal
+                    isOpen={isModalCO2Open}
+                    onDismiss={closeC02Modal}
+                    title="Reiseplanleggeren C02e - avtrykk"
+                    size="medium"
+                >
+                    <p>
+                        Se hvor mye CO2e utslipp du vil ha spart ved å reise
+                        kollektivt
+                    </p>
+                    <Heading3>
+                        <span className="text-coral">{activeEventName}</span>
+                    </Heading3>
+                    <BarChart></BarChart>
+                    <div className="flex justify-start mt-4 gap-4">
+                        <SecondaryButton onClick={closeC02Modal}>
+                            Tilbake
+                        </SecondaryButton>
                     </div>
                 </Modal>
             )}
