@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { QueryMode } from '@entur/sdk'
 
-type CO2eLeg = {
+export type CO2eLeg = {
     nsrList: string[]
     vehicleType: QueryMode | null
 }

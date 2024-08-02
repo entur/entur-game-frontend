@@ -23,7 +23,11 @@ import { ClockIcon, ForwardIcon, TrackIcon, ValueIcon } from '@entur/icons'
 import { Modal } from '@entur/modal'
 import { calculateRankOfScore } from '@/lib/utils/calculateRank'
 import WomanWithLuggage from '@/lib/assets/images/Woman walking with luggage.svg'
-import { getEmissionForCar } from '@/lib/utils/pollutionCalculation'
+import {
+    getEmissionForCar,
+    getEmissionForTrip,
+} from '@/lib/utils/pollutionCalculation'
+import { useCO2State } from '@/app/providers/CO2Provider'
 
 interface ResultsScreenProps {
     event: Event
@@ -42,6 +46,8 @@ function ResultsScreen({
 }: ResultsScreenProps): JSX.Element {
     window.scrollTo(0, 0)
     const router = useRouter()
+    const co2eLegs = useCO2State((state) => state.co2eLegs)
+
     const [isModalOpen, setModalOpen] = useState(false)
     const [isModalCO2Open, setModalCO2Open] = useState(false)
     const [rank, setRank] = useState<number>(1)
@@ -54,6 +60,7 @@ function ResultsScreen({
     useEffect(() => {
         getEmissionForCar(event.startLocation, event.endLocation).then(
             (data) => {
+                // eslint-disable-next-line no-console
                 console.log(data)
             },
         )
@@ -67,6 +74,13 @@ function ResultsScreen({
             }
         }
         getActiveEventName()
+    }, [])
+
+    useEffect(() => {
+        getEmissionForTrip(co2eLegs).then((data) => {
+            // eslint-disable-next-line no-console
+            console.log(data)
+        })
     }, [])
 
     const totalTravelTimeDescription = formatMilliseconds(
