@@ -27,6 +27,8 @@ function VictoryScreen({
     startTime,
     currentTime,
 }: VictoryScreenProps): JSX.Element {
+    // const co2eLegs = useCO2State((state) => state.co2eLegs)
+    // console.log(co2eLegs)
     const [currentScreen, setCurrentScreen] = useState<Screen>(
         Screen.Congratulations,
     )
