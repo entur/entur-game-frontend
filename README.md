@@ -7,31 +7,35 @@ Welcome to the Norgestur project! This is the 3rd version of the game, developed
 ## Developers
 
 ### 2024 Summer Team
-- [Magnus](https://github.com/Magnus-Farstad)
-- [Marianne](https://github.com/maribsta)
-- [Oscar](https://github.com/oscarahalvorsen)
-- [Selma](https://github.com/selmagudmundsen)
-- [Tomas](https://github.com/tomaswedege)
+
+-   [Magnus](https://github.com/Magnus-Farstad)
+-   [Marianne](https://github.com/maribsta)
+-   [Oscar](https://github.com/oscarahalvorsen)
+-   [Selma](https://github.com/selmagudmundsen)
+-   [Tomas](https://github.com/tomaswedege)
 
 ### Previous Developers
-- [Artur](https://github.com/apkrauze)
-- [Kenneth](https://github.com/kennetng)
-- [Daniel](https://github.com/Daniel-Jansson)
+
+-   [Artur](https://github.com/apkrauze)
+-   [Kenneth](https://github.com/kennetng)
+-   [Daniel](https://github.com/Daniel-Jansson)
 
 The initial version of the game was based on [entur-game](https://github.com/entur/entur-game) created by [Mats](https://github.com/draperunner).
 
 ## Live Demo
 
 You can try out the game here:
-- [Staging](https://entur-game.staging.entur.org/)
-- [Production](https://entur-game.entur.org/)
+
+-   [Staging](https://entur-game.staging.entur.org/)
+-   [Production](https://entur-game.entur.org/)
 
 ## Available Scripts
 
 In the project directory, you can run:
 
 ### `npm install`
-Installs all the packages 
+
+Installs all the packages
 
 ### `npm run dev`
 
@@ -40,7 +44,6 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.<br>
 You will also see lint errors in the console.
-
 
 ### `npm run build`
 
@@ -53,9 +56,11 @@ Your app is ready to be deployed!
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
 ## Secrets
+
 The login client secret is generated in Azure and will expire on 17.7.2026. The login secrets are stored in LastPass in the folder "shared-entur-spillet". You will also find the Mapbox token in the same folder. Add all the credentials to a `.env.local` file to run the code locally.
 
 ## Docker
+
 ### Run entur-game-frontend with docker locally
 
 docker build -t entur-game-frontend .
