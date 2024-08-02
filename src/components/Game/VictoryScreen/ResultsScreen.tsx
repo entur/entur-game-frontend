@@ -23,6 +23,7 @@ import { ClockIcon, ForwardIcon, TrackIcon, ValueIcon } from '@entur/icons'
 import { Modal } from '@entur/modal'
 import { calculateRankOfScore } from '@/lib/utils/calculateRank'
 import WomanWithLuggage from '@/lib/assets/images/Woman walking with luggage.svg'
+import { getEmissionForCar } from '@/lib/utils/pollutionCalculation'
 
 interface ResultsScreenProps {
     event: Event
@@ -49,6 +50,14 @@ function ResultsScreen({
     useEffect(() => {
         calculateRankOfScore(scoreValue).then(setRank)
     }, [scoreValue])
+
+    useEffect(() => {
+        getEmissionForCar(event.startLocation, event.endLocation).then(
+            (data) => {
+                console.log(data)
+            },
+        )
+    }, [])
 
     useEffect(() => {
         const getActiveEventName = async () => {
