@@ -24,6 +24,8 @@ import {
     walkingDistanceTripQuery,
     walkOnlyTripQuery,
 } from '@/lib/constants/queries'
+import { useCO2State } from '@/app/providers/CO2Provider'
+import { mapCO2eLegs } from '@/lib/utils/mapCO2eLegs'
 
 export interface StopAndTime {
     stopPlace: StopPlace | StopPlaceDetails
@@ -83,7 +85,6 @@ function Game({
         useState<boolean>(false)
     const { getWalkableStopPlaces, getDepartures, getStopsOnLine } =
         useEnturService()
-
     const containerRef = useRef<HTMLDivElement>(null)
 
     const [travelLegsMode, setTravelLegsMode] = useState<QueryMode[]>([])
@@ -93,6 +94,7 @@ function Game({
     const [waitModalIsOpen, setWaitModalIsOpen] = useState<boolean>(false)
     const [maximumWalkingDistance, setMaximumWalkingDistance] =
         useState<number>()
+    const addLeg = useCO2State((state) => state.addLeg)
 
     useEffect(() => {
         setCurrentLocation(event.startLocation)
@@ -269,6 +271,16 @@ function Game({
     }
 
     const selectStopOnLine = async (stopAndTime: StopAndTime) => {
+        const nsrList = mapCO2eLegs({
+            stopsOnLine,
+            startStopPlaceId: currentLocation.id,
+            endStopPlaceId: stopAndTime.stopPlace.id,
+        })
+        addLeg({
+            nsrList: nsrList,
+            vehicleType: mode,
+        })
+
         setUsedMode([])
         setStopsOnLine([])
         setCurrentTime(stopAndTime.time)
