@@ -1,9 +1,10 @@
 import { create } from 'zustand'
 import { QueryMode } from '@entur/sdk'
+import { SintefVehicle } from '@/lib/utils/pollutionCalculation'
 
 export type CO2eLeg = {
-    nsrList: string[]
-    vehicleType: QueryMode | null
+    route: object
+    vehicle: SintefVehicle
 }
 
 type CO2State = {

@@ -28,6 +28,7 @@ import {
     getEmissionForTrip,
 } from '@/lib/utils/pollutionCalculation'
 import { useCO2State } from '@/app/providers/CO2Provider'
+import { EmissionRespose } from '@/lib/utils/emissionsResponse'
 
 interface ResultsScreenProps {
     event: Event
@@ -46,11 +47,12 @@ function ResultsScreen({
 }: ResultsScreenProps): JSX.Element {
     window.scrollTo(0, 0)
     const router = useRouter()
-    const co2eLegs = useCO2State((state) => state.co2eLegs)
+    const co2eLegs = useCO2State()
 
     const [isModalOpen, setModalOpen] = useState(false)
     const [isModalCO2Open, setModalCO2Open] = useState(false)
     const [rank, setRank] = useState<number>(1)
+    const [emission, setEmission] = useState<EmissionRespose>()
     const [activeEventName, setActiveEventName] = useState<string | null>(null)
 
     useEffect(() => {
@@ -77,7 +79,8 @@ function ResultsScreen({
     }, [])
 
     useEffect(() => {
-        getEmissionForTrip(co2eLegs).then((data) => {
+        getEmissionForTrip(co2eLegs.co2eLegs).then((data) => {
+            setEmission(data)
             // eslint-disable-next-line no-console
             console.log(data)
         })
