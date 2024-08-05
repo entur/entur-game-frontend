@@ -1,4 +1,6 @@
 export const ENVIRONMENT: 'PROD' | 'STAGING' | 'LOCAL' = (() => {
+    if (typeof window === 'undefined') return 'LOCAL'
+
     switch (window.location.hostname) {
         case 'entur-game.entur.org':
             return 'PROD'

@@ -26,7 +26,7 @@ import {
 } from '@/lib/constants/queries'
 import { useCO2State } from '@/app/providers/CO2Provider'
 import { mapCO2eLegs } from '@/lib/utils/mapCO2eLegs'
-import { modeToSintefVehicle } from '@/lib/utils/pollutionCalculation'
+import { modeToSintefVehicle } from '@/lib/utils/modeToSintefVehicle'
 
 export interface StopAndTime {
     stopPlace: StopPlace | StopPlaceDetails
@@ -104,7 +104,7 @@ function Game({
         fetchAvailableModes(event.startLocation)
         getTripInfo(walkingDistanceTripQuery, {
             from: {
-                name: event.startLocation.name, 
+                name: event.startLocation.name,
                 place: event.startLocation.id,
             },
             to: {
@@ -278,10 +278,10 @@ function Game({
             endStopPlaceId: stopAndTime.stopPlace.id,
         })
         addLeg({
-            vehicle: modeToSintefVehicle(mode),
             route: {
-                "StopIds": nsrList
+                StopIds: nsrList,
             },
+            vehicle: modeToSintefVehicle(mode),
         })
 
         setUsedMode([])

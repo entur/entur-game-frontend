@@ -7,6 +7,7 @@ import CongratulationsScreen from './CongratulationsScreen'
 import ResultsScreen from './ResultsScreen'
 import { RegisterScreen } from './RegisterScreen'
 import { formatIntervalToSeconds } from '@/lib/utils/dateFnsUtils'
+import { SWRProvider } from '@/app/providers/SWRProvider'
 
 export enum Screen {
     Congratulations,
@@ -27,8 +28,6 @@ function VictoryScreen({
     startTime,
     currentTime,
 }: VictoryScreenProps): JSX.Element {
-    // const co2eLegs = useCO2State((state) => state.co2eLegs)
-    // console.log(co2eLegs)
     const [currentScreen, setCurrentScreen] = useState<Screen>(
         Screen.Congratulations,
     )
@@ -51,13 +50,15 @@ function VictoryScreen({
                 />
             )}
             {currentScreen === Screen.Results && (
-                <ResultsScreen
-                    event={event}
-                    numLegs={numLegs}
-                    scoreValue={scoreValue}
-                    totalTravelTime={totalTravelTime}
-                    setCurrentScreen={setCurrentScreen}
-                />
+                <SWRProvider>
+                    <ResultsScreen
+                        event={event}
+                        numLegs={numLegs}
+                        scoreValue={scoreValue}
+                        totalTravelTime={totalTravelTime}
+                        setCurrentScreen={setCurrentScreen}
+                    />
+                </SWRProvider>
             )}
             {currentScreen === Screen.Register && (
                 <RegisterScreen

@@ -16,6 +16,7 @@ import GameStatus from '@/components/GameStatus'
 import DeadScreen from '@/components/Game/DeadScreen'
 import { MapRef } from 'react-map-gl'
 import { Button } from '@entur/button'
+import { SWRProvider } from '@/app/providers/SWRProvider'
 
 export default function GamePage(): JSX.Element {
     const [numLegs, setNumLegs] = useState<number>(0)
@@ -100,14 +101,14 @@ export default function GamePage(): JSX.Element {
                 </Contrast>
             ) : isVictory ? (
                 <Contrast>
-                    <div>
+                    <SWRProvider>
                         <VictoryScreen
                             event={event}
                             numLegs={numLegs}
                             currentTime={currentTime}
                             startTime={startTime}
                         />
-                    </div>
+                    </SWRProvider>
                 </Contrast>
             ) : isDead ? (
                 <Contrast></Contrast>

@@ -3,7 +3,7 @@
 import BarChart from '@/components/Chart'
 import { getActiveEvent } from '@/lib/api/eventApi'
 import { Heading1, Heading2, Heading3 } from '@entur/typography'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Event } from '@/lib/types/types'
 import {
     DataCell,
@@ -23,12 +23,10 @@ import { ClockIcon, ForwardIcon, TrackIcon, ValueIcon } from '@entur/icons'
 import { Modal } from '@entur/modal'
 import { calculateRankOfScore } from '@/lib/utils/calculateRank'
 import WomanWithLuggage from '@/lib/assets/images/Woman walking with luggage.svg'
-import {
-    getEmissionForCar,
-    getEmissionForTrip,
-} from '@/lib/utils/pollutionCalculation'
+import { getEmissionForCar, getEmissionForTrip } from '@/lib/api/emissionApi'
 import { useCO2State } from '@/app/providers/CO2Provider'
-import { EmissionRespose } from '@/lib/utils/emissionsResponse'
+import useSWR from 'swr'
+import { Loader } from '@entur/loader'
 
 interface ResultsScreenProps {
     event: Event
@@ -48,25 +46,23 @@ function ResultsScreen({
     window.scrollTo(0, 0)
     const router = useRouter()
     const co2eLegs = useCO2State()
-
     const [isModalOpen, setModalOpen] = useState(false)
+
+    const { data: emissionForTrip } = useSWR(
+        '/emission/trip',
+        async () => await getEmissionForTrip(co2eLegs.co2eLegs),
+    )
+    const { data: emissionForCar } = useSWR(
+        '/emission/car',
+        async () =>
+            await getEmissionForCar(event.startLocation, event.endLocation),
+    )
+    const { data: rank } = useSWR<number>(
+        '/calculate-score',
+        async () => await calculateRankOfScore(scoreValue),
+    )
     const [isModalCO2Open, setModalCO2Open] = useState(false)
-    const [rank, setRank] = useState<number>(1)
-    const [emission, setEmission] = useState<EmissionRespose>()
     const [activeEventName, setActiveEventName] = useState<string | null>(null)
-
-    useEffect(() => {
-        calculateRankOfScore(scoreValue).then(setRank)
-    }, [scoreValue])
-
-    useEffect(() => {
-        getEmissionForCar(event.startLocation, event.endLocation).then(
-            (data) => {
-                // eslint-disable-next-line no-console
-                console.log(data)
-            },
-        )
-    }, [])
 
     useEffect(() => {
         const getActiveEventName = async () => {
@@ -78,13 +74,13 @@ function ResultsScreen({
         getActiveEventName()
     }, [])
 
-    useEffect(() => {
-        getEmissionForTrip(co2eLegs.co2eLegs).then((data) => {
-            setEmission(data)
-            // eslint-disable-next-line no-console
-            console.log(data)
-        })
-    }, [])
+    if (
+        emissionForTrip === undefined ||
+        emissionForCar === undefined ||
+        rank === undefined
+    ) {
+        return <Loader>Laster inn</Loader>
+    }
 
     const totalTravelTimeDescription = formatMilliseconds(
         totalTravelTime * 1000,

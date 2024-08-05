@@ -1,9 +1,10 @@
 import { create } from 'zustand'
-import { QueryMode } from '@entur/sdk'
-import { SintefVehicle } from '@/lib/utils/pollutionCalculation'
+import { SintefVehicle } from '@/lib/types/emissionsResponse'
 
 export type CO2eLeg = {
-    route: object
+    route: {
+        StopIds: string[]
+    }
     vehicle: SintefVehicle
 }
 
