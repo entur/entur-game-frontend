@@ -9,7 +9,7 @@ export async function getEmissionForCar(
     const response = await fetch('https://emapi.sintef.no/api/v1/energy', {
         method: 'POST',
         headers: {
-            AuthKey: 'SET AUTH KEY',
+            AuthKey: 'KEY',
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -32,7 +32,7 @@ export async function getEmissionForTrip(
         {
             method: 'POST',
             headers: {
-                AuthKey: 'SET AUTH KEY',
+                AuthKey: 'KEY',
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(fullTravel),

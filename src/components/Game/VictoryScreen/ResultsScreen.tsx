@@ -64,6 +64,22 @@ function ResultsScreen({
     const [isModalCO2Open, setModalCO2Open] = useState(false)
     const [activeEventName, setActiveEventName] = useState<string | null>(null)
 
+    const tripC02e = Math.round(
+        Array.isArray(emissionForTrip?.results)
+            ? emissionForTrip.results
+                  .map((result) => result.emissions.co2.totalLifecycleG)
+                  .reduce((acc, val) => acc + val, 0)
+            : 0,
+    )
+
+    const carC02e = Math.round(
+        Array.isArray(emissionForCar?.results)
+            ? emissionForCar.results
+                  .map((result) => result.emissions.co2.totalLifecycleG)
+                  .reduce((acc, val) => acc + val, 0)
+            : 0,
+    )
+
     useEffect(() => {
         const getActiveEventName = async () => {
             const event = await getActiveEvent()
@@ -254,7 +270,7 @@ function ResultsScreen({
                     <Heading3>
                         <span className="text-coral">{activeEventName}</span>
                     </Heading3>
-                    <BarChart></BarChart>
+                    <BarChart dataValues={[tripC02e, carC02e]}></BarChart>
                     <div className="flex justify-start mt-4 gap-4">
                         <SecondaryButton onClick={closeC02Modal}>
                             Tilbake
