@@ -1,6 +1,6 @@
 'use client'
 
-import { LeadParagraph, SubParagraph } from '@entur/typography'
+import { LeadParagraph } from '@entur/typography'
 import { Button } from '@entur/button'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
@@ -31,14 +31,6 @@ export function SplashScreen(): JSX.Element {
 
     return (
         <div className="flex flex-col items-center justify-between min-h-screen text-white">
-            <div className="mt-4 2xl:mt-8 text-center">
-                <SubParagraph className="text-white font-normal">
-                    <a href="/admin" className="text-blue-500 underline">
-                        Trykk her
-                    </a>{' '}
-                    for å logge inn som admin
-                </SubParagraph>
-            </div>
             <div className="mt-12 2xl:mt-20 text-center">
                 <Image
                     className="cursor-pointer max-w-md xl:max-w-lg 2xl:max-w-2xl"
