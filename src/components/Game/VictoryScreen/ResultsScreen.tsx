@@ -45,6 +45,7 @@ function ResultsScreen({
     const [isModalCO2Open, setModalCO2Open] = useState(false)
     const [rank, setRank] = useState<number>(1)
     const [activeEventName, setActiveEventName] = useState<string | null>(null)
+    const co2eEnabled = localStorage.getItem('co2eEnabled') === 'true'
 
     useEffect(() => {
         calculateRankOfScore(scoreValue).then(setRank)
@@ -178,11 +179,13 @@ function ResultsScreen({
                         </div>
                         <br />
                         <br />
-                        <div className="flex justify-center -mt-2 2xl:mt-4 gap-4">
-                            <SecondaryButton onClick={openCO2Modal}>
-                                CO2e
-                            </SecondaryButton>
-                        </div>
+                        {co2eEnabled && (
+                            <div className="flex justify-center -mt-2 2xl:mt-4 gap-4">
+                                <SecondaryButton onClick={openCO2Modal}>
+                                    CO2e
+                                </SecondaryButton>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
@@ -218,7 +221,7 @@ function ResultsScreen({
                     </div>
                 </Modal>
             )}
-            {isModalCO2Open && (
+            {isModalCO2Open && co2eEnabled && (
                 <Modal
                     isOpen={isModalCO2Open}
                     onDismiss={closeC02Modal}
