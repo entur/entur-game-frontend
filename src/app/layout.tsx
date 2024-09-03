@@ -2,6 +2,17 @@ import '@/app/globals.css'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { EnturToastProvider } from './providers/toastProvider'
 
+export const metadata = {
+    title: 'Entur Game',
+    manifest: '/manifest.json',
+    appleWebApp: {
+        capable: true,
+        statusBarStyle: 'default',
+        title: 'Entur Game',
+    },
+    description: '',
+}
+
 export default function RootLayout({
     children,
 }: {
