@@ -9,8 +9,8 @@ home: http://{{ .Release.Name }}{{ .Values.domain }}/
 sources:
     - https://github.com/entur/entur-game-frontend
 maintainers:
-    - name: Team Partner
-      email: teampartner@entur.org
+    - name: Team Portal
+      email: TeamPortal@entur.org
 dependencies:
     - name: common
       version: 1.18.3
