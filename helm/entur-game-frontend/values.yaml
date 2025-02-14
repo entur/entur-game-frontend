@@ -1,7 +1,7 @@
 common:
     app: entur-game-frontend
     shortname: gamefront
-    team: partner
+    team: portal
     ingress:
         enabled: true
         trafficType: public
