@@ -15,4 +15,4 @@ common:
             - name: NEXTAUTH_URL
               value: 'https://entur-game.entur.org'
             - name: NEXT_PUBLIC_MAPBOX_TOKEN
-              value: 'pk.eyJ1IjoiZW50dXIiLCJhIjoiY2x6OWllZDNpMDQyNzJrczgydXhteWdrdCJ9.25MKjylrKRdojFLOQylIag'
+              value: 'pk.eyJ1IjoiZW50dXIiLCJhIjoiY21scnM4OXEzMGR2OTNlc2x6Ymo1bnpjdiJ9.L_ho4Ez-PMOnD3DSYlqSMw'

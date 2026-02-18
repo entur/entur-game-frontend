@@ -19,9 +19,9 @@ export const MAP_BOX_TOKEN = (() => {
 
     switch (ENVIRONMENT) {
         case 'PROD':
-            return 'pk.eyJ1IjoiZW50dXIiLCJhIjoiY2x6OWllZDNpMDQyNzJrczgydXhteWdrdCJ9.25MKjylrKRdojFLOQylIag'
+            return 'pk.eyJ1IjoiZW50dXIiLCJhIjoiY21scnM4OXEzMGR2OTNlc2x6Ymo1bnpjdiJ9.L_ho4Ez-PMOnD3DSYlqSMw'
         case 'STAGING':
-            return 'pk.eyJ1IjoiZW50dXIiLCJhIjoiY2x6OWlkZDBrMDhvbDJ4czdxMnVwMjJ4YiJ9.mng8swE3lk-TXdLbdOdv2Q'
+            return 'pk.eyJ1IjoiZW50dXIiLCJhIjoiY21scnM2b2o5MGRubjNkc2xvb2hvMHZwNyJ9.h6Rbn_tkePanXs_rd-Mtdw'
         default:
             if (!ENV_MAP_BOX_TOKEN) throw Error('Mapbox token is not defined')
             return ENV_MAP_BOX_TOKEN as string
