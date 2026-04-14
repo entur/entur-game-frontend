@@ -13,5 +13,5 @@ maintainers:
       email: TeamPortal@entur.org
 dependencies:
     - name: common
-      version: 1.18.3
+      version: 1.21.1
       repository: 'https://entur.github.io/helm-charts'
