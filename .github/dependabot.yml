@@ -1,0 +1,88 @@
+version: 2
+registries:
+  jfrog-artifactory:
+    type: npm-registry
+    url: "https://entur2.jfrog.io/entur2"
+    token: ${{secrets.ARTIFACTORY_AUTH_TOKEN}}
+enable-beta-ecosystems: true
+updates:
+  # Major updates will not be grouped together for github-actions updates
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      time: "09:00"
+      timezone: "Europe/Oslo"
+    cooldown:
+      default-days: 7
+    groups:
+      minor-and-patch:
+        applies-to: version-updates
+        update-types:
+          - "minor"
+          - "patch"
+
+    # Major updates will not be grouped together for npm updates
+  - package-ecosystem: "npm"
+    directory: "/"
+    registries:
+      - jfrog-artifactory
+    schedule:
+      interval: "weekly"
+      time: "09:00"
+      timezone: "Europe/Oslo"
+    cooldown:
+      default-days: 7
+    groups:
+      entur-minor-and-patch:
+        patterns:
+          - "@entur*"
+        applies-to: version-updates
+        update-types:
+          - "minor"
+          - "patch"
+      minor-and-patch:
+        exclude-patterns:
+          - "@entur*"
+        applies-to: version-updates
+        update-types:
+          - "minor"
+          - "patch"
+    target-branch: "main"
+
+    # By not specifying target-branch, we can make dependabot have two different configs for the same eco system
+    # target-branch: "main"
+
+    # Major updates will not be grouped together for docker updates
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      time: "09:00"
+      timezone: "Europe/Oslo"
+    cooldown:
+      default-days: 7
+    groups:
+      minor-and-patch:
+        applies-to: version-updates
+        update-types:
+          - "minor"
+          - "patch"
+  - package-ecosystem: helm
+    directory: "/helm/entur-game-frontend"
+    schedule:
+      interval: "weekly"
+      time: "09:00"
+      timezone: "Europe/Oslo"
+    cooldown:
+      default-days: 7
+    groups:
+      minor-and-patch:
+        applies-to: version-updates
+        update-types:
+          - "minor"
+          - "patch"
+      major:
+        applies-to: version-updates
+        update-types:
+          - "major"
